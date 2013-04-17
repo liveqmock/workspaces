@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	
+	<!-- 声明MQ Exchange,需要注意不同的Exchange类型 -->
+    <bean class="org.springframework.amqp.core.DirectExchange">  
+        <constructor-arg value="pconfchangenotice.exchange"></constructor-arg>  
+    </bean>  
+    
+	<!-- 声明Queue并设定Queue的名称 -->
+	<bean class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="task.pconf-make-thread.pconfchangenotice.queue"></constructor-arg>
+	</bean>
+	<!-- 通过Binding来判定Queue、Exchange、routingKey -->  
+    <bean class="org.springframework.amqp.core.Binding">  
+        <constructor-arg index="0" value="task.pconf-make-thread.pconfchangenotice.queue"></constructor-arg>  
+        <constructor-arg index="1" value="QUEUE"></constructor-arg>  
+        <constructor-arg index="2" value="pconfchangenotice.exchange"></constructor-arg>  
+        <constructor-arg index="3" value="pconfchangenotice"></constructor-arg>  
+        <constructor-arg index="4"><null/></constructor-arg>  
+    </bean>  
+    
+</beans>

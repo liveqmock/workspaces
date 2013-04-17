@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ad.explain">
+	<insert id="insertDataDictionary" parameterType="java.util.Map">
+		INSERT INTO iw_data_dictionary
+		(data_file_name, data_main_function, data_address, data_add_time
+		)VALUES(
+		#{name}, #{function}, #{dictionary}, NOW())
+	</insert>
+
+	<resultMap type="com.iwgame.gm.p1.adcollect.shared.model.DictionaryDataBase"
+		id="dataBase" />
+
+	<select id="getDictionaryList" resultMap="dataBase"
+		parameterType="java.util.Map">
+		SELECT data_id as `id`,
+		data_file_name as `name`,
+		data_main_function as `function`,
+		data_address as `path`,
+		data_add_time as `dateTime`
+		FROM
+		iw_data_dictionary
+		ORDER BY data_id DESC
+		LIMIT #{offset},#{limit}
+	</select>
+	<select id="getDictionaryListCount" resultType="int" parameterType="java.util.Map">
+		SELECT COUNT(data_id)
+		FROM
+		iw_data_dictionary
+		LIMIT #{offset},#{limit}
+	</select>
+	<delete id="delDictionaryByIds"  parameterType="java.util.Map">
+		DELETE FROM iw_data_dictionary WHERE data_id IN (${ids})
+	</delete>
+</mapper>

@@ -1,0 +1,532 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.22" id="1">
+    <property name="createdBy">Eclipse BIRT Designer Version 2.6.2.r262_v20110209 Build &lt;2.6.2.v20110214-1523></property>
+    <property name="units">in</property>
+    <list-property name="propertyBindings">
+        <structure>
+            <property name="name">queryText</property>
+            <property name="id">311</property>
+        </structure>
+        <structure>
+            <property name="name">queryTimeOut</property>
+            <property name="id">311</property>
+        </structure>
+    </list-property>
+    <method name="initialize"><![CDATA[//开始时间
+var sTime=reportContext.getParameterValue("beginDate");
+//结束时间
+var eTime=reportContext.getParameterValue("endDate");
+//大区
+var guid = reportContext.getParameterValue("zone");
+
+//开始日期
+if(sTime!=null){
+    var start = sTime.substr(0,10);
+}
+//结束日期
+if(eTime!=null){
+    var end = eTime.substr(0,10);
+}]]></method>
+    <property name="iconFile">/templates/chart_listing.gif</property>
+    <property name="cheatSheet">org.eclipse.birt.report.designer.ui.cheatsheet.chartlisting</property>
+    <property name="layoutPreference">auto layout</property>
+    <property name="bidiLayoutOrientation">ltr</property>
+    <data-sources>
+        <oda-data-source extensionID="org.eclipse.birt.report.data.oda.jdbc" name="DataSource" id="457">
+            <list-property name="privateDriverProperties">
+                <ex-property>
+                    <name>disabledMetadataBidiFormatStr</name>
+                </ex-property>
+                <ex-property>
+                    <name>disabledContentBidiFormatStr</name>
+                </ex-property>
+                <ex-property>
+                    <name>contentBidiFormatStr</name>
+                    <value>ILYNN</value>
+                </ex-property>
+                <ex-property>
+                    <name>metadataBidiFormatStr</name>
+                    <value>ILYNN</value>
+                </ex-property>
+            </list-property>
+            <property name="odaDriverClass">com.mysql.jdbc.Driver</property>
+            <property name="odaURL">jdbc:mysql://192.168.10.181:3306/gamedb</property>
+            <property name="odaUser">reports</property>
+            <encrypted-property name="odaPassword" encryptionID="base64">cmVwb3J0cw==</encrypted-property>
+        </oda-data-source>
+    </data-sources>
+    <data-sets>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="rptOnline" id="311">
+            <property name="nullsOrdering">nulls lowest</property>
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">date</property>
+                    <text-property name="displayName">date</text-property>
+                    <text-property name="heading">date</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">activity</property>
+                    <text-property name="displayName">activity</text-property>
+                    <text-property name="heading">activity</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">game_peak</property>
+                    <text-property name="displayName">game_peak</text-property>
+                    <text-property name="heading">game_peak</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">game_avg</property>
+                    <text-property name="displayName">game_avg</text-property>
+                    <text-property name="heading">game_avg</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">link_peak</property>
+                    <text-property name="displayName">link_peak</text-property>
+                    <text-property name="heading">link_peak</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">link_avg</property>
+                    <text-property name="displayName">link_avg</text-property>
+                    <text-property name="heading">link_avg</text-property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">date</property>
+                        <property name="dataType">date</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">activity</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">game_peak</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">game_avg</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">link_peak</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">link_avg</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <method name="beforeOpen"><![CDATA[var startTime =reportContext.getParameterValue("beginDate");
+var endTime =reportContext.getParameterValue("endDate");
+var zone =reportContext.getParameterValue("zone");
+
+this.queryText +=" where 1=1 ";
+if(startTime != null &amp;&amp; endTime !=null){
+	this.queryText +=" and date between '"+startTime.substr(0,10) +"' and '"+ endTime+"'";
+} 
+if( zone != null){
+    this.queryText +=" and zone='"+ zone+"'"; 
+}
+	this.queryText +=" group by date desc";]]></method>
+            <property name="dataSource">DataSource</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">date</property>
+                    <property name="nativeName">date</property>
+                    <property name="dataType">date</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">activity</property>
+                    <property name="nativeName">activity</property>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">game_peak</property>
+                    <property name="nativeName">game_peak</property>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">game_avg</property>
+                    <property name="nativeName">game_avg</property>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">link_peak</property>
+                    <property name="nativeName">link_peak</property>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="position">6</property>
+                    <property name="name">link_avg</property>
+                    <property name="nativeName">link_avg</property>
+                    <property name="dataType">float</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[select
+	`date`,
+	sum(`activity`) as `activity`, 
+	sum(`game_peak`) as `game_peak`, 
+	sum(`game_avg`) as `game_avg`, 
+	sum(`link_peak`) as `link_peak`, 
+	sum(`link_avg`) as `link_avg`
+from rpt_online as a
+]]></xml-property>
+        </oda-data-set>
+    </data-sets>
+    <styles>
+        <style name="report" id="33">
+            <property name="fontFamily">"Verdana"</property>
+            <property name="fontSize">10pt</property>
+        </style>
+        <style name="crosstab-cell" id="37">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+        <style name="crosstab" id="38">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+    </styles>
+    <page-setup>
+        <simple-master-page name="Simple MasterPage" id="2">
+            <property name="type">us-legal</property>
+            <property name="orientation">landscape</property>
+            <page-footer>
+                <text id="3">
+                    <property name="contentType">html</property>
+                    <text-property name="content"><![CDATA[<value-of>new Date()</value-of>]]></text-property>
+                </text>
+            </page-footer>
+        </simple-master-page>
+    </page-setup>
+    <body>
+        <text-data id="117">
+            <property name="fontSize">14pt</property>
+            <property name="fontWeight">bold</property>
+            <property name="textAlign">center</property>
+            <expression name="valueExpr">(BirtComp.equalTo(guid,null)?"全区":guid)+"在线人数统计报表"</expression>
+            <property name="contentType">html</property>
+        </text-data>
+        <text-data id="118">
+            <property name="marginBottom">10pt</property>
+            <property name="textAlign">center</property>
+            <expression name="valueExpr">(start+"至"+end)</expression>
+            <property name="contentType">html</property>
+        </text-data>
+        <table name="tableGoldReport" id="163">
+            <property name="fontSize">11pt</property>
+            <property name="borderBottomColor">#000000</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">thin</property>
+            <property name="borderLeftColor">#000000</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">thin</property>
+            <property name="borderRightColor">#000000</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">thin</property>
+            <property name="borderTopColor">#000000</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">thin</property>
+            <property name="textAlign">center</property>
+            <property name="width">100%</property>
+            <property name="dataSet">rptOnline</property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">date</property>
+                    <expression name="expression" type="javascript">dataSetRow["date"]</expression>
+                    <property name="dataType">date</property>
+                </structure>
+                <structure>
+                    <property name="name">maxcount</property>
+                    <expression name="expression" type="javascript">dataSetRow["link_avg"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">avgcount</property>
+                    <expression name="expression" type="javascript">dataSetRow["game_avg"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">activecount</property>
+                    <expression name="expression" type="javascript">dataSetRow["activity"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">maxOnlineCount</property>
+                    <property name="dataType">integer</property>
+                    <property name="aggregateFunction">MAX</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["gamePeak"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">avgOnlineCount</property>
+                    <property name="dataType">integer</property>
+                    <property name="aggregateFunction">AVE</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["avgcount"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">gamePeak</property>
+                    <expression name="expression" type="javascript">dataSetRow["game_peak"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">linkPeak</property>
+                    <expression name="expression" type="javascript">dataSetRow["link_peak"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">maxLinkPeak</property>
+                    <property name="dataType">integer</property>
+                    <property name="aggregateFunction">MAX</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["linkPeak"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">linkAvg</property>
+                    <expression name="expression" type="javascript">dataSetRow["link_avg"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">gameAvg</property>
+                    <expression name="expression" type="javascript">dataSetRow["game_avg"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">avglink</property>
+                    <property name="dataType">integer</property>
+                    <property name="aggregateFunction">AVE</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">dataSetRow["link_avg"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">avgLinkCount</property>
+                    <expression name="expression" type="javascript">row["avglink"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+            </list-property>
+            <property name="pageBreakInterval">50</property>
+            <column id="187"/>
+            <column id="188"/>
+            <column id="189"/>
+            <column id="190"/>
+            <column id="442"/>
+            <column id="447"/>
+            <header>
+                <row id="164">
+                    <property name="backgroundColor">#9DDFFF</property>
+                    <property name="fontWeight">bold</property>
+                    <cell id="165">
+                        <label id="166">
+                            <property name="fontFamily">sans-serif</property>
+                            <property name="fontWeight">bold</property>
+                            <text-property name="text">日期</text-property>
+                        </label>
+                    </cell>
+                    <cell id="167">
+                        <label id="172">
+                            <property name="fontFamily">sans-serif</property>
+                            <property name="fontWeight">bold</property>
+                            <text-property name="text">活跃帐号数</text-property>
+                        </label>
+                    </cell>
+                    <cell id="169">
+                        <label id="168">
+                            <property name="fontFamily">sans-serif</property>
+                            <property name="fontWeight">bold</property>
+                            <text-property name="text">游戏峰值在线</text-property>
+                        </label>
+                    </cell>
+                    <cell id="171">
+                        <label id="170">
+                            <property name="fontFamily">sans-serif</property>
+                            <property name="fontWeight">bold</property>
+                            <text-property name="text">游戏平均在线</text-property>
+                        </label>
+                    </cell>
+                    <cell id="438">
+                        <label id="448">
+                            <property name="fontFamily">sans-serif</property>
+                            <property name="fontWeight">bold</property>
+                            <text-property name="text">网络连接峰值</text-property>
+                        </label>
+                    </cell>
+                    <cell id="443">
+                        <label id="449">
+                            <property name="fontFamily">sans-serif</property>
+                            <property name="fontWeight">bold</property>
+                            <text-property name="text">网络连接平均</text-property>
+                        </label>
+                    </cell>
+                </row>
+            </header>
+            <detail>
+                <row id="173">
+                    <property name="fontSize">10pt</property>
+                    <list-property name="highlightRules">
+                        <structure>
+                            <property name="operator">eq</property>
+                            <property name="backgroundColor">#E4E4E4</property>
+                            <expression name="testExpr">row.__rownum%2</expression>
+                            <simple-property-list name="value1">
+                                <value>1</value>
+                            </simple-property-list>
+                        </structure>
+                    </list-property>
+                    <cell id="174">
+                        <data id="413">
+                            <structure name="dateTimeFormat">
+                                <property name="category">Medium Date</property>
+                                <property name="pattern">Medium Date</property>
+                                <property name="locale">zh</property>
+                            </structure>
+                            <property name="resultSetColumn">date</property>
+                        </data>
+                    </cell>
+                    <cell id="176">
+                        <data id="425">
+                            <structure name="numberFormat">
+                                <property name="category">Fixed</property>
+                                <property name="pattern">#,##0</property>
+                            </structure>
+                            <property name="resultSetColumn">activecount</property>
+                        </data>
+                    </cell>
+                    <cell id="178">
+                        <data id="423">
+                            <structure name="numberFormat">
+                                <property name="category">Fixed</property>
+                                <property name="pattern">#,##0</property>
+                            </structure>
+                            <property name="resultSetColumn">gamePeak</property>
+                        </data>
+                    </cell>
+                    <cell id="180">
+                        <data id="455">
+                            <property name="resultSetColumn">gameAvg</property>
+                        </data>
+                    </cell>
+                    <cell id="439">
+                        <data id="450">
+                            <structure name="numberFormat">
+                                <property name="category">Fixed</property>
+                                <property name="pattern">#,##0</property>
+                            </structure>
+                            <property name="resultSetColumn">linkPeak</property>
+                        </data>
+                    </cell>
+                    <cell id="444">
+                        <data id="454">
+                            <property name="resultSetColumn">linkAvg</property>
+                        </data>
+                    </cell>
+                </row>
+            </detail>
+            <footer>
+                <row id="426">
+                    <property name="backgroundColor">#D7FFD7</property>
+                    <cell id="427">
+                        <label id="431">
+                            <text-property name="text">最高峰值</text-property>
+                        </label>
+                    </cell>
+                    <cell id="428"/>
+                    <cell id="429">
+                        <data id="432">
+                            <structure name="numberFormat">
+                                <property name="category">Fixed</property>
+                                <property name="pattern">#,##0</property>
+                            </structure>
+                            <property name="resultSetColumn">maxOnlineCount</property>
+                        </data>
+                    </cell>
+                    <cell id="430"/>
+                    <cell id="440">
+                        <data id="452">
+                            <structure name="numberFormat">
+                                <property name="category">Fixed</property>
+                                <property name="pattern">#,##0</property>
+                            </structure>
+                            <property name="resultSetColumn">maxLinkPeak</property>
+                        </data>
+                    </cell>
+                    <cell id="445"/>
+                </row>
+                <row id="182">
+                    <property name="backgroundColor">#D7FFD7</property>
+                    <cell id="183">
+                        <label id="390">
+                            <text-property name="text">整体均值</text-property>
+                        </label>
+                    </cell>
+                    <cell id="184"/>
+                    <cell id="185"/>
+                    <cell id="186">
+                        <data id="433">
+                            <structure name="numberFormat">
+                                <property name="category">Fixed</property>
+                                <property name="pattern">#,##0</property>
+                            </structure>
+                            <property name="resultSetColumn">avgOnlineCount</property>
+                        </data>
+                    </cell>
+                    <cell id="441"/>
+                    <cell id="446">
+                        <data id="456">
+                            <property name="resultSetColumn">avgLinkCount</property>
+                        </data>
+                    </cell>
+                </row>
+            </footer>
+        </table>
+    </body>
+</report>

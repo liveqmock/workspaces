@@ -1,0 +1,11 @@
+.iwgame-select-filter{
+	display: block;
+	width: 100%;
+}
+
+
+.iwgame-form .iwgame-form-table .iwgame-select-filter td {
+	border: none;
+	padding: 0px;
+	background: none;
+}

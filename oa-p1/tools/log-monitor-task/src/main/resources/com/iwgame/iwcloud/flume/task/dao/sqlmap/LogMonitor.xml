@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.iwgame.iwcloud.flume.task.dao.LogMonitorDao">
+
+	<resultMap type="com.iwgame.iwcloud.flume.task.bean.MonitorPolicy"
+		id="monitorPolicy">
+		<result property="tMonitorType" column="t_monitor_type" />
+		<result property="tMonitorName" column="t_monitor_name" />
+		<result property="tStatus" column="t_status" />
+		<result property="tMaxCount" column="t_max_count" />
+		<result property="tRevMobile" column="t_rev_mobile" />
+	</resultMap>
+	
+	
+	<resultMap type="com.iwgame.iwcloud.flume.task.bean.RptMonitorLog"
+		id="rptMonitorLog">
+		<result property="ttime" column="time" javaType="string" />
+		<result property="tname" column="name" javaType="string" />
+		<result property="ttype" column="type" javaType="string" />
+		<result property="tsucess" column="sucess" javaType="int" />
+		<result property="tfailure" column="failure" javaType="int" />
+	</resultMap>
+     
+	<!-- 查询策略数据 -->
+	<select id="getLogMonitorPolicy" resultMap="monitorPolicy"
+		parameterType="java.util.Map">
+		select t_max_count,t_monitor_name,t_monitor_type,t_rev_mobile,t_status 
+		from t_monitor_policy
+		where t_status = 0
+	</select>
+	
+	<!-- 查询预警数据 -->
+	<select id="getRptMonitorLog" resultMap="rptMonitorLog"
+		parameterType="java.util.Map">
+		select id,time,name,type,sucess,failure 
+		from rpt_server_${type}_hour
+		where 1=1
+		<if test="hourStart != null and hourStart != ''">
+			and time &gt;= #{hourStart} and time &lt;= #{hourEnd}
+		</if>
+	</select>
+	
+	<!-- 添加到预警列表忠 -->
+	<insert id="saveMonitorWarningLog" parameterType="java.util.Map">
+		insert
+		t_monitor_warning(t_monitor_date,t_monitor_type,t_success_count,t_failed_count,t_max_count)
+		values
+		(#{monitorDate},#{monitorType},#{successCount},#{failedCount},#{maxCount})
+	</insert>
+</mapper>

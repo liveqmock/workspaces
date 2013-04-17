@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+            http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<import resource="classpath:conf/applicationContext-pconf.xml" />
+	<import resource="classpath:conf/applicationContext-connector.xml" />
+	<import resource="classpath:conf/applicationContext-common.xml" />
+
+	<!-- 自动注入Service -->
+	<context:component-scan base-package="com.iwgame.guild.backend.server.service" />
+	<context:annotation-config />
+	
+	<!-- 自定义  bean -->
+	<bean id="killer-policy-policyservice" class="com.iwgame.account.kill.server.service.PolicyServiceImpl" >
+		<property name="maxPolicyNum" value="${config.max.policy.number}"></property>
+		<property name="dueDays" value="${config.due.days}"></property>
+		<property name="delayTime" value="${config.delay.killer.time}"></property>
+		<property name="rabbitTemplate" ref="killerRabbitTemplate" />
+		<property name="mqProperties" ref="killerMqProperties" />
+	</bean>
+	<bean id="killer-logs-logsservice" class="com.iwgame.account.kill.server.service.LogsServiceImpl" ></bean>
+		
+	<!-- 加载配置文件 -->
+	<bean id="p3PropertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="ignoreUnresolvablePlaceholders" value="true" />
+		<property name="ignoreResourceNotFound" value="true" />
+		<property name="locations">
+			<list>
+				<!--开发环境下的配置文件 -->
+				<value>classpath:kill.properties</value>
+				<!-- 生产环境下的配置文件 -->
+				<value>file:/var/config/xportal-oa/kill/kill.properties</value>
+			</list>
+		</property>
+		<property name="fileEncoding" value="utf-8" />
+	</bean>
+	
+	<!-- 配置MQ连接源 -->
+	<bean id="killerRabbitMQSource" class="com.rabbitmq.client.ConnectionFactory">
+		<property name="username" value="${killer.mq.username}" />
+		<property name="password" value="${killer.mq.password}" />
+		<property name="virtualHost" value="${killer.mq.virtualhost}" />
+		<property name="host" value="${killer.mq.host}" />
+		<property name="port" value="${killer.mq.port}" />
+		<property name="requestedHeartbeat" value="5" />
+	</bean>
+	
+	<!-- MQFactory -->
+	<bean id="killerConnectionFactory"
+		class="org.springframework.amqp.rabbit.connection.CachingConnectionFactory">
+		<constructor-arg ref="killerRabbitMQSource" />
+		<property name="channelCacheSize" value="${killer.mq.channelcachesize}" />
+	</bean>
+	
+	<!-- RabbitTemplate模板供Srevice使用 -->
+	<bean id="killerRabbitTemplate" class="org.springframework.amqp.rabbit.core.RabbitTemplate">
+		<constructor-arg ref="killerConnectionFactory" />
+	</bean>
+
+	<!-- MQ ExChange,Queue,RoutingKey属性映射定义 -->
+	<bean id="killerMqProperties" class="com.iwgame.account.kill.server.mq.Properties">
+		<property name="exchange" value="${killer.context.exchange.name}" />
+		<property name="routingUpdatePolicy" value="${killer.task.policy.queue.binding.routingkey}" />
+	</bean>
+	
+	
+</beans>

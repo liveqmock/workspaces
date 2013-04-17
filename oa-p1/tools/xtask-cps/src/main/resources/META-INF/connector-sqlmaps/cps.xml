@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cps.xtask">
+
+	<!-- 注册用户 -->
+	<insert id="registeUser" parameterType="com.iwgame.xengine.xtask.cps.model.User">
+		INSERT INTO
+		cps_user(accountid,name,media_id,link_id,atime,ip)
+		VALUES(#{accountId},#{name},#{mediaId},#{linkId},#{registeTime},#{ip})
+	</insert>
+
+	<!-- 登记点击 -->
+	<insert id="countClick" parameterType="hashmap">
+		INSERT INTO
+		cps_hits(media_id,link_id,atime)
+		VALUES(#{mediaId},#{linkId},#{time})
+	</insert>
+
+	<!-- 获取用户黑名单 -->
+	<select id="getUserCRLs" resultType="com.iwgame.xengine.xtask.cps.model.UserCRL">
+		SELECT accountid as accountId, etime as endTime, status as status
+		FROM cps_crl_user
+		WHERE status=1 OR (status=0 AND etime>NOW())
+	</select>
+	
+	<!-- 获取IP黑名单 -->
+	<select id="getIPCRLs" resultType="com.iwgame.xengine.xtask.cps.model.IPCRL">
+		SELECT ip as ip, etime as endTime, status as status
+		FROM cps_crl_ip
+		WHERE status=1 OR (status=0 AND etime>NOW())
+	</select>
+	
+	<!-- 获取要缓存的用户 -->
+	<select id="getCacheUsers" resultType="com.iwgame.xengine.xtask.cps.model.CacheUser">
+		SELECT
+			cu.accountid as accountId,
+			cu.name as name,
+			cu.media_id as mediaId,
+			cu.link_id as linkId,
+			cu.atime as createTime,
+			cu.ltime as loginTime
+		FROM
+			cps_user cu	
+	</select>
+	
+	<!-- 获取被媒体使用的分成方案 -->
+	<select id="getUsedSchemasByMedia" resultType="java.util.HashMap">
+		SELECT
+			cm.media_id AS mediaId,
+			cs.bonus_policy AS bonusPolicy,
+			cs.award_policy AS awardPolicy
+		FROM
+			cps_media AS cm
+		INNER JOIN cps_schema AS cs ON cs.schema_id = cm.schema_id
+	</select>
+	
+	<select id="getUsedSchemaByMedia" resultType="java.util.HashMap">
+		SELECT
+			cm.media_id AS mediaId,
+			cs.bonus_policy AS bonusPolicy,
+			cs.award_policy AS awardPolicy
+		FROM
+			cps_media AS cm
+		INNER JOIN cps_schema AS cs ON cs.schema_id = cm.schema_id
+		WHERE cm.media_id=#{mediaId}
+	</select>
+	
+	<!-- 获取全局配置变量 -->
+	<select id="getGlobalConfig" resultType="com.iwgame.xengine.xtask.cps.model.Config">
+		SELECT
+			max_bonus AS maxBonus,
+			max_days AS maxDays
+		FROM
+			cps_config
+	</select>
+	
+	<!-- 获取停用的媒体 -->
+	<select id="getDisableMedias" resultType="int">
+		SELECT
+			media_id
+		FROM
+			cps_media
+		WHERE
+			status=0
+	</select>
+	
+	<!-- 获取停用的链接 -->
+	<select id="getDisableLinks" resultType="int">
+		SELECT
+			link_id
+		FROM
+			cps_link
+		WHERE
+			status=0
+	</select>
+	
+	<!-- 写入计算好的消费数据 -->
+	<insert id="writeConsumeDetail" parameterType="hashmap">
+		INSERT INTO 
+			cps_consume_detail
+			(
+				order_id,
+				area,
+				accountid,
+				name,
+				link_id,
+				media_id,
+				actor,
+				level,
+				description,
+				money,
+				proportion,
+				bonus_theory,
+				bonus_actual,
+				ctime,
+				atime,
+				mtime,
+				ip,
+				status
+			)
+		VALUES
+		(
+			#{orderId},
+			#{area},
+			#{accountId},
+			#{name},
+			#{linkId},
+			#{mediaId},
+			#{actor},
+			#{level},
+			(SELECT cpi.name FROM cps_game_item cpi where cpi.item_id=#{itemId}),
+			#{money},
+			#{proportion},
+			#{bonusTheory},
+			#{bonusActual},
+			#{ctime},
+			#{atime},
+			#{mtime},
+			#{ip},
+			#{status}
+		)		
+	</insert>
+	
+	<update id="updateBonusOfMedia">
+		UPDATE cps_media
+		SET total_bonus=total_bonus+#{bonus}
+		WHERE media_id=#{mediaId}
+	</update>
+	
+	<update id="updateConsumeDataOfAccount">
+		UPDATE cps_user
+		SET consume=consume+#{money}, bonus=bonus+#{bonus}, consume_times=consume_times+1
+		WHERE accountid=#{accountId}
+	</update>
+	
+	<!--  <update id="updateCheckedDayData" parameterType="hashmap">
+		UPDATE cps_checked_day 
+		SET 
+		WHERE
+			media_id=#{mediaId} AND link_id=#{linkId} AND date=#{ctime}
+	</update>-->
+	
+	<update id="writeUserLoginTimeAndIp">
+		UPDATE cps_user SET ltime=#{loginTime}, ip=#{ip} WHERE accountid=#{accountId}		
+	</update>	
+	
+	<select id="getTotalBonusOfUser" resultType="java.lang.Double">
+		SELECT bonus FROM cps_user WHERE accountid=#{accountId}
+	</select>
+	
+	<select id="getTotalBonusOfUserBetweenLevels" resultType="java.lang.Double">
+		SELECT SUM(bonus_actual) FROM cps_consume_detail 
+		WHERE accountid=#{accountId} AND (level&gt;=#{minLevel} AND  level&lt;#{maxLevel}) AND status&lt;2	
+	</select>
+</mapper>

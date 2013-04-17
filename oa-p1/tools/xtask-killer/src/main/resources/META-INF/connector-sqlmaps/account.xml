@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="killer.xtask.account">
+
+
+	<!-- 查询帐号的累计充值金额和最大等级 -->
+	<select id="queryMaxLevel" parameterType="string" resultType="int">
+		SELECT MAX(role.`level`) FROM s_account_role AS role, f_account AS acc
+		where acc.accountid=role.accountid AND acc.username=#{accountName};
+	</select>
+
+	<select id="queryTotalPaid" parameterType="string" resultType="int">
+		SELECT SUM(paid.paid) FROM s_account_paid AS paid, f_account AS acc
+		where acc.accountid=paid.accountid AND acc.username=#{accountName};;
+	</select>
+
+
+</mapper>

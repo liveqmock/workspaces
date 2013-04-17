@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<appunit>
+	<type>core</type>
+	<name>P1Common</name>
+	<title>P1通用工具包</title>
+	<description>P1通用工具包</description>
+	<version>1.0</version>
+	<product>P-P1,P-P1.5</product>
+	<app>GM</app>
+	<!-- GWT Module Name,被框架继承 -->
+	<gwt-module>com.iwgame.gm.p1.common.Common</gwt-module>
+	<!-- 后台服务配置 -->
+	<!-- <services>
+		<service endpoint="com.iwgame.xportal.common.shared.rpc.MenuService">
+			<property name="factory" value="spring" />
+			<property name="source" value="xportalmenuService" />
+		</service>
+	</services> -->
+</appunit>

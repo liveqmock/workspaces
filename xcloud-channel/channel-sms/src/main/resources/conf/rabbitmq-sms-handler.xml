@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+	xsi:schemaLocation="http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit.xsd http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<!-- 用于接收消息的处理类-->
+	<bean id="smsActTaskHandler" class="com.iwgame.xengine.xtask.sms.worker.smsact.SmsActTask" />
+
+	<!-- 用于消息的监听的代理类MessageListenerAdapter -->
+	<bean id="smsActSendingTaskListenerAdapter"	class="org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter">
+		<constructor-arg ref="smsActTaskHandler" />
+		<property name="defaultListenerMethod" value="handleSmsAct" />
+		<property name="messageConverter" ref="messageConverter" />
+	</bean>
+
+	<!-- 用于消息的监听的容器类SimpleMessageListenerContainer，对于queueName的值一定要与定义的Queue的值相同 -->
+	<bean class="org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer">
+		<property name="queueNames" value="${common.task.sms3722.queue.name}" />
+		<property name="connectionFactory" ref="connectionFactory" />
+		<property name="messageListener" ref="smsActSendingTaskListenerAdapter" />
+		<property name="concurrentConsumers" value="5" />
+	</bean>
+	
+	
+	<!-- 用于接收消息的处理类-->
+	<bean id="smsInnerTaskHandler" class="com.iwgame.xengine.xtask.sms.worker.smsact.SmsInnerTask" />
+
+	<!-- 用于消息的监听的代理类MessageListenerAdapter -->
+	<bean id="smsInnerSendingTaskListenerAdapter"	class="org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter">
+		<constructor-arg ref="smsInnerTaskHandler" />
+		<property name="defaultListenerMethod" value="handleSmsInner" />
+		<property name="messageConverter" ref="messageConverter" />
+	</bean>
+
+	<!-- 用于消息的监听的容器类SimpleMessageListenerContainer，对于queueName的值一定要与定义的Queue的值相同 -->
+	<bean class="org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer">
+		<property name="queueNames" value="${common.task.sms3664.queue.name}" />
+		<property name="connectionFactory" ref="connectionFactory" />
+		<property name="messageListener" ref="smsInnerSendingTaskListenerAdapter" />
+		<property name="concurrentConsumers" value="5" />
+	</bean>
+	
+	
+	
+	<!-- 用于接收消息的处理类-->
+	<bean id="smsWebSiteTaskHandler" class="com.iwgame.xengine.xtask.sms.worker.smsact.SmsWebSiteTask" />
+
+	<!-- 用于消息的监听的代理类MessageListenerAdapter -->
+	<bean id="smsWebSiteSendingTaskListenerAdapter"	class="org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter">
+		<constructor-arg ref="smsWebSiteTaskHandler" />
+		<property name="defaultListenerMethod" value="handlesmsWebSite" />
+		<property name="messageConverter" ref="messageConverter" />
+	</bean>
+
+	<!-- 用于消息的监听的容器类SimpleMessageListenerContainer，对于queueName的值一定要与定义的Queue的值相同 -->
+	<bean class="org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer">
+		<property name="queueNames" value="${common.task.sms3108.queue.name}" />
+		<property name="connectionFactory" ref="connectionFactory" />
+		<property name="messageListener" ref="smsWebSiteSendingTaskListenerAdapter" />
+		<property name="concurrentConsumers" value="5" />
+	</bean>
+	
+	
+	
+	
+	<!-- 用于接收消息的处理类-->
+	<bean id="smsMiBaoTaskHandler" class="com.iwgame.xengine.xtask.sms.worker.smsact.SmsMiBaoTask" />
+
+	<!-- 用于消息的监听的代理类MessageListenerAdapter -->
+	<bean id="smsMiBaoSendingTaskListenerAdapter"	class="org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter">
+		<constructor-arg ref="smsMiBaoTaskHandler" />
+		<property name="defaultListenerMethod" value="handlesmsMiBao" />
+		<property name="messageConverter" ref="messageConverter" />
+	</bean>
+
+	<!-- 用于消息的监听的容器类SimpleMessageListenerContainer，对于queueName的值一定要与定义的Queue的值相同 -->
+	<bean class="org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer">
+		<property name="queueNames" value="${common.task.sms7947.queue.name}" />
+		<property name="connectionFactory" ref="connectionFactory" />
+		<property name="messageListener" ref="smsMiBaoSendingTaskListenerAdapter" />
+		<property name="concurrentConsumers" value="5" />
+	</bean>
+</beans>

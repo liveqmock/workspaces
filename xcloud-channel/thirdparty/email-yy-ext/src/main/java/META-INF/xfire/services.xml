@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://xfire.codehaus.org/config/1.0">
+  <service>
+    <serviceClass>_43._0._168._192.mailwebservice.mailwebservice.MailWebServiceImpl</serviceClass>
+    <wsdlURL>http://app.easeye.com.cn/MailWebService/MailWebService.asmx?WSDL</wsdlURL>
+    <serviceFactory>org.codehaus.xfire.jaxb2.JaxbServiceFactory</serviceFactory>
+  </service>
+</beans>
+

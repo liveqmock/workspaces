@@ -1,0 +1,17 @@
+.iwgame-proppanel {
+	margin: 2px;
+}
+
+.iwgame-proppanel-label {
+	font-weight: bolder;
+	background-color: #eee;
+	padding: 3px;
+	padding-right: 5px;
+	text-align: right;
+}
+
+.iwgame-proppanel-value {
+	padding: 3px;
+	padding-right: 5px;
+	text-align: right;
+}

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.iwgame.xengine.xtask.game.dao.ScurityOAHandlerDao">
+
+
+	<update id="updateKilledRecordSuccess" parameterType="hashmap">
+		update
+		killed_record set handle_status = 0 where batchid = #{batchid} and
+		username = #{username}
+	</update>
+
+	<update id="updateKilledRecordFailed" parameterType="hashmap">
+		update
+		killed_record set handle_status = 2 where batchid = #{batchid} and
+		username = #{username}
+	</update>
+
+
+	<update id="updateResultTrackSuccess" parameterType="string">
+		update
+		iw_result_track set success_num = ifnull(success_num,0) +1,finish_time = NOW() where batchid = #{batchid}
+	</update>
+
+	<update id="updateResultTrackFailed" parameterType="string">
+		update
+		iw_result_track set failed_num = ifnull(failed_num,0) + 1,finish_time
+		= NOW() where batchid = #{batchid}
+	</update>
+
+	<insert id="insertKilledRecordByUnlook" parameterType="hashmap">
+		INSERT
+		INTO killed_record (zone,
+		username,
+		type,
+		days,
+		batchid,
+		optime,
+		operator,
+		handle_status,
+		cause_note,
+		cause_type,
+		killed_type
+		)VALUES(
+		#{zone},
+		#{username},
+		#{type},
+		#{days},
+		#{batchid},
+		NOW(),
+		#{operator},
+		#{handleStatus},
+		#{causeNote},
+		#{causeType},
+		#{killedType}
+		)
+	</insert>
+
+	<insert id="insertSafeRecordByUnSafe" parameterType="hashmap">
+		INSERT INTO
+		safe_mode_record (
+		username,
+		rolename,
+		dbid,
+		optime,
+		operator,
+		mode_type,
+		cause_note,
+		groupname,
+		guid
+		)VALUES(
+		#{username},
+		#{rolename},
+		#{dbid},
+		now(),
+		#{operator},
+		#{mode_type},
+		#{cause_note},
+		#{groupname},
+		#{guid}
+		)
+	</insert>
+	
+	<resultMap id="killed_record" type="java.util.HashMap">
+		<result column="type" property="type" jdbcType="INTEGER" />
+		<result column="days" property="days" jdbcType="INTEGER" />
+	</resultMap>
+
+	<select id="checkUserStatusByUsername" parameterType="string" resultMap="killed_record">
+		select type,days from killed_record where username = #{username} 
+		ORDER BY optime desc LIMIT 1;
+	</select>
+
+</mapper>

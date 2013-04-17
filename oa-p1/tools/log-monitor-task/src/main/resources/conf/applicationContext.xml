@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:jaxrs="http://cxf.apache.org/jaxrs" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+	 http://cxf.apache.org/jaxrs
+	 http://cxf.apache.org/schemas/jaxrs.xsd
+     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+     http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+    <!-- 自动注入Service & Dao -->
+	<context:component-scan base-package="com.iwgame.iwcloud.flume.task"></context:component-scan>
+	<context:annotation-config />
+	
+	<!-- 加载相关的properties配置文件设置 -->
+	<bean id="environmentVariablesConfiguration" class="com.iwgame.security.config.EnvironmentStringPBEConfig" />
+	<bean id="configurationEncryptor" class="org.jasypt.encryption.pbe.StandardPBEStringEncryptor">
+		<property name="config" ref="environmentVariablesConfiguration" />
+	</bean>
+	<bean
+		class="org.jasypt.spring.properties.EncryptablePropertyPlaceholderConfigurer">
+		<constructor-arg ref="configurationEncryptor" />
+		<property name="order" value="1" />
+		<property name="ignoreUnresolvablePlaceholders" value="true" />
+		<property name="ignoreResourceNotFound" value="true" />
+		<property name="locations">
+			<list>
+				<!--开发环境下的配置文件 -->
+				<value>classpath:logmonitor.properties</value>
+				<!-- 生产环境下的配置文件 -->
+				<value>${XTASK_HOME}/logmonitor.properties</value>
+			</list>
+		</property>
+		<property name="fileEncoding" value="utf-8" />
+	</bean>
+
+	<!-- PSImonitor监控 数据库连接  -->
+	<bean id="pisMonitorDBDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close"> 
+		<!-- 数据库连接基本信息 -->
+		<property name="jdbcUrl" value="${db.normal.driver-url}" />
+		<property name="driverClass" value="${db.normal.driver-class}" />
+		<property name="user" value="${db.normal.user}" />
+		<property name="password" value="${db.normal.password}" />
+		<!-- 连接池大小控制 -->
+		<property name="maxPoolSize" value="${c3p0.maxPoolSize}" />
+		<property name="initialPoolSize" value="${c3p0.initialPoolSize}" />
+		<property name="minPoolSize" value="${c3p0.minPoolSize}" />
+		<property name="acquireIncrement" value="${c3p0.acquireIncrement}" />
+		<!-- 优化信息 -->
+		<property name="idleConnectionTestPeriod" value="120"/>
+		<property name="maxIdleTime" value="120"/>
+		<property name="preferredTestQuery" value="select now()" />
+	</bean>
+	
+	<bean id="sqlSessionFactory-logMonitor" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="pisMonitorDBDataSource" />
+		<property name="typeAliasesPackage" value="com.iwgame.iwcloud.flume.task.bean" />
+		<property name="mapperLocations"
+			value="classpath:com/iwgame/iwcloud/flume/task/dao/sqlmap/**/*.xml" />
+	</bean>
+
+	<bean id="mapperScanner-logMonitor" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory-logMonitor"></property>
+		<property name="basePackage" value="com.iwgame.iwcloud.flume.task.dao"></property>
+	</bean>
+
+	<!-- 短信服务MQ连接源 -->
+	<bean id="smsRabbitMQSource" class="com.rabbitmq.client.ConnectionFactory">
+		<property name="username" value="${sms.mq.username}" />
+		<property name="password" value="${sms.mq.password}" />
+		<property name="virtualHost" value="${sms.mq.virtualhost}" />
+		<property name="host" value="${sms.mq.host}" />
+		<property name="port" value="${sms.mq.port}" />
+		<property name="requestedHeartbeat" value="5" />
+	</bean>
+
+	<bean id="smsConnectionFactory"
+		class="org.springframework.amqp.rabbit.connection.CachingConnectionFactory">
+		<constructor-arg ref="smsRabbitMQSource" />
+		<property name="channelCacheSize" value="${sms.mq.channelcachesize}" />
+	</bean>
+
+	<bean id="smsRabbitTemplate" class="org.springframework.amqp.rabbit.core.RabbitTemplate">
+		<constructor-arg ref="smsConnectionFactory"></constructor-arg>
+	</bean>
+	
+	
+	<!-- PSImonitor监控 数据库连接  -->
+	<bean id="autoKillerDBDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close"> 
+		<!-- 数据库连接基本信息 -->
+		<property name="jdbcUrl" value="${db.autokiller.driver-url}" />
+		<property name="driverClass" value="${db.autokiller.driver-class}" />
+		<property name="user" value="${db.autokiller.user}" />
+		<property name="password" value="${db.autokiller.password}" />
+		<!-- 连接池大小控制 -->
+		<property name="maxPoolSize" value="${c3p0.maxPoolSize}" />
+		<property name="initialPoolSize" value="${c3p0.initialPoolSize}" />
+		<property name="minPoolSize" value="${c3p0.minPoolSize}" />
+		<property name="acquireIncrement" value="${c3p0.acquireIncrement}" />
+		<!-- 优化信息 -->
+		<property name="idleConnectionTestPeriod" value="120"/>
+		<property name="maxIdleTime" value="120"/>
+		<property name="preferredTestQuery" value="select now()" />
+	</bean>
+	
+	
+	<!-- Service模块定义 -->
+	<bean id="logMonitorService"
+		class="com.iwgame.iwcloud.flume.task.service.impl.LogMonitorServiceImpl">
+		    <property name="smsProduct" value="${sms.product}" />
+			<property name="smsRabbitTemplate" ref="smsRabbitTemplate" />
+	</bean>
+
+	
+	<!-- Task列表定义 -->
+	<!-- 任务调度定义 BizLogMonitorTrackJob -->
+	<!-- 要调用的工作类 -->
+	<bean id="bizLogMonitorTrackJob"
+		class="com.iwgame.iwcloud.flume.task.process.BizLogMonitorTrackJob">
+			<property name="logMonitorService" ref="logMonitorService" />
+	</bean>
+	<!-- 定义调用对象和调用对象的方法 -->
+	<bean id="bizLogMonitorTrackJobtask"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<!-- 调用的类 -->
+		<property name="targetObject" ref="bizLogMonitorTrackJob" />
+		<!-- 调用类中的方法 -->
+		<property name="targetMethod" value="work" />
+		<!-- 表示任务不会并发的执行,需要等第一个任务执行完才会执行第二个任务 -->
+		<property name="concurrent" value="false" />
+	</bean>
+	
+	
+	<!-- 任务调度定义 ClearSMSCacheJob -->
+	<!-- 要调用的工作类 -->
+	<bean id="clearSMSCacheJob"
+		class="com.iwgame.iwcloud.flume.task.process.ClearSMSCacheJob">
+	</bean>
+	<!-- 定义调用对象和调用对象的方法 -->
+	<bean id="clearSMSCacheJobtask"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<!-- 调用的类 -->
+		<property name="targetObject" ref="clearSMSCacheJob" />
+		<!-- 调用类中的方法 -->
+		<property name="targetMethod" value="work" />
+		<!-- 表示任务不会并发的执行,需要等第一个任务执行完才会执行第二个任务 -->
+		<property name="concurrent" value="false" />
+	</bean>
+	
+	<!-- 任务调度定义 IPAutoKillerJob -->
+	<!-- 要调用的工作类 -->
+	<bean id="ipAutoKillerJob"
+		class="com.iwgame.iwcloud.flume.task.process.IPAutoKillerJob">
+		<property name="autoKillerDBDataSource" ref="autoKillerDBDataSource" />
+		<property name="pisMonitorDBDataSource" ref="pisMonitorDBDataSource" />
+		<property name="rule1_ip_axcount" value="${rule1.ip.maxcount}" />
+		<property name="rule2_ip_axcount" value="${rule2.ip.maxcount}" />
+		<property name="rule3_ip_axcount" value="${rule3.ip.maxcount}" />
+		<property name="rule4_ip_b_axcount" value="${rule4.ip.b.maxcount}" />
+		<property name="rule5_ip_c_axcount" value="${rule5.ip.c.maxcount}" />
+	</bean>
+	<!-- 定义调用对象和调用对象的方法 -->
+	<bean id="ipAutoKillerJobtask"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<!-- 调用的类 -->
+		<property name="targetObject" ref="ipAutoKillerJob" />
+		<!-- 调用类中的方法 -->
+		<property name="targetMethod" value="work" />
+		<!-- 表示任务不会并发的执行,需要等第一个任务执行完才会执行第二个任务 -->
+		<property name="concurrent" value="false" />
+	</bean>
+</beans>

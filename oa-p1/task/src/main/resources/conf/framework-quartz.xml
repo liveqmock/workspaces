@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:jaxrs="http://cxf.apache.org/jaxrs" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+	 http://cxf.apache.org/jaxrs
+	 http://cxf.apache.org/schemas/jaxrs.xsd
+     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+     http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+	<!-- 任务调度 -->
+	<!-- 定义触发时间 -->
+	<bean id="ipMapAreaJobtaskDoTime" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="ipMapAreaJobtask" />
+		<!-- cron表达式 -->
+		<property name="cronExpression" value="${task.ipMapAreaJob.cronexpression}" />
+	</bean>
+
+	<bean id="customReportJobtaskDoTime" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="customReportJobtask" />
+		<!-- cron表达式 -->
+		<property name="cronExpression" value="${task.customReportJob.cronexpression}" />
+	</bean>
+	
+	
+	<!-- 总管理类 如果将lazy-init='false'那么容器启动就会执行调度程序 -->
+	<bean lazy-init="true" autowire="no"
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+			     <ref bean="ipMapAreaJobtaskDoTime" />
+			     <ref bean="customReportJobtaskDoTime" />
+			</list>
+		</property>
+	</bean>
+
+</beans>

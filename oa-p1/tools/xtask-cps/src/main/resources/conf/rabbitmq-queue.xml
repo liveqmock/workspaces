@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	
+	<!-- CPS数据计算配置相关 START 
+    <bean id="cpsCalculateExchange"  class="org.springframework.amqp.core.DirectExchange">  
+        <constructor-arg value="${cps.calculate.exchange.name}" />  
+    </bean>
+	<bean id="cpsCalculateQueue"	class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${cps.task.calculate.queue.name}" />
+	</bean>
+    <bean id="cpsCalculateQueueBinding"  
+        class="org.springframework.amqp.core.Binding">  
+        <constructor-arg index="0" value="${cps.task.calculate.queue.name}" />  
+        <constructor-arg index="1" value="QUEUE" />  
+        <constructor-arg index="2" value="${cps.calculate.exchange.name}" />  
+        <constructor-arg index="3" value="${cps.task.calculate.queue.binding.routingkey}" />  
+        <constructor-arg index="4"><null/></constructor-arg>  
+    </bean>    
+     CPS数据计算配置相关 END -->
+	
+	<!-- CPS前端服务配置相关 START -->
+    <bean id="cpsServiceExchange"  class="org.springframework.amqp.core.DirectExchange">  
+        <constructor-arg value="${cps.service.exchange.name}" />  
+    </bean>
+    
+	<bean id="cpsClickCountQueue"	class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${cps.task.clickcount.queue.name}" />
+	</bean>	
+	<bean id="cpsClickCountQueueBinding"  
+        class="org.springframework.amqp.core.Binding">  
+        <constructor-arg index="0" value="${cps.task.clickcount.queue.name}" />  
+        <constructor-arg index="1" value="QUEUE" />  
+        <constructor-arg index="2" value="${cps.service.exchange.name}" />  
+        <constructor-arg index="3" value="${cps.task.clickcount.queue.binding.routingkey}" />  
+        <constructor-arg index="4"><null/></constructor-arg>  
+    </bean>
+    
+	<bean id="cpsRegisteUserQueue"	class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${cps.task.registeuser.queue.name}" />
+	</bean>
+    <bean id="cpsRegisteUserQueueBinding"  
+        class="org.springframework.amqp.core.Binding">  
+        <constructor-arg index="0" value="${cps.task.registeuser.queue.name}" />  
+        <constructor-arg index="1" value="QUEUE" />  
+        <constructor-arg index="2" value="${cps.service.exchange.name}" />  
+        <constructor-arg index="3" value="${cps.task.registeuser.queue.binding.routingkey}" />  
+        <constructor-arg index="4"><null/></constructor-arg>  
+    </bean>
+    <!-- CPS前端服务配置相关 END -->
+    
+    <!-- CPS上下文配置相关 START -->
+    <bean id="cpsContextExchange"  class="org.springframework.amqp.core.DirectExchange">  
+        <constructor-arg value="${cps.context.exchange.name}" />  
+    </bean>
+    
+	<bean id="cpsUpdateCRLQueue"	class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${cps.task.updatecrl.queue.name}" />
+	</bean>
+    <bean id="cpsUpdateCRLQueueBinding"  
+        class="org.springframework.amqp.core.Binding">  
+        <constructor-arg index="0" value="${cps.task.updatecrl.queue.name}" />  
+        <constructor-arg index="1" value="QUEUE" />  
+        <constructor-arg index="2" value="${cps.context.exchange.name}" />  
+        <constructor-arg index="3" value="${cps.task.updatecrl.queue.binding.routingkey}" />  
+        <constructor-arg index="4"><null/></constructor-arg>  
+    </bean>
+    
+    <bean id="cpsUpdateDisableQueue"	class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${cps.task.updatedisable.queue.name}" />
+	</bean>
+    <bean id="cpsUpdateDisableQueueBinding"  
+        class="org.springframework.amqp.core.Binding">  
+        <constructor-arg index="0" value="${cps.task.updatedisable.queue.name}" />  
+        <constructor-arg index="1" value="QUEUE" />  
+        <constructor-arg index="2" value="${cps.context.exchange.name}" />  
+        <constructor-arg index="3" value="${cps.task.updatedisable.queue.binding.routingkey}" />  
+        <constructor-arg index="4"><null/></constructor-arg>  
+    </bean>
+    
+    <bean id="cpsUpdateProfitSharingSchemaQueue"	class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${cps.task.updateprofitsharingschema.queue.name}" />
+	</bean>
+    <bean id="cpsUpdateProfitSharingSchemaQueueBinding"  
+        class="org.springframework.amqp.core.Binding">  
+        <constructor-arg index="0" value="${cps.task.updateprofitsharingschema.queue.name}" />  
+        <constructor-arg index="1" value="QUEUE" />  
+        <constructor-arg index="2" value="${cps.context.exchange.name}" />  
+        <constructor-arg index="3" value="${cps.task.updateprofitsharingschema.queue.binding.routingkey}" />  
+        <constructor-arg index="4"><null/></constructor-arg>  
+    </bean>
+    <!-- CPS上下文配置相关 END -->
+</beans>

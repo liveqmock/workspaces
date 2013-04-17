@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rpt:report xmlns:rpt="http://www.iwgame.com/report" 
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+ xsi:schemaLocation="http://www.iwgame.com/report report.xsd ">
+ 
+    <rpt:dataSource targetType="game" groupId="${pid}-security"/>
+    
+    <!-- 布局配置 -->
+    <rpt:form title="封杀账号统计" >
+      		<rpt:parameter labelname="封杀原因"  fieldname="killedCause"  dataType="selector" selectorType="killCause"  allowBlank="true"/>
+      		<rpt:parameter labelname="封杀类型"  fieldname="killedType"  dataType="selector" selectorType="killType"  allowBlank="true"/>
+            <rpt:parameter dataType="dateRange" fieldname="daterange" labelname="起始时间" dateShortcut="5,15,30,45,60"/> 
+    </rpt:form>
+	
+  <!-- 设计文件配置 -->
+    <rpt:designFiles >
+      <rpt:designFile filename="security_killed_record_analysis.rptdesign" title="封杀账号统计"/>
+	</rpt:designFiles>
+</rpt:report>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module rename-to='XPortalApps'>
+	<!-- This file must be overwrite by AppGenerator. -->
+
+	<!-- 在这里配置具体包含的应用 -->
+		<inherits name='GMP1-App' /> 
+</module>

@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="flume-monitor">
+	<resultMap type="com.iwgame.iwcloud.flume.admin.shared.model.FlumeChannel"
+		id="flumeChannel">
+		<result property="channelId" column="t_channelid" />
+		<result property="channelName" column="t_channelname" />
+		<result property="status" column="t_status" />
+		<result property="productId" column="t_productid" />
+		<result property="port" column="t_port" />
+		<result property="anodeId" column="t_anodeid" />
+		<result property="cnodeId" column="t_cnodeid" />
+		<result property="aNodeConfig" column="t_anode_config" />
+		<result property="aNodeStatus" column="t_anode_status" />
+		<result property="cNodeConfig" column="t_cnode_config" />
+		<result property="cNodeStatus" column="t_cnode_status" />
+		<result property="room" column="room" />
+	</resultMap>
+	
+	<resultMap type="com.iwgame.iwcloud.flume.admin.shared.model.FlumeEtcConfig"
+		id="flumeEtcConfig">
+		<result property="t_channel_id" column="t_channel_id" />
+		<result property="t_channel_name" column="t_channel_name" />
+		<result property="t_exec" column="t_exec" />
+		<result property="t_status" column="t_status" />
+		<result property="t_zone" column="t_zone" />
+		<result property="t_group" column="t_group" />
+	</resultMap>
+	
+	
+	<resultMap type="com.iwgame.iwcloud.flume.admin.shared.model.DataIntegrityReport"
+		id="dataIntegrityReport">
+		<result property="date" column="date" />
+		<result property="zone" column="zone" />
+		<result property="activity_paid" column="activity_paid" />
+		<result property="activity_consume" column="activity_consume" />
+		<result property="paid_count" column="paid_count" />
+		<result property="bak_paid" column="bak_paid" />
+		<result property="consume_count" column="consume_count" />
+		<result property="bak_consume" column="bak_consume" />
+		<result property="contrast_paid" column="contrast_paid" />
+		<result property="contrast_consume" column="contrast_consume" />
+	</resultMap>
+	
+	<resultMap type="com.iwgame.iwcloud.flume.admin.shared.model.DataIntegrityReportForSQ"
+		id="dataIntegrityReportForSQ">
+		<result property="date" column="date" />
+		<result property="zone" column="zone" />
+		<result property="paid_min_value" column="paid_min_value" />
+		<result property="paid_max_value" column="paid_max_value" />
+		<result property="paid_count_value" column="paid_count_value" />
+		<result property="paid_sum_value" column="paid_sum_value" />
+		<result property="paid_sum_free_value" column="paid_sum_free_value" />
+		<result property="paid_activity_value" column="paid_activity_value" />
+		<result property="paid_activity_free_value" column="paid_activity_free_value" />
+		<result property="consume_min_value" column="consume_min_value" />
+		<result property="consume_max_value" column="consume_max_value" />
+		<result property="consume_count_value" column="consume_count_value" />
+		<result property="consume_sum_value" column="consume_sum_value" />
+		<result property="consume_sum_free_value" column="consume_sum_free_value" />
+		<result property="consume_activity_value" column="consume_activity_value" />
+		<result property="consume_activity_free_value" column="consume_activity_free_value" />
+		<result property="contrast_paid_count" column="contrast_paid_count" />
+		<result property="contrast_paid_activity" column="contrast_paid_activity" />
+		<result property="contrast_paid_activity_free" column="contrast_paid_activity_free" />
+		<result property="contrast_consume_count" column="contrast_consume_count" />
+		<result property="contrast_consume_activity" column="contrast_consume_activity" />
+		<result property="contrast_consume_activity_free" column="contrast_consume_activity_free" />
+	</resultMap>
+
+	<resultMap type="com.iwgame.iwcloud.flume.admin.shared.model.FlumeNode"
+		id="flumeNode">
+		<result property="nodeId" column="t_nodeid" />
+		<result property="nodeName" column="t_nodename" />
+		<result property="nodeType" column="t_type" />
+		<result property="nodeIpInfo" column="t_ip" />
+	</resultMap>
+
+	<resultMap type="com.iwgame.iwcloud.flume.admin.shared.model.DayData"
+		id="DayData">
+		<result property="groupId" column="t_groupid" />
+		<result property="groupName" column="t_groupname" />
+		<result property="day" column="t_day" />
+		<result property="fetcherCount" column="t_fetcher_count" />
+		<result property="fetcherLastTime" column="t_fetcher_last_time" />
+		<result property="fetcherStatus" column="t_fetcher_status" />
+		<result property="sinkCount" column="t_sink_count" />
+		<result property="sinkCostTime" column="t_sink_cost_time" />
+		<result property="sinkStatus" column="t_sink_status" />
+		<result property="sinkLastTime" column="t_sink_last_time" />
+	</resultMap>
+
+	<resultMap type="com.iwgame.iwcloud.flume.admin.shared.model.GroupDayData"
+		id="groupDayData" extends="DayData">
+		<result property="groupId" column="t_groupid" />
+		<result property="groupName" column="t_groupname" />
+	</resultMap>
+
+	<resultMap type="com.iwgame.iwcloud.flume.admin.shared.model.TimeData"
+		id="TimeData">
+		<result property="time" column="t_time" javaType="java.util.Date"
+			jdbcType="VARCHAR"  typeHandler="com.iwgame.iwcloud.flume.admin.shared.model.TimeTypeHandler"/>
+		<result property="fetcherCount" column="t_fetcher_count" />
+		<result property="sinkCount" column="t_sink_count" />
+		<result property="costTime" column="t_sink_cost_time" />
+	</resultMap>
+
+	<resultMap type="com.iwgame.iwcloud.flume.admin.shared.model.ChannelDayData"
+		id="channelDayData" extends="DayData">
+		<result property="channelId" column="t_channelid" />
+	</resultMap>
+
+	<!-- 查询节点列表 -->
+	<select id="queryFlumeNode" resultMap="flumeNode">
+		select * from flume_nodes
+	</select>
+	
+	<!-- 查询配置 -->
+	<select id="queryFlumeEtcConfig" resultMap="flumeEtcConfig">
+		select * from etc_config where t_status = 0
+	</select>
+	
+	<!-- 查询配置 -->
+	<select id="getAllFlumeEtcConfig" resultMap="flumeEtcConfig">
+		select * from etc_config
+	</select>
+
+	<!-- 根据类型查询节点列表 -->
+	<select id="queryFlumeNodeByType" resultMap="flumeNode">
+		select * from
+		flume_nodes where t_type=#{type}
+	</select>
+
+	<select id="queryAllFlumeChannel" resultMap="flumeChannel">
+		SELECT
+		*
+		FROM
+		channel_list
+		where t_productid=#{productId}
+	</select>
+	
+	<select id="queryAllOpenedFlumeChannel" resultMap="flumeChannel">
+		SELECT
+		*
+		FROM
+		channel_list
+		where t_productid=#{productId} and t_status=0
+	</select>
+
+	<!-- 查询通道列表 -->
+	<select id="queryFlumeChannel" resultMap="flumeChannel">
+		SELECT
+		cl.*,
+		CONCAT(fn.t_nodename,',',fn.t_ip) as room
+		FROM
+		channel_list
+		as cl
+		LEFT JOIN
+		flume_nodes as fn
+		ON
+		cl.t_anodeid=fn.t_nodeid
+		WHERE
+		cl.t_productid=#{productId}
+		<if test="channelStatus!=null">
+			AND cl.t_status=#{channelStatus}
+		</if>
+		<if test="channelKey!=null">
+			AND (cl.t_channelid LIKE '%${channelKey}%' OR
+			cl.t_channelname LIKE '%${channelKey}%')
+		</if>
+		<if test="channelNodeStatus!=null">
+			<if test="channelNodeStatus==0">
+				AND ((cl.t_anode_status='ACTIVE' OR
+				cl.t_anode_status='IDLE') AND (cl.t_cnode_status='ACTIVE' OR
+				cl.t_cnode_status='IDLE'))
+			</if>
+			<if test="channelNodeStatus==1">
+				AND (((cl.t_anode_status!='ACTIVE' AND
+				cl.t_anode_status!='IDLE') OR cl.t_anode_status is NULL OR
+				cl.t_anode_status='') OR
+				((cl.t_cnode_status!='ACTIVE' AND
+				cl.t_cnode_status!='IDLE') OR
+				cl.t_cnode_status is NULL OR
+				cl.t_cnode_status='')) AND cl.t_status=0 
+			</if>
+		</if>
+		<if test="channelConfig!=null">
+			<if test="channelConfig==0">
+				AND ((cl.t_anode_config IS NOT NULL) AND
+				(cl.t_cnode_config IS NOT NULL))
+			</if>
+			<if test="channelConfig==1">
+				AND ((cl.t_anode_config IS NULL) OR (cl.t_cnode_config IS
+				NULL) OR (cl.t_anode_config = '') OR (cl.t_cnode_config = ''))
+			</if>
+		</if>
+		<if test="anoderoom!=null">
+				AND cl.t_anodeid=#{anoderoom}
+		</if>
+		LIMIT
+		#{offset},#{limit}
+	</select>
+
+	<!-- 查询通道列表 -->
+	<select id="queryTotalFlumeChannel" resultType="int">
+		SELECT
+		count(*)
+		FROM
+		channel_list as cl
+		WHERE
+		cl.t_productid=#{productId}
+		<if test="channelStatus!=null">
+			AND cl.t_status=#{channelStatus}
+		</if>
+		<if test="channelKey!=null">
+			AND (cl.t_channelid LIKE '%${channelKey}%' OR
+			cl.t_channelname LIKE '%${channelKey}%')
+		</if>
+		<if test="channelNodeStatus!=null">
+			<if test="channelNodeStatus==0">
+				AND ((cl.t_anode_status='ACTIVE' OR
+				cl.t_anode_status='IDLE') AND (cl.t_cnode_status='ACTIVE' OR
+				cl.t_cnode_status='IDLE'))
+			</if>
+			<if test="channelNodeStatus==1">
+				AND (((cl.t_anode_status!='ACTIVE' AND
+				cl.t_anode_status!='IDLE') OR cl.t_anode_status is NULL OR
+				cl.t_anode_status='') OR
+				((cl.t_cnode_status!='ACTIVE' AND
+				cl.t_cnode_status!='IDLE') OR
+				cl.t_cnode_status is NULL OR
+				cl.t_cnode_status='')) 
+			</if>
+		</if>
+		<if test="channelConfig!=null">
+			<if test="channelConfig==0">
+				AND ((cl.t_anode_config IS NOT NULL) AND
+				(cl.t_cnode_config IS NOT NULL))
+			</if>
+			<if test="channelConfig==1">
+				AND ((cl.t_anode_config IS NULL) OR (cl.t_cnode_config IS
+				NULL) OR (cl.t_anode_config = '') OR (cl.t_cnode_config = ''))
+			</if>
+		</if>
+		<if test="anoderoom!=null">
+				AND cl.t_anodeid=#{anoderoom}
+		</if>
+	</select>
+
+	<!-- 修改通道状态 -->
+	<update id="updateChannelStatus" parameterType="java.util.Map">
+		update
+		channel_list
+		set t_status = #{status} where t_channelid =
+		#{channelId}
+	</update>
+
+	<!-- 查询下一个端口 -->
+	<select id="queryNextRecommendPort" resultType="int"
+		parameterType="java.util.Map">
+		select max(t_port) from channel_list
+		where 1=1
+		<if test="productId != null and productId != ''">
+			and t_productid = #{productId}
+		</if>
+		<if test="channelFlag != null and channelFlag != ''">
+			and t_channelid like '%${channelFlag}%'
+		</if>
+	</select>
+
+	<!-- 查询组历史数据 -->
+	<select id="queryGroupHistoryDatas" resultMap="groupDayData"
+		parameterType="java.util.Map">
+		SELECT
+		gmd.* ,
+		gl.t_groupname
+		FROM
+		group_monitor_day AS gmd,
+		group_list AS gl
+		WHERE
+				gmd.t_groupid=gl.t_groupid
+			AND
+				gmd.t_day=#{day}
+			AND
+				gl.t_productid=#{productId}		
+		<if test="filter!=null and filter!=''">
+			AND 
+				(gmd.t_groupid LIKE '%${filter}%' OR gl.t_groupname LIKE '%${filter}%')
+		</if>
+	</select>
+
+	<!-- 查询通道历史数据 -->
+	<select id="queryChannelHistoryDatas" resultMap="channelDayData"
+		parameterType="java.util.Map">
+		SELECT
+		*
+		FROM
+		channel_monitor_day
+		WHERE
+		t_day=#{day}
+		AND
+		t_channelid LIKE '${channelPattern}'
+	</select>
+
+	<!-- 查询组分时历史数据 -->
+	<select id="queryGroupTimeHistoryDatas" resultMap="TimeData"
+		parameterType="java.util.Map">
+		SELECT
+		*
+		FROM
+		group_monitor_time_detail
+		WHERE
+		t_time LIKE
+		'${day}%'
+		AND
+		t_groupid=#{groupId}
+		ORDER BY t_time DESC
+	</select>
+
+	<!-- 查询通道分时历史数据 -->
+	<select id="queryChannelTimeHistoryDatas" resultMap="TimeData"
+		parameterType="java.util.Map">
+		SELECT
+		*
+		FROM
+		channel_monitor_time_detail
+		WHERE
+		t_time LIKE
+		'${day}%'
+		AND
+		t_channelid=#{channelId}
+		ORDER BY t_time DESC
+	</select>
+
+	<!-- 创建新通道 -->
+	<insert id="createChannel"
+		parameterType="com.iwgame.iwcloud.flume.admin.shared.model.FlumeChannel">
+		INSERT INTO
+		channel_list(t_channelid,t_channelname,t_status,t_productid,t_port,t_anodeid,t_cnodeid,t_anode_config,t_cnode_config)
+		VALUES(#{channelId},#{channelName},#{status},#{productId},#{port},#{anodeId},#{cnodeId},#{aNodeConfig},#{cNodeConfig})
+	</insert>
+
+	<update id="updateChannel"
+		parameterType="com.iwgame.iwcloud.flume.admin.shared.model.FlumeChannel">
+		UPDATE channel_list
+		SET t_channelname=#{channelName},
+		t_port=#{port},t_anodeid=#{anodeId},t_cnodeid=#{cnodeId},t_anode_config=#{aNodeConfig},t_cnode_config=#{cNodeConfig}
+		WHERE t_channelid=#{channelId}
+	</update>
+
+	<update id="openChannel">
+		UPDATE channel_list
+		SET t_status=0
+		WHERE
+		t_channelid=#{channelId}
+	</update>
+	
+	
+	<delete id="deleteChannel" parameterType="java.util.Map">
+		delete from channel_list where t_status = 1 and t_channelid = #{channelId}
+	</delete>
+	
+	
+	<select id="getDataIntegrityReport" resultMap="dataIntegrityReport" parameterType="java.util.Map">
+		select * from t_day_data where date = #{date}
+	</select>
+	
+	<select id="getDataIntegrityReportForSQ" resultMap="dataIntegrityReportForSQ" parameterType="java.util.Map">
+		select * from t_day_data where date = #{date}
+	</select>
+	
+	
+</mapper>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.iwgame.xengine.xtask.wg1.dao.RewardDao">
+	<resultMap type="com.iwgame.xengine.xtask.wg1.model.PropertyConfig"
+		id="propertyConfig">
+		<result property="g_pay_amount" column="g_pay_amount" />
+		<result property="g_reward_gold" column="g_reward_gold" />
+		<result property="g_silver" column="g_silver" />
+		<result property="g_glory" column="g_glory" />
+		<result property="g_renown" column="g_renown" />
+		<result property="g_food" column="g_food" />
+		<result property="g_wood" column="g_wood" />
+		<result property="g_updatetime" column="g_updatetime" />
+		<result property="g_operater" column="g_operater" />
+	</resultMap>
+
+	<resultMap type="com.iwgame.xengine.xtask.wg1.model.GemConfig"
+		id="gemConfig">
+		<result property="g_pay_amount" column="g_pay_amount" />
+		<result property="base_id" column="base_id" />
+		<result property="base_name" column="base_name" />
+		<result property="base_num" column="base_num" />
+	</resultMap>
+
+	<resultMap type="com.iwgame.xengine.xtask.wg1.model.Torch"
+		id="torchConfig">
+		<result property="g_pay_amount" column="g_pay_amount" />
+		<result property="torch_id" column="torch_id" />
+		<result property="torch_name" column="torch_name" />
+		<result property="torch_num" column="torch_num" />
+	</resultMap>
+
+	<!-- 保存发奖记录日志 -->
+	<insert id="saveResouceLog" parameterType="java.util.Map">
+		<if test="status != null and status == 0">
+			insert
+			wg1_rewards_logs(g_batchid,g_username,g_guid,g_reward_type,g_resource_type,g_resouces,g_operater,g_source,g_status,g_note,g_updatetime)
+			values
+			(#{g_batchid},#{g_username},#{g_guid},#{g_reward_type},#{g_resource_type},#{g_resouces},#{g_operater},#{g_source},0,#{g_note},now())
+		</if>
+		<if test="status != null and status == 1">
+			insert
+			wg1_rewards_logs(g_batchid,g_username,g_guid,g_reward_type,g_resource_type,g_resouces,g_operater,g_source,g_status,g_note,g_updatetime)
+			values
+			(#{g_batchid},#{g_username},#{g_guid},#{g_reward_type},#{g_resource_type},#{g_resouces},#{g_operater},#{g_source},1,#{g_note},now())
+		</if>
+	</insert>
+
+
+	<!-- 取得配置策略列表 -->
+	<select id="getPropertyList" resultMap="propertyConfig"
+		parameterType="java.util.Map">
+		select * from wg1_player_property
+		where g_pay_amount =
+		#{g_pay_amount}
+	</select>
+
+	<!--查询消费类型 -->
+	<select id="getGemConfigList" resultMap="gemConfig"
+		parameterType="java.util.Map">
+		select base_id,
+		base_name,
+		base_num
+		from wg1_gemstone
+		where 1=1
+		<if test="g_pay_amount != null and g_pay_amount != ''">
+			and g_pay_amount = #{g_pay_amount}
+		</if>
+	</select>
+	
+	<!--查询消费类型 -->
+	<select id="getTorchList" resultMap="torchConfig" parameterType="java.util.Map">
+		select torch_id,
+			torch_name, 
+			torch_num
+		from wg1_points
+		where 1=1
+		<if test="g_pay_amount != null and g_pay_amount != ''">
+         and   g_pay_amount = #{g_pay_amount}
+	</if> 
+	</select>
+</mapper>

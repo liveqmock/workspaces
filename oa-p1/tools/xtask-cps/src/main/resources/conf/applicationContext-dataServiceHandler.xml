@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+	xsi:schemaLocation="http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit.xsd http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+
+	<!-- 消费数据计算模块-监听生产者发送的消息开始 -->
+	<!-- 用于接收消息的处理类 -->
+	<bean id="comsumeTaskHandler"
+		class="com.iwgame.xengine.xtask.cps.worker.data.ConsumeTask"/>
+
+	<!-- 用于消息的监听的代理类MessageListenerAdapter -->
+	<bean id="comsumeTaskListenerAdapter"
+		class="org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter">
+		<constructor-arg ref="comsumeTaskHandler" />
+		<property name="defaultListenerMethod" value="handleMessage" />
+		<property name="messageConverter" ref="messageConverter" />
+	</bean>
+
+	<!-- 用于消息的监听的容器类SimpleMessageListenerContainer，对于queueName的值一定要与定义的Queue的值相同 -->
+	<bean
+		class="org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer">
+		<property name="queueNames" value="${cps.flume.consume.queue.name}" />
+		<property name="connectionFactory" ref="flumeConnectionFactory" />
+		<property name="messageListener" ref="comsumeTaskListenerAdapter" />
+		<property name="concurrentConsumers" value="3" />
+	</bean>
+	<!-- 消费数据计算模块-监听生产者发送的消息结束 -->
+	
+	<!-- 登录数据模块-监听生产者发送的消息开始 -->
+	<!-- 用于接收消息的处理类 -->
+	<bean id="loginTaskHandler"
+		class="com.iwgame.xengine.xtask.cps.worker.data.LoginTask"/>
+
+	<!-- 用于消息的监听的代理类MessageListenerAdapter -->
+	<bean id="loginTaskListenerAdapter"
+		class="org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter">
+		<constructor-arg ref="loginTaskHandler" />
+		<property name="defaultListenerMethod" value="handleMessage" />
+		<property name="messageConverter" ref="messageConverter" />
+	</bean>
+
+	<!-- 用于消息的监听的容器类SimpleMessageListenerContainer，对于queueName的值一定要与定义的Queue的值相同 -->
+	<bean
+		class="org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer">
+		<property name="queueNames" value="${cps.flume.login.queue.name}" />
+		<property name="connectionFactory" ref="flumeConnectionFactory" />
+		<property name="messageListener" ref="loginTaskListenerAdapter" />
+		<property name="concurrentConsumers" value="3" />
+	</bean>
+	<!-- 登录数据模块-监听生产者发送的消息结束 -->
+
+
+
+</beans>

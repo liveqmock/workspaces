@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="logmonitor-xhttpservice">
+
+	<resultMap type="com.iwgame.gm.p1.logmonitor.modules.xhttpservice.shared.model.BizDict" id="bizDict">
+		<id property="id"/>
+		<result property="bizname" column="biz_name"/>
+	</resultMap>
+	
+	<resultMap type="com.iwgame.gm.p1.logmonitor.modules.xhttpservice.shared.model.AppSource" id="appSource">
+		<result property="appName" column="app_name"/>
+		<result property="aliasName" column="alias_name"/>
+	</resultMap>
+	
+	<resultMap type="com.iwgame.gm.p1.logmonitor.modules.xhttpservice.shared.model.CommonChannelLogDetailModelBena" id="logDetail">
+		<result property="id" column="id"/>
+		<result property="productid" column="product_id"/>
+		<result property="appname" column="app_name"/>
+		<result property="bizcode" column="biz_code"/>
+		<result property="logintime" column="login_time"/>
+		<result property="resource" column="resource"/>
+		<result property="logtype" column="log_type"/>
+		<result property="lognote" column="log_note"/>
+		<result property="var1" column="var1"/>
+		<result property="var2" column="var2"/>
+	</resultMap>
+	
+	<select id="getAppSources" resultMap="appSource">
+		SELECT 	
+		`app_name` as appName, 
+		`​​alias_name` as aliasName
+		FROM 
+		`xhttpservice_log`.`monitor_appname` 
+	</select>
+	
+	<select id="getBizDicts" resultMap="bizDict">
+		SELECT 	`id` as id , 
+				`biz_name` as bizname
+		FROM 
+				`monitor_bizname`;
+	</select>
+	
+	<select id="getAllLogData" resultMap="logDetail" parameterType="hashmap">
+			SELECT 	tlog.`id`, 
+					tlog.`product_id`, 
+					app.`​​alias_name` as appname, 
+					biz.`biz_name` as bizcode,
+					tlog.`login_time`, 
+					tlog.`resource`, 
+					tlog.`log_type`, 
+					tlog.`log_note`, 
+					tlog.`var1`, 
+					tlog.`var2`
+			 FROM 
+					`xhttpservice_log`.`monitor_xhttpservice_log` as tlog left join
+					`xhttpservice_log`.`monitor_appname` as app on app.`app_name` = tlog.`app_name`,
+					`xhttpservice_log`.`monitor_bizname` as biz 
+		<where>
+			<if test="productid != null">
+				AND ( tlog.`product_id` = #{productid} or tlog.`product_id` = 'COMMON')
+			</if>
+			
+			<if test="startDate != null ">
+			<![CDATA[
+				AND login_time >= #{startDate} 
+				]]>
+			</if>
+			<if test="endDate != null">
+			<![CDATA[
+				AND login_time <= #{endDate}
+				]]>
+			</if>
+			
+			<if test="bizcode != null">
+				AND tlog.`biz_code`=#{bizcode}
+			</if>
+			<if test="appname != null">
+				AND tlog.`app_name`=#{appname}
+			</if>
+			<if test="logtype != null">
+				AND tlog.`log_type` = #{logtype}
+			</if>
+			<if test="keywords != null">
+				AND ( tlog.`var1` LIKE '%${keywords}%' or tlog.`var2` LIKE '%${keywords}%' )
+			</if>
+		</where>
+		 and tlog.`biz_code` = biz.`id` LIMIT #{offset}, #{limit}
+	</select>
+	
+	<select id="getAllLogDataCount" resultType="int" parameterType="hashmap">
+		SELECT 
+			count(*) 
+		FROM 
+			`xhttpservice_log`.`monitor_xhttpservice_log` 
+		<where>
+			<if test="productid != null">
+				AND ( product_id = #{productid} or product_id = 'COMMON')
+			</if>
+			
+			<if test="startDate != null ">
+				<![CDATA[
+				AND login_time >= #{startDate} 
+				]]>
+			</if>
+			<if test="endDate != null">
+				<![CDATA[
+				AND login_time <= #{endDate}
+				]]>
+			</if>
+			
+			<if test="bizcode != null">
+				AND biz_code=#{bizcode}
+			</if>
+			<if test="appname != null">
+				AND app_name=#{appname}
+			</if>
+			<if test="logtype != null">
+				AND log_type = #{logtype}
+			</if>
+			<if test="keywords != null">
+				AND (var1 LIKE '%${keywords}%' or var2 LIKE '%${keywords}%')
+			</if>
+		</where>
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<resultMap type="com.iwgame.gm.p1.logmonitor.modules.xhttpservice.shared.model.CommonChannelLogReportModelBena" id="logReport">
+		<result property="id" column="id"/>
+		<result property="product_id" column="product_id"/>
+		<result property="alias_name" column="app_name"/>
+		<result property="biz_code" column="biz_code"/>
+		<result property="biz_name" column="biz_name"/>
+		<result property="success" column="success"/>
+		<result property="failure" column="failure"/>
+		<result property="dates" column="dates"/>
+	</resultMap>
+	
+	
+	<select id="getLogReportDay" resultMap="logReport" parameterType="hashmap">
+			select 	
+					dates as dates,
+					product_id, 
+					monitor_appname.`​​alias_name` as alias_name ,
+					biz_name,
+					SUM(success) as success,
+					SUM(failure) as failure 
+					from 
+					rpt_xhttpserice_log,monitor_appname 
+		<where>
+			<if test="productid != null">
+				AND ( rpt_xhttpserice_log.`product_id` = #{productid} or rpt_xhttpserice_log.`product_id` = 'COMMON') and rpt_xhttpserice_log.app_name = monitor_appname.app_name
+			</if>
+			
+			<if test="startDate != null ">
+				<![CDATA[
+				AND rpt_xhttpserice_log.`dates` >= #{startDate} 
+				]]>
+			</if>
+			<if test="endDate != null">
+				<![CDATA[
+				AND rpt_xhttpserice_log.`dates` <= #{endDate}
+				]]>
+			</if>
+			
+			<if test="bizcode != null">
+				AND rpt_xhttpserice_log.`biz_code`=#{bizcode} 
+			</if>
+			<if test="appname != null">
+				AND rpt_xhttpserice_log.app_name=#{appname} 
+			</if>
+		</where>
+		GROUP BY dates,product_id,monitor_appname.`​​alias_name`,biz_code
+	</select>
+	
+	<select id="getLogReportMonth" resultMap="logReport" parameterType="hashmap">
+			select 	
+					DATE_FORMAT(dates,'%Y-%m') as dates,
+					product_id, 
+					monitor_appname.`​​alias_name` as alias_name ,
+					biz_name,
+					SUM(success) as success,
+					SUM(failure) as failure 
+					from 
+					rpt_xhttpserice_log,monitor_appname 
+		<where>
+			<if test="productid != null">
+				AND ( rpt_xhttpserice_log.`product_id` = #{productid} or rpt_xhttpserice_log.`product_id` = 'COMMON') and rpt_xhttpserice_log.app_name = monitor_appname.app_name
+			</if>
+			
+			<if test="startDate != null ">
+				<![CDATA[
+				AND DATE_FORMAT(rpt_xhttpserice_log.`dates`,'%Y-%m') >= #{startDate} 
+				]]>
+			</if>
+			<if test="endDate != null">
+				<![CDATA[
+				AND DATE_FORMAT(rpt_xhttpserice_log.`dates`,'%Y-%m') <= #{endDate}
+				]]>
+			</if>
+			
+			<if test="bizcode != null">
+				AND rpt_xhttpserice_log.`biz_code`=#{bizcode} 
+			</if>
+			<if test="appname != null">
+				AND rpt_xhttpserice_log.app_name=#{appname} 
+			</if>
+		</where>
+		GROUP BY DATE_FORMAT(dates,'%Y-%m'),product_id,monitor_appname.`​​alias_name`,biz_code
+	</select>
+	
+	
+	<select id="getLogReportYear" resultMap="logReport" parameterType="hashmap">
+			select 	
+					DATE_FORMAT(dates,'%Y') as dates,
+					product_id, 
+					monitor_appname.`​​alias_name` as alias_name ,
+					biz_name,
+					SUM(success) as success,
+					SUM(failure) as failure 
+					from 
+					rpt_xhttpserice_log,monitor_appname 
+		<where>
+			<if test="productid != null">
+				AND ( rpt_xhttpserice_log.`product_id` = #{productid} or rpt_xhttpserice_log.`product_id` = 'COMMON') and rpt_xhttpserice_log.app_name = monitor_appname.app_name
+			</if>
+			
+			<if test="startDate != null ">
+				<![CDATA[
+				AND DATE_FORMAT(rpt_xhttpserice_log.`dates`,'%Y') >= #{startDate} 
+				]]>
+			</if>
+			<if test="endDate != null">
+				<![CDATA[
+				AND DATE_FORMAT(rpt_xhttpserice_log.`dates`,'%Y') <= #{endDate}
+				]]>
+			</if>
+			
+			<if test="startDate == null ">
+				<![CDATA[
+				AND rpt_xhttpserice_log.`dates` >= now() 
+				]]>
+			</if>
+			
+			<if test="bizcode != null">
+				AND rpt_xhttpserice_log.`biz_code`=#{bizcode} 
+			</if>
+			<if test="appname != null">
+				AND rpt_xhttpserice_log.app_name=#{appname} 
+			</if>
+		</where>
+		GROUP BY DATE_FORMAT(dates,'%Y'),product_id,monitor_appname.`​​alias_name`,biz_code
+	</select>
+</mapper>

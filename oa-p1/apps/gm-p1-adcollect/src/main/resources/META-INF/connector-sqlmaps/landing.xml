@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ad.landing.page">
+	<resultMap type="com.iwgame.gm.p1.adcollect.shared.model.LandingDateBase" id="LandingDateBase" />
+	<select id="getLandingPageList" resultMap="LandingDateBase" parameterType="java.util.Map">
+		SELECT 	p.`page_id` AS id, 
+			p.`page_name` AS `name`, 
+			p.`page_url` AS link, 
+			p.`page_material_id` AS materialId, 
+			m.`material_name` AS `mname`, 
+			m.material_adds AS materialUrl,
+			m.`material_content_type` AS contentType,
+			m.`material_width` AS width, 
+			m.`material_height` AS height, 
+			m.`material_capacity` AS capacity, 
+			p.`page_note` AS note, 
+			p.`page_status` AS `status`, 
+			p.`page_add_time` AS `addTime`, 
+			p.`page_update_time` AS `updateTime`
+		FROM iw_ad_reach_page AS p
+		LEFT JOIN iw_hardads_material AS m 
+		ON p.page_material_id = m.material_id
+		ORDER BY p.page_add_time DESC
+		LIMIT #{offset},#{limit}
+	</select>
+	<select id="getLandingPageListCount" resultType="int" parameterType="java.util.Map">
+		SELECT 	COUNT(p.`page_id`)
+		FROM iw_ad_reach_page AS p
+		LEFT JOIN iw_hardads_material AS m 
+		ON p.page_material_id = m.material_id
+	</select>
+	<select id="getInsertReachPageId" resultType="int" parameterType="java.util.Map">
+		SELECT 	MAX(`page_id`) FROM `iw_ad_reach_page` 
+	</select>
+	<insert id="insertReachPage" parameterType="java.util.Map">
+		INSERT INTO iw_ad_reach_page 
+			(`page_name`, `page_url`, `page_material_id`, `page_note`, `page_status`, `page_add_time`
+			)VALUES(#{name}, #{url}, #{materialId}, #{note}, #{status}, NOW());
+	</insert>
+	<update id="updateReachPage" parameterType="java.util.Map">
+		UPDATE iw_ad_reach_page
+		SET
+		`page_name` = #{name} , 
+		`page_url` = #{url} , 
+		`page_material_id` = #{materialId} , 
+		`page_note` = #{note} , 
+		`page_status` = #{status} , 
+		`page_update_time` = NOW()
+		WHERE
+		`page_id` = #{id}
+	</update>
+	<select id="getReachPageById" resultMap="LandingDateBase" parameterType="java.util.Map">
+		SELECT 	p.`page_id` AS id, 
+			p.`page_name` AS `name`, 
+			p.`page_url` AS link, 
+			p.`page_material_id` AS materialId, 
+			m.`material_name` AS `mname`, 
+			m.material_adds AS materialUrl,
+			m.`material_content_type` AS contentType,
+			m.`material_width` AS width, 
+			m.`material_height` AS height, 
+			m.`material_capacity` AS capacity, 
+			p.`page_note` AS note, 
+			p.`page_status` AS `status`, 
+			p.`page_add_time` AS `addTime`, 
+			p.`page_update_time` AS `updateTime`
+		FROM iw_ad_reach_page AS p
+		LEFT JOIN iw_hardads_material AS m 
+		ON p.page_material_id = m.material_id
+		WHERE p.`page_id` = #{id} 
+	</select>
+	
+	<resultMap type="com.iwgame.gm.p1.adcollect.shared.model.DropDownListData"
+		id="dropDownListData">
+		<result column="id" property="id" javaType="java.lang.String"
+			jdbcType="INTEGER" />
+		<result column="generate" property="generate" javaType="java.lang.String" />
+		<result column="name" property="name" javaType="java.lang.String" />
+	</resultMap>
+	
+	<select id="getAutoAdUrlListDorp"  resultMap="dropDownListData"  parameterType="java.util.Map">
+		SELECT page_name AS `name`, page_url AS generate FROM iw_ad_reach_page  WHERE page_url LIKE '${query}%' 
+	</select>
+	<select id="checkAdUrl"  resultType="int"  parameterType="java.util.Map">
+		SELECT COUNT(page_id) FROM iw_ad_reach_page WHERE page_url = #{url}
+	</select>
+</mapper>

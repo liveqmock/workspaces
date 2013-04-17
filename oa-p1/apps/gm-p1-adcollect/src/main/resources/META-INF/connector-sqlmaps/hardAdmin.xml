@@ -1,0 +1,1429 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ad.hard.admin">
+
+	<!-- 公用的 -->
+	<resultMap type="com.iwgame.gm.p1.adcollect.shared.model.DropDownListData"
+		id="dropDownListData">
+		<result column="id" property="id" javaType="java.lang.String"
+			jdbcType="INTEGER" />
+		<result column="generate" property="generate" javaType="java.lang.String" />
+		<result column="name" property="name" javaType="java.lang.String" />
+	</resultMap>
+
+	<select id="getTypeBySort" resultMap="dropDownListData"
+		parameterType="int">
+		SELECT `types_id` AS `id`,
+		`types_generate` AS
+		`generate`,
+		`types_name` AS `name`
+		FROM iw_hardads_type
+		WHERE types_sort
+		= #{type}
+	</select>
+
+	<select id="getUnitsIsNetBar" resultMap="dropDownListData"
+		parameterType="int">
+		SELECT `types_id` AS `id`, `types_generate` AS `generate`, `types_name` AS `name`
+		FROM iw_hardads_type
+		WHERE types_sort  = 5 OR  types_sort  = 6 
+	</select>
+
+	<select id="getMediatIdAndName" resultMap="dropDownListData"
+		parameterType="int">
+		SELECT `media_id` AS `id`, `media_name` AS `name` FROM
+		`iw_hardads_media` where media_type = #{type}
+	</select>
+
+	
+
+	<!-- 素材 -->
+	<resultMap type="com.iwgame.gm.p1.adcollect.shared.model.MaterialDateBase"
+		id="materialDateBase" />
+	<select id="getMaterialList" resultMap="materialDateBase"
+		parameterType="java.util.Map">
+		SELECT m.`material_id` AS `id`,
+		m.`material_name` AS `name`,
+		m.`material_types` AS `types`,
+		m.`material_adds` AS url,
+		m.`material_width` AS width,
+		m.`material_height` AS height,
+		m.`material_capacity` AS capacity,
+		m.`material_note` AS note,
+		m.`material_add_time` AS `addTime`,
+		m.`material_content_type` AS
+		contentType,
+		t.types_name AS `type`
+		FROM iw_hardads_material AS m
+		LEFT
+		JOIN iw_hardads_type AS t
+		ON t.types_sort = 3 AND t.types_id =
+		m.material_types
+		<where>
+			<if test="id != null and id != '' ">
+				m.material_id = #{id}
+			</if>
+			<if test="name != null and name != '' ">
+				AND m.material_name = #{name}
+			</if>
+			<if test="name == null and id == null and type != null and type != -1 ">
+				AND m.material_types = #{type}
+			</if>
+			<if test="beganTime != null ">
+				AND m.material_add_time &gt;= #{beganTime}
+			</if>
+			<if test="endTime != null ">
+				AND m.material_add_time &lt; #{endTime}
+			</if>
+		</where>
+		ORDER BY m.material_add_time DESC
+		<if test="offset != null and limit != null ">
+			LIMIT #{offset},#{limit}
+		</if>
+	</select>
+
+	<select id="getMaterialListCount" resultType="int"
+		parameterType="java.util.Map">
+		SELECT COUNT(m.`material_id`)
+		FROM iw_hardads_material AS m
+		LEFT JOIN
+		iw_hardads_type AS t ON
+		t.types_sort = 3 AND t.types_id =
+		m.material_types
+		<where>
+			<if test="id != null and id != '' ">
+				m.material_id = #{id}
+			</if>
+			<if test="name != null and name != '' ">
+				AND m.material_name = #{name}
+			</if>
+			<if test="name == null and id == null and type != null and type != -1 ">
+				AND m.material_types = #{type}
+			</if>
+			<if test="beganTime != null ">
+				AND m.material_add_time &gt;= #{beganTime}
+			</if>
+			<if test="endTime != null ">
+				AND m.material_add_time &lt; #{endTime}
+			</if>
+		</where>
+	</select>
+
+	<insert id="insertMaterial" parameterType="java.util.Map">
+		INSERT INTO
+		iw_hardads_material
+		(
+		`material_id`,
+		`material_name`,
+		`material_types`,
+		`material_adds`,
+		`material_width`,
+		`material_height`,
+		`material_capacity`,
+		`material_note`,
+		`material_add_time`,
+		`material_content_type`
+		)
+		VALUES
+		(
+		#{id},
+		#{name},
+		#{type},
+		#{url},
+		#{width},
+		#{height},
+		#{size},
+		#{note},
+		NOW(),
+		#{contentType}
+		)
+	</insert>
+	<select id="getGenerateMaxId" resultType="int" parameterType="hashmap">
+		SELECT MAX(CAST(material_id AS UNSIGNED)) FROM iw_hardads_material WHERE material_id
+		LIKE '${generate}%'
+	</select>
+	<select id="getMaterialIdAndName" resultMap="dropDownListData"
+		parameterType="java.util.Map">
+		SELECT `material_id` AS `id`, `material_name` AS `name`
+		FROM `iw_hardads_material` WHERE
+		material_id like '${query}%' OR
+		material_name like '${query}%' LIMIT 0, 20
+	</select>
+	<select id="getCheckMaterialId" resultType="int" parameterType="String">
+		SELECT  COUNT(material_id) FROM iw_hardads_material  WHERE  material_id = #{id}
+	</select>
+	
+
+	<!-- 媒体 -->
+	<insert id="insertMedia" parameterType="java.util.Map">
+		INSERT INTO
+		`iw_hardads_media`
+		(
+		`media_id`,
+		`media_name`,
+		`media_type`,
+		`media_sort`,
+		`media_subclass`,
+		`media_adds`,
+		`media_data1`,
+		`media_data2`,
+		`media_data3`,
+		`media_data4`,
+		`media_ads_count`,
+		`media_contract_count`,
+		`media_add_time`
+		)
+		VALUES
+		(
+		#{id},
+		#{name},
+		#{mediaType},
+		#{mediaSort},
+		#{subclass},
+		#{adds},
+		#{data1},
+		#{data2},
+		#{data3},
+		#{data4},
+		0,
+		0,
+		now()
+		)
+	</insert>
+		<select id="getMediaMaxId" resultType="int" parameterType="java.util.Map">
+			SELECT MAX(media_id) FROM iw_hardads_media WHERE media_id LIKE
+			'${typeIdStr}%'
+		</select>
+		<resultMap type="com.iwgame.gm.p1.adcollect.shared.model.MeidaDataBase"
+			id="meidaDataBase" />
+		<select id="getMediaList" resultMap="meidaDataBase"
+			parameterType="java.util.Map">
+			SELECT m.`media_id` AS `id`,
+			m.`media_name` AS `name`,
+			m.`media_type`
+			AS `type`,
+			m.`media_sort` AS `sort`,
+			m.`media_subclass` AS `subclass`,
+			m.`media_adds` AS `adds`,
+			m.`media_data1` AS `data1`,
+			m.`media_data2`
+			AS `data2`,
+			m.`media_data3` AS `data3`,
+			m.`media_data4` AS `data4`,
+			m.`media_ads_count` AS `count`,
+			m.`media_contract_count` AS
+			`contractCount`,
+			m.`media_add_time` AS `addTime`,
+			m.`media_lastupdate_time` AS `updateTime`,
+			t1.types_name AS `typeStr`,
+			t2.types_name AS `sortStr`
+			FROM iw_hardads_media AS m
+			LEFT JOIN
+			iw_hardads_type AS t1 ON t1.types_sort = 1 AND t1.types_id =
+			m.media_type
+			LEFT JOIN iw_hardads_type AS t2 ON t2.types_sort = 2 AND
+			t2.types_id =
+			m.media_sort
+			<where>
+				<if test="id != null and id != '' ">
+					m.`media_id` = #{id}
+				</if>
+				<if test="name != null and name != '' ">
+					AND m.`media_name` = #{name}
+				</if>
+				<if test="name == null and id == null and type != null and type != -1 ">
+					AND m.`media_type` = #{type}
+				</if>
+				<if test="name == null and id == null and sort != null and sort != -1 ">
+					AND m.`media_sort` = #{sort}
+				</if>
+			</where>
+			ORDER BY m.media_add_time DESC
+			<if test="offset != null and limit != null ">
+				LIMIT #{offset},#{limit}
+			</if>
+		</select>
+		<select id="getMediaListCount" resultType="int" parameterType="java.util.Map">
+			SELECT COUNT(m.`media_id`)
+			FROM iw_hardads_media AS m
+			LEFT JOIN
+			iw_hardads_type AS t1 ON t1.types_sort = 1 AND t1.types_id =
+			m.media_type
+			LEFT JOIN iw_hardads_type AS t2 ON t2.types_sort = 2 AND
+			t2.types_id =
+			m.media_sort
+			<where>
+				<if test="id != null and id != '' ">
+					m.`media_id` = #{id}
+				</if>
+				<if test="name != null and name != '' ">
+					AND m.`media_name` = #{name}
+				</if>
+				<if test="name == null and id == null and type != null and type != -1 ">
+					AND m.`media_type` = #{type}
+				</if>
+				<if test="name == null and id == null and sort != null and sort != -1 ">
+					AND m.`media_sort` = #{sort}
+				</if>
+			</where>
+		</select>
+		<update id="updateMediaById" parameterType="java.util.Map">
+			UPDATE `iw_hardads_media`
+			SET
+			<if test="mediaSort != null ">
+				`media_sort` = #{mediaSort} ,
+			</if>
+			<if test="subclass != null ">
+				`media_subclass` = #{subclass},
+			</if>
+			<if test="adds != null ">
+				`media_adds` = #{adds},
+			</if>
+			<if test="data1 != null ">
+				`media_data1` = #{data1},
+			</if>
+			<if test="data2 != null ">
+				`media_data2` = #{data2},
+			</if>
+			<if test="data3 != null ">
+				`media_data3` = #{data3},
+			</if>
+			<if test="data4 != null ">
+				`media_data4` = #{data4},
+			</if>
+			`media_lastupdate_time` = NOW()
+			WHERE
+			`media_id` = #{id} ;
+		</update>
+		<select id="getMediaById" resultMap="meidaDataBase"
+			parameterType="java.util.Map">
+			SELECT m.`media_id` AS `id`,
+			m.`media_name` AS `name`,
+			m.`media_type` AS
+			`type`,
+			m.`media_sort` AS `sort`,
+			m.`media_subclass`
+			AS `subclass`,
+			m.`media_adds` AS `adds`,
+			m.`media_data1` AS `data1`,
+			m.`media_data2`
+			AS `data2`,
+			m.`media_data3` AS `data3`,
+			m.`media_data4`
+			AS `data4`,
+			m.`media_ads_count` AS `count`,
+			m.`media_contract_count` AS
+			`contractCount`,
+			m.`media_add_time` AS `addTime`,
+			m.`media_lastupdate_time` AS `updateTime`,
+			t1.types_name AS `typeStr`,
+			t2.types_name AS `sortStr`
+			FROM iw_hardads_media AS m
+			LEFT JOIN
+			iw_hardads_type AS t1 ON t1.types_sort = 1 AND t1.types_id =
+			m.media_type
+			LEFT JOIN iw_hardads_type AS t2 ON t2.types_sort = 2 AND
+			t2.types_id =
+			m.media_sort
+			WHERE m.`media_id` = #{id}
+		</select>
+		<select id="getMediaIdByName" resultType="string" parameterType="java.util.Map">
+			SELECT media_id FROM iw_hardads_media WHERE media_name = #{mediaName}
+		</select>
+		
+
+		<!-- 组织 -->
+		<!-- 检查组织名称 -->
+		<select id="checkGroupName" resultType="int">
+			SELECT COUNT(group_id)
+			FROM iw_hardads_ads_group WHERE group_name =#{name}
+		</select>
+		<insert id="addGroup"
+			parameterType="com.iwgame.gm.p1.adcollect.shared.model.AdGroupDataBase"
+			keyProperty="id" keyColumn="group_id">
+			<selectKey keyProperty="id" resultType="int" order="AFTER">
+				SELECT
+				LAST_INSERT_ID()
+			</selectKey>
+			INSERT INTO
+			iw_hardads_ads_group (group_name, group_media_id,
+			group_add_time)
+			VALUES(#{name}, #{mediaid}, NOW())
+		</insert>
+
+		<select id="autoGroupIdAndName" resultMap="dropDownListData"
+			parameterType="java.util.Map">
+			SELECT `group_id` AS `id`, `group_name` AS `name` FROM
+			`iw_hardads_ads_group`
+			WHERE group_id like '${query}%' OR group_name
+			like '${query}%' LIMIT 0, 20
+		</select>
+		<select id="getCheckGroupId" resultType="int" parameterType="String">
+			SELECT COUNT(group_id) FROM  iw_hardads_ads_group    WHERE group_id = #{id}
+		</select>
+		<resultMap type="com.iwgame.gm.p1.adcollect.shared.model.AdGroupDataBase"
+			id="adGroupDataBase" />
+		<select id="getGroupList" resultMap="adGroupDataBase"
+			parameterType="java.util.Map">
+			CALL
+			show_ad_group(#{type},#{mediaId},#{name},#{id},#{offset},#{limit})
+		</select>
+		<select id="getGroupListCount" resultType="int" parameterType="java.util.Map">
+			SELECT COUNT(g.group_id)
+			FROM iw_hardads_ads_group AS g
+			LEFT JOIN
+			iw_hardads_ads_shedule AS s
+			ON s.shedule_ad_group = g.group_id
+			LEFT
+			JOIN iw_hardads_media AS m
+			ON g.group_media_id = m.media_id
+			<where>
+				<if test="mediaId != null and mediaId != '' ">
+					g.group_media_id = #{mediaId}
+				</if>
+				<if test="name != null and name != '' ">
+					AND g.group_name = #{name}
+				</if>
+				<if test="id != null and id != '' ">
+					AND g.group_id = #{id}
+				</if>
+			</where>
+		</select>
+
+
+		<!-- 广告位 -->
+		<resultMap type="com.iwgame.gm.p1.adcollect.shared.model.PositionDateBase"
+			id="positionDataBase" />
+		<select id="getPositionList" resultMap="positionDataBase"
+			parameterType="java.util.Map">
+			SELECT p.`pos_id` AS `id`,
+			p.`pos_name` AS `name`,
+			p.pos_type AS `type`,
+			p.`pos_media_id` AS
+			`mediaId`,
+			p.`pos_ad_id` AS `adId`,
+			p.`pos_legend` AS `legend`,
+			p.`pos_units` AS `units`,
+			p.`pos_general_price` AS `generalPrice`,
+			p.`pos_special_price` AS `specialPrice`,
+			p.`pos_format` AS `format`,
+			p.`pos_explain` AS `explain`,
+			p.`pos_remark` AS `remark`,
+			p.`pos_add_time` AS `addTime`,
+			p.`pos_update_time` AS `updateTime`,
+			p.`pos_adds` AS `adds`,
+			p.`pos_width` AS `width`,
+			p.`pos_height` AS
+			`height`,
+			p.`pos_capacity` AS `capacity`,
+			p.`pos_content_type` AS
+			`contentType`,
+			m.media_name AS `mediaName`,
+			t.types_name AS `unitsName`
+			FROM iw_hardads_ads_position AS p
+			LEFT JOIN
+			iw_hardads_media AS m ON
+			m.media_id = p.pos_media_id
+			LEFT JOIN iw_hardads_type AS t ON
+			t.types_id = p.pos_units
+			<where>
+				<if test="adId != null and key != null ">
+					p.`pos_ad_id` = #{adId}
+				</if>
+				<if test="id != null and key != null ">
+					AND p.`pos_id` = #{id}
+				</if>
+				<if test="name != null and key != null ">
+					AND p.`pos_name` = #{name}
+				</if>
+				<if test="mediaType != null and  mediaType != -1 and key == null ">
+					AND  p.`pos_media_id` like '${mediaType}%'
+				</if>
+				<if test="media != null and key == null ">
+					AND p.`pos_media_id` = #{media}
+				</if>
+				<if test="units != null and units != -1 and key == null ">
+					AND p.`pos_units` = #{units}
+				</if>
+			</where>
+			ORDER BY p.pos_add_time DESC
+			<if test="offset != null and limit != null ">
+				LIMIT #{offset},#{limit}
+			</if>
+		</select>
+		<select id="getPositionListCount" resultType="int"
+			parameterType="java.util.Map">
+			SELECT COUNT(p.`pos_id`)
+			FROM iw_hardads_ads_position AS p
+			LEFT JOIN
+			iw_hardads_media AS m ON m.media_id = p.pos_media_id
+			LEFT JOIN
+			iw_hardads_type AS t ON t.types_sort = 5 AND t.types_id =
+			p.pos_units
+			<where>
+				<if test="adId != null and key != null ">
+					p.`pos_ad_id` = #{adId}
+				</if>
+				<if test="id != null and key != null ">
+					AND p.`pos_id` = #{id}
+				</if>
+				<if test="name != null and key != null ">
+					AND p.`pos_name` = #{name}
+				</if>
+				<if test="mediaType != null and  mediaType != -1 and key == null ">
+					AND p.`pos_media_id` like '${mediaType}%'
+				</if>
+				<if test="media != null and key == null ">
+					AND p.`pos_media_id` = #{media}
+				</if>
+				<if test="units != null and units != -1 and key == null ">
+					AND p.`pos_units` = #{units}
+				</if>
+			</where>
+		</select>
+		<select id="getPositionMaxId" resultType="java.util.Map"  parameterType="string">
+			SELECT 
+				pos_id AS id, 
+				pos_key AS `key` 
+			FROM iw_hardads_ads_position 
+			WHERE pos_id =(
+				SELECT MAX(CAST(pos_id AS UNSIGNED)) 
+				FROM iw_hardads_ads_position 
+				WHERE pos_media_id = #{mediaId}
+				)
+		</select>
+		<select id="getPositionKeyById" resultType="string"  parameterType="string">
+			SELECT  pos_key AS `key` 
+			FROM iw_hardads_ads_position 
+			WHERE pos_id = #{id}
+		</select>
+		<select id="getPositionMaxPosId" resultType="int">
+			SELECT MAX(CAST(pos_id AS UNSIGNED)) FROM iw_hardads_ads_position 
+		</select>
+		<insert id="addPosition" parameterType="java.util.Map">
+			INSERT INTO `iw_hardads_ads_position`
+			(`pos_id`,pos_key, `pos_name`,
+			`pos_media_id`, `pos_ad_id`, 
+			<if test="legend != null and legend != '' ">
+			`pos_legend`, 
+			</if>
+			`pos_units`,
+			<if test="generalPrice != null and generalPrice != '' ">
+				`pos_general_price`,
+			</if>
+			<if test="specialPrice != null and specialPrice != '' ">
+				`pos_special_price`,
+			</if>
+			`pos_format`, `pos_explain`, `pos_remark`, pos_type ,
+			`pos_add_time`<!-- `pos_adds`, -->
+			<if test="legend != null and legend != '' ">
+				,`pos_width`, `pos_height`, `pos_capacity`, `pos_content_type`
+			</if>
+			)
+			VALUES
+			(#{id}, #{key},#{name}, #{mediaId}, #{adid}, 
+			<if test="legend != null and legend != '' ">
+			#{legend}, 
+			</if>
+			#{units},
+			<if test="generalPrice != null and generalPrice != '' ">
+				#{generalPrice},
+			</if>
+			<if test="specialPrice != null and specialPrice != '' ">
+				#{specialPrice},
+			</if>
+			#{format}, #{explain}, #{remark},#{adType},
+			NOW()<!-- ,#{adds} -->
+			<if test="legend != null and legend != '' ">
+			,#{width},#{height},#{capacity},#{contentType}
+			</if>
+			)
+		</insert>
+		<update id="updatePosition" parameterType="java.util.Map">
+			UPDATE `iw_hardads_ads_position`
+			SET
+			<if test="legend != null and legend != '' ">
+				`pos_legend` = #{legend} ,
+			</if>
+			<if test="units != null and units != -1 ">
+				`pos_units` = #{units} ,
+			</if>
+			<if test="generalPrice != null and generalPrice != '' ">
+				`pos_general_price` = #{generalPrice} ,
+			</if>
+			<if test="specialPrice != null and specialPrice != '' ">
+				`pos_special_price` = #{specialPrice} ,
+			</if>
+			<if test="format != null ">
+				`pos_format` = #{format} ,
+			</if>
+			<if test="explain != null ">
+				`pos_explain` = #{explain} ,
+			</if>
+			<if test="remark != null ">
+				`pos_remark` = #{remark} ,
+			</if>
+			<!-- `pos_adds` = #{adds} , -->
+			<if test="legend != null and legend != '' ">
+			`pos_width` = #{width} ,
+			</if>
+			<if test="legend != null and legend != '' ">
+			`pos_height` = #{height} ,
+			</if>
+			<if test="legend != null and legend != '' ">
+			`pos_capacity` = #{capacity} ,
+			</if>
+			<if test="legend != null and legend != '' ">
+			`pos_content_type` = #{contentType} ,
+			</if>
+			`pos_update_time` = NOW()
+			WHERE
+			`pos_id` = #{id}
+		</update>
+		<select id="getPositionById" resultMap="positionDataBase"
+			parameterType="java.util.Map">
+			SELECT p.`pos_id` AS `id`,
+			p.`pos_name` AS `name`,
+			p.`pos_media_id` AS `mediaId`,
+			p.`pos_ad_id` AS `adId`,
+			p.`pos_legend`
+			AS `legend`,
+			p.`pos_units` AS `units`,
+			p.`pos_general_price` AS
+			`generalPrice`,
+			p.`pos_special_price` AS `specialPrice`,
+			p.`pos_format` AS `format`,
+			p.`pos_explain` AS `explain`,
+			p.`pos_remark` AS `remark`,
+			p.`pos_add_time` AS `addTime`,
+			p.`pos_update_time` AS `updateTime`,
+			p.`pos_adds` AS `adds`,
+			p.`pos_width` AS `width`,
+			p.`pos_height` AS `height`,
+			p.`pos_capacity`
+			AS `capacity`,
+			p.`pos_content_type` AS `contentType`,
+			m.media_name AS
+			`mediaName`,
+			t.types_name AS `unitsName`
+			FROM iw_hardads_ads_position
+			AS p
+			LEFT JOIN
+			iw_hardads_media AS m ON m.media_id = p.pos_media_id
+			LEFT JOIN iw_hardads_type AS t ON t.types_sort = 5 AND t.types_id =
+			p.pos_units
+			where p.`pos_id` = #{id}
+		</select>
+		<select id="checkPositionName" resultType="int">
+			SELECT COUNT(pos_id)
+			FROM iw_hardads_ads_position WHERE pos_name = #{name}
+		</select>
+		<select id="getPositionListDorp" resultMap="dropDownListData"  parameterType="string">
+			SELECT`pos_id` AS `id`, `pos_name` AS `name`, `pos_ad_id` AS `generate` FROM `iw_hardads_ads_position`
+			<where>
+				<if test="mediaId != null and mediaId != '' ">
+					pos_media_id = #{mediaId}
+				</if>
+			</where>
+		</select>
+
+		<select id="getContactListDorp" resultMap="dropDownListData"  parameterType="string">
+			SELECT `contract_id` AS `id`, `contract_name` AS `name`, `contract_itemno` AS `generate` FROM `iw_hardads_contract`
+			<where>
+				<if test="mediaId != null and mediaId != '' ">
+					contract_mediaId = #{mediaId}
+				</if>
+			</where>
+		</select>
+		<select id="getPosNameById" resultType="string"  parameterType="string">
+			SELECT t.types_name 
+			FROM iw_hardads_ads_position AS p
+			LEFT JOIN  iw_hardads_type AS t
+			ON t.types_id = p.pos_type
+			WHERE pos_id = #{id}
+		</select>
+
+		<!-- 合同抬头 -->
+		<insert id="addPayable" parameterType="string">
+			INSERT INTO
+			`iw_hardads_payable` (`pay_title`,
+			`pay_create_time`)VALUES(#{title},
+			now())
+		</insert>
+		<resultMap type="com.iwgame.gm.p1.adcollect.shared.model.PayableDataBase"
+			id="payableDataBase" />
+		<select id="getPayableList" resultMap="payableDataBase"
+			parameterType="java.util.Map">
+			SELECT
+			`pay_id` AS `id`,
+			`pay_title` AS `title`,
+			`pay_create_time` AS
+			`createTime`,
+			`pay_update_time` AS `updateTime`
+			FROM iw_hardads_payable
+			ORDER BY pay_create_time DESC
+			<if test="offset != null and limit != null ">
+				LIMIT #{offset},#{limit}
+			</if>
+		</select>
+		<select id="getPayableListCount" resultType="int">
+			SELECT
+			COUNT(`pay_id`) FROM `iw_hardads_payable`
+		</select>
+		<update id="updatePayable" parameterType="java.util.Map">
+			UPDATE
+			`iw_hardads_payable`
+			SET
+			`pay_title` = #{title} ,
+			`pay_update_time` =
+			NOW()
+			WHERE
+			`pay_id` = #{id}
+		</update>
+		<delete id="deletePayable" parameterType="int">
+			DELETE FROM
+			`iw_hardads_payable` WHERE `pay_id` = #{id}
+		</delete>
+		<select id="getPayableListDropDown" resultMap="dropDownListData">
+			SELECT `pay_id`
+			AS `id`, `pay_title` AS `name` FROM `iw_hardads_payable`
+		</select>
+		<!-- LOGOS -->
+		<insert id="addLogos" parameterType="java.util.Map">
+			INSERT INTO
+			`iw_hardads_logos`
+			(`logo_name`, `logo_create_time`
+			<if test="path != null and path != '' ">
+			,`logo_path`, `logo_width`, `logo_height`,
+			`logo_capacity`, `logo_content_type`
+			</if>
+			)VALUES(#{name}, NOW()
+			<if test="path != null and path != '' ">
+			 ,#{path},#{width}, #{height}, #{capacity},
+			#{contentType})
+			</if>
+		</insert>
+		<update id="updateLogos" parameterType="java.util.Map">
+			UPDATE
+			`iw_hardads_logos`
+			SET
+			`logo_name` = #{name} ,
+			`logo_update_time` = NOW()
+			<if test="path != null and path != '' ">
+			,`logo_path` = #{path} ,
+			`logo_width` = #{width} ,
+			`logo_height` = #{height} ,
+			`logo_capacity` = #{capacity} ,
+			`logo_content_type` = #{contentType}
+			</if>
+			WHERE `logo_id` = #{id}
+		</update>
+		<resultMap type="com.iwgame.gm.p1.adcollect.shared.model.LogosDataBasee"
+			id="logosDataBasee" />
+		<select id="getLogosList" resultMap="logosDataBasee"
+			parameterType="java.util.Map">
+			SELECT `logo_id` AS `id`,
+			`logo_name` AS `name`,
+			`logo_path` AS `path`,
+			`logo_create_time` AS `createTime`,
+			`logo_update_time` AS
+			`updateTime`,
+			`logo_width` AS `width`,
+			`logo_height` AS `height`,
+			`logo_capacity` AS `capacity`,
+			`logo_content_type` AS `contentType`
+			FROM `iw_hardads_logos`
+			ORDER BY logo_create_time DESC
+			<if test="offset != null and limit != null ">
+				LIMIT #{offset},#{limit}
+			</if>
+		</select>
+		<select id="getLogosListCount" resultType="int">
+			SELECT
+			COUNT(`logo_id`)
+			FROM `iw_hardads_logos`
+		</select>
+		<delete id="deleteLogos" parameterType="int">
+			DELETE FROM
+			`iw_hardads_logos` WHERE `logo_id` = #{id}
+		</delete>
+
+		<select id="getLOGOSListDropDown" resultMap="dropDownListData">
+			SELECT `logo_id` AS
+			`id`, `logo_name` AS `name` FROM `iw_hardads_logos`
+		</select>
+		<!-- 合同 -->
+		<resultMap type="com.iwgame.gm.p1.adcollect.shared.model.ContractDataBase"
+			id="contractDataBase" />
+		<select id="getContractList" resultMap="contractDataBase"
+			parameterType="java.util.Map">
+			SELECT c.`contract_id` AS `id`,
+			c.`contract_type` AS `type`,
+			c.`contract_logoId` AS `logoId`,
+			c.`contract_titleId` AS `titleId`,
+			c.`contract_itemno` AS `itemno`,
+			c.`contract_name` AS `name`,
+			c.`contract_signed` AS `signed`,
+			c.`contract_applyman` AS `applyman`,
+			c.`contract_section_id` AS
+			`section`,
+			c.`contract_level` AS `level`,
+			c.`contract_mediaId` AS
+			`mediaId`,
+			c.`contract_content` AS `content`,
+			c.`contract_isatt` AS
+			`isatt`,
+			c.`contract_path` AS `path`,
+			c.`contract_description` AS
+			`description`,
+			c.`contract_note` AS `note`,
+			c.`contract_adsituation` AS
+			`adsituation`,
+			c.`contract_total` AS `total`,
+			c.`contract_std_regcost`
+			AS `stdRegcost`,
+			c.`contract_std_logincost` AS `stdLogincost`,
+			c.`contract_std_discount` AS `stdDiscount`,
+			c.`contract_discount` AS
+			`discount`,
+			c.`contract_payed` AS `payed`,
+			c.`contract_adamt` AS
+			`adamt`,
+			c.`contract_remarks` AS `remarks`,
+			c.`contract_create_time` AS
+			`createTime`,
+			c.`contract_update_time` AS `updateTime`,
+			c.`contract_appraisal` AS `appraisal`,
+			l.`logo_name` AS `logoName`,
+			m.`media_name` AS
+			`mediaName`,
+			p.`pay_title` AS `titleName`
+			FROM
+			`iw_hardads_contract` AS c
+			LEFT JOIN iw_hardads_logos AS l
+			ON
+			c.contract_logoId = l.logo_id
+			LEFT JOIN iw_hardads_media AS m
+			ON
+			c.contract_mediaId = m.media_id
+			LEFT JOIN iw_hardads_payable AS p
+			ON
+			c.contract_titleId = p.pay_id
+			<where>
+				<if test="itemno != null and itemno != '' ">
+					c.`contract_itemno` = #{itemno}
+				</if>
+				<if test="name != null and name != '' ">
+					AND c.`contract_name` = #{name}
+				</if>
+				<if test="applyman != null and applyman != '' ">
+					AND c.`contract_applyman` = #{applyman}
+				</if>
+				<if test="totalMin != null ">
+					AND c.`contract_total` &gt;= #{totalMin}
+				</if>
+				<if test="totalMax != null and totalMax != 0 ">
+					AND c.`contract_total` &lt; #{totalMax}
+				</if>
+				<if test="media != null and media != -1 ">
+					AND c.`contract_mediaId` = #{media}
+				</if>
+				<if test="time != null and time != '' ">
+					AND c.`contract_signed` &gt;= #{time}
+				</if>
+				<if test="endTime != null and endTime != '' ">
+					AND c.`contract_signed` &lt; #{endTime}
+				</if>
+				<if test="payTime != null and payTime != '' ">
+					AND c.`contract_payed` &gt;= #{payTime}
+				</if>
+				<if test="endPayTime != null and endPayTime != '' ">
+					AND c.`contract_payed` &lt; #{endPayTime}
+				</if>
+			</where>
+			ORDER BY c.`contract_create_time` DESC
+			<if test="offset != null and limit != null ">
+				LIMIT #{offset},#{limit}
+			</if>
+		</select>
+
+		<select id="getContractListCount" resultType="int"
+			parameterType="java.util.Map">
+			SELECT COUNT(c.`contract_id`)
+			FROM `iw_hardads_contract` AS c
+			<where>
+				<if test="itemno != null and itemno != '' ">
+					c.`contract_itemno` = #{itemno}
+				</if>
+				<if test="name != null and name != '' ">
+					AND c.`contract_name` = #{name}
+				</if>
+				<if test="applyman != null and applyman != '' ">
+					AND c.`contract_applyman` = #{applyman}
+				</if>
+				<if test="totalMin != null ">
+					AND c.`contract_total` &gt;= #{totalMin}
+				</if>
+				<if test="totalMax != null and totalMax != 0 ">
+					AND c.`contract_total` &lt; #{totalMax}
+				</if>
+				<if test="media != null and media != -1 ">
+					AND c.`contract_mediaId` = #{media}
+				</if>
+				<if test="time != null and time != '' ">
+					AND c.`contract_signed` &gt;= #{time}
+				</if>
+				<if test="endTime != null and endTime != '' ">
+					AND c.`contract_signed` &lt; #{endTime}
+				</if>
+				<if test="payTime != null and payTime != '' ">
+					AND c.`contract_payed` &gt;= #{payTime}
+				</if>
+				<if test="endPayTime != null and endPayTime != '' ">
+					AND c.`contract_payed` &lt; #{endPayTime}
+				</if>
+			</where>
+		</select>
+		<insert id="addContract"
+			parameterType="com.iwgame.gm.p1.adcollect.shared.model.ContractDataBase"
+			keyProperty="id" keyColumn="contract_id">
+			<selectKey keyProperty="id" resultType="int" order="AFTER">
+				SELECT
+				LAST_INSERT_ID()
+			</selectKey>
+			INSERT INTO `iw_hardads_contract`
+			(
+			`contract_type`,
+			`contract_logoId`,
+			`contract_titleId`, `contract_itemno`,
+			`contract_name`,
+			`contract_signed`, `contract_applyman`,
+			`contract_section_id`,
+			`contract_level`, `contract_mediaId`,
+			`contract_content`,
+			`contract_isatt`, 
+			`contract_path`,
+			`contract_description`,
+			`contract_note`, `contract_adsituation`,
+			`contract_total`,
+			`contract_std_regcost`, `contract_std_logincost`,
+			`contract_std_discount`, `contract_discount`,
+			<if test="payedString != null and payedString != '' ">
+				`contract_payed`,
+			</if>
+			`contract_adamt`, `contract_create_time`
+			)
+			VALUES
+			(
+			#{type},
+			#{logoId},
+			#{titleId}, #{itemno}, #{name}, #{signedString},
+			#{applyman},
+			#{section}, #{level}, #{mediaId}, #{content}, #{isatt}, #{path},
+			#{description}, #{note}, #{adsituation}, #{total}, #{stdRegcost},
+			#{stdLogincost},
+			#{stdDiscount}, #{discount},
+			<if test="payedString != null and payedString != '' ">
+				#{payedString},
+			</if>
+			#{adamt}, NOW()
+			)
+		</insert>
+		<select id="itemnoCountById" resultType="int" parameterType="string">
+			SELECT COUNT(`contract_id`) FROM `iw_hardads_contract` WHERE
+			`contract_itemno` = #{itemno}
+		</select>
+		<select id="getContractById" resultMap="contractDataBase"
+			parameterType="int">
+			SELECT c.`contract_type` AS `type`,
+			c.`contract_id` AS `id`,
+			c.`contract_logoId` AS `logoId`,
+			c.`contract_titleId` AS `titleId`,
+			c.`contract_itemno` AS `itemno`,
+			c.`contract_name` AS `name`,
+			c.`contract_signed` AS `signed`,
+			c.`contract_applyman` AS `applyman`,
+			c.`contract_section_id` AS
+			`section`,
+			c.`contract_level` AS `level`,
+			c.`contract_mediaId` AS
+			`mediaId`,
+			c.`contract_content` AS `content`,
+			c.`contract_isatt` AS
+			`isatt`,
+			c.`contract_path` AS `path`,
+			c.`contract_description` AS
+			`description`,
+			c.`contract_note` AS `note`,
+			c.`contract_adsituation` AS
+			`adsituation`,
+			c.`contract_total` AS `total`,
+			c.`contract_std_regcost`
+			AS `stdRegcost`,
+			c.`contract_std_logincost` AS `stdLogincost`,
+			c.`contract_std_discount` AS `stdDiscount`,
+			c.`contract_discount` AS
+			`discount`,
+			c.`contract_payed` AS `payed`,
+			c.`contract_adamt` AS
+			`adamt`,
+			c.`contract_remarks` AS `remarks`,
+			c.`contract_create_time` AS
+			`createTime`,
+			c.`contract_update_time` AS `updateTime`,
+			c.`contract_appraisal` AS `appraisal`,
+			l.`logo_name` AS `logoName`,
+			m.`media_name` AS
+			`mediaName`,
+			p.`pay_title` AS `titleName`
+			FROM
+			`iw_hardads_contract` AS c
+			LEFT JOIN iw_hardads_logos AS l
+			ON
+			c.contract_logoId = l.logo_id
+			LEFT JOIN iw_hardads_media AS m
+			ON
+			c.contract_mediaId = m.media_id
+			LEFT JOIN iw_hardads_payable AS p
+			ON
+			c.contract_titleId = p.pay_id
+			<where>
+				c.`contract_id` = #{id}
+			</where>
+		</select>
+		<update id="updateContract" parameterType="com.iwgame.gm.p1.adcollect.shared.model.ContractDataBase">
+			UPDATE iw_hardads_contract
+			SET
+			<if test="type != null and type!= '-1' ">
+				`contract_type` = #{type} ,
+			</if>
+			<if test="logoId != null and logoId != 0 ">
+				`contract_logoId` = #{logoId} ,
+			</if>
+			<if test="titleId != null and titleId != 0 ">
+				`contract_titleId` = #{titleId} ,
+			</if>
+			<if test="name != null and name != '' ">
+				`contract_name` = #{name} ,
+			</if>
+			<if test="signedString != null and signedString != '' ">
+				`contract_signed` = #{signedString} ,
+			</if>
+			<if test="applyman != null and applyman != '' ">
+				`contract_applyman` = #{applyman} ,
+			</if>
+			<if test="section != null ">
+				`contract_section_id` = #{section},
+			</if>
+			<if test="level != null and level != '' ">
+				`contract_level` = #{level} ,
+			</if>
+			<if test="mediaId != null and mediaId != 0">
+				`contract_mediaId` = #{mediaId} ,
+			</if>
+			<if test="content != null ">
+				`contract_content` = #{content} ,
+			</if>
+			<if test="isatt != null ">
+				`contract_isatt` = #{isatt} ,
+			</if>
+			<if test="path != null and path != '' ">
+				`contract_path` = #{path} ,
+			</if>
+			<if test="description != null ">
+				`contract_description` = #{description},
+			</if>
+			<if test="note != null and note != '' ">
+				`contract_note` = #{note} ,
+			</if>
+			<if test="adsituation != null and adsituation != ''">
+				`contract_adsituation` = #{adsituation} ,
+			</if>
+			<if test="total != null and total != 0">
+				`contract_total` = #{total},
+			</if>
+			<if test="stdRegcost != null and stdRegcost != 0">
+				`contract_std_regcost` = #{stdRegcost},
+			</if>
+			<if test="stdLogincost != null and stdLogincost != 0">
+				`contract_std_logincost` = #{stdLogincost} ,
+			</if>
+			<if test="stdDiscount != null and stdDiscount != 0">
+				`contract_std_discount` = #{stdDiscount} ,
+			</if>
+			<if test="discount != null and discount != 0">
+				`contract_discount` =#{discount},
+			</if>
+			<if test="payedString != null and payedString != '' ">
+				`contract_payed` = #{payedString} ,
+			</if>
+			<if test="adamt != null and adamt != 0">
+				`contract_adamt` = #{adamt} ,
+			</if>
+			`contract_update_time` = NOW()
+			WHERE
+			`contract_id` = #{id}
+		</update>
+		<select id="autoContractIdAndName" resultMap="dropDownListData"
+			parameterType="java.util.Map">
+			SELECT `contract_id` AS `id`, `contract_name` AS
+			`name`, `contract_itemno`
+			AS `generate` FROM `iw_hardads_contract`
+			WHERE contract_id like '${query}%' OR contract_name like '${query}%'
+			OR
+			contract_itemno like '${query}%' LIMIT 0, 20
+		</select>
+		<select id="getCheckContractId" resultType="int" parameterType="String">
+			SELECT COUNT(contract_id) FROM iw_hardads_contract WHERE contract_id =  #{id}
+		</select>
+
+		<!-- 广告排期 -->
+		<select id="addShedule"
+			parameterType="com.iwgame.gm.p1.adcollect.shared.model.SheduleDataBase">
+			INSERT INTO `iw_hardads_ads_shedule`
+			(
+			`shedule_id`,
+			`shedule_name`,
+			`shedule_media_id`,
+			`shedule_material_id`,
+			`shedule_contract_id`,
+			`shedule_pos_id`,
+			`shedule_ad_name`,
+			`shedule_start_time`,
+			`shedule_end_time`,
+			<if test="adGroup != null and adGroup != 0">
+				`shedule_ad_group`,
+			</if>
+			`shedule_rebate`,
+			`shedule_real_units`,
+			shedule_general_price,
+			shedule_special_price,
+			shedule_sum_price,
+			`shedule_used_type`,
+			`shedule_distribu_ratio`,
+			`shedule_types`,
+			`shedule_ad_url`,
+			`shedule_distribu_source`,
+			`shedule_add_time`
+			)
+			VALUES
+			(
+			#{id},
+			#{name},
+			#{mediaId},
+			#{materialId},
+			#{contractId},
+			#{posId},
+			#{adName},
+			#{startTimeString},
+			#{endTimeString},
+			<if test="adGroup != null and adGroup != 0">
+				#{adGroup},
+			</if>
+			#{rebate},
+			#{units},
+			#{generalPrice},
+			#{specialPrice},
+			0,
+			#{usedType},
+			#{distribuRatio},
+			#{types},
+			#{adUrl},
+			#{source},
+			NOW()
+			)
+		</select>
+		<resultMap type="com.iwgame.gm.p1.adcollect.shared.model.SheduleDataBase"
+			id="sheduleDataBase" />
+		<select id="getSheduleList" resultMap="sheduleDataBase"
+			parameterType="java.util.Map">
+			SELECT s.`shedule_id` AS `id`,
+			s.`shedule_name` AS `name`,
+			s.`shedule_media_id` AS `mediaId`,
+			s.`shedule_material_id` AS
+			`materialId`,
+			s.`shedule_contract_id` AS `contractId`,
+			s.`shedule_pos_id` AS `posId`,
+			s.`shedule_ad_name` AS `adName`,
+			s.`shedule_start_time` AS `startTime`,
+			s.`shedule_end_time` AS
+			`endTime`,
+			s.`shedule_ad_group` AS `adGroup`,
+			s.`shedule_rebate` AS
+			`rebate`,
+			s.`shedule_real_units` AS `units`,
+			s.shedule_general_price AS
+			generalPrice,
+			s.shedule_special_price AS specialPrice,
+			s.`shedule_used_type` AS `usedType`,
+			s.`shedule_distribu_ratio` AS
+			`distribuRatio`,
+			s.`shedule_types` AS `types`,
+			s.`shedule_ad_url` AS
+			`adUrl`,
+			s.`shedule_distribu_source` AS `source`,
+			s.`shedule_add_time`
+			AS `addTime`,
+			s.`shedule_update_time` AS `updateTime`,
+			m.media_name AS
+			`mediaName`,
+			p.pos_name AS `posName`,
+			p.pos_ad_id AS `adId`,
+			ma.material_name AS `materialName`,
+			g.group_name AS `groupName`,
+			c.contract_itemno AS `contractItemno`,
+			t.types_name AS `unitsName`
+			FROM `iw_hardads_ads_shedule` AS s
+			LEFT JOIN iw_hardads_media m
+			ON
+			s.`shedule_media_id` = m.media_id
+			LEFT JOIN iw_hardads_ads_position AS
+			p
+			ON s.`shedule_pos_id` = p.pos_id
+			LEFT JOIN iw_hardads_material AS ma
+			ON s.`shedule_material_id` = ma.material_id
+			LEFT JOIN
+			iw_hardads_ads_group AS g
+			ON s.`shedule_ad_group` = g.group_id
+			LEFT
+			JOIN iw_hardads_contract AS c
+			ON s.`shedule_contract_id` =
+			c.contract_id
+			LEFT JOIN iw_hardads_type AS t
+			ON s.`shedule_real_units`
+			= t.types_id
+			<where>
+				<if test="mediaType != null and  mediaType != -1 ">
+					s.`shedule_media_id`  like '${mediaType}%'
+				</if>
+				<if test="mediaId != null and mediaId != -1">
+					AND s.`shedule_media_id` = #{mediaId}
+				</if>
+				<if test="positionId != null and positionId != -1">
+					AND s.`shedule_pos_id` = #{positionId}
+				</if>
+				<if test="contractId != null and contractId != ''">
+					AND s.`shedule_contract_id` = #{contractId}
+				</if>
+				<if test="groupId != null and groupId != '' ">
+					AND s.`shedule_ad_group` = #{groupId}
+				</if>
+				<if test="groupName != null and groupName != '' ">
+					AND g.group_name = #{groupName}
+				</if>
+				<if test="adId != null and adId != '' ">
+					AND p.pos_ad_id = #{adId}
+				</if>
+				<if test="adName != null and adName != '' ">
+					AND s.`shedule_name` = #{adName}
+				</if>
+				<if test="beganTime != null ">
+					AND s.`shedule_start_time` &gt;= #{beganTime}
+				</if>
+				<if test="endTime != null ">
+					AND s.`shedule_start_time` &lt; #{endTime}
+				</if>
+				<if test="sid != null and sid != '' ">
+					AND s.shedule_material_id = #{sid}
+				</if>
+			</where>
+			ORDER BY s.`shedule_start_time` DESC
+			<if test="offset != null and limit != null ">
+				LIMIT #{offset},#{limit}
+			</if>
+		</select>
+		<select id="getSheduleListCount" resultType="int"
+			parameterType="java.util.Map">
+			SELECT COUNT(s.`shedule_id`)
+			FROM `iw_hardads_ads_shedule` AS s
+			LEFT
+			JOIN iw_hardads_media m
+			ON s.`shedule_media_id` = m.media_id
+			LEFT JOIN
+			iw_hardads_ads_position AS p
+			ON s.`shedule_pos_id` = p.pos_id
+			LEFT JOIN
+			iw_hardads_material AS ma
+			ON s.`shedule_material_id` = ma.material_id
+			LEFT JOIN iw_hardads_ads_group AS g
+			ON s.`shedule_ad_group` =
+			g.group_id
+			<where>
+				<if test="mediaType != null and  mediaType != -1 ">
+					s.`shedule_media_id`  like '${mediaType}%'
+				</if>
+				<if test="mediaId != null and mediaId != -1">
+					AND s.`shedule_media_id` = #{mediaId}
+				</if>
+				<if test="positionId != null and positionId != -1">
+					AND s.`shedule_pos_id` = #{positionId}
+				</if>
+				<if test="contractId != null and contractId != ''">
+					AND s.`shedule_contract_id` = #{contractId}
+				</if>
+				<if test="groupId != null and groupId != '' ">
+					AND s.`shedule_ad_group` = #{groupId}
+				</if>
+				<if test="groupName != null and groupName != '' ">
+					AND g.group_name = #{groupName}
+				</if>
+				<if test="adId != null and adId != '' ">
+					AND p.pos_ad_id = #{adId}
+				</if>
+				<if test="adName != null and adName != '' ">
+					AND s.`shedule_name` = #{adName}
+				</if>
+				<if test="beganTime != null ">
+					AND s.`shedule_start_time` &gt;= #{beganTime}
+				</if>
+				<if test="endTime != null ">
+					AND s.`shedule_start_time` &lt; #{endTime}
+				</if>
+				<if test="sid != null and sid != '' ">
+					AND s.shedule_material_id = #{sid}
+				</if>
+			</where>
+		</select>
+		<update id="updateSheduleId"  parameterType="java.util.Map">
+			UPDATE iw_hardads_ads_shedule
+				SET
+				`shedule_id` = #{idNew}
+				WHERE `shedule_id` = #{idOld}
+		</update>
+		<update id="updateShedule"
+			parameterType="com.iwgame.gm.p1.adcollect.shared.model.SheduleDataBase">
+			UPDATE `iw_hardads_ads_shedule`
+			SET
+				`shedule_material_id` = #{materialId} ,
+				`shedule_ad_group` = #{adGroup} ,
+				shedule_name = #{name},
+			`shedule_ad_url` = #{adUrl} ,
+			<if test="source != null and source != ''">
+				`shedule_distribu_source` = #{source} ,
+			</if>
+			`shedule_update_time` = NOW()
+			WHERE
+			`shedule_id` =#{id}
+		</update>
+		<select id="checkSheduleId" resultType="int" parameterType="string">
+			SELECT COUNT(shedule_id) FROM iw_hardads_ads_shedule WHERE shedule_id
+			= #{id}
+		</select>
+		
+		
+		<!-- 媒体网吧对应IP -->
+		<resultMap type="com.iwgame.gm.p1.adcollect.shared.model.NetbarIpDataBase"
+			id="netbarIpDataBase" />
+		<select id="getNetbarIpList" resultMap="netbarIpDataBase" parameterType="java.util.Map">
+			SELECT 	ip.netbar_ip_id AS id, 
+			ip.media_id AS mediaId, 
+			m.media_name AS mediaName,
+			ip.netbar_ip AS ip, 
+			ip.netbar_ip_area AS ipArea, 
+			ip.netbar_ip_add_time AS `addTime`, 
+			ip.netbar_ip_lastupdate_time AS lastUpdateTime
+			FROM iw_netbar_media_ip AS ip
+			LEFT JOIN iw_hardads_media AS m ON ip.media_id = m.media_id
+			<where>
+				<if test="mediaId != null and mediaId != -1 ">
+					ip.media_id = #{mediaId}
+				</if>
+				<if test="ip != null and ip != '' ">
+					AND ip.netbar_ip LIKE '${ip}%'
+				</if>
+				<if test="ipArea != null and ipArea != '-1' ">
+					AND ip.netbar_ip_area = #{ipArea}
+				</if>
+			</where>
+				ORDER BY ip.netbar_ip_id DESC
+			<if test="offset != null and limit != null ">
+				LIMIT #{offset},#{limit}
+			</if>
+		</select>
+		<select id="getNetbarIpListCount" resultType="int" parameterType="java.util.Map">
+			SELECT 	COUNT(ip.netbar_ip_id)
+				FROM iw_netbar_media_ip AS ip
+				LEFT JOIN iw_hardads_media AS m ON ip.media_id = m.media_id
+				<where>
+					<if test="mediaId != null and mediaId != -1 ">
+						ip.media_id = #{mediaId}
+					</if>
+					<if test="ip != null and ip != '' ">
+						AND ip.netbar_ip LIKE '${ip}%'
+					</if>
+					<if test="ipArea != null and ipArea != '-1' ">
+						AND ip.netbar_ip_area = #{ipArea}
+					</if>
+				</where>
+		</select>
+		<insert id="addNetbarIp" parameterType="java.util.Map">
+			INSERT INTO iw_netbar_media_ip 
+			( media_id, netbar_ip, netbar_ip_add_time )
+			VALUES ( #{mediaId},  #{ip}, NOW() )
+		</insert>
+		<delete id="delNetbarIps" parameterType="string">
+			DELETE FROM iw_netbar_media_ip WHERE netbar_ip_id IN (${ids}) 
+		</delete>
+		
+		
+		<!-- 客户端识别码 -->
+		<resultMap type="com.iwgame.gm.p1.adcollect.shared.model.NetbarClientDataBase"
+			id="nNetbarClientDataBase" />
+		<select id="getNetbarClientList" resultMap="nNetbarClientDataBase" parameterType="java.util.Map">
+			SELECT 	c.netbar_client_id AS `id`,  
+				c.media_id AS mediaId, 
+				m.media_name AS mediaName,
+				c.netbar_client_version AS `version`, 
+				c.netbar_client_code AS `code`, 
+				c.netbar_client_add_time AS addTime, 
+				c.netbar_client_lastupdate_time AS lastUpdateTime 
+			FROM iw_netbar_media_client AS c
+			LEFT JOIN iw_hardads_media AS m ON m.media_id = c.media_id
+			<where>
+				<if test="mediaId != null and mediaId != -1 ">
+					c.media_id = #{mediaId}
+				</if>
+				<if test="version != null and version != '' ">
+					AND c.netbar_client_version LIKE '${version}%'
+				</if>
+				<if test="code != null and code != '' ">
+					AND c.netbar_client_code LIKE '${code}%'
+				</if>
+			</where>
+				ORDER BY c.netbar_client_id DESC
+			<if test="offset != null and limit != null ">
+				LIMIT #{offset},#{limit}
+			</if>
+		</select>
+		<select id="getNetbarClientListCount" resultType="int" parameterType="java.util.Map">
+			SELECT 	COUNT(c.netbar_client_id)
+			FROM iw_netbar_media_client AS c
+			LEFT JOIN iw_hardads_media AS m ON m.media_id = c.media_id
+			<where>
+				<if test="mediaId != null and mediaId != -1 ">
+					c.media_id = #{mediaId}
+				</if>
+				<if test="version != null and version != '' ">
+					AND c.netbar_client_version LIKE '${version}%'
+				</if>
+				<if test="code != null and code != '' ">
+					AND c.netbar_client_code LIKE '${code}%'
+				</if>
+			</where>
+		</select>
+		<insert id="addClent" parameterType="java.util.Map">
+		INSERT INTO iw_netbar_media_client 
+			( media_id, netbar_client_version, netbar_client_code, netbar_client_add_time )
+			VALUES
+			( #{mediaId}, #{version}, #{code}, now())
+		</insert>
+		<update id="updateClent" parameterType="java.util.Map">
+			UPDATE iw_netbar_media_client  SET
+			media_id = #{mediaId}, 
+			netbar_client_version = #{version}, 
+			netbar_client_code = #{code}, 
+			netbar_client_lastupdate_time = NOW()
+			WHERE netbar_client_id = #{id}
+		</update>
+</mapper>
+

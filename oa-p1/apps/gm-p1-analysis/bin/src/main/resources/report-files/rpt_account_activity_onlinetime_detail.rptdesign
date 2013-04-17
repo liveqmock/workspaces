@@ -1,0 +1,1165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.22" id="1">
+    <property name="createdBy">Eclipse BIRT Designer Version 2.6.2.r262_v20110209 Build &lt;2.6.2.v20110214-1523></property>
+    <property name="units">in</property>
+    <method name="initialize"><![CDATA[//开始时间
+var sTime=reportContext.getParameterValue("beginDate");
+//结束时间
+var eTime=reportContext.getParameterValue("endDate");
+//大区
+var guid = reportContext.getParameterValue("zone");
+
+//开始日期
+if(sTime!=null){
+    var start = sTime.substr(0,10);
+}
+//结束日期
+if(eTime!=null){
+    var end = eTime.substr(0,10);
+}
+]]></method>
+    <property name="iconFile">/templates/blank_report.gif</property>
+    <property name="layoutPreference">auto layout</property>
+    <property name="bidiLayoutOrientation">ltr</property>
+    <data-sources>
+        <oda-data-source extensionID="org.eclipse.birt.report.data.oda.jdbc" name="DataSource" id="389">
+            <list-property name="privateDriverProperties">
+                <ex-property>
+                    <name>disabledMetadataBidiFormatStr</name>
+                </ex-property>
+                <ex-property>
+                    <name>disabledContentBidiFormatStr</name>
+                </ex-property>
+                <ex-property>
+                    <name>contentBidiFormatStr</name>
+                    <value>ILYNN</value>
+                </ex-property>
+                <ex-property>
+                    <name>metadataBidiFormatStr</name>
+                    <value>ILYNN</value>
+                </ex-property>
+            </list-property>
+            <property name="odaDriverClass">com.mysql.jdbc.Driver</property>
+            <property name="odaURL">jdbc:mysql://192.168.10.181:3306/gamedb</property>
+            <property name="odaUser">reports</property>
+            <encrypted-property name="odaPassword" encryptionID="base64">cmVwb3J0cw==</encrypted-property>
+        </oda-data-source>
+    </data-sources>
+    <data-sets>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="odDataSet" id="9">
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">date</property>
+                    <text-property name="displayName">date</text-property>
+                    <text-property name="heading">date</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">onlinetime</property>
+                    <text-property name="displayName">onlinetime</text-property>
+                    <text-property name="heading">onlinetime</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">count_0m_30m</property>
+                    <text-property name="displayName">count_0m_30m</text-property>
+                    <text-property name="heading">count_0m_30m</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">count_30m_1h</property>
+                    <text-property name="displayName">count_30m_1h</text-property>
+                    <text-property name="heading">count_30m_1h</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">count_1h_2h</property>
+                    <text-property name="displayName">count_1h_2h</text-property>
+                    <text-property name="heading">count_1h_2h</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">count_2h_3h</property>
+                    <text-property name="displayName">count_2h_3h</text-property>
+                    <text-property name="heading">count_2h_3h</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">count_3h_4h</property>
+                    <text-property name="displayName">count_3h_4h</text-property>
+                    <text-property name="heading">count_3h_4h</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">count_4h_5h</property>
+                    <text-property name="displayName">count_4h_5h</text-property>
+                    <text-property name="heading">count_4h_5h</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">count_5h_6h</property>
+                    <text-property name="displayName">count_5h_6h</text-property>
+                    <text-property name="heading">count_5h_6h</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">count_6h_8h</property>
+                    <text-property name="displayName">count_6h_8h</text-property>
+                    <text-property name="heading">count_6h_8h</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">count_8h_10h</property>
+                    <text-property name="displayName">count_8h_10h</text-property>
+                    <text-property name="heading">count_8h_10h</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">count_10h_12h</property>
+                    <text-property name="displayName">count_10h_12h</text-property>
+                    <text-property name="heading">count_10h_12h</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">count_12h_up</property>
+                    <text-property name="displayName">count_12h_up</text-property>
+                    <text-property name="heading">count_12h_up</text-property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">date</property>
+                        <property name="dataType">date</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">onlinetime</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">count_0m_30m</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">count_30m_1h</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">count_1h_2h</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">count_2h_3h</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">count_3h_4h</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">8</property>
+                        <property name="name">count_4h_5h</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">9</property>
+                        <property name="name">count_5h_6h</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">10</property>
+                        <property name="name">count_6h_8h</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">11</property>
+                        <property name="name">count_8h_10h</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">12</property>
+                        <property name="name">count_10h_12h</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">13</property>
+                        <property name="name">count_12h_up</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <method name="beforeOpen"><![CDATA[var startTime =reportContext.getParameterValue("beginDate");
+var endTime =reportContext.getParameterValue("endDate");
+var zone =reportContext.getParameterValue("zone");
+
+this.queryText +=" where 1=1 ";
+if(startTime != null &amp;&amp; endTime !=null){
+  this.queryText +=" and date between '"+startTime.substr(0,10) +"' and '"+ endTime+"'";
+ 
+} 
+if( zone != null){
+    this.queryText +=" and zone='"+ zone+"'"; 
+}
+	this.queryText +=" group by date desc";
+]]></method>
+            <property name="dataSource">DataSource</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">date</property>
+                    <property name="nativeName">date</property>
+                    <property name="dataType">date</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">onlinetime</property>
+                    <property name="nativeName">onlinetime</property>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">count_0m_30m</property>
+                    <property name="nativeName">count_0m_30m</property>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">count_30m_1h</property>
+                    <property name="nativeName">count_30m_1h</property>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">count_1h_2h</property>
+                    <property name="nativeName">count_1h_2h</property>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="position">6</property>
+                    <property name="name">count_2h_3h</property>
+                    <property name="nativeName">count_2h_3h</property>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="position">7</property>
+                    <property name="name">count_3h_4h</property>
+                    <property name="nativeName">count_3h_4h</property>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="position">8</property>
+                    <property name="name">count_4h_5h</property>
+                    <property name="nativeName">count_4h_5h</property>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="position">9</property>
+                    <property name="name">count_5h_6h</property>
+                    <property name="nativeName">count_5h_6h</property>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="position">10</property>
+                    <property name="name">count_6h_8h</property>
+                    <property name="nativeName">count_6h_8h</property>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="position">11</property>
+                    <property name="name">count_8h_10h</property>
+                    <property name="nativeName">count_8h_10h</property>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="position">12</property>
+                    <property name="name">count_10h_12h</property>
+                    <property name="nativeName">count_10h_12h</property>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="position">13</property>
+                    <property name="name">count_12h_up</property>
+                    <property name="nativeName">count_12h_up</property>
+                    <property name="dataType">float</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[select 
+	date,
+	avg(`avg`) as onlinetime,
+	sum(t_0_half) as count_0m_30m,
+	sum(t_half_1h) as count_30m_1h,
+	sum(t_1_2h) as count_1h_2h,
+	sum(t_2_3h) as count_2h_3h,
+	sum(t_3_4h) as count_3h_4h,
+	sum(t_4_5h) as count_4h_5h,
+	sum(t_5_6h) as count_5h_6h,
+	sum(t_6_8h) as count_6h_8h,
+	sum(t_8_10h) as count_8h_10h,
+	sum(t_10_12h) as count_10h_12h,
+	sum(t_12h_up) as count_12h_up
+from rpt_account_activity_onlinetime_detail
+
+]]></xml-property>
+            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
+  <Version>2.0</Version>
+  <design:ResultSets derivedMetaData="true">
+    <design:resultSetDefinitions>
+      <design:resultSetColumns>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>id</design:name>
+              <design:position>1</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>-5</design:nativeDataTypeCode>
+            <design:precision>20</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>id</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>id</design:label>
+            <design:formattingHints>
+              <design:displaySize>20</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>date</design:name>
+              <design:position>2</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>91</design:nativeDataTypeCode>
+            <design:precision>10</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>date</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>date</design:label>
+            <design:formattingHints>
+              <design:displaySize>10</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>zone</design:name>
+              <design:position>3</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>16</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>zone</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>zone</design:label>
+            <design:formattingHints>
+              <design:displaySize>16</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>count_0m_30m</design:name>
+              <design:position>4</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>11</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>count_0m_30m</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>count_0m_30m</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>count_30m_1h</design:name>
+              <design:position>5</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>11</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>count_30m_1h</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>count_30m_1h</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>count_1h_2h</design:name>
+              <design:position>6</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>11</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>count_1h_2h</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>count_1h_2h</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>count_2h_3h</design:name>
+              <design:position>7</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>11</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>count_2h_3h</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>count_2h_3h</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>count_3h_4h</design:name>
+              <design:position>8</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>11</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>count_3h_4h</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>count_3h_4h</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>count_4h_5h</design:name>
+              <design:position>9</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>11</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>count_4h_5h</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>count_4h_5h</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>count_5h_6h</design:name>
+              <design:position>10</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>11</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>count_5h_6h</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>count_5h_6h</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>count_6h_7h</design:name>
+              <design:position>11</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>11</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>count_6h_7h</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>count_6h_7h</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>count_7h_8h</design:name>
+              <design:position>12</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>11</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>count_7h_8h</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>count_7h_8h</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>count_8h_9h</design:name>
+              <design:position>13</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>11</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>count_8h_9h</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>count_8h_9h</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>count_9h_10h</design:name>
+              <design:position>14</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>11</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>count_9h_10h</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>count_9h_10h</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>count_10h_11h</design:name>
+              <design:position>15</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>11</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>count_10h_11h</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>count_10h_11h</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>count_11h_12h</design:name>
+              <design:position>16</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>11</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>count_11h_12h</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>count_11h_12h</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>count_12h_up</design:name>
+              <design:position>17</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>11</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>count_12h_up</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>count_12h_up</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+      </design:resultSetColumns>
+    </design:resultSetDefinitions>
+  </design:ResultSets>
+</model:DesignValues>]]></xml-property>
+        </oda-data-set>
+    </data-sets>
+    <styles>
+        <style name="report" id="4">
+            <property name="fontFamily">"Verdana"</property>
+            <property name="fontSize">10pt</property>
+        </style>
+        <style name="crosstab-cell" id="5">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+        <style name="crosstab" id="6">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+    </styles>
+    <page-setup>
+        <simple-master-page name="Simple MasterPage" id="2">
+            <property name="type">custom</property>
+            <property name="height">20in</property>
+            <property name="width">12in</property>
+            <property name="leftMargin">0.25in</property>
+            <page-footer>
+                <text id="3">
+                    <property name="contentType">html</property>
+                    <text-property name="content"><![CDATA[<value-of>new Date()</value-of>]]></text-property>
+                </text>
+            </page-footer>
+        </simple-master-page>
+    </page-setup>
+    <body>
+        <text-data id="119">
+            <property name="fontSize">14pt</property>
+            <property name="fontWeight">bold</property>
+            <property name="textAlign">center</property>
+            <expression name="valueExpr">(BirtComp.equalTo(guid,null)?"全区":guid)+"时长分布报表"</expression>
+            <property name="contentType">html</property>
+        </text-data>
+        <text-data id="120">
+            <property name="marginBottom">10pt</property>
+            <property name="textAlign">center</property>
+            <expression name="valueExpr">(start+"至"+end)</expression>
+            <property name="contentType">html</property>
+        </text-data>
+        <table id="121">
+            <property name="fontSize">10pt</property>
+            <property name="borderBottomColor">#000000</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">thin</property>
+            <property name="borderLeftColor">#000000</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">thin</property>
+            <property name="borderRightColor">#000000</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">thin</property>
+            <property name="borderTopColor">#000000</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">thin</property>
+            <property name="marginBottom">10pt</property>
+            <property name="textAlign">center</property>
+            <property name="width">11in</property>
+            <property name="dataSet">odDataSet</property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">date</property>
+                    <expression name="expression">dataSetRow["date"]</expression>
+                    <property name="dataType">date</property>
+                </structure>
+                <structure>
+                    <property name="name">onlinetime</property>
+                    <expression name="expression">dataSetRow["onlinetime"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">count_0m_30m</property>
+                    <expression name="expression">dataSetRow["count_0m_30m"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">count_30m_1h</property>
+                    <expression name="expression">dataSetRow["count_30m_1h"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">count_1h_2h</property>
+                    <expression name="expression">dataSetRow["count_1h_2h"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">count_2h_3h</property>
+                    <expression name="expression">dataSetRow["count_2h_3h"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">count_3h_4h</property>
+                    <expression name="expression">dataSetRow["count_3h_4h"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">count_4h_5h</property>
+                    <expression name="expression">dataSetRow["count_4h_5h"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">count_5h_6h</property>
+                    <expression name="expression">dataSetRow["count_5h_6h"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">count_12h_up</property>
+                    <expression name="expression">dataSetRow["count_12h_up"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">avgOnlineTime</property>
+                    <text-property name="displayName">avg</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["onlinetime"]/60</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">percent0m_30m</property>
+                    <expression name="expression" type="javascript">if(row["loginValue"]!=0 || row["loginValue"]!=null){&#13;
+dataSetRow["count_0m_30m"]/row["loginValue"];&#13;
+}</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">percent30m_1h</property>
+                    <expression name="expression" type="javascript">if(row["loginValue"]!=0 ||row["loginValue"]!=null){&#13;
+dataSetRow["count_30m_1h"]/row["loginValue"];&#13;
+}</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">percent_1h_2h</property>
+                    <expression name="expression" type="javascript">if(row["loginValue"]!=0 ||row["loginValue"]!=null){&#13;
+dataSetRow["count_1h_2h"]/row["loginValue"]&#13;
+}</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">percent_2h_3h</property>
+                    <expression name="expression" type="javascript">if(row["loginValue"]!=0 || row["loginValue"]!= null){&#13;
+dataSetRow["count_2h_3h"]/row["loginValue"];&#13;
+}</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">percent_3h_4h</property>
+                    <expression name="expression" type="javascript">if(row["loginValue"]!=0 || row["loginValue"]!= null){&#13;
+dataSetRow["count_3h_4h"]/row["loginValue"];&#13;
+}</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">percent_4h_5h</property>
+                    <expression name="expression" type="javascript">if(row["loginValue"]!=0 || row["loginValue"]!= null){&#13;
+dataSetRow["count_4h_5h"]/row["loginValue"];&#13;
+}</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">percent_5h_6h</property>
+                    <expression name="expression" type="javascript">if(row["loginValue"]!=0 || row["loginValue"]!= null){&#13;
+dataSetRow["count_5h_6h"]/row["loginValue"];&#13;
+}</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">percent_6h_8h</property>
+                    <expression name="expression" type="javascript">if(row["loginValue"]!=0 || row["loginValue"]!= null){&#13;
+dataSetRow["count_6h_8h"]/row["loginValue"];&#13;
+}</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">percent_8h_10h</property>
+                    <expression name="expression" type="javascript">if(row["loginValue"]!=null || row["loginValue"]!=0){&#13;
+dataSetRow["count_8h_10h"]/row["loginValue"];&#13;
+}</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">percent_10h_12h</property>
+                    <expression name="expression" type="javascript">if(row["loginValue"]!=0 || row["loginValue"]!=null){&#13;
+dataSetRow["count_10h_12h"]/row["loginValue"];&#13;
+}</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">percent_12h_up</property>
+                    <expression name="expression" type="javascript">if(row["loginValue"]!=null || row["loginValue"]!=0){&#13;
+dataSetRow["count_12h_up"]/row["loginValue"];&#13;
+}</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">count_6h_8h</property>
+                    <expression name="expression" type="javascript">dataSetRow["count_6h_8h"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">count_8h_10h</property>
+                    <expression name="expression" type="javascript">dataSetRow["count_8h_10h"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">count_10h_12h</property>
+                    <expression name="expression" type="javascript">dataSetRow["count_10h_12h"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">loginValue</property>
+                    <expression name="expression" type="javascript">dataSetRow["count_0m_30m"]+dataSetRow["count_30m_1h"]+dataSetRow["count_1h_2h"]+dataSetRow["count_2h_3h"]+dataSetRow["count_3h_4h"]+dataSetRow["count_4h_5h"]+dataSetRow["count_5h_6h"]+dataSetRow["count_6h_8h"]+dataSetRow["count_8h_10h"]+dataSetRow["count_10h_12h"]+dataSetRow["count_12h_up"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+            </list-property>
+            <column id="176">
+                <property name="width">0.5416666666666666in</property>
+            </column>
+            <column id="177">
+                <property name="width">0.6145833333333334in</property>
+            </column>
+            <column id="178">
+                <property name="width">0.6145833333333334in</property>
+            </column>
+            <column id="179">
+                <property name="width">0.6145833333333334in</property>
+            </column>
+            <column id="180">
+                <property name="width">0.6145833333333334in</property>
+            </column>
+            <column id="181">
+                <property name="width">0.6145833333333334in</property>
+            </column>
+            <column id="182">
+                <property name="width">0.6145833333333334in</property>
+            </column>
+            <column id="316">
+                <property name="width">0.6145833333333334in</property>
+            </column>
+            <column id="322">
+                <property name="width">0.6145833333333334in</property>
+            </column>
+            <column id="328">
+                <property name="width">0.6041666666666666in</property>
+            </column>
+            <column id="337">
+                <property name="width">0.6041666666666666in</property>
+            </column>
+            <column id="344">
+                <property name="width">0.6041666666666666in</property>
+            </column>
+            <column id="350">
+                <property name="width">0.6041666666666666in</property>
+            </column>
+            <header>
+                <row id="122">
+                    <property name="backgroundColor">#9DDFFF</property>
+                    <cell id="123">
+                        <label id="124">
+                            <text-property name="text">日期</text-property>
+                        </label>
+                    </cell>
+                    <cell id="125">
+                        <label id="126">
+                            <property name="whiteSpace">nowrap</property>
+                            <text-property name="text">平均时长</text-property>
+                        </label>
+                    </cell>
+                    <cell id="127">
+                        <label id="128">
+                            <text-property name="text">0-0.5(H)</text-property>
+                        </label>
+                    </cell>
+                    <cell id="129">
+                        <label id="130">
+                            <text-property name="text">0.5-1(H)</text-property>
+                        </label>
+                    </cell>
+                    <cell id="131">
+                        <label id="132">
+                            <text-property name="text">1-2(H)</text-property>
+                        </label>
+                    </cell>
+                    <cell id="133">
+                        <label id="134">
+                            <text-property name="text">2-3(H)</text-property>
+                        </label>
+                    </cell>
+                    <cell id="135">
+                        <label id="136">
+                            <text-property name="text">3-4(H)</text-property>
+                        </label>
+                    </cell>
+                    <cell id="311">
+                        <label id="329">
+                            <text-property name="text">4-5(H)</text-property>
+                        </label>
+                    </cell>
+                    <cell id="317">
+                        <label id="330">
+                            <text-property name="text">5-6(H)</text-property>
+                        </label>
+                    </cell>
+                    <cell id="323">
+                        <label id="331">
+                            <text-property name="text">6-8(H)</text-property>
+                        </label>
+                    </cell>
+                    <cell id="332">
+                        <label id="338">
+                            <text-property name="text">8-10(H)</text-property>
+                        </label>
+                    </cell>
+                    <cell id="339">
+                        <label id="351">
+                            <text-property name="text">10-12(H)</text-property>
+                        </label>
+                    </cell>
+                    <cell id="345">
+                        <label id="352">
+                            <text-property name="text">12以上</text-property>
+                        </label>
+                    </cell>
+                </row>
+            </header>
+            <detail>
+                <row id="160">
+                    <list-property name="highlightRules">
+                        <structure>
+                            <property name="operator">eq</property>
+                            <property name="backgroundColor">#E4E4E4</property>
+                            <expression name="testExpr">row.__rownum%2</expression>
+                            <simple-property-list name="value1">
+                                <value>1</value>
+                            </simple-property-list>
+                        </structure>
+                    </list-property>
+                    <cell id="161">
+                        <data id="361">
+                            <structure name="dateTimeFormat">
+                                <property name="category">Medium Date</property>
+                                <property name="pattern">Medium Date</property>
+                                <property name="locale">zh</property>
+                            </structure>
+                            <property name="whiteSpace">nowrap</property>
+                            <property name="resultSetColumn">date</property>
+                        </data>
+                    </cell>
+                    <cell id="162">
+                        <data id="362">
+                            <structure name="dateTimeFormat">
+                                <property name="category">Custom</property>
+                                <property name="pattern">HH:mm:ss</property>
+                            </structure>
+                            <property name="whiteSpace">nowrap</property>
+                            <property name="resultSetColumn">avgOnlineTime</property>
+                        </data>
+                    </cell>
+                    <cell id="163">
+                        <data id="365">
+                            <structure name="numberFormat">
+                                <property name="category">Percent</property>
+                                <property name="pattern">Percent</property>
+                            </structure>
+                            <property name="resultSetColumn">percent0m_30m</property>
+                        </data>
+                    </cell>
+                    <cell id="164">
+                        <data id="366">
+                            <structure name="numberFormat">
+                                <property name="category">Percent</property>
+                                <property name="pattern">Percent</property>
+                            </structure>
+                            <property name="resultSetColumn">percent30m_1h</property>
+                        </data>
+                    </cell>
+                    <cell id="165">
+                        <data id="367">
+                            <structure name="numberFormat">
+                                <property name="category">Percent</property>
+                                <property name="pattern">Percent</property>
+                            </structure>
+                            <property name="resultSetColumn">percent_1h_2h</property>
+                        </data>
+                    </cell>
+                    <cell id="166">
+                        <data id="368">
+                            <structure name="numberFormat">
+                                <property name="category">Percent</property>
+                                <property name="pattern">Percent</property>
+                            </structure>
+                            <property name="resultSetColumn">percent_2h_3h</property>
+                        </data>
+                    </cell>
+                    <cell id="167">
+                        <data id="369">
+                            <structure name="numberFormat">
+                                <property name="category">Percent</property>
+                                <property name="pattern">Percent</property>
+                            </structure>
+                            <property name="resultSetColumn">percent_3h_4h</property>
+                        </data>
+                    </cell>
+                    <cell id="313">
+                        <data id="370">
+                            <structure name="numberFormat">
+                                <property name="category">Percent</property>
+                                <property name="pattern">Percent</property>
+                            </structure>
+                            <property name="resultSetColumn">percent_4h_5h</property>
+                        </data>
+                    </cell>
+                    <cell id="319">
+                        <data id="371">
+                            <structure name="numberFormat">
+                                <property name="category">Percent</property>
+                                <property name="pattern">Percent</property>
+                            </structure>
+                            <property name="resultSetColumn">percent_5h_6h</property>
+                        </data>
+                    </cell>
+                    <cell id="325">
+                        <data id="372">
+                            <structure name="numberFormat">
+                                <property name="category">Percent</property>
+                                <property name="pattern">Percent</property>
+                            </structure>
+                            <property name="resultSetColumn">percent_6h_8h</property>
+                        </data>
+                    </cell>
+                    <cell id="334">
+                        <data id="373">
+                            <structure name="numberFormat">
+                                <property name="category">Percent</property>
+                                <property name="pattern">Percent</property>
+                            </structure>
+                            <property name="resultSetColumn">percent_8h_10h</property>
+                        </data>
+                    </cell>
+                    <cell id="341">
+                        <data id="374">
+                            <structure name="numberFormat">
+                                <property name="category">Percent</property>
+                                <property name="pattern">Percent</property>
+                            </structure>
+                            <property name="resultSetColumn">percent_10h_12h</property>
+                        </data>
+                    </cell>
+                    <cell id="347">
+                        <data id="375">
+                            <structure name="numberFormat">
+                                <property name="category">Percent</property>
+                                <property name="pattern">Percent</property>
+                            </structure>
+                            <property name="resultSetColumn">percent_12h_up</property>
+                        </data>
+                    </cell>
+                </row>
+            </detail>
+            <footer>
+                <row id="168">
+                    <cell id="169"/>
+                    <cell id="170"/>
+                    <cell id="171"/>
+                    <cell id="172"/>
+                    <cell id="173"/>
+                    <cell id="174"/>
+                    <cell id="175"/>
+                    <cell id="315"/>
+                    <cell id="321"/>
+                    <cell id="327"/>
+                    <cell id="336"/>
+                    <cell id="343"/>
+                    <cell id="349"/>
+                </row>
+            </footer>
+        </table>
+    </body>
+</report>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:jaxrs="http://cxf.apache.org/jaxrs" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+	 http://cxf.apache.org/jaxrs
+	 http://cxf.apache.org/schemas/jaxrs.xsd
+     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+     http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+	<!-- 加载配置文件 -->
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="ignoreResourceNotFound" value="true" />
+		<property name="ignoreUnresolvablePlaceholders" value="true" />
+		<property name="locations">
+			<list>
+				<!--开发环境下的配置文件 -->
+				<value>classpath:mq.properties</value>
+				<!-- 生产环境下的配置文件 -->
+				<value>file:/var/config/xtask-wg1/mq.properties</value>
+			</list>
+		</property>
+		<property name="fileEncoding" value="utf-8" />
+	</bean>
+
+	<!-- 配置MQ连接源 -->
+	<bean id="rabbitMQSource" class="com.rabbitmq.client.ConnectionFactory">
+		<property name="username" value="${mq.username}" />
+		<property name="password" value="${mq.password}" />
+		<property name="virtualHost" value="${mq.virtualhost}" />
+		<property name="host" value="${mq.host}" />
+		<property name="port" value="${mq.port}" />
+		<property name="requestedHeartbeat" value="5" />
+	</bean>
+
+	<bean id="connectionFactory"
+		class="org.springframework.amqp.rabbit.connection.CachingConnectionFactory">
+		<constructor-arg ref="rabbitMQSource" />
+		<property name="channelCacheSize" value="${mq.channelcachesize}" />
+	</bean>
+
+	<bean id="rabbitTemplate" class="org.springframework.amqp.rabbit.core.RabbitTemplate">
+		<constructor-arg ref="connectionFactory"></constructor-arg>
+	</bean>
+
+	<!-- 创建rabbitAdmin 代理类,初始调用initialize,它会指定执行我们定义的Exchange,Queue,Binding -->
+	<bean class="org.springframework.amqp.rabbit.core.RabbitAdmin"
+		init-method="initialize">
+		<constructor-arg ref="connectionFactory" />
+	</bean>
+
+	<!-- 声明消息转换器为SimpleMessageConverter -->
+	<bean id="messageConverter"
+		class="org.springframework.amqp.support.converter.SimpleMessageConverter" />
+
+	<!-- 属性配置 -->
+	<bean id="taskProperties" class="com.iwgame.xengine.xtask.wg1.util.TaskProperties">
+		<property name="firstRMBPayment" value="${first.rmb.payment.switch}" />
+	</bean>
+
+</beans>

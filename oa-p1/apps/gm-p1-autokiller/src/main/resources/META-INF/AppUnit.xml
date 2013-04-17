@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<appunit>
+	<!-- AU类型,枚举值normal: 包含UI功能的AU, core:后台组件模块 -->
+	<type>normal</type>
+	<!-- AU名称 -->
+	<name>Kill</name>
+	<!-- AU标题,主要用于管理平台中的菜单显示用 -->
+	<title>帐号封杀</title>
+	<!-- AU的功能描述 -->
+	<description>帐号封杀子模块</description>
+	<!-- AU版本号的声明 -->
+	<version>1.0</version>
+	<!-- AU使用的产品 -->
+	<product>P-P1,P-P1.5,P-P3,P-WG1</product>
+	<!-- 标志,用于分组 -->
+	<app>GM</app>
+	<!-- GWT Module Name,被框架继承 -->
+	<gwt-module>com.iwgame.account.kill.Kill</gwt-module>
+	<!-- 菜单路径配置 -->
+	<menupaths>
+		<menupath name="Kill.Policy.List" title="自动封停" url="kill/policy/list" type="normal" access="kill-policy-list" />
+		<menupath name="Kill.Logs.Auto" title="封杀记录查询" url="kill/logs/auto" type="normal" access="kill-logs-auto" />
+	</menupaths>
+	<modules>
+		<module id="Policy" name="policy" package="com.iwgame.account.kill.modules.policy.client" />
+		<module id="Logs" name="logs" package="com.iwgame.account.kill.modules.logs.client" />
+	</modules>
+	<!-- 后台服务配置 -->
+	<services>
+		<service endpoint="com.iwgame.account.kill.modules.policy.shared.rpc.PolicyService">
+			<property name="factory" value="spring" />
+			<property name="source" value="killer-policy-policyservice" />
+		</service>
+	</services>
+	<services>
+	<service endpoint="com.iwgame.account.kill.modules.logs.shared.rpc.LogsService">
+			<property name="factory" value="spring" />
+			<property name="source" value="killer-logs-logsservice" />
+		</service>
+	</services>
+	<!-- 访问控制策略 -->
+	<accesses>
+	<!-- url -->
+		<access name="kill-policy-list" title="自动封停" />
+		<access name="kill-logs-auto" title="封杀记录查询" />
+		
+	<!-- 方法权限 -->
+		<access name="kill-mean-logs-query-export" title="询自定封杀日志导出方法" />
+		<access name="kill-mean-logs-querylist" title="查询自定封杀日志方法" />
+		<access name="kill-policy-mean-querylist" title="查询自动封杀策略列表方法" />
+		<access name="kill-policy-mean-add" title="添加策略方法" />
+		<access name="kill-policy-mean-stop-policy" title="停用策略方法" />
+		<access name="kill-policy-mean-isenabled-policy" title="启用策略验证方法" />
+		<access name="kill-policy-mean-enabled-policy" title="启用策略方法" />
+		<access name="kill-policy-mean-delay-policy" title="延时策略方法" />
+		<access name="kill-policy-mean-update-policy" title="修改策略方法" />
+	
+	</accesses>
+</appunit>

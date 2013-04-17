@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.iwgame.iwcloud.baidu.task.service.zxy.ZxyAdsDao">
+
+	<insert id="sp_store_baidu_ads" statementType="CALLABLE">
+		{call
+		sp_store_baidu_ads (
+		#{datetime},
+		#{accountid},
+		#{account},
+		#{projectid},
+		#{project},
+		#{unitid},
+		#{unit},
+		#{keywordid},
+		#{keyword},
+		#{method},
+		#{consume},
+		#{avgclickprice},
+		#{clicknum},
+		#{shownum},
+		#{clickrate},
+		#{qczxconsume},
+		#{avgrank},#{result,mode=OUT,jdbcType=INTEGER})
+		}
+     </insert>
+
+	<insert id="sp_store_baidu_keyid_ads" statementType="CALLABLE">
+		{call
+		sp_store_baidu_keyid_ads (
+		#{datetime},
+		#{accountid},
+		#{account},
+		#{projectid},
+		#{project},
+		#{unitid},
+		#{unit},
+		#{keywordid},
+		#{keyword},
+		#{method},
+		#{consume},
+		#{avgclickprice},
+		#{clicknum},
+		#{shownum},
+		#{clickrate},
+		#{qczxconsume},
+		#{avgrank},#{result,mode=OUT,jdbcType=INTEGER})
+		}
+     </insert>
+</mapper>

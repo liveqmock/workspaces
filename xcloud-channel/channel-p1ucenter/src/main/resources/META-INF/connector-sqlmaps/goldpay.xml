@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="goldpay">
+
+	<!-- 水晶充值 -->
+	<insert id="pay" parameterType="java.util.HashMap">
+	INSERT INTO act_winner
+	(`actid`, 
+	`accountid`, 
+	`user_name`, 
+	`role_name`, 
+	`type`, 
+	`gameid`, 
+	`zone`, 
+	`value`, 
+	`flag`, 
+	`addtime`)
+	VALUES
+	(#{actid}
+	,#{accountid}
+	,#{user_name}
+	,#{role_name}
+	,#{type}
+	,#{gameid}
+	,#{zone}
+	,#{value}
+	,0, 
+	SYSDATE());
+	</insert>
+</mapper>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	<!-- 加载配置文件 -->
+	<bean id="environmentVariablesConfiguration" class="com.iwgame.security.config.EnvironmentStringPBEConfig" />
+	<bean id="configurationEncryptor" class="org.jasypt.encryption.pbe.StandardPBEStringEncryptor">
+		<property name="config" ref="environmentVariablesConfiguration" />
+	</bean>
+	<bean
+		class="org.jasypt.spring.properties.EncryptablePropertyPlaceholderConfigurer">
+		<constructor-arg ref="configurationEncryptor" />
+		<property name="order" value="1" />
+		<property name="ignoreUnresolvablePlaceholders" value="true" />
+		<property name="ignoreResourceNotFound" value="true" />
+		<property name="locations">
+			<list>
+				<!--开发环境下的配置文件 -->
+				<value>classpath:xtask-guild-redis.properties</value>
+				<!-- 生产环境下的配置文件 -->
+				<value>${XTASK_HOME}/xtask-guild-redis.properties</value>
+			</list>
+		</property>
+		<property name="fileEncoding" value="utf-8" />
+	</bean>
+	<!-- Redis 操作相关 -->
+	<bean id="guildRedisConfig" class="redis.clients.jedis.JedisPoolConfig">
+		<property name="maxActive" value="${guild.redis.pool.maxActive}" />
+		<property name="maxIdle" value="${guild.redis.pool.maxIdle}" />
+		<property name="minIdle" value="${guild.redis.pool.minIdle}" />
+		<property name="maxWait" value="${guild.redis.pool.maxWait}" />
+	</bean>
+	<bean id="guildRedisConnectionFactory"
+		class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+		<property name="poolConfig" ref="guildRedisConfig"></property>
+		<property name="usePool" value="true"></property>
+		<property name="hostName" value="${guild.redis.server}"></property>
+		<property name="password" value="${guild.redis.passwd}"></property>
+		<property name="port" value="${guild.redis.port}"></property>
+		<property name="database" value="${guild.redis.database}"></property>
+		<property name="timeout" value="${guild.redis.timeout}"></property>
+	</bean>
+	<bean id="guildRedisTemplate" class="org.springframework.data.redis.core.StringRedisTemplate">
+		<property name="connectionFactory" ref="guildRedisConnectionFactory"></property>
+	</bean>
+
+
+</beans>

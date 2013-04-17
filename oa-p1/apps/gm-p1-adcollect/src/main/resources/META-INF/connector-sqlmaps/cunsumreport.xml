@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="adcollect.customreport">
+
+       <resultMap type="com.iwgame.gm.p1.adcollect.shared.model.CustomReport" id="customReport" >
+		<result property="id"  column="id"  javaType="string" />
+		<result property="name" column="name"  javaType="string" />
+		<result property="remark" column="remark"  javaType="string" />
+		<result property="submitTime" column="submitTime"  javaType="java.util.Date" jdbcType="TIMESTAMP"  />
+		<result property="finishTime" column="finishTime"  javaType="java.util.Date" jdbcType="TIMESTAMP"  />
+		<result property="operatior"  column="operatior"  javaType="string" />
+		<result property="param"  column="param"  javaType="string" />
+		<result property="status"  column="status"  javaType="string" />
+		<result property="filepath"  column="filepath"  javaType="string" />
+		<result property="costtime"  column="costtime"  javaType="string" />
+	   </resultMap>    
+        
+          
+<!--定制报表列表  -->        
+    <select id="getCustomReportListTotal" resultType="int" parameterType="java.util.Map">
+		SELECT 	count(*)
+	    from iw_netbar_custom_report
+		where 1=1	
+	   <if test="beginDate != null and beginDate != '' and endDate != null and endDate != '' ">
+             and  netbar_report_submit_time BETWEEN  #{beginDate} and #{endDate}
+		</if>
+		<if test="name != null and name != ''">
+	           and netbar_report_name  like '%${name}%'
+		</if>
+		<if test="operator != null and operator != ''">
+	           and netbar_report_submit_user  like '%${operator}%'
+		</if>
+		<if test="status != null and status != ''">
+	           and netbar_report_status  = #{status}
+		</if>
+	</select>
+	 
+	 <select id="getCustomReportList" resultMap="customReport" parameterType="java.util.Map">
+		SELECT netbar_report_id as id,
+               netbar_report_name as name,
+               netbar_report_remark as remark,
+               netbar_report_submit_time as submitTime,
+               netbar_report_finish_time as finishTime,
+               netbar_report_submit_user as operatior,
+               netbar_report_status as status ,
+               netbar_report_filepath as filepath
+       from iw_netbar_custom_report
+       where 1=1
+	   <if test="beginDate != null and beginDate != '' and endDate != null and endDate != '' ">
+             and  netbar_report_submit_time BETWEEN  #{beginDate} and #{endDate}
+		</if>
+		<if test="name != null and name != ''">
+	           and netbar_report_name  like '%${name}%'
+		</if>
+		<if test="operator != null and operator != ''">
+	           and netbar_report_submit_user  like '%${operator}%'
+		</if>
+		<if test="status != null and status != ''">
+	           and netbar_report_status  = #{status}
+		</if>
+		<if test="offset != null and limit != null ">
+			LIMIT #{offset},#{limit}
+		</if>
+	</select>
+	 
+	<delete id="delCustomReport" parameterType="java.util.Map">
+			DELETE FROM
+			`iw_netbar_custom_report` WHERE `netbar_report_id` = #{id}
+    </delete>
+   
+    <insert id="addCustomReport" parameterType="java.util.Map">
+      INSERT into iw_netbar_custom_report
+			(netbar_report_name,
+			netbar_report_remark,
+			netbar_report_submit_time,
+			netbar_report_submit_user,
+			netbar_report_param,
+			netbar_report_status) 
+			VALUES 
+			( #{name},
+			 #{remark},
+			 now(),
+			 #{operator},
+			 #{param},
+			 0
+			)
+    </insert>	
+    	
+</mapper>

@@ -1,0 +1,1195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.22" id="1">
+    <property name="createdBy">Eclipse BIRT Designer Version 2.6.2.r262_v20110209 Build &lt;2.6.2.v20110214-1523></property>
+    <property name="units">in</property>
+    <method name="initialize"><![CDATA[//开始时间
+var sTime=reportContext.getParameterValue("beginDate");
+//结束时间
+var eTime=reportContext.getParameterValue("endDate");
+//大区
+var guid = reportContext.getParameterValue("zone");
+
+//开始日期
+if(sTime!=null){
+    var start = sTime.substr(0,10);
+}
+//结束日期
+if(eTime!=null){
+    var end = eTime.substr(0,10);
+}
+
+
+// 数据库连接信息
+var dbDriver = reportContext.getParameterValue("dbDriver");
+var dbURL = reportContext.getParameterValue("dbURL");
+var dbUserName = reportContext.getParameterValue("dbUserName");
+var dbPassword = reportContext.getParameterValue("dbPassword");
+]]></method>
+    <property name="iconFile">/templates/blank_report.gif</property>
+    <property name="layoutPreference">auto layout</property>
+    <property name="bidiLayoutOrientation">ltr</property>
+    <data-sources>
+        <oda-data-source extensionID="org.eclipse.birt.report.data.oda.jdbc" name="DataSource" id="423">
+            <list-property name="privateDriverProperties">
+                <ex-property>
+                    <name>disabledMetadataBidiFormatStr</name>
+                </ex-property>
+                <ex-property>
+                    <name>disabledContentBidiFormatStr</name>
+                </ex-property>
+                <ex-property>
+                    <name>contentBidiFormatStr</name>
+                    <value>ILYNN</value>
+                </ex-property>
+                <ex-property>
+                    <name>metadataBidiFormatStr</name>
+                    <value>ILYNN</value>
+                </ex-property>
+            </list-property>
+            <property name="odaDriverClass">com.mysql.jdbc.Driver</property>
+            <property name="odaURL">jdbc:mysql://192.168.10.181:3306/gamedb</property>
+            <property name="odaUser">reports</property>
+            <encrypted-property name="odaPassword" encryptionID="base64">cmVwb3J0cw==</encrypted-property>
+        </oda-data-source>
+    </data-sources>
+    <data-sets>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="ActiveAcountLoseDayReport" id="276">
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">date</property>
+                    <text-property name="displayName">date</text-property>
+                    <text-property name="heading">date</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">activecount_3d</property>
+                    <text-property name="displayName">activecount_3d</text-property>
+                    <text-property name="heading">activecount_3d</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">sleepcount_active</property>
+                    <text-property name="displayName">sleepcount_active</text-property>
+                    <text-property name="heading">sleepcount_active</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">activecount_7d</property>
+                    <text-property name="displayName">activecount_7d</text-property>
+                    <text-property name="heading">activecount_7d</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">deadcount_active</property>
+                    <text-property name="displayName">deadcount_active</text-property>
+                    <text-property name="heading">deadcount_active</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">savingcount_3d</property>
+                    <text-property name="displayName">savingcount_3d</text-property>
+                    <text-property name="heading">savingcount_3d</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">sleepcount_saving</property>
+                    <text-property name="displayName">sleepcount_saving</text-property>
+                    <text-property name="heading">sleepcount_saving</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">savingcount_7d</property>
+                    <text-property name="displayName">savingcount_7d</text-property>
+                    <text-property name="heading">savingcount_7d</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">deadcount_saving</property>
+                    <text-property name="displayName">deadcount_saving</text-property>
+                    <text-property name="heading">deadcount_saving</text-property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">date</property>
+                        <property name="dataType">date</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">activecount_3d</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">sleepcount_active</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">activecount_7d</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">deadcount_active</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">savingcount_3d</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">sleepcount_saving</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">8</property>
+                        <property name="name">savingcount_7d</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">9</property>
+                        <property name="name">deadcount_saving</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <method name="beforeOpen"><![CDATA[var startTime =reportContext.getParameterValue("beginDate");
+var endTime =reportContext.getParameterValue("endDate");
+var zone =reportContext.getParameterValue("zone");
+
+this.queryText +=" where 1=1 ";
+if(startTime != null &amp;&amp; endTime !=null){
+	this.queryText +=" and date between '"+startTime.substr(0,10)+"' and '"+ endTime+"'";
+} 
+if( zone != null){
+    this.queryText +=" and zone='"+ zone+"'"; 
+}
+	this.queryText +=" group by date desc";]]></method>
+            <property name="dataSource">DataSource</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">date</property>
+                    <property name="nativeName">date</property>
+                    <property name="dataType">date</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">activecount_3d</property>
+                    <property name="nativeName">activecount_3d</property>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">sleepcount_active</property>
+                    <property name="nativeName">sleepcount_active</property>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">activecount_7d</property>
+                    <property name="nativeName">activecount_7d</property>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">deadcount_active</property>
+                    <property name="nativeName">deadcount_active</property>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="position">6</property>
+                    <property name="name">savingcount_3d</property>
+                    <property name="nativeName">savingcount_3d</property>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="position">7</property>
+                    <property name="name">sleepcount_saving</property>
+                    <property name="nativeName">sleepcount_saving</property>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="position">8</property>
+                    <property name="name">savingcount_7d</property>
+                    <property name="nativeName">savingcount_7d</property>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="position">9</property>
+                    <property name="name">deadcount_saving</property>
+                    <property name="nativeName">deadcount_saving</property>
+                    <property name="dataType">float</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[select 
+	date,
+	sum(activity) as activecount_3d,
+	sum(three_days) as sleepcount_active,
+	sum(activity) as activecount_7d,
+	sum(seven_days) as deadcount_active,
+	sum(paid) as savingcount_3d,
+	sum(paid_three_days) as sleepcount_saving,
+	sum(paid) as savingcount_7d,
+	sum(paid_seven_days) as deadcount_saving
+from
+rpt_account_lost_new
+]]></xml-property>
+        </oda-data-set>
+    </data-sets>
+    <styles>
+        <style name="report" id="4">
+            <property name="fontFamily">"Verdana"</property>
+            <property name="fontSize">10pt</property>
+        </style>
+        <style name="crosstab-cell" id="5">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+        <style name="crosstab" id="6">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+    </styles>
+    <page-setup>
+        <simple-master-page name="Simple MasterPage" id="2">
+            <property name="type">custom</property>
+            <property name="height">16in</property>
+            <property name="width">12in</property>
+            <page-footer>
+                <text id="3">
+                    <property name="contentType">html</property>
+                    <text-property name="content"><![CDATA[<value-of>new Date()</value-of>]]></text-property>
+                </text>
+            </page-footer>
+        </simple-master-page>
+    </page-setup>
+    <body>
+        <text-data id="117">
+            <property name="fontSize">14pt</property>
+            <property name="fontWeight">bold</property>
+            <property name="textAlign">center</property>
+            <expression name="valueExpr">(BirtComp.equalTo(guid,null)?"全区":(guid+"分区")) + "新帐号流失数据报表"</expression>
+            <property name="contentType">html</property>
+        </text-data>
+        <text-data id="118">
+            <property name="marginBottom">10pt</property>
+            <property name="textAlign">center</property>
+            <expression name="valueExpr">(start+"至"+end)</expression>
+            <property name="contentType">html</property>
+        </text-data>
+        <table id="122">
+            <property name="borderBottomColor">#000000</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">thin</property>
+            <property name="borderLeftColor">#000000</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">thin</property>
+            <property name="borderRightColor">#000000</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">thin</property>
+            <property name="borderTopColor">#000000</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">thin</property>
+            <property name="paddingTop">0pt</property>
+            <property name="paddingLeft">0pt</property>
+            <property name="paddingBottom">0pt</property>
+            <property name="paddingRight">0pt</property>
+            <property name="textAlign">center</property>
+            <property name="dataSet">ActiveAcountLoseDayReport</property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">date</property>
+                    <expression name="expression">dataSetRow["date"]</expression>
+                    <property name="dataType">date</property>
+                </structure>
+                <structure>
+                    <property name="name">activecount_3d</property>
+                    <expression name="expression">dataSetRow["activecount_3d"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">sleepcount_active</property>
+                    <expression name="expression">dataSetRow["sleepcount_active"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">activecount_7d</property>
+                    <expression name="expression">dataSetRow["activecount_7d"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">deadcount_active</property>
+                    <expression name="expression">dataSetRow["deadcount_active"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">savingcount_3d</property>
+                    <expression name="expression">dataSetRow["savingcount_3d"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">sleepcount_saving</property>
+                    <expression name="expression">dataSetRow["sleepcount_saving"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">savingcount_7d</property>
+                    <expression name="expression">dataSetRow["savingcount_7d"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">deadcount_saving</property>
+                    <expression name="expression">dataSetRow["deadcount_saving"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">percentActiveSleep</property>
+                    <expression name="expression">(dataSetRow["activecount_3d"] != null ) ? dataSetRow["sleepcount_active"]/dataSetRow["activecount_3d"] : null</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">percentActiveDead</property>
+                    <expression name="expression">(dataSetRow["activecount_7d"] != null &amp;&amp; dataSetRow["activecount_7d"] !=0) ? dataSetRow["deadcount_active"]/dataSetRow["activecount_7d"] : null</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">percentSavingSleep</property>
+                    <expression name="expression">dataSetRow["savingcount_3d"] != null ? dataSetRow["sleepcount_saving"]/dataSetRow["savingcount_3d"] : null</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">percentSavingDead</property>
+                    <expression name="expression">dataSetRow["savingcount_7d"] != null ? dataSetRow["deadcount_saving"]/dataSetRow["savingcount_7d"] : null</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+            </list-property>
+            <column id="165">
+                <property name="paddingTop">0pt</property>
+                <property name="paddingLeft">0pt</property>
+                <property name="paddingBottom">0pt</property>
+                <property name="paddingRight">0pt</property>
+            </column>
+            <column id="169"/>
+            <column id="285"/>
+            <column id="289"/>
+            <column id="170"/>
+            <column id="297"/>
+            <column id="171"/>
+            <column id="173"/>
+            <column id="174"/>
+            <column id="338"/>
+            <column id="342"/>
+            <column id="346"/>
+            <column id="175"/>
+            <header>
+                <row id="123">
+                    <property name="backgroundColor">#9DDFFF</property>
+                    <cell id="124">
+                        <property name="borderRightColor">#808080</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <property name="verticalAlign">middle</property>
+                        <label id="178">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                            <text-property name="text">日期	</text-property>
+                        </label>
+                    </cell>
+                    <cell id="128">
+                        <property name="colSpan">6</property>
+                        <property name="rowSpan">1</property>
+                        <property name="borderLeftColor">#808080</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">thin</property>
+                        <property name="borderRightColor">#808080</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <label id="207">
+                            <text-property name="text">活跃帐号</text-property>
+                        </label>
+                        <grid id="253">
+                            <column id="254"/>
+                            <column id="255"/>
+                            <row id="257">
+                                <cell id="258">
+                                    <label id="261">
+                                        <text-property name="text">活跃帐号(3天)</text-property>
+                                    </label>
+                                    <grid id="312">
+                                        <column id="313"/>
+                                        <column id="314"/>
+                                        <column id="315"/>
+                                        <row id="316">
+                                            <cell id="317">
+                                                <label id="328">
+                                                    <text-property name="text">活跃数</text-property>
+                                                </label>
+                                            </cell>
+                                            <cell id="318">
+                                                <label id="329">
+                                                    <text-property name="text">休眠数</text-property>
+                                                </label>
+                                            </cell>
+                                            <cell id="319">
+                                                <label id="330">
+                                                    <text-property name="text">休眠率</text-property>
+                                                </label>
+                                            </cell>
+                                        </row>
+                                    </grid>
+                                </cell>
+                                <cell id="259">
+                                    <label id="262">
+                                        <text-property name="text">活跃帐号(7天)</text-property>
+                                    </label>
+                                    <grid id="320">
+                                        <column id="321"/>
+                                        <column id="322"/>
+                                        <column id="323"/>
+                                        <row id="324">
+                                            <cell id="325">
+                                                <label id="331">
+                                                    <text-property name="text">活跃数</text-property>
+                                                </label>
+                                            </cell>
+                                            <cell id="326">
+                                                <label id="332">
+                                                    <text-property name="text">流失数</text-property>
+                                                </label>
+                                            </cell>
+                                            <cell id="327">
+                                                <label id="334">
+                                                    <text-property name="text">流失率</text-property>
+                                                </label>
+                                            </cell>
+                                        </row>
+                                    </grid>
+                                </cell>
+                            </row>
+                        </grid>
+                    </cell>
+                    <cell id="132">
+                        <property name="colSpan">6</property>
+                        <property name="rowSpan">1</property>
+                        <property name="borderLeftColor">#808080</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">thin</property>
+                        <property name="borderRightColor">#808080</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <label id="217">
+                            <text-property name="text">充值帐号</text-property>
+                        </label>
+                        <grid id="264">
+                            <column id="265"/>
+                            <column id="266"/>
+                            <row id="268">
+                                <cell id="269">
+                                    <label id="272">
+                                        <text-property name="text">充值帐号(3天)</text-property>
+                                    </label>
+                                    <grid id="347">
+                                        <column id="348"/>
+                                        <column id="349"/>
+                                        <column id="350"/>
+                                        <row id="351">
+                                            <cell id="352">
+                                                <label id="353">
+                                                    <text-property name="text">活跃数</text-property>
+                                                </label>
+                                            </cell>
+                                            <cell id="354">
+                                                <label id="355">
+                                                    <text-property name="text">休眠数</text-property>
+                                                </label>
+                                            </cell>
+                                            <cell id="356">
+                                                <label id="357">
+                                                    <text-property name="text">休眠率</text-property>
+                                                </label>
+                                            </cell>
+                                        </row>
+                                    </grid>
+                                </cell>
+                                <cell id="270">
+                                    <label id="273">
+                                        <text-property name="text">充值帐号(7天)</text-property>
+                                    </label>
+                                    <grid id="358">
+                                        <column id="359"/>
+                                        <column id="360"/>
+                                        <column id="361"/>
+                                        <row id="362">
+                                            <cell id="363">
+                                                <label id="364">
+                                                    <text-property name="text">活跃数</text-property>
+                                                </label>
+                                            </cell>
+                                            <cell id="365">
+                                                <label id="366">
+                                                    <text-property name="text">流失数</text-property>
+                                                </label>
+                                            </cell>
+                                            <cell id="367">
+                                                <label id="368">
+                                                    <text-property name="text">流失率</text-property>
+                                                </label>
+                                            </cell>
+                                        </row>
+                                    </grid>
+                                </cell>
+                            </row>
+                        </grid>
+                    </cell>
+                </row>
+            </header>
+            <detail>
+                <row id="137">
+                    <property name="paddingTop">0pt</property>
+                    <property name="paddingLeft">0pt</property>
+                    <property name="paddingBottom">0pt</property>
+                    <property name="paddingRight">0pt</property>
+                    <list-property name="highlightRules">
+                        <structure>
+                            <property name="operator">eq</property>
+                            <property name="backgroundColor">#E4E4E4</property>
+                            <expression name="testExpr">row.__rownum%2</expression>
+                            <simple-property-list name="value1">
+                                <value>1</value>
+                            </simple-property-list>
+                        </structure>
+                    </list-property>
+                    <cell id="138">
+                        <property name="borderRightColor">#808080</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <data id="277">
+                            <structure name="dateTimeFormat">
+                                <property name="category">Medium Date</property>
+                                <property name="pattern">Medium Date</property>
+                                <property name="locale">zh</property>
+                            </structure>
+                            <property name="whiteSpace">nowrap</property>
+                            <property name="resultSetColumn">date</property>
+                        </data>
+                    </cell>
+                    <cell id="142">
+                        <data id="369">
+                            <structure name="numberFormat">
+                                <property name="category">Fixed</property>
+                                <property name="pattern">#,##0</property>
+                            </structure>
+                            <property name="resultSetColumn">activecount_3d</property>
+                            <list-property name="action">
+                                <structure>
+                                    <property name="linkType">drill-through</property>
+                                    <property name="reportName">rpt_level_class.rptdesign</property>
+                                    <property name="targetWindow">_blank</property>
+                                    <property name="targetFileType">report-design</property>
+                                    <list-property name="paramBindings">
+                                        <structure>
+                                            <property name="paramName">date</property>
+                                            <simple-property-list name="expression">
+                                                <value>row["date"]</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">zone</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">guid</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">type</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">2</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">atype</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">"rpt_account_lost_new"</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">dbDriver</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">dbDriver</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">dbURL</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">dbURL</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">dbUserName</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">dbUserName</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">dbPassword</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">dbPassword</value>
+                                            </simple-property-list>
+                                        </structure>
+                                    </list-property>
+                                </structure>
+                            </list-property>
+                        </data>
+                    </cell>
+                    <cell id="283">
+                        <data id="370">
+                            <structure name="numberFormat">
+                                <property name="category">Fixed</property>
+                                <property name="pattern">#,##0</property>
+                            </structure>
+                            <property name="resultSetColumn">sleepcount_active</property>
+                            <list-property name="action">
+                                <structure>
+                                    <property name="linkType">drill-through</property>
+                                    <property name="reportName">rpt_level_class.rptdesign</property>
+                                    <property name="targetWindow">_blank</property>
+                                    <property name="targetFileType">report-design</property>
+                                    <list-property name="paramBindings">
+                                        <structure>
+                                            <property name="paramName">date</property>
+                                            <simple-property-list name="expression">
+                                                <value>row["date"]</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">zone</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">guid</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">type</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">4</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">atype</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">"rpt_account_lost_new"</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">dbDriver</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">dbDriver</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">dbURL</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">dbURL</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">dbUserName</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">dbUserName</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">dbPassword</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">dbPassword</value>
+                                            </simple-property-list>
+                                        </structure>
+                                    </list-property>
+                                </structure>
+                            </list-property>
+                        </data>
+                    </cell>
+                    <cell id="287">
+                        <data id="377">
+                            <structure name="numberFormat">
+                                <property name="category">Percent</property>
+                                <property name="pattern">Percent</property>
+                            </structure>
+                            <property name="resultSetColumn">percentActiveSleep</property>
+                        </data>
+                    </cell>
+                    <cell id="143">
+                        <data id="371">
+                            <structure name="numberFormat">
+                                <property name="category">Fixed</property>
+                                <property name="pattern">#,##0</property>
+                            </structure>
+                            <property name="resultSetColumn">activecount_7d</property>
+                            <list-property name="action">
+                                <structure>
+                                    <property name="linkType">drill-through</property>
+                                    <property name="reportName">rpt_level_class.rptdesign</property>
+                                    <property name="targetWindow">_blank</property>
+                                    <property name="targetFileType">report-design</property>
+                                    <list-property name="paramBindings">
+                                        <structure>
+                                            <property name="paramName">date</property>
+                                            <simple-property-list name="expression">
+                                                <value>row["date"]</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">zone</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">guid</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">type</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">2</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">atype</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">"rpt_account_lost_new"</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">dbDriver</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">dbDriver</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">dbURL</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">dbURL</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">dbUserName</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">dbUserName</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">dbPassword</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">dbPassword</value>
+                                            </simple-property-list>
+                                        </structure>
+                                    </list-property>
+                                </structure>
+                            </list-property>
+                        </data>
+                    </cell>
+                    <cell id="295">
+                        <data id="372">
+                            <structure name="numberFormat">
+                                <property name="category">Fixed</property>
+                                <property name="pattern">#,##0</property>
+                            </structure>
+                            <property name="resultSetColumn">deadcount_active</property>
+                            <list-property name="action">
+                                <structure>
+                                    <property name="linkType">drill-through</property>
+                                    <property name="reportName">rpt_level_class.rptdesign</property>
+                                    <property name="targetWindow">_blank</property>
+                                    <property name="targetFileType">report-design</property>
+                                    <list-property name="paramBindings">
+                                        <structure>
+                                            <property name="paramName">date</property>
+                                            <simple-property-list name="expression">
+                                                <value>row["date"]</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">zone</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">guid</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">type</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">5</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">atype</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">"rpt_account_lost_new"</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">dbDriver</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">dbDriver</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">dbURL</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">dbURL</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">dbUserName</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">dbUserName</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">dbPassword</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">dbPassword</value>
+                                            </simple-property-list>
+                                        </structure>
+                                    </list-property>
+                                </structure>
+                            </list-property>
+                        </data>
+                    </cell>
+                    <cell id="144">
+                        <property name="borderRightColor">#808080</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <data id="378">
+                            <structure name="numberFormat">
+                                <property name="category">Percent</property>
+                                <property name="pattern">Percent</property>
+                            </structure>
+                            <property name="resultSetColumn">percentActiveDead</property>
+                        </data>
+                    </cell>
+                    <cell id="146">
+                        <data id="373">
+                            <structure name="numberFormat">
+                                <property name="category">Fixed</property>
+                                <property name="pattern">#,##0</property>
+                            </structure>
+                            <property name="resultSetColumn">savingcount_3d</property>
+                            <list-property name="action">
+                                <structure>
+                                    <property name="linkType">drill-through</property>
+                                    <property name="reportName">rpt_level_class.rptdesign</property>
+                                    <property name="targetWindow">_blank</property>
+                                    <property name="targetFileType">report-design</property>
+                                    <list-property name="paramBindings">
+                                        <structure>
+                                            <property name="paramName">date</property>
+                                            <simple-property-list name="expression">
+                                                <value>row["date"]</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">zone</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">guid</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">type</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">3</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">atype</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">"rpt_account_lost_new"</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">dbDriver</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">dbDriver</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">dbURL</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">dbURL</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">dbUserName</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">dbUserName</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">dbPassword</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">dbPassword</value>
+                                            </simple-property-list>
+                                        </structure>
+                                    </list-property>
+                                </structure>
+                            </list-property>
+                        </data>
+                    </cell>
+                    <cell id="147">
+                        <data id="374">
+                            <structure name="numberFormat">
+                                <property name="category">Fixed</property>
+                                <property name="pattern">#,##0</property>
+                            </structure>
+                            <property name="resultSetColumn">sleepcount_saving</property>
+                            <list-property name="action">
+                                <structure>
+                                    <property name="linkType">drill-through</property>
+                                    <property name="reportName">rpt_level_class.rptdesign</property>
+                                    <property name="targetWindow">_blank</property>
+                                    <property name="targetFileType">report-design</property>
+                                    <list-property name="paramBindings">
+                                        <structure>
+                                            <property name="paramName">date</property>
+                                            <simple-property-list name="expression">
+                                                <value>row["date"]</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">zone</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">guid</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">type</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">6</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">atype</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">"rpt_account_lost_new"</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">dbDriver</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">dbDriver</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">dbURL</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">dbURL</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">dbUserName</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">dbUserName</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">dbPassword</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">dbPassword</value>
+                                            </simple-property-list>
+                                        </structure>
+                                    </list-property>
+                                </structure>
+                            </list-property>
+                        </data>
+                    </cell>
+                    <cell id="336">
+                        <data id="379">
+                            <structure name="numberFormat">
+                                <property name="category">Percent</property>
+                                <property name="pattern">Percent</property>
+                            </structure>
+                            <property name="resultSetColumn">percentSavingSleep</property>
+                        </data>
+                    </cell>
+                    <cell id="340">
+                        <data id="375">
+                            <structure name="numberFormat">
+                                <property name="category">Fixed</property>
+                                <property name="pattern">#,##0</property>
+                            </structure>
+                            <property name="resultSetColumn">savingcount_7d</property>
+                            <list-property name="action">
+                                <structure>
+                                    <property name="linkType">drill-through</property>
+                                    <property name="reportName">rpt_level_class.rptdesign</property>
+                                    <property name="targetWindow">_blank</property>
+                                    <property name="targetFileType">report-design</property>
+                                    <list-property name="paramBindings">
+                                        <structure>
+                                            <property name="paramName">date</property>
+                                            <simple-property-list name="expression">
+                                                <value>row["date"]</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">zone</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">guid</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">type</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">3</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">atype</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">"rpt_account_lost_new"</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">dbDriver</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">dbDriver</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">dbURL</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">dbURL</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">dbUserName</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">dbUserName</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">dbPassword</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">dbPassword</value>
+                                            </simple-property-list>
+                                        </structure>
+                                    </list-property>
+                                </structure>
+                            </list-property>
+                        </data>
+                    </cell>
+                    <cell id="344">
+                        <data id="376">
+                            <structure name="numberFormat">
+                                <property name="category">Fixed</property>
+                                <property name="pattern">#,##0</property>
+                            </structure>
+                            <property name="resultSetColumn">deadcount_saving</property>
+                            <list-property name="action">
+                                <structure>
+                                    <property name="linkType">drill-through</property>
+                                    <property name="reportName">rpt_level_class.rptdesign</property>
+                                    <property name="targetWindow">_blank</property>
+                                    <property name="targetFileType">report-design</property>
+                                    <list-property name="paramBindings">
+                                        <structure>
+                                            <property name="paramName">date</property>
+                                            <simple-property-list name="expression">
+                                                <value>row["date"]</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">zone</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">guid</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">type</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">7</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">atype</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">"rpt_account_lost_new"</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">dbDriver</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">dbDriver</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">dbURL</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">dbURL</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">dbUserName</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">dbUserName</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">dbPassword</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">dbPassword</value>
+                                            </simple-property-list>
+                                        </structure>
+                                    </list-property>
+                                </structure>
+                            </list-property>
+                        </data>
+                    </cell>
+                    <cell id="148">
+                        <property name="borderRightColor">#808080</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <data id="380">
+                            <structure name="numberFormat">
+                                <property name="category">Percent</property>
+                                <property name="pattern">Percent</property>
+                            </structure>
+                            <property name="resultSetColumn">percentSavingDead</property>
+                        </data>
+                    </cell>
+                </row>
+            </detail>
+            <footer>
+                <row id="151">
+                    <cell id="152"/>
+                    <cell id="156"/>
+                    <cell id="284"/>
+                    <cell id="288"/>
+                    <cell id="157"/>
+                    <cell id="296"/>
+                    <cell id="158"/>
+                    <cell id="160"/>
+                    <cell id="161"/>
+                    <cell id="337"/>
+                    <cell id="341"/>
+                    <cell id="345"/>
+                    <cell id="162"/>
+                </row>
+            </footer>
+        </table>
+    </body>
+</report>

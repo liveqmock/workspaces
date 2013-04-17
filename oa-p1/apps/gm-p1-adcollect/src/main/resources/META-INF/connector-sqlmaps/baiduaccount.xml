@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="baidu.account">
+
+	<resultMap
+		type="com.iwgame.gm.p1.adcollect.modules.baidu.account.shared.model.BaiduAccount"
+		id="baiduaccount">
+		<result property="id" column="a_id" />
+		<result property="productId" column="productid" />
+		<result property="username" column="username" />
+		<result property="password" column="password" />
+		<result property="token" column="token" />
+		<result property="vingve" column="vingve" />
+		<result property="modifyTime" column="modify_time" />
+		<result property="modifier" column="modifier" />
+	</resultMap>
+
+	<select id="getAccounts" resultMap="baiduaccount" parameterType="string">
+		SELECT * FROM adsconfig WHERE productid=#{productId}
+	</select>
+	
+	<select id="countAccounts" resultType="int" parameterType="string">
+		SELECT count(*) FROM adsconfig WHERE productid=#{productId}
+	</select>
+	
+	<update id="modifyPassword" parameterType="string">
+		UPDATE adsconfig SET 
+		<if test="password!=null">password=#{password}, </if>		
+		username=#{username}, 
+		token=#{token}, 
+		modify_time=NOW(),
+		modifier=#{modifier} 
+		WHERE a_id=#{id}
+	</update>
+
+</mapper>

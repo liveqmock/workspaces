@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	version="2.5">
+
+	<display-name>Game Manager Web Application</display-name>
+
+	<!-- 参数 -->
+	<!-- Enable escaping of form submission contents -->
+	<context-param>
+		<param-name>defaultHtmlEscape</param-name>
+		<param-value>true</param-value>
+	</context-param>
+
+	<!-- Log4j 配置文件 -->
+	<context-param>
+		<param-name>log4jConfigLocation</param-name>
+		<!-- param-value>classpath:log4j.properties</param-value -->
+		<!-- 生成环境 -->
+		<param-value>classpath:log4j.properties</param-value>
+	</context-param>
+	<context-param>
+		<param-name>log4jRefreshInterval</param-name>
+		<param-value>6000</param-value>
+	</context-param>
+	<listener>
+		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+	</listener>
+
+	<listener>
+		<listener-class>com.iwgame.xportal.core.security.online.OnLineUserListener</listener-class>
+	</listener>
+
+	<!-- Spring ApplicationContext配置文件路径 -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+			classpath*:conf/*.xml
+		</param-value>
+	</context-param>
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+	<!-- Filters -->
+	<filter>
+		<filter-name>CharacterEncodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+		<init-param>
+			<param-name>forceEncoding</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>CharacterEncodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<!-- 配置spiring security -->
+	<filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<!-- 配置spiring security结束 -->
+
+	<servlet>
+		<servlet-name>gwt-dispatch</servlet-name>
+		<servlet-class>com.iwgame.xmvp.server.guice.GwtRemoteServiceDispatch</servlet-class>
+		<init-param>
+			<param-name>prefix</param-name>
+			<param-value>gsvc</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>gwt-dispatch</servlet-name>
+		<url-pattern>/gsvc/*</url-pattern>
+	</servlet-mapping>
+	
+	<!-- 密保校准的servlet -->
+	<servlet>
+		<servlet-name>Passpod Servlet</servlet-name>
+		<servlet-class>com.iwgame.xportal.core.security.passpod.RealignServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Passpod Servlet</servlet-name>
+		<url-pattern>/passpod</url-pattern>
+	</servlet-mapping>
+
+	<!-- 表格组件中数据导出的servlet -->
+	<servlet>
+		<servlet-name>Export Servlet</servlet-name>
+		<servlet-class>com.iwgame.ui.grid.server.ExportServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Export Servlet</servlet-name>
+		<url-pattern>/export</url-pattern>
+	</servlet-mapping>
+
+	<!-- 策略配置监听回调 -->
+	<servlet>
+		<servlet-name>iwpconf-callback</servlet-name>
+		<servlet-class>com.iwgame.gm.pconf.server.servlet.CallBackServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>iwpconf-callback</servlet-name>
+		<url-pattern>/pconfCallback</url-pattern>
+	</servlet-mapping>
+
+	<!-- CXF Servlet <servlet> <servlet-name>CXFServlet</servlet-name> <display-name>CXF 
+		Servlet</display-name> <servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class> 
+		<load-on-startup>1</load-on-startup> </servlet> <servlet-mapping> <servlet-name>CXFServlet</servlet-name> 
+		<url-pattern>/service/*</url-pattern> </servlet-mapping> <filter> <filter-name>UrlRewriteFilter</filter-name> 
+		<filter-class>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</filter-class> 
+		<init-param> <param-name>logLevel</param-name> <param-value>WARN</param-value> 
+		</init-param> </filter> <filter-mapping> <filter-name>UrlRewriteFilter</filter-name> 
+		<url-pattern>/*</url-pattern> </filter-mapping> -->
+	<!-- Spring Dispatcher <servlet> <servlet-name>springmvc</servlet-name> 
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class> 
+		<load-on-startup>1</load-on-startup> </servlet> <servlet-mapping> <servlet-name>springmvc</servlet-name> 
+		<url-pattern>*.do</url-pattern> </servlet-mapping> -->
+	<!-- Spring刷新Interceptor防止内存泄漏 -->
+	<listener>
+		<listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+	</listener>
+	
+	<!-- Session Timeout Listener Servlet -->
+	<servlet>
+		<servlet-name>Session Service</servlet-name>
+		<servlet-class>com.iwgame.xportal.core.server.SessionServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Session Service</servlet-name>
+		<url-pattern>/XPortal/sessionService</url-pattern>
+	</servlet-mapping>
+	<session-config>
+		<session-timeout>10</session-timeout>
+	</session-config>
+	<error-page>
+		<exception-type>java.lang.Throwable</exception-type>
+		<location>/common/500.jsp</location>
+	</error-page>
+	<error-page>
+		<error-code>500</error-code>
+		<location>/common/500.jsp</location>
+	</error-page>
+	<error-page>
+		<error-code>404</error-code>
+		<location>/common/404.jsp</location>
+	</error-page>
+	<error-page>
+		<error-code>403</error-code>
+		<location>/common/403.jsp</location>
+	</error-page>
+</web-app>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.iwgame.xengine.xtask.wg1.dao.MMailDao">
+
+	<!-- 保存发放邮件记录日志 -->
+	<insert id="saveMailLog" parameterType="java.util.Map">
+		<if test="status != null and status == 0">
+			insert into
+			wg1_mail_logs(g_guid,g_username,g_mailtitle,g_mailcontent,g_operater,g_status,g_note,g_updatetime)
+			values
+			(#{g_guid},#{g_username},#{g_mailtitle},#{g_mailcontent},#{g_operater},0,'success!',now())
+		</if>
+		<if test="status != null and status == 1">
+			insert into
+			wg1_mail_logs(g_guid,g_username,g_mailtitle,g_mailcontent,g_operater,g_status,g_note,g_updatetime)
+			values
+			(#{g_guid},#{g_username},#{g_mailtitle},#{g_mailcontent},#{g_operater},1,'failed!',now())
+		</if>
+	</insert>
+     
+</mapper>

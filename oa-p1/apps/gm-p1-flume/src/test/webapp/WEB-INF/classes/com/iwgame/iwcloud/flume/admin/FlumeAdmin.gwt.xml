@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module rename-to='flume'>
+  <!-- Inherit the core Web Toolkit stuff.                        -->
+  <inherits name='com.google.gwt.user.User'/>
+
+  <inherits name='com.google.gwt.user.theme.clean.Clean'/>
+
+  <!-- Other module inherits                                      -->
+  <inherits name="com.iwgame.iwcloud.flume.admin.modules.monitor.Monitor"/>
+  <inherits name="com.iwgame.iwcloud.flume.admin.modules.history.History"/>
+  <inherits name="com.iwgame.iwcloud.flume.admin.modules.config.Config"/>
+  <inherits name="com.iwgame.iwcloud.flume.admin.modules.datas.Datas"/>
+  
+  <!-- Specify the paths for translatable code                    -->
+  <source path='client'/>
+  <source path='shared'/>
+
+</module>

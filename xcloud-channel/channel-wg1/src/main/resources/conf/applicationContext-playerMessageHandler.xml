@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+	xsi:schemaLocation="http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit.xsd http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<!-- 踢人-监听生产者发送的消息开始 -->
+	<!-- 用于接收消息的处理类 -->
+	<bean id="userKickTaskHandler"
+		class="com.iwgame.xengine.xtask.wg1.worker.player.KickUserTask" />
+
+	<!-- 用于消息的监听的代理类MessageListenerAdapter -->
+	<bean id="userKickTaskListenerAdapter"
+		class="org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter">
+		<constructor-arg ref="userKickTaskHandler" />
+		<property name="defaultListenerMethod" value="handleMessage"></property>
+		<property name="messageConverter" ref="messageConverter"></property>
+	</bean>
+
+	<!-- 用于消息的监听的容器类SimpleMessageListenerContainer，对于queueName的值一定要与定义的Queue的值相同 -->
+	<bean
+		class="org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer">
+		<property name="queueNames" value="${task.kickuser.queue.name}"></property>
+		<property name="connectionFactory" ref="connectionFactory"></property>
+		<property name="messageListener" ref="userKickTaskListenerAdapter"></property>
+		<property name="concurrentConsumers" value="3"></property>
+	</bean>
+	<!-- 踢人-监听生产者发送的消息结束 -->
+
+	<!-- 封禁玩家-监听生产者发送的消息开始 -->
+	<!-- 用于接收消息的处理类 -->
+	<bean id="userLockAccountTaskHandler"
+		class="com.iwgame.xengine.xtask.wg1.worker.player.LockAccountTask" />
+
+	<!-- 用于消息的监听的代理类MessageListenerAdapter -->
+	<bean id="userLockAccountListenerAdapter"
+		class="org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter">
+		<constructor-arg ref="userLockAccountTaskHandler" />
+		<property name="defaultListenerMethod" value="handleMessage"></property>
+		<property name="messageConverter" ref="messageConverter"></property>
+	</bean>
+
+	<!-- 用于消息的监听的容器类SimpleMessageListenerContainer，对于queueName的值一定要与定义的Queue的值相同 -->
+	<bean
+		class="org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer">
+		<property name="queueNames" value="${task.lockaccount.queue.name}"></property>
+		<property name="connectionFactory" ref="connectionFactory"></property>
+		<property name="messageListener" ref="userLockAccountListenerAdapter"></property>
+		<property name="concurrentConsumers" value="3"></property>
+	</bean>
+	<!-- 封禁玩家-监听生产者发送的消息结束 -->
+	
+	<!-- 解除玩家封禁-监听生产者发送的消息开始 -->
+	<!-- 用于接收消息的处理类 -->
+	<bean id="userUnLockAccountTaskHandler"
+		class="com.iwgame.xengine.xtask.wg1.worker.player.UnLockAccountTask" />
+
+	<!-- 用于消息的监听的代理类MessageListenerAdapter -->
+	<bean id="userUnLockAccountListenerAdapter"
+		class="org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter">
+		<constructor-arg ref="userUnLockAccountTaskHandler" />
+		<property name="defaultListenerMethod" value="handleMessage"></property>
+		<property name="messageConverter" ref="messageConverter"></property>
+	</bean>
+
+	<!-- 用于消息的监听的容器类SimpleMessageListenerContainer，对于queueName的值一定要与定义的Queue的值相同 -->
+	<bean
+		class="org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer">
+		<property name="queueNames" value="${task.unlockaccount.queue.name}"></property>
+		<property name="connectionFactory" ref="connectionFactory"></property>
+		<property name="messageListener" ref="userUnLockAccountListenerAdapter"></property>
+		<property name="concurrentConsumers" value="3"></property>
+	</bean>
+	<!-- 解除玩家封禁-监听生产者发送的消息结束 -->
+	
+	<!-- 禁言-监听生产者发送的消息开始 -->
+	<!-- 用于接收消息的处理类 -->
+	<bean id="userNoTalkTaskHandler"
+		class="com.iwgame.xengine.xtask.wg1.worker.player.NoTalkTask" />
+
+	<!-- 用于消息的监听的代理类MessageListenerAdapter -->
+	<bean id="userNoTalkListenerAdapter"
+		class="org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter">
+		<constructor-arg ref="userNoTalkTaskHandler" />
+		<property name="defaultListenerMethod" value="handleMessage"></property>
+		<property name="messageConverter" ref="messageConverter"></property>
+	</bean>
+
+	<!-- 用于消息的监听的容器类SimpleMessageListenerContainer，对于queueName的值一定要与定义的Queue的值相同 -->
+	<bean
+		class="org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer">
+		<property name="queueNames" value="${task.notalkuser.queue.name}"></property>
+		<property name="connectionFactory" ref="connectionFactory"></property>
+		<property name="messageListener" ref="userNoTalkListenerAdapter"></property>
+		<property name="concurrentConsumers" value="3"></property>
+	</bean>
+	<!-- 禁言-监听生产者发送的消息结束 -->
+	
+	<!-- 解除禁言-监听生产者发送的消息开始 -->
+	<!-- 用于接收消息的处理类 -->
+	<bean id="userTalkTaskHandler"
+		class="com.iwgame.xengine.xtask.wg1.worker.player.TalkTask" />
+
+	<!-- 用于消息的监听的代理类MessageListenerAdapter -->
+	<bean id="userTalkListenerAdapter"
+		class="org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter">
+		<constructor-arg ref="userTalkTaskHandler" />
+		<property name="defaultListenerMethod" value="handleMessage"></property>
+		<property name="messageConverter" ref="messageConverter"></property>
+	</bean>
+
+	<!-- 用于消息的监听的容器类SimpleMessageListenerContainer，对于queueName的值一定要与定义的Queue的值相同 -->
+	<bean
+		class="org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer">
+		<property name="queueNames" value="${task.talkuser.queue.name}"></property>
+		<property name="connectionFactory" ref="connectionFactory"></property>
+		<property name="messageListener" ref="userTalkListenerAdapter"></property>
+		<property name="concurrentConsumers" value="3"></property>
+	</bean>
+	<!-- 解除禁言-监听生产者发送的消息结束 -->
+	
+	
+	<!-- 封禁IP-监听生产者发送的消息开始 -->
+	<!-- 用于接收消息的处理类 -->
+	<bean id="userLockIpTaskHandler"
+		class="com.iwgame.xengine.xtask.wg1.worker.player.LockIPTask" />
+
+	<!-- 用于消息的监听的代理类MessageListenerAdapter -->
+	<bean id="userLockIpListenerAdapter"
+		class="org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter">
+		<constructor-arg ref="userLockIpTaskHandler" />
+		<property name="defaultListenerMethod" value="handleMessage"></property>
+		<property name="messageConverter" ref="messageConverter"></property>
+	</bean>
+
+	<!-- 用于消息的监听的容器类SimpleMessageListenerContainer，对于queueName的值一定要与定义的Queue的值相同 -->
+	<bean
+		class="org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer">
+		<property name="queueNames" value="${task.lockip.queue.name}"></property>
+		<property name="connectionFactory" ref="connectionFactory"></property>
+		<property name="messageListener" ref="userLockIpListenerAdapter"></property>
+		<property name="concurrentConsumers" value="3"></property>
+	</bean>
+	<!-- 封禁IP-监听生产者发送的消息结束 -->
+	
+	<!-- 解除封禁IP-监听生产者发送的消息开始 -->
+	<!-- 用于接收消息的处理类 -->
+	<bean id="userUnLockIpTaskHandler"
+		class="com.iwgame.xengine.xtask.wg1.worker.player.UnlockIPTask" />
+
+	<!-- 用于消息的监听的代理类MessageListenerAdapter -->
+	<bean id="userUnLockIpListenerAdapter"
+		class="org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter">
+		<constructor-arg ref="userUnLockIpTaskHandler" />
+		<property name="defaultListenerMethod" value="handleMessage"></property>
+		<property name="messageConverter" ref="messageConverter"></property>
+	</bean>
+
+	<!-- 用于消息的监听的容器类SimpleMessageListenerContainer，对于queueName的值一定要与定义的Queue的值相同 -->
+	<bean
+		class="org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer">
+		<property name="queueNames" value="${task.unlockip.queue.name}"></property>
+		<property name="connectionFactory" ref="connectionFactory"></property>
+		<property name="messageListener" ref="userUnLockIpListenerAdapter"></property>
+		<property name="concurrentConsumers" value="3"></property>
+	</bean>
+	<!-- 解除封禁IP-监听生产者发送的消息结束 -->
+	
+	
+	<!-- 封禁玩家角色-监听生产者发送的消息开始 -->
+	<!-- 用于接收消息的处理类 -->
+	<bean id="userLockUserTaskHandler"
+		class="com.iwgame.xengine.xtask.wg1.worker.player.LockUserTask" />
+
+	<!-- 用于消息的监听的代理类MessageListenerAdapter -->
+	<bean id="userLockUserListenerAdapter"
+		class="org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter">
+		<constructor-arg ref="userLockUserTaskHandler" />
+		<property name="defaultListenerMethod" value="handleMessage"></property>
+		<property name="messageConverter" ref="messageConverter"></property>
+	</bean>
+
+	<!-- 用于消息的监听的容器类SimpleMessageListenerContainer，对于queueName的值一定要与定义的Queue的值相同 -->
+	<bean
+		class="org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer">
+		<property name="queueNames" value="${task.lockuser.queue.name}"></property>
+		<property name="connectionFactory" ref="connectionFactory"></property>
+		<property name="messageListener" ref="userLockUserListenerAdapter"></property>
+		<property name="concurrentConsumers" value="3"></property>
+	</bean>
+	<!-- 封禁玩家角色-监听生产者发送的消息结束 -->
+	
+	<!-- 解除解禁玩家角色-监听生产者发送的消息开始 -->
+	<!-- 用于接收消息的处理类 -->
+	<bean id="userUnLockUserTaskHandler"
+		class="com.iwgame.xengine.xtask.wg1.worker.player.UnlockUserTask" />
+
+	<!-- 用于消息的监听的代理类MessageListenerAdapter -->
+	<bean id="userUnLockUserListenerAdapter"
+		class="org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter">
+		<constructor-arg ref="userUnLockUserTaskHandler" />
+		<property name="defaultListenerMethod" value="handleMessage"></property>
+		<property name="messageConverter" ref="messageConverter"></property>
+	</bean>
+
+	<!-- 用于消息的监听的容器类SimpleMessageListenerContainer，对于queueName的值一定要与定义的Queue的值相同 -->
+	<bean
+		class="org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer">
+		<property name="queueNames" value="${task.unlockuser.queue.name}"></property>
+		<property name="connectionFactory" ref="connectionFactory"></property>
+		<property name="messageListener" ref="userUnLockUserListenerAdapter"></property>
+		<property name="concurrentConsumers" value="3"></property>
+	</bean>
+	<!-- 解禁玩家角色-监听生产者发送的消息结束 -->
+</beans>

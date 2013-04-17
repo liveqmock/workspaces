@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+            http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<import resource="classpath:conf/applicationContext-pconf.xml" />
+	<import resource="classpath:conf/applicationContext-connector.xml" />
+	<import resource="classpath:conf/applicationContext-common.xml" />
+	<import resource="classpath:conf/applicationContext-report.xml" />
+
+	<!-- 自动注入Service -->
+	<context:component-scan base-package="com.iwgame.gm.p1.adcollect.server.service" />
+	<context:annotation-config />
+	
+	<!-- 自定义  bean -->
+	<bean id="gm-p1-ad-keys-service" class="com.iwgame.gm.p1.adcollect.server.service.KeysServiceImpl">
+	</bean>
+	<bean id="gm-p1-ad-customreport" class="com.iwgame.gm.p1.adcollect.server.service.CustomreportServiceImpl" />
+	<bean id="gm-p1-ad-crl-service" class="com.iwgame.gm.p1.adcollect.server.service.CrlServiceImpl">
+	</bean>
+	<bean id="gm-p1-ad-keys-hourTrackService" class="com.iwgame.gm.p1.adcollect.server.service.HourTrackServiceImpl" />
+	<bean id="gm-p1-ad-baidu-accountService" class="com.iwgame.gm.p1.adcollect.server.service.BaiduAccountServiceImpl" />
+	<bean id="gm-p1-ad-keys-dayService" class="com.iwgame.gm.p1.adcollect.server.service.DayServiceImpl" />
+	<bean id="gm-p1-ad-reports-aDDataService" class="com.iwgame.gm.p1.adcollect.server.service.ADDataServiceImpl" />
+	<bean id="gm-p1-ad-landing-landingService" class="com.iwgame.gm.p1.adcollect.server.service.LandingServiceImpl" >
+		<property name="resHost" value="${res.host}"/>
+	</bean>
+	<bean id="gm-p1-ad-admin-adminMgrService" class="com.iwgame.gm.p1.adcollect.server.service.AdminMgrServiceImpl" >
+		<property name="resHost" value="${res.host}"/>
+	</bean>
+	
+	<bean id="gm-p1-ad-export-dayIdService" class="com.iwgame.gm.p1.adcollect.server.service.export.DayIdServiceImpl" />
+	<bean id="gm-p1-ad-export-dayTxtService" class="com.iwgame.gm.p1.adcollect.server.service.export.DayTxtServiceImpl" />
+	<bean id="gm-p1-ad-export-trackIdService" class="com.iwgame.gm.p1.adcollect.server.service.export.TrackIdServiceImpl" />
+	<bean id="gm-p1-ad-export-trackTxtService" class="com.iwgame.gm.p1.adcollect.server.service.export.TrackTxtServiceImpl" />
+	<bean id="gm-p1-ad-reports-MediaDataService" class="com.iwgame.gm.p1.adcollect.server.service.export.MediaServiceImpl" />
+	<bean id="gm-p1-ad-reports-KeysExportService" class="com.iwgame.gm.p1.adcollect.server.service.export.KeysExportServiceImpl" />
+	<bean id="gm-p1-ad-reports-posDataService" class="com.iwgame.gm.p1.adcollect.server.service.export.PosServiceImpl" >
+		<property name="resHost" value="${res.host}"/>
+	</bean>
+	<bean id="gm-p1-ad-reports-sheduleDataService" class="com.iwgame.gm.p1.adcollect.server.service.export.SheduleServiceImpl" />
+	<bean id="gm-p1-ad-framemgrservice" class="com.iwgame.gm.p1.adcollect.server.service.FrameMgrServiceImpl" />
+	<bean id="gm-p1-ad-useframemgrservice" class="com.iwgame.gm.p1.adcollect.server.service.export.UseFrameMgrServiceImpl" />
+	<bean id="gm-p1-ad-explainmgrservice" class="com.iwgame.gm.p1.adcollect.server.service.ExplainMgrServiceImpl" >
+		<property name="resHost" value="${res.host}"/>
+	</bean>
+	
+	
+	<!-- 加载配置文件 -->
+	<bean id="adcollectPropertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="ignoreUnresolvablePlaceholders" value="true" />
+		<property name="ignoreResourceNotFound" value="true" />
+		<property name="locations">
+			<list>
+				<!--开发环境下的配置文件 -->
+				<value>classpath:adcollect.properties</value>
+				<!-- 生产环境下的配置文件 -->
+				<value>file:/var/config/xportal-oa/adcollect/adcollect.properties</value>
+			</list>
+		</property>
+		<property name="fileEncoding" value="utf-8" />
+	</bean>
+	
+	<!-- 文件上传处理器 -->
+	<bean id="batchUploadProcessor"
+		class="com.iwgame.gm.p1.adcollect.server.uploadprocessor.BatchAddUploadprocessor">
+	</bean>
+	<bean id="batchModifyProcessor"
+		class="com.iwgame.gm.p1.adcollect.server.uploadprocessor.BatchModifyUploadprocessor">
+	</bean>
+	<bean id="batchUploadNetbarIpProcessor"
+		class="com.iwgame.gm.p1.adcollect.server.uploadprocessor.BatchUploadNetbarIpProcessor">
+	</bean>
+	<bean id="crlbatchUploadProcessor"
+		class="com.iwgame.gm.p1.adcollect.server.uploadprocessor.CrlBatchAddUploadprocessor">
+	</bean>
+	<bean id="crlAccountBatchInputUploadprocessor"
+		class="com.iwgame.gm.p1.adcollect.server.uploadprocessor.CrlAccountBatchInputUploadprocessor">
+	</bean>
+	<bean id="crlBatchDelUploadprocessor"
+		class="com.iwgame.gm.p1.adcollect.server.uploadprocessor.CrlBatchDelUploadprocessor">
+	</bean>
+	<bean id="materialuploadprocessor" class="com.iwgame.gm.p1.adcollect.server.uploadprocessor.MaterialUploadProcessor">
+		<property name="physicalPath" value="${physicalPath}"/>
+	</bean>
+	<bean id="posuploadprocessor" class="com.iwgame.gm.p1.adcollect.server.uploadprocessor.PosUploadProcessor">
+		<property name="physicalPath" value="${physicalPath}"/>
+	</bean>
+	<bean id="logosloadprocessor" class="com.iwgame.gm.p1.adcollect.server.uploadprocessor.LogosLoadProcessor">
+		<property name="physicalPath" value="${physicalPath}"/>
+	</bean>
+	<bean id="contractloadprocessor" class="com.iwgame.gm.p1.adcollect.server.uploadprocessor.ContractLoadProcessor">
+		<property name="physicalPath" value="${physicalPath}"/>
+	</bean>
+	
+	<bean id="operatorLogger" class="com.iwgame.gm.p1.adcollect.server.OperatorLogger">
+		<property name="targetSubfix" value="AD"/>
+	</bean>
+	
+	<bean id="ad.download" class="com.iwgame.xmvp.server.download.DefaultFileProcessor">
+		<property name="physicalPath" value="${physicalPath}"/>
+		<property name="host" value="${res.host}"/>
+	</bean>
+	<bean id="dataDictionaryUploadProcessor" class="com.iwgame.gm.p1.adcollect.server.uploadprocessor.DataDictionaryUploadProcessor">
+		<property name="physicalPath" value="${physicalPath}"/>
+	</bean>
+</beans>

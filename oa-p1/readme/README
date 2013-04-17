@@ -1,0 +1,17 @@
+模块说明：
+
+reports(报表模块设计文件)
+-report-configs
+-report-files
+报表设计文件
+
+tools(工具模块)
+-baidu-task
+百度数据采集
+-log-monitor-task
+日志监控工具，分析日志，按照规则把危险IP提交到运维数据库进行自动封杀；
+
+xportal-oa(oa)
+
+xportal-task(task)
+包括了IP翻译，封杀等

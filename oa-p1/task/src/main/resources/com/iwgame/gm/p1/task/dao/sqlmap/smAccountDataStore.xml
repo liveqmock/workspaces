@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.iwgame.gm.p1.task.security.dao.sm.SmAccountDataStoreDao">
+	
+	<insert id = "addAccountByUserNameToUnLook" parameterType="java.lang.String">
+	   INSERT INTO m_remove_user (username) VALUES (#{username})
+	</insert> 
+	
+	
+	<insert id = "addAccountByUserNameToSafeModel" parameterType="java.lang.String">
+	   INSERT INTO m_safe_user (username) VALUES (#{username})
+	</insert> 
+
+</mapper>

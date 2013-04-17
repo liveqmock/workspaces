@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="security.KilledRecord">
+	<resultMap
+		type="com.iwgame.gm.p1.security.common.shared.model.KilledRecord"
+		id="KilledRecordMap">
+		<id property="id" column="id" />
+		<result property="zone" column="zone"/>
+		<result property="username" column="username" />
+		<result property="type" column="type"/>
+		<result property="days" column="days"/>
+		<result property="batchid" column="batchid"/>
+		<result property="optime" column="optime"/>
+		<result property="operator" column="operator"/>
+		<result property="handleStatus" column="handle_status"/>
+		<result property="causeType" column="cause_type"/>
+		<result property="causeNote" column="cause_note"/>
+		<result property="killedType" column="killed_type"/>
+	</resultMap>
+	
+	<select id="selectCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+		select count(0) from killed_record where 1=1 
+			<if test="handlerStatus!=null and  handlerStatus!='' and handlerStatus !='null'">
+				AND handle_status = #{handlerStatus} 
+			</if>
+			<if test="batchid!=null and  batchid!='' and batchid !='null'">
+				AND batchid = #{batchid}
+			</if>
+			<if test="type!=null and  type!='' and type !='null'">
+				AND type = #{type}
+			</if>
+			<if test="causeType!=null and  causeType!='' and causeType !='null'">
+				AND cause_type = #{causeType}
+			</if>
+			<if test="days!=null and days!='' and days!='null'">
+				AND days = #{days}
+			</if>
+			<if test="operator!=null and operator!='null' and operator!=''">
+				AND operator like '%${operator}%' 
+			</if>	
+			<if test="username!=null and username!='null' and username!=''">
+				AND username like '%${username}%' 
+			</if>			
+			<if test="startDate != null and startDate !='' and endDate != null and endDate !=''">
+				AND optime BETWEEN '${startDate} 00:00:00' AND '${endDate} 23:59:59' 
+			</if>
+	</select>
+	<select id="select" parameterType="java.util.Map" resultMap="KilledRecordMap">
+		select * from killed_record where 1=1 
+			<if test="handlerStatus!=null and  handlerStatus!='' and handlerStatus !='null'">
+				AND handle_status = #{handlerStatus} 
+			</if>
+			<if test="batchid!=null and  batchid!='' and batchid !='null'">
+				AND batchid = #{batchid}
+			</if>
+			<if test="type!=null and  type!='' and type !='null'">
+				AND type = #{type}
+			</if>
+			<if test="causeType!=null and  causeType!='' and causeType !='null'">
+				AND cause_type = #{causeType}
+			</if>
+			<if test="days!=null and days!='' and days!='null'">
+				AND days = #{days}
+			</if>
+			<if test="operator!=null and operator!='null' and operator!=''">
+				AND operator like '%${operator}%' 
+			</if>	
+			<if test="username!=null and username!='null' and username!=''">
+				AND username like '%${username}%' 
+			</if>			
+			<if test="startDate != null and startDate !='' and endDate != null and endDate !=''">
+				AND optime BETWEEN '${startDate} 00:00:00' AND '${endDate} 23:59:59' 
+			</if>
+			<if test="sortColumn !=null and sortColumn !='' and sortType !=null and sortType !=''">
+				ORDER BY ${sortColumn} ${sortType} 
+			</if>
+			<if test="limit >0 and offset >=0 ">
+				LIMIT #{offset},#{limit}
+			</if>
+	</select>
+	
+	<select id="selectByUsername" parameterType="java.lang.String" resultMap="KilledRecordMap">
+		select type,days,optime
+		from killed_record 
+		where username=#{username}
+		order by optime desc
+		limit 0,1
+	</select>
+		
+	<insert id="insert" parameterType="com.iwgame.gm.p1.security.common.shared.model.KilledRecord" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO killed_record (
+				zone, 
+				username, 
+				type, 
+				days,
+				batchid,
+				optime,
+				operator,
+				handle_status,
+				cause_note,
+				cause_type,
+				killed_type
+			)VALUES(
+				#{zone}, 
+				#{username}, 
+				#{type}, 
+				#{days},
+				#{batchid},
+				NOW(),
+				#{operator},
+				#{handleStatus},
+				#{causeNote},
+				#{causeType},
+				#{killedType}
+			)
+	</insert>
+</mapper>

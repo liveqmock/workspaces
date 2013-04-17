@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+	xsi:schemaLocation="http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit.xsd http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<!-- 注册用户模块-监听生产者发送的消息开始 -->
+	<!-- 用于接收消息的处理类 -->
+	<bean id="registeUserTaskHandler"
+		class="com.iwgame.xengine.xtask.cps.worker.service.RegisteUserTask" />
+
+	<!-- 用于消息的监听的代理类MessageListenerAdapter -->
+	<bean id="registeUserTaskListenerAdapter"
+		class="org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter">
+		<constructor-arg ref="registeUserTaskHandler" />
+		<property name="defaultListenerMethod" value="handleMessage" />
+		<property name="messageConverter" ref="messageConverter" />
+	</bean>
+
+	<!-- 用于消息的监听的容器类SimpleMessageListenerContainer，对于queueName的值一定要与定义的Queue的值相同 -->
+	<bean
+		class="org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer">
+		<property name="queueNames" value="${cps.task.registeuser.queue.name}" />
+		<property name="connectionFactory" ref="cpsConnectionFactory" />
+		<property name="messageListener" ref="registeUserTaskListenerAdapter" />
+		<property name="concurrentConsumers" value="3" />
+	</bean>
+	<!-- 注册用户模块-监听生产者发送的消息结束 -->
+	
+	<!-- 点击数统计模块-监听生产者发送的消息开始 -->
+	<!-- 用于接收消息的处理类 -->
+	<bean id="clickCountTaskHandler"
+		class="com.iwgame.xengine.xtask.cps.worker.service.ClickCountTask" />
+
+	<!-- 用于消息的监听的代理类MessageListenerAdapter -->
+	<bean id="clickCountTaskListenerAdapter"
+		class="org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter">
+		<constructor-arg ref="clickCountTaskHandler" />
+		<property name="defaultListenerMethod" value="handleMessage" />
+		<property name="messageConverter" ref="messageConverter" />
+	</bean>
+
+	<!-- 用于消息的监听的容器类SimpleMessageListenerContainer，对于queueName的值一定要与定义的Queue的值相同 -->
+	<bean
+		class="org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer">
+		<property name="queueNames" value="${cps.task.clickcount.queue.name}" />
+		<property name="connectionFactory" ref="cpsConnectionFactory" />
+		<property name="messageListener" ref="clickCountTaskListenerAdapter" />
+		<property name="concurrentConsumers" value="3" />
+	</bean>
+	<!-- 点击数统计模块-监听生产者发送的消息结束 -->
+
+</beans>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="logmonitor.game.login">
+
+	<resultMap type="com.iwgame.gm.p1.logmonitor.modules.game.shared.model.LoginModelBean" id="loginData">
+		<id property="id"/>
+		<result property="zoneId" column="zone_id"/>
+		<result property="username" column="user_name"/>
+		<result property="errorTimes" column="err_times"/>
+		<result property="loginIp" column="login_ip"/>
+		<result property="loginMac" column="login_mac"/>
+		<result property="loginTime" column="login_time"/>
+	</resultMap>
+
+	<select id="warning" resultMap="loginData" parameterType="hashmap">
+		SELECT zone_id, user_name, MAX(err_times) AS err_times, login_time, login_ip, login_mac
+		FROM (SELECT zone_id, user_name, err_times, login_time, login_ip, login_mac FROM monitor_login_safe ORDER BY err_times DESC) as e
+		GROUP BY zone_id, user_name
+		ORDER BY login_time DESC
+		LIMIT 0, 20
+	</select>
+
+	<select id="realtime" resultMap="loginData" parameterType="hashmap">
+		SELECT zone_id, user_name, MAX(err_times) AS err_times, login_time, login_ip, login_mac
+		FROM (SELECT zone_id, user_name, err_times, login_time, login_ip, login_mac FROM monitor_login_safe ORDER BY err_times DESC) as e
+		<where>
+			<if test="zoneId != null and zoneId != ''">
+				zone_id=#{zoneId}
+			</if>
+			<if test="errorTimes != null">
+				AND err_times>=#{errorTimes}
+			</if>
+		</where>
+		GROUP BY zone_id, user_name
+		ORDER BY login_time DESC
+		LIMIT 0, #{limit}
+	</select>
+	
+	<select id="history" resultMap="loginData" parameterType="hashmap">
+		SELECT zone_id, user_name, MAX(err_times) AS err_times, login_time, login_ip, login_mac
+		FROM (SELECT zone_id, user_name, err_times, login_time, login_ip, login_mac FROM monitor_login_safe ORDER BY err_times DESC) as e
+		<where>
+			<if test="zoneId != null and zoneId != ''">
+				zone_id=#{zoneId}
+			</if>
+			<if test="errorTimes != null">
+				AND err_times>=#{errorTimes}
+			</if>
+			<if test="startDate != null and endDate!=null">
+				AND login_time BETWEEN #{startDate} AND #{endDate}
+			</if>
+		</where>
+		GROUP BY zone_id, user_name
+		ORDER BY err_times DESC, login_time DESC
+		LIMIT #{offset}, #{limit}
+	</select>
+	
+	<select id="historyCount" resultType="int" parameterType="hashmap">
+		SELECT COUNT(*) FROM (SELECT zone_id, user_name, MAX(err_times) AS err_times, login_time, login_ip, login_mac
+		FROM (SELECT zone_id, user_name, err_times, login_time, login_ip, login_mac FROM monitor_login_safe ORDER BY err_times DESC) as e
+		<where>
+			<if test="zoneId != null and zoneId != ''">
+				zone_id=#{zoneId}
+			</if>
+			<if test="errorTimes != null">
+				AND err_times>=#{errorTimes}
+			</if>
+			<if test="startDate != null and endDate!=null">
+				AND login_time BETWEEN #{startDate} AND #{endDate}
+			</if>
+		</where>
+		GROUP BY zone_id, user_name
+		ORDER BY err_times DESC, login_time DESC
+		) as ee
+	</select>
+	
+</mapper>

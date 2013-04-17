@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="logmonitor.config">
+
+	<resultMap type="com.iwgame.gm.p1.logmonitor.modules.config.shared.model.WarningConfigModelBean" id="configData">
+		<id property="id" column="t_id"/>
+		<result property="monitorType" column="t_monitor_type"/>
+		<result property="monitorName" column="t_monitor_name"/>
+		<result property="status" column="t_status"/>
+		<result property="maxCount" column="t_max_count"/>
+		<result property="recevierMobile" column="t_rev_mobile"/>
+		<result property="lastUpdatetime" column="t_last_updatetime"/>
+		<result property="lastUpdateuser" column="t_last_updateuser"/>
+	</resultMap>
+
+	<select id="warningConfigs" resultMap="configData" parameterType="hashmap">
+		SELECT t_id, t_monitor_type, t_monitor_name, t_status, t_max_count, t_rev_mobile, t_last_updatetime, t_last_updateuser
+		FROM t_monitor_policy
+		LIMIT #{offset}, #{limit}
+	</select>
+	
+	<select id="warningConfigsCounts" resultType="int">
+		SELECT count(*) FROM t_monitor_policy
+	</select>
+	
+	<update id="updateConfig" parameterType="com.iwgame.gm.p1.logmonitor.modules.config.shared.model.WarningConfigModelBean">
+		UPDATE t_monitor_policy SET t_max_count=#{maxCount}, t_status=#{status}, t_last_updateuser=#{lastUpdateuser}, t_last_updatetime=NOW()
+		WHERE t_id=#{id}
+	</update>
+	
+</mapper>

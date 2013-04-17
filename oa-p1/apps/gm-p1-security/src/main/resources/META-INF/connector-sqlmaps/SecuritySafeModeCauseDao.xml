@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="security.SafeModeCauseMap">
+	<resultMap
+		type="com.iwgame.gm.p1.security.common.shared.model.SafeModeCauseConfig"
+		id="SafeModeCauseMap">
+		<id property="id" column="id" />
+		<result property="causeNote" column="cause_note" />
+		<result property="creator" column="creator" />
+		<result property="createTime" column="create_time" />
+	</resultMap>
+
+	<select id="count" parameterType="java.util.Map" resultType="java.lang.Integer">
+		SELECT count(0) FROM safe_mode_cause_config WHERE 1=1 
+		<if test="creator != null and creator != ''">
+			AND creator like '%${creator}%' 
+		</if>
+		<if test="startDate != null and startDate !='' and endDate != null and endDate !=''">
+			AND create_time BETWEEN '${startDate} 00:00:00' AND '${endDate} 23:59:59' 
+		</if>
+	</select>
+
+	<select id="select" parameterType="java.util.Map" resultMap="SafeModeCauseMap">
+		SELECT * FROM safe_mode_cause_config WHERE 1=1 
+		<if test="id!= null and id != ''">
+			AND id = #{id} 
+		</if>
+		<if test="creator != null and creator != ''">
+			AND creator like '%${creator}%' 
+		</if>
+		<if test="startDate != null and startDate !='' and endDate != null and endDate !=''">
+			AND create_time BETWEEN '${startDate} 00:00:00' AND '${endDate} 23:59:59' 
+		</if>
+		<if test="sortColumn !=null and sortColumn !='' and sortType !=null and sortType !=''">
+			ORDER BY ${sortColumn} ${sortType} 
+		</if>
+		<if test="limit >0 and offset >=0 ">
+			LIMIT #{offset},#{limit}
+		</if>
+	</select>
+	<insert id="insert" parameterType="com.iwgame.gm.p1.security.common.shared.model.SafeModeCauseConfig" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO safe_mode_cause_config 
+			( 
+			cause_note, 
+			creator, 
+			create_time
+			)
+			VALUES
+			(
+			#{causeNote}, 
+			#{creator}, 
+			now()
+			);
+	</insert>
+	
+	<update id="update" parameterType="com.iwgame.gm.p1.security.common.shared.model.SafeModeCauseConfig">
+		UPDATE safe_mode_cause_config 
+			SET
+			id = #{id} ,
+		<if test="causeNote!=null and causeNote !=''">
+			cause_note = #{causeNote} 
+		</if>
+			WHERE
+			id = #{id} ;
+	</update>
+	
+	<delete id="delete" parameterType="list">
+		<![CDATA[
+           DELETE FROM safe_mode_cause_config WHERE id IN
+        ]]>
+        <foreach collection="list" item="ids"  open="(" separator="," close=")">  
+            #{ids}
+         </foreach>
+	</delete>
+</mapper>

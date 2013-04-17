@@ -1,0 +1,2170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.22" id="1">
+    <property name="createdBy">Eclipse BIRT Designer Version 2.6.2.r262_v20110209 Build &lt;2.6.2.v20110214-1523></property>
+    <property name="units">in</property>
+    <method name="initialize"><![CDATA[reportContext.setPersistentGlobalVariable("pageSize","40");
+
+//从配置文件读取分页后的URL
+importPackage( Packages.java.io );
+importPackage( Packages.java.util );
+fin = new java.io.FileInputStream("/var/config/report/reports-config/url.properties");
+props = new java.util.Properties();
+props.load(fin);
+
+//XportalUrl 用于类型超链接参数传递
+var XportalURL = props.getProperty("XportalURL");
+if(reportContext.getParameterValue("beginDate")!=null &amp;&amp; reportContext.getParameterValue("endDate")!=null){
+var beginDate =reportContext.getParameterValue("beginDate").substr(0,10);
+var endDate=reportContext.getParameterValue("endDate").substr(0,10);
+}
+
+
+actionlink =  props.getProperty("URL");
+actionlink=actionlink+"reportName="+reportContext.getParameterValue("reportName")+"&amp;";
+actionlink=actionlink+"dbDriver="+reportContext.getParameterValue("dbDriver")+"&amp;";
+actionlink=actionlink+"dbURL="+encodeURIComponent(reportContext.getParameterValue("dbURL"))+"&amp;";
+actionlink=actionlink+"dbUserName="+reportContext.getParameterValue("dbUserName")+"&amp;";
+actionlink=actionlink+"dbPassword="+reportContext.getParameterValue("dbPassword")+"&amp;";
+actionlink=actionlink+"ts="+reportContext.getParameterValue("ts")+"&amp;";
+actionlink=actionlink+"sign="+reportContext.getParameterValue("sign")+"&amp;";
+actionlink=actionlink+"format="+reportContext.getParameterValue("format")+"&amp;";
+
+if(reportContext.getParameterValue("beginDate")!=null &amp;&amp; reportContext.getParameterValue("endDate")!=null){
+ actionlink=actionlink+"beginDate="+reportContext.getParameterValue("beginDate")+"&amp;";
+ actionlink=actionlink+"endDate="+reportContext.getParameterValue("endDate")+"&amp;";
+}
+if(reportContext.getParameterValue("keytype")!=null){
+ var keytype =decodeURI(reportContext.getParameterValue("keytype"));
+var type1 = keytype.replace("[","'").replace("]","'").replace("%2C+","','").replace("%2C+","','").replace("%2C+","','");
+var type = type1.replace(",","','").replace(",","','").replace(",","','");
+ actionlink=actionlink+"keytype="+reportContext.getParameterValue("keytype")+"&amp;";
+}
+ 
+reportContext.setPersistentGlobalVariable("actionlink",actionlink);
+
+ 
+
+
+
+	]]></method>
+    <property name="iconFile">/templates/blank_report.gif</property>
+    <property name="layoutPreference">auto layout</property>
+    <property name="bidiLayoutOrientation">ltr</property>
+    <property name="imageDPI">96</property>
+    <list-property name="libraries">
+        <structure>
+            <property name="fileName">paginate.rptlibrary</property>
+            <property name="namespace">paginate</property>
+        </structure>
+    </list-property>
+    <parameters>
+        <scalar-parameter name="total" id="998">
+            <property name="hidden">true</property>
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="limit" id="999">
+            <property name="hidden">true</property>
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="constant">40</value>
+            </simple-property-list>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="offset" id="1000">
+            <property name="hidden">true</property>
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="constant">0</value>
+            </simple-property-list>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+    </parameters>
+    <data-sources>
+        <oda-data-source extensionID="org.eclipse.birt.report.data.oda.jdbc" name="DataSource" id="7">
+            <list-property name="privateDriverProperties">
+                <ex-property>
+                    <name>disabledMetadataBidiFormatStr</name>
+                </ex-property>
+                <ex-property>
+                    <name>disabledContentBidiFormatStr</name>
+                </ex-property>
+                <ex-property>
+                    <name>contentBidiFormatStr</name>
+                    <value>ILYNN</value>
+                </ex-property>
+                <ex-property>
+                    <name>metadataBidiFormatStr</name>
+                    <value>ILYNN</value>
+                </ex-property>
+            </list-property>
+            <property name="odaDriverClass">com.mysql.jdbc.Driver</property>
+            <property name="odaURL">jdbc:mysql://10.100.3.51/zxy_adcollect?autoReconnect=true&amp;createDatabaseIfNotExist=true&amp;useUnicode=true&amp;characterEncoding=utf-8</property>
+            <property name="odaUser">dev</property>
+            <encrypted-property name="odaPassword" encryptionID="base64">ZGV2MjAxMg==</encrypted-property>
+        </oda-data-source>
+    </data-sources>
+    <data-sets>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="DataSet" id="8">
+            <property name="nullsOrdering">nulls lowest</property>
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">thdid_date</property>
+                    <text-property name="displayName">thdid_date</text-property>
+                    <text-property name="heading">thdid_date</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">thdid_type</property>
+                    <text-property name="displayName">thdid_type</text-property>
+                    <text-property name="heading">thdid_type</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">thdid_key_name</property>
+                    <text-property name="displayName">thdid_key_name</text-property>
+                    <text-property name="heading">thdid_key_name</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">thdid_ad_id</property>
+                    <text-property name="displayName">thdid_ad_id</text-property>
+                    <text-property name="heading">thdid_ad_id</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">thdid_account_type</property>
+                    <text-property name="displayName">thdid_account_type</text-property>
+                    <text-property name="heading">thdid_account_type</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">thdid_reg</property>
+                    <text-property name="displayName">thdid_reg</text-property>
+                    <text-property name="heading">thdid_reg</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">thdid_login</property>
+                    <text-property name="displayName">thdid_login</text-property>
+                    <text-property name="heading">thdid_login</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">thdid_paid_count</property>
+                    <text-property name="displayName">thdid_paid_count</text-property>
+                    <text-property name="heading">thdid_paid_count</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">cpl</property>
+                    <text-property name="displayName">cpl</text-property>
+                    <text-property name="heading">cpl</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">thdid_paid</property>
+                    <text-property name="displayName">thdid_paid</text-property>
+                    <text-property name="heading">thdid_paid</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">thdid_retained_count</property>
+                    <text-property name="displayName">thdid_retained_count</text-property>
+                    <text-property name="heading">thdid_retained_count</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">thdid_paid_retained_count</property>
+                    <text-property name="displayName">thdid_paid_retained_count</text-property>
+                    <text-property name="heading">thdid_paid_retained_count</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">thdid_paid_retained</property>
+                    <text-property name="displayName">thdid_paid_retained</text-property>
+                    <text-property name="heading">thdid_paid_retained</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">thirty0105</property>
+                    <text-property name="displayName">thirty0105</text-property>
+                    <text-property name="heading">thirty0105</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">thirty0625</property>
+                    <text-property name="displayName">thirty0625</text-property>
+                    <text-property name="heading">thirty0625</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">thirty2630</property>
+                    <text-property name="displayName">thirty2630</text-property>
+                    <text-property name="heading">thirty2630</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">thirty3150</property>
+                    <text-property name="displayName">thirty3150</text-property>
+                    <text-property name="heading">thirty3150</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">thirty5160</property>
+                    <text-property name="displayName">thirty5160</text-property>
+                    <text-property name="heading">thirty5160</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">thirty61</property>
+                    <text-property name="displayName">thirty61</text-property>
+                    <text-property name="heading">thirty61</text-property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">thdid_date</property>
+                        <property name="dataType">date</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">thdid_type</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">thdid_key_name</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">thdid_ad_id</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">thdid_account_type</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">thdid_reg</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">thdid_login</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">8</property>
+                        <property name="name">thdid_paid_count</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">9</property>
+                        <property name="name">cpl</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">10</property>
+                        <property name="name">thdid_paid</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">11</property>
+                        <property name="name">thdid_retained_count</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">12</property>
+                        <property name="name">thdid_paid_retained_count</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">13</property>
+                        <property name="name">thdid_paid_retained</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">14</property>
+                        <property name="name">thirty0105</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">15</property>
+                        <property name="name">thirty0625</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">16</property>
+                        <property name="name">thirty2630</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">17</property>
+                        <property name="name">thirty3150</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">18</property>
+                        <property name="name">thirty5160</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">19</property>
+                        <property name="name">thirty61</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <method name="beforeOpen"><![CDATA[var startTime=reportContext.getParameterValue("beginDate");
+var endTime=reportContext.getParameterValue("endDate");
+var offset = reportContext.getParameterValue("offset");
+var limit = reportContext.getParameterValue("limit");
+
+//importPackage(Packages.java.io);
+//out=new PrintWriter(new FileWriter("/var/log/gm/reportinfo",true));
+//out.println("Xoffset:-->"+reportContext.getParameterValue("offset"));
+//out.println("Xlimit:-->"+reportContext.getParameterValue("limit"));
+//out.println("Xpagesize:-->"+reportContext.getPersistentGlobalVariable("pageSize"));
+//out.close();
+
+if(reportContext.getParameterValue("keytype")!=null){
+ var keytype =decodeURI(reportContext.getParameterValue("keytype"));
+ var type = keytype.replace("[","'").replace("]","'").replace("%2C",",").replace("%2C",",").replace("%2C",",");
+}
+
+
+this.queryText+=" where 1=1 ";
+if(startTime!=null &amp;&amp; endTime!=null){
+    //查询条件
+    this.queryText+=" and thdid_date >='"+startTime.substr(0,10)+"'";
+    this.queryText+=" and thdid_date <='"+endTime+"'";
+}  
+if(type!=null &amp;&amp; reportContext.getParameterValue("keytype")!=null){
+    //查询条件
+    this.queryText+=" and thdid_type in ("+type+")";
+}  
+ 
+   this.queryText+= "  ORDER BY thdid_date desc ";
+   //this.queryText+= "  GROUP BY senid_date desc,sentxt_type"
+  if(offset!=null &amp;&amp; limit !=null ){
+   this.queryText+= "  limit "+offset+","+limit;  
+  }
+ // importPackage(Packages.java.io);
+ // out=new PrintWriter(new FileWriter("/var/log/gm/reportinfo",true));
+ // out.println("QueryText:-->"+this.queryText);
+ // out.close();
+  ]]></method>
+            <property name="dataSource">DataSource</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">thdid_date</property>
+                    <property name="nativeName">thdid_date</property>
+                    <property name="dataType">date</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">thdid_type</property>
+                    <property name="nativeName">thdid_type</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">thdid_key_name</property>
+                    <property name="nativeName">thdid_key_name</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">thdid_ad_id</property>
+                    <property name="nativeName">thdid_ad_id</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">thdid_account_type</property>
+                    <property name="nativeName">thdid_account_type</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">6</property>
+                    <property name="name">thdid_reg</property>
+                    <property name="nativeName">thdid_reg</property>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="position">7</property>
+                    <property name="name">thdid_login</property>
+                    <property name="nativeName">thdid_login</property>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="position">8</property>
+                    <property name="name">thdid_paid_count</property>
+                    <property name="nativeName">thdid_paid_count</property>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="position">9</property>
+                    <property name="name">cpl</property>
+                    <property name="nativeName">cpl</property>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="position">10</property>
+                    <property name="name">thdid_paid</property>
+                    <property name="nativeName">thdid_paid</property>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="position">11</property>
+                    <property name="name">thdid_retained_count</property>
+                    <property name="nativeName">thdid_retained_count</property>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="position">12</property>
+                    <property name="name">thdid_paid_retained_count</property>
+                    <property name="nativeName">thdid_paid_retained_count</property>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="position">13</property>
+                    <property name="name">thdid_paid_retained</property>
+                    <property name="nativeName">thdid_paid_retained</property>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="position">14</property>
+                    <property name="name">thirty0105</property>
+                    <property name="nativeName">thirty0105</property>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="position">15</property>
+                    <property name="name">thirty0625</property>
+                    <property name="nativeName">thirty0625</property>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="position">16</property>
+                    <property name="name">thirty2630</property>
+                    <property name="nativeName">thirty2630</property>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="position">17</property>
+                    <property name="name">thirty3150</property>
+                    <property name="nativeName">thirty3150</property>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="position">18</property>
+                    <property name="name">thirty5160</property>
+                    <property name="nativeName">thirty5160</property>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="position">19</property>
+                    <property name="name">thirty61</property>
+                    <property name="nativeName">thirty61</property>
+                    <property name="dataType">float</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[SELECT 
+thdid_date,
+thdid_type,
+thdid_key_name,
+thdid_ad_id,
+thdid_account_type,
+thdid_reg ,
+thdid_login,
+thdid_paid_count,
+thdid_paid_count/thdid_login as cpl,
+thdid_paid,
+thdid_retained_count,
+thdid_paid_retained_count,
+thdid_paid_retained,
+thdid_level_0105/thdid_login as thirty0105,
+thdid_level_0625/thdid_login as thirty0625,
+thdid_level_2630/thdid_login as thirty2630,
+thdid_level_3150/thdid_login as thirty3150,
+thdid_level_5160/thdid_login as thirty5160,
+thdid_level_61/thdid_login as thirty61
+from rpt_search_baidu_adid_detail_thirty]]></xml-property>
+            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
+  <Version>2.0</Version>
+  <design:ResultSets derivedMetaData="true">
+    <design:resultSetDefinitions>
+      <design:resultSetColumns>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>summary_id</design:name>
+              <design:position>1</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>11</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>summary_id</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>summary_id</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>summary_date</design:name>
+              <design:position>2</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>91</design:nativeDataTypeCode>
+            <design:precision>10</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>summary_date</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>summary_date</design:label>
+            <design:formattingHints>
+              <design:displaySize>10</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>summary_type</design:name>
+              <design:position>3</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>100</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>summary_type</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>summary_type</design:label>
+            <design:formattingHints>
+              <design:displaySize>100</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>summary_used</design:name>
+              <design:position>4</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>11</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>summary_used</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>summary_used</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>summary_show</design:name>
+              <design:position>5</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>11</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>summary_show</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>summary_show</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>summary_click</design:name>
+              <design:position>6</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>11</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>summary_click</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>summary_click</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>summary_reg</design:name>
+              <design:position>7</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>11</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>summary_reg</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>summary_reg</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>summary_reg_login</design:name>
+              <design:position>8</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>11</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>summary_reg_login</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>summary_reg_login</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>summary_new_reg</design:name>
+              <design:position>9</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>11</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>summary_new_reg</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>summary_new_reg</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>summary_sub_new_reg</design:name>
+              <design:position>10</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>11</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>summary_sub_new_reg</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>summary_sub_new_reg</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>summary_old_reg</design:name>
+              <design:position>11</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>11</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>summary_old_reg</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>summary_old_reg</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>summary_new_login</design:name>
+              <design:position>12</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>11</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>summary_new_login</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>summary_new_login</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>summary_sub_new_login</design:name>
+              <design:position>13</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>11</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>summary_sub_new_login</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>summary_sub_new_login</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>summary_old_login</design:name>
+              <design:position>14</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>11</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>summary_old_login</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>summary_old_login</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>summary_paid_count</design:name>
+              <design:position>15</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>11</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>summary_paid_count</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>summary_paid_count</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>summary_paid_sum</design:name>
+              <design:position>16</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>11</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>summary_paid_sum</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>summary_paid_sum</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+      </design:resultSetColumns>
+      <design:criteria/>
+    </design:resultSetDefinitions>
+  </design:ResultSets>
+</model:DesignValues>]]></xml-property>
+        </oda-data-set>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="DataSet2" id="997">
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">total</property>
+                    <text-property name="displayName">total</text-property>
+                    <text-property name="heading">total</text-property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">total</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <method name="beforeOpen"><![CDATA[var startTime=reportContext.getParameterValue("beginDate");
+var endTime=reportContext.getParameterValue("endDate");
+var offset = reportContext.getParameterValue("offset");
+var limit = reportContext.getParameterValue("limit");
+
+if(reportContext.getParameterValue("keytype")!=null){
+ var keytype =decodeURI(reportContext.getParameterValue("keytype"));
+ var type = keytype.replace("[","'").replace("]","'").replace("%2C",",").replace("%2C",",").replace("%2C",",");
+}
+
+this.queryText+=" where 1=1 ";
+if(startTime!=null &amp;&amp; endTime!=null){
+    //查询条件
+    this.queryText+=" and thdid_date >='"+startTime.substr(0,10)+"'";
+    this.queryText+=" and thdid_date <='"+endTime+"'";
+}  
+if(type!=null &amp;&amp; reportContext.getParameterValue("keytype")!=null){
+    //查询条件
+    this.queryText+=" and thdid_type in ("+type+")";
+}  
+ 
+]]></method>
+            <property name="dataSource">DataSource</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">total</property>
+                    <property name="nativeName">total</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[SELECT count(*) as total
+from `rpt_search_baidu_adid_detail_thirty`]]></xml-property>
+            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
+  <Version>2.0</Version>
+  <design:ResultSets derivedMetaData="true">
+    <design:resultSetDefinitions>
+      <design:resultSetColumns>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>total</design:name>
+              <design:position>1</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>-5</design:nativeDataTypeCode>
+            <design:precision>21</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>total</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>total</design:label>
+            <design:formattingHints>
+              <design:displaySize>21</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+      </design:resultSetColumns>
+      <design:criteria/>
+    </design:resultSetDefinitions>
+  </design:ResultSets>
+</model:DesignValues>]]></xml-property>
+        </oda-data-set>
+    </data-sets>
+    <styles>
+        <style name="report" id="4">
+            <property name="fontFamily">sans-serif</property>
+            <property name="fontSize">10pt</property>
+        </style>
+        <style name="crosstab-cell" id="5">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+        <style name="crosstab" id="6">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+    </styles>
+    <page-setup>
+        <simple-master-page name="PaginateMasterPage1" id="974" extends="paginate.PaginateMasterPage">
+            <property name="orientation">landscape</property>
+            <overridden-values>
+                <ref-entry baseId="61" name="PaginateToolbar1" id="975"/>
+                <ref-entry baseId="62" id="976"/>
+                <ref-entry baseId="63" id="977"/>
+                <ref-entry baseId="86" id="978"/>
+                <ref-entry baseId="65" id="979"/>
+                <ref-entry baseId="66" id="980"/>
+                <ref-entry baseId="91" id="981">
+                    <list-property name="visibility">
+                        <structure>
+                            <property name="format">xls</property>
+                            <expression name="valueExpr" type="javascript">true</expression>
+                        </structure>
+                    </list-property>
+                </ref-entry>
+                <ref-entry baseId="92" id="982">
+                    <property name="textAlign">left</property>
+                </ref-entry>
+                <ref-entry baseId="97" name="FirstPage1" id="983">
+                    <list-property name="visibility">
+                        <structure>
+                            <property name="format">xls</property>
+                            <expression name="valueExpr" type="javascript">true</expression>
+                        </structure>
+                    </list-property>
+                </ref-entry>
+                <ref-entry baseId="98" name="PreviousPage1" id="984">
+                    <list-property name="visibility">
+                        <structure>
+                            <property name="format">xls</property>
+                            <expression name="valueExpr" type="javascript">true</expression>
+                        </structure>
+                    </list-property>
+                </ref-entry>
+                <ref-entry baseId="106" name="lbl11" id="985">
+                    <list-property name="visibility">
+                        <structure>
+                            <property name="format">xls</property>
+                            <expression name="valueExpr" type="javascript">true</expression>
+                        </structure>
+                    </list-property>
+                </ref-entry>
+                <ref-entry baseId="116" name="lbl21" id="986">
+                    <list-property name="visibility">
+                        <structure>
+                            <property name="format">xls</property>
+                            <expression name="valueExpr" type="javascript">true</expression>
+                        </structure>
+                    </list-property>
+                </ref-entry>
+                <ref-entry baseId="115" name="lbl31" id="987">
+                    <list-property name="visibility">
+                        <structure>
+                            <property name="format">xls</property>
+                            <expression name="valueExpr" type="javascript">true</expression>
+                        </structure>
+                    </list-property>
+                </ref-entry>
+                <ref-entry baseId="114" name="lbl41" id="988">
+                    <list-property name="visibility">
+                        <structure>
+                            <property name="format">xls</property>
+                            <expression name="valueExpr" type="javascript">true</expression>
+                        </structure>
+                    </list-property>
+                </ref-entry>
+                <ref-entry baseId="113" name="lbl51" id="989">
+                    <list-property name="visibility">
+                        <structure>
+                            <property name="format">xls</property>
+                            <expression name="valueExpr" type="javascript">true</expression>
+                        </structure>
+                    </list-property>
+                </ref-entry>
+                <ref-entry baseId="112" name="lbl61" id="990">
+                    <list-property name="visibility">
+                        <structure>
+                            <property name="format">xls</property>
+                            <expression name="valueExpr" type="javascript">true</expression>
+                        </structure>
+                    </list-property>
+                </ref-entry>
+                <ref-entry baseId="111" name="lbl71" id="991">
+                    <list-property name="visibility">
+                        <structure>
+                            <property name="format">xls</property>
+                            <expression name="valueExpr" type="javascript">true</expression>
+                        </structure>
+                    </list-property>
+                </ref-entry>
+                <ref-entry baseId="110" name="lbl81" id="992">
+                    <list-property name="visibility">
+                        <structure>
+                            <property name="format">xls</property>
+                            <expression name="valueExpr" type="javascript">true</expression>
+                        </structure>
+                    </list-property>
+                </ref-entry>
+                <ref-entry baseId="109" name="lbl91" id="993">
+                    <list-property name="visibility">
+                        <structure>
+                            <property name="format">xls</property>
+                            <expression name="valueExpr" type="javascript">true</expression>
+                        </structure>
+                    </list-property>
+                </ref-entry>
+                <ref-entry baseId="99" name="NextPage1" id="994">
+                    <list-property name="visibility">
+                        <structure>
+                            <property name="format">xls</property>
+                            <expression name="valueExpr" type="javascript">true</expression>
+                        </structure>
+                    </list-property>
+                </ref-entry>
+                <ref-entry baseId="100" name="LastPage1" id="995">
+                    <list-property name="visibility">
+                        <structure>
+                            <property name="format">xls</property>
+                            <expression name="valueExpr" type="javascript">true</expression>
+                        </structure>
+                    </list-property>
+                </ref-entry>
+                <ref-entry baseId="101" name="Details1" id="996">
+                    <property name="dataSet">DataSet2</property>
+                    <list-property name="visibility">
+                        <structure>
+                            <property name="format">xls</property>
+                            <expression name="valueExpr" type="javascript">true</expression>
+                        </structure>
+                    </list-property>
+                    <list-property name="boundDataColumns">
+                        <structure>
+                            <property name="name">total</property>
+                            <text-property name="displayName">total</text-property>
+                            <expression name="expression" type="javascript">dataSetRow["total"]</expression>
+                            <property name="dataType">decimal</property>
+                        </structure>
+                    </list-property>
+                </ref-entry>
+            </overridden-values>
+        </simple-master-page>
+    </page-setup>
+    <body>
+        <label id="150">
+            <property name="fontSize">16pt</property>
+            <property name="fontWeight">bold</property>
+            <property name="textAlign">center</property>
+            <text-property name="text">百度关键字汇总三十日表（广告ID）</text-property>
+        </label>
+        <grid id="367">
+            <column id="368"/>
+            <row id="369">
+                <cell id="370">
+                    <table id="2026">
+                        <property name="dataSet">DataSet</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">thdid_date</property>
+                                <text-property name="displayName">thdid_date</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["thdid_date"]</expression>
+                                <property name="dataType">date</property>
+                            </structure>
+                            <structure>
+                                <property name="name">thdid_type</property>
+                                <text-property name="displayName">thdid_type</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["thdid_type"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">thdid_key_name</property>
+                                <text-property name="displayName">thdid_key_name</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["thdid_key_name"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">thdid_ad_id</property>
+                                <text-property name="displayName">thdid_ad_id</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["thdid_ad_id"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">thdid_account_type</property>
+                                <text-property name="displayName">thdid_account_type</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["thdid_account_type"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">thdid_reg</property>
+                                <text-property name="displayName">thdid_reg</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["thdid_reg"]</expression>
+                                <property name="dataType">integer</property>
+                            </structure>
+                            <structure>
+                                <property name="name">thdid_login</property>
+                                <text-property name="displayName">thdid_login</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["thdid_login"]</expression>
+                                <property name="dataType">integer</property>
+                            </structure>
+                            <structure>
+                                <property name="name">thdid_paid_count</property>
+                                <text-property name="displayName">thdid_paid_count</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["thdid_paid_count"]</expression>
+                                <property name="dataType">integer</property>
+                            </structure>
+                            <structure>
+                                <property name="name">cpl</property>
+                                <text-property name="displayName">cpl</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["cpl"]</expression>
+                                <property name="dataType">float</property>
+                            </structure>
+                            <structure>
+                                <property name="name">thdid_paid</property>
+                                <text-property name="displayName">thdid_paid</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["thdid_paid"]</expression>
+                                <property name="dataType">integer</property>
+                            </structure>
+                            <structure>
+                                <property name="name">thdid_retained_count</property>
+                                <text-property name="displayName">thdid_retained_count</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["thdid_retained_count"]</expression>
+                                <property name="dataType">integer</property>
+                            </structure>
+                            <structure>
+                                <property name="name">thdid_paid_retained_count</property>
+                                <text-property name="displayName">thdid_paid_retained_count</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["thdid_paid_retained_count"]</expression>
+                                <property name="dataType">integer</property>
+                            </structure>
+                            <structure>
+                                <property name="name">thdid_paid_retained</property>
+                                <text-property name="displayName">thdid_paid_retained</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["thdid_paid_retained"]</expression>
+                                <property name="dataType">integer</property>
+                            </structure>
+                            <structure>
+                                <property name="name">thirty0105</property>
+                                <text-property name="displayName">thirty0105</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["thirty0105"]</expression>
+                                <property name="dataType">float</property>
+                            </structure>
+                            <structure>
+                                <property name="name">thirty0625</property>
+                                <text-property name="displayName">thirty0625</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["thirty0625"]</expression>
+                                <property name="dataType">float</property>
+                            </structure>
+                            <structure>
+                                <property name="name">thirty2630</property>
+                                <text-property name="displayName">thirty2630</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["thirty2630"]</expression>
+                                <property name="dataType">float</property>
+                            </structure>
+                            <structure>
+                                <property name="name">thirty3150</property>
+                                <text-property name="displayName">thirty3150</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["thirty3150"]</expression>
+                                <property name="dataType">float</property>
+                            </structure>
+                            <structure>
+                                <property name="name">thirty5160</property>
+                                <text-property name="displayName">thirty5160</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["thirty5160"]</expression>
+                                <property name="dataType">float</property>
+                            </structure>
+                            <structure>
+                                <property name="name">thirty61</property>
+                                <text-property name="displayName">thirty61</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["thirty61"]</expression>
+                                <property name="dataType">float</property>
+                            </structure>
+                        </list-property>
+                        <column id="2125"/>
+                        <column id="2126"/>
+                        <column id="2127"/>
+                        <column id="2128"/>
+                        <column id="2129"/>
+                        <column id="2130"/>
+                        <column id="2131"/>
+                        <column id="2132"/>
+                        <column id="2133"/>
+                        <column id="2134"/>
+                        <column id="2135"/>
+                        <column id="2136"/>
+                        <column id="2137"/>
+                        <column id="2138"/>
+                        <column id="2139"/>
+                        <column id="2140"/>
+                        <column id="2141"/>
+                        <column id="2142"/>
+                        <column id="2143"/>
+                        <header>
+                            <row id="2027">
+                                <property name="backgroundColor">#357AE8</property>
+                                <property name="fontWeight">bold</property>
+                                <property name="color">white</property>
+                                <property name="whiteSpace">nowrap</property>
+                                <cell id="2028">
+                                    <property name="borderBottomColor">#808080</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#808080</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#808080</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#808080</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <property name="paddingLeft">10pt</property>
+                                    <property name="paddingRight">10pt</property>
+                                    <label id="2029">
+                                        <text-property name="text">日期</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="2030">
+                                    <property name="borderBottomColor">#808080</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#808080</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#808080</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#808080</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <property name="paddingLeft">10pt</property>
+                                    <property name="paddingRight">10pt</property>
+                                    <label id="2031">
+                                        <text-property name="text">类型</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="2032">
+                                    <property name="borderBottomColor">#808080</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#808080</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#808080</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#808080</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <property name="paddingLeft">10pt</property>
+                                    <property name="paddingRight">10pt</property>
+                                    <label id="2033">
+                                        <text-property name="text">关键字</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="2034">
+                                    <property name="borderBottomColor">#808080</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#808080</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#808080</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#808080</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <property name="paddingLeft">10pt</property>
+                                    <property name="paddingRight">10pt</property>
+                                    <label id="2035">
+                                        <text-property name="text">广告ID</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="2036">
+                                    <property name="borderBottomColor">#808080</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#808080</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#808080</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#808080</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <property name="paddingLeft">10pt</property>
+                                    <property name="paddingRight">10pt</property>
+                                    <label id="2037">
+                                        <text-property name="text">账号类型</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="2038">
+                                    <property name="borderBottomColor">#808080</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#808080</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#808080</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#808080</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <property name="paddingLeft">10pt</property>
+                                    <property name="paddingRight">10pt</property>
+                                    <label id="2039">
+                                        <text-property name="text">注册总数</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="2040">
+                                    <property name="borderBottomColor">#808080</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#808080</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#808080</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#808080</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <property name="paddingLeft">10pt</property>
+                                    <property name="paddingRight">10pt</property>
+                                    <label id="2041">
+                                        <text-property name="text">30天登录</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="2042">
+                                    <property name="borderBottomColor">#808080</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#808080</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#808080</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#808080</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <property name="paddingLeft">10pt</property>
+                                    <property name="paddingRight">10pt</property>
+                                    <label id="2148">
+                                        <text-property name="text">充值用户数</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="2044">
+                                    <property name="borderBottomColor">#808080</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#808080</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#808080</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#808080</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <property name="paddingLeft">10pt</property>
+                                    <property name="paddingRight">10pt</property>
+                                    <label id="2045">
+                                        <text-property name="text">充值/登录</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="2046">
+                                    <property name="borderBottomColor">#808080</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#808080</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#808080</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#808080</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <property name="paddingLeft">10pt</property>
+                                    <property name="paddingRight">10pt</property>
+                                    <label id="2047">
+                                        <text-property name="text">充值金额</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="2048">
+                                    <property name="borderBottomColor">#808080</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#808080</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#808080</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#808080</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <property name="paddingLeft">10pt</property>
+                                    <property name="paddingRight">10pt</property>
+                                    <label id="2049">
+                                        <text-property name="text">30天留存数</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="2050">
+                                    <property name="borderBottomColor">#808080</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#808080</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#808080</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#808080</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <property name="paddingLeft">10pt</property>
+                                    <property name="paddingRight">10pt</property>
+                                    <label id="2051">
+                                        <text-property name="text">30天充值留存数</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="2052">
+                                    <property name="borderBottomColor">#808080</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#808080</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#808080</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#808080</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <property name="paddingLeft">10pt</property>
+                                    <property name="paddingRight">10pt</property>
+                                    <label id="2053">
+                                        <text-property name="text">留存通用30天充值</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="2054">
+                                    <property name="borderBottomColor">#808080</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#808080</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#808080</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#808080</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <property name="paddingLeft">10pt</property>
+                                    <property name="paddingRight">10pt</property>
+                                    <label id="2055">
+                                        <text-property name="text">1-5级比例</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="2056">
+                                    <property name="borderBottomColor">#808080</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#808080</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#808080</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#808080</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <property name="paddingLeft">10pt</property>
+                                    <property name="paddingRight">10pt</property>
+                                    <label id="2057">
+                                        <text-property name="text">6-25级比例</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="2058">
+                                    <property name="borderBottomColor">#808080</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#808080</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#808080</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#808080</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <property name="paddingLeft">10pt</property>
+                                    <property name="paddingRight">10pt</property>
+                                    <label id="2059">
+                                        <text-property name="text">26-30级比例</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="2060">
+                                    <property name="borderBottomColor">#808080</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#808080</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#808080</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#808080</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <property name="paddingLeft">10pt</property>
+                                    <property name="paddingRight">10pt</property>
+                                    <label id="2061">
+                                        <text-property name="text">31-50级比例</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="2062">
+                                    <property name="borderBottomColor">#808080</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#808080</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#808080</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#808080</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <property name="paddingLeft">10pt</property>
+                                    <property name="paddingRight">10pt</property>
+                                    <label id="2063">
+                                        <text-property name="text">51-60级比例</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="2064">
+                                    <property name="borderBottomColor">#808080</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#808080</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#808080</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#808080</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <property name="paddingLeft">10pt</property>
+                                    <property name="paddingRight">10pt</property>
+                                    <label id="2065">
+                                        <text-property name="text">61级比例</text-property>
+                                    </label>
+                                </cell>
+                            </row>
+                        </header>
+                        <detail>
+                            <row id="2066">
+                                <method name="onCreate"><![CDATA[if(row.__rownum % 2 == 0){
+this.getStyle().backgroundColor = "#E9EAEB";
+}else{
+this.getStyle().backgroundColor = "#FFFFFF";
+}]]></method>
+                                <property name="textAlign">center</property>
+                                <cell id="2067">
+                                    <property name="borderBottomColor">#808080</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#808080</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#808080</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#808080</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <data id="2068">
+                                        <structure name="dateTimeFormat">
+                                            <property name="category">Medium Date</property>
+                                            <property name="pattern">Medium Date</property>
+                                            <property name="locale">zh</property>
+                                        </structure>
+                                        <property name="whiteSpace">nowrap</property>
+                                        <property name="resultSetColumn">thdid_date</property>
+                                    </data>
+                                </cell>
+                                <cell id="2069">
+                                    <property name="borderBottomColor">#808080</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#808080</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#808080</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#808080</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <data id="2070">
+                                        <structure name="numberFormat">
+                                            <property name="category">Unformatted</property>
+                                        </structure>
+                                        <property name="whiteSpace">nowrap</property>
+                                        <property name="resultSetColumn">thdid_type</property>
+                                    </data>
+                                </cell>
+                                <cell id="2071">
+                                    <property name="borderBottomColor">#808080</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#808080</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#808080</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#808080</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <data id="2072">
+                                        <property name="whiteSpace">nowrap</property>
+                                        <property name="resultSetColumn">thdid_key_name</property>
+                                    </data>
+                                </cell>
+                                <cell id="2073">
+                                    <property name="borderBottomColor">#808080</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#808080</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#808080</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#808080</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <data id="2074">
+                                        <property name="whiteSpace">nowrap</property>
+                                        <property name="resultSetColumn">thdid_ad_id</property>
+                                    </data>
+                                </cell>
+                                <cell id="2075">
+                                    <property name="borderBottomColor">#808080</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#808080</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#808080</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#808080</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <data id="2076">
+                                        <property name="whiteSpace">nowrap</property>
+                                        <property name="resultSetColumn">thdid_account_type</property>
+                                    </data>
+                                </cell>
+                                <cell id="2077">
+                                    <property name="borderBottomColor">#808080</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#808080</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#808080</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#808080</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <data id="2078">
+                                        <structure name="numberFormat">
+                                            <property name="category">Fixed</property>
+                                            <property name="pattern">#,##0{RoundingMode=HALF_UP}</property>
+                                        </structure>
+                                        <property name="whiteSpace">nowrap</property>
+                                        <property name="resultSetColumn">thdid_reg</property>
+                                    </data>
+                                </cell>
+                                <cell id="2079">
+                                    <property name="borderBottomColor">#808080</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#808080</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#808080</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#808080</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <data id="2080">
+                                        <structure name="numberFormat">
+                                            <property name="category">Fixed</property>
+                                            <property name="pattern">#,##0{RoundingMode=HALF_UP}</property>
+                                        </structure>
+                                        <property name="whiteSpace">nowrap</property>
+                                        <property name="resultSetColumn">thdid_login</property>
+                                    </data>
+                                </cell>
+                                <cell id="2081">
+                                    <property name="borderBottomColor">#808080</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#808080</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#808080</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#808080</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <data id="2082">
+                                        <structure name="numberFormat">
+                                            <property name="category">Fixed</property>
+                                            <property name="pattern">#,##0{RoundingMode=HALF_UP}</property>
+                                        </structure>
+                                        <property name="whiteSpace">nowrap</property>
+                                        <property name="resultSetColumn">thdid_paid_count</property>
+                                    </data>
+                                </cell>
+                                <cell id="2083">
+                                    <property name="borderBottomColor">#808080</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#808080</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#808080</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#808080</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <data id="2084">
+                                        <structure name="numberFormat">
+                                            <property name="category">Fixed</property>
+                                            <property name="pattern">#,##0{RoundingMode=HALF_UP}</property>
+                                        </structure>
+                                        <property name="whiteSpace">nowrap</property>
+                                        <property name="resultSetColumn">cpl</property>
+                                    </data>
+                                </cell>
+                                <cell id="2085">
+                                    <property name="borderBottomColor">#808080</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#808080</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#808080</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#808080</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <data id="2086">
+                                        <structure name="numberFormat">
+                                            <property name="category">Fixed</property>
+                                            <property name="pattern">#,##0{RoundingMode=HALF_UP}</property>
+                                        </structure>
+                                        <property name="whiteSpace">nowrap</property>
+                                        <property name="resultSetColumn">thdid_paid</property>
+                                    </data>
+                                </cell>
+                                <cell id="2087">
+                                    <property name="borderBottomColor">#808080</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#808080</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#808080</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#808080</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <data id="2088">
+                                        <structure name="numberFormat">
+                                            <property name="category">Fixed</property>
+                                            <property name="pattern">#,##0{RoundingMode=HALF_UP}</property>
+                                        </structure>
+                                        <property name="whiteSpace">nowrap</property>
+                                        <property name="resultSetColumn">thdid_retained_count</property>
+                                    </data>
+                                </cell>
+                                <cell id="2089">
+                                    <property name="borderBottomColor">#808080</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#808080</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#808080</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#808080</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <data id="2090">
+                                        <structure name="numberFormat">
+                                            <property name="category">Fixed</property>
+                                            <property name="pattern">#,##0{RoundingMode=HALF_UP}</property>
+                                        </structure>
+                                        <property name="whiteSpace">nowrap</property>
+                                        <property name="resultSetColumn">thdid_paid_retained_count</property>
+                                    </data>
+                                </cell>
+                                <cell id="2091">
+                                    <property name="borderBottomColor">#808080</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#808080</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#808080</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#808080</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <data id="2092">
+                                        <structure name="numberFormat">
+                                            <property name="category">Fixed</property>
+                                            <property name="pattern">#,##0{RoundingMode=HALF_UP}</property>
+                                        </structure>
+                                        <property name="whiteSpace">nowrap</property>
+                                        <property name="resultSetColumn">thdid_paid_retained</property>
+                                    </data>
+                                </cell>
+                                <cell id="2093">
+                                    <property name="borderBottomColor">#808080</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#808080</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#808080</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#808080</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <data id="2094">
+                                        <structure name="numberFormat">
+                                            <property name="category">Percent</property>
+                                            <property name="pattern">###0.00%{RoundingMode=HALF_UP}</property>
+                                        </structure>
+                                        <property name="whiteSpace">nowrap</property>
+                                        <property name="resultSetColumn">thirty0105</property>
+                                    </data>
+                                </cell>
+                                <cell id="2095">
+                                    <property name="borderBottomColor">#808080</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#808080</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#808080</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#808080</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <data id="2096">
+                                        <structure name="numberFormat">
+                                            <property name="category">Percent</property>
+                                            <property name="pattern">###0.00%{RoundingMode=HALF_UP}</property>
+                                        </structure>
+                                        <property name="whiteSpace">nowrap</property>
+                                        <property name="resultSetColumn">thirty0625</property>
+                                    </data>
+                                </cell>
+                                <cell id="2097">
+                                    <property name="borderBottomColor">#808080</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#808080</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#808080</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#808080</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <data id="2098">
+                                        <structure name="numberFormat">
+                                            <property name="category">Percent</property>
+                                            <property name="pattern">###0.00%{RoundingMode=HALF_UP}</property>
+                                        </structure>
+                                        <property name="whiteSpace">nowrap</property>
+                                        <property name="resultSetColumn">thirty2630</property>
+                                    </data>
+                                </cell>
+                                <cell id="2099">
+                                    <property name="borderBottomColor">#808080</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#808080</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#808080</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#808080</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <data id="2100">
+                                        <structure name="numberFormat">
+                                            <property name="category">Percent</property>
+                                            <property name="pattern">###0.00%{RoundingMode=HALF_UP}</property>
+                                        </structure>
+                                        <property name="whiteSpace">nowrap</property>
+                                        <property name="resultSetColumn">thirty3150</property>
+                                    </data>
+                                </cell>
+                                <cell id="2101">
+                                    <property name="borderBottomColor">#808080</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#808080</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#808080</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#808080</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <data id="2102">
+                                        <structure name="numberFormat">
+                                            <property name="category">Percent</property>
+                                            <property name="pattern">###0.00%{RoundingMode=HALF_UP}</property>
+                                        </structure>
+                                        <property name="whiteSpace">nowrap</property>
+                                        <property name="resultSetColumn">thirty5160</property>
+                                    </data>
+                                </cell>
+                                <cell id="2103">
+                                    <property name="borderBottomColor">#808080</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#808080</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#808080</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#808080</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <data id="2104">
+                                        <structure name="numberFormat">
+                                            <property name="category">Percent</property>
+                                            <property name="pattern">###0.00%{RoundingMode=HALF_UP}</property>
+                                        </structure>
+                                        <property name="whiteSpace">nowrap</property>
+                                        <property name="dataSet">DataSet</property>
+                                        <list-property name="boundDataColumns">
+                                            <structure>
+                                                <property name="name">thdid_date</property>
+                                                <text-property name="displayName">thdid_date</text-property>
+                                                <expression name="expression" type="javascript">dataSetRow["thdid_date"]</expression>
+                                                <property name="dataType">date</property>
+                                            </structure>
+                                            <structure>
+                                                <property name="name">thdid_type</property>
+                                                <text-property name="displayName">thdid_type</text-property>
+                                                <expression name="expression" type="javascript">dataSetRow["thdid_type"]</expression>
+                                                <property name="dataType">string</property>
+                                            </structure>
+                                            <structure>
+                                                <property name="name">thdid_key_name</property>
+                                                <text-property name="displayName">thdid_key_name</text-property>
+                                                <expression name="expression" type="javascript">dataSetRow["thdid_key_name"]</expression>
+                                                <property name="dataType">string</property>
+                                            </structure>
+                                            <structure>
+                                                <property name="name">thdid_ad_id</property>
+                                                <text-property name="displayName">thdid_ad_id</text-property>
+                                                <expression name="expression" type="javascript">dataSetRow["thdid_ad_id"]</expression>
+                                                <property name="dataType">string</property>
+                                            </structure>
+                                            <structure>
+                                                <property name="name">thdid_account_type</property>
+                                                <text-property name="displayName">thdid_account_type</text-property>
+                                                <expression name="expression" type="javascript">dataSetRow["thdid_account_type"]</expression>
+                                                <property name="dataType">string</property>
+                                            </structure>
+                                            <structure>
+                                                <property name="name">thdid_reg</property>
+                                                <text-property name="displayName">thdid_reg</text-property>
+                                                <expression name="expression" type="javascript">dataSetRow["thdid_reg"]</expression>
+                                                <property name="dataType">integer</property>
+                                            </structure>
+                                            <structure>
+                                                <property name="name">thdid_login</property>
+                                                <text-property name="displayName">thdid_login</text-property>
+                                                <expression name="expression" type="javascript">dataSetRow["thdid_login"]</expression>
+                                                <property name="dataType">integer</property>
+                                            </structure>
+                                            <structure>
+                                                <property name="name">thdid_paid_count</property>
+                                                <text-property name="displayName">thdid_paid_count</text-property>
+                                                <expression name="expression" type="javascript">dataSetRow["thdid_paid_count"]</expression>
+                                                <property name="dataType">integer</property>
+                                            </structure>
+                                            <structure>
+                                                <property name="name">cpl</property>
+                                                <text-property name="displayName">cpl</text-property>
+                                                <expression name="expression" type="javascript">dataSetRow["cpl"]</expression>
+                                                <property name="dataType">float</property>
+                                            </structure>
+                                            <structure>
+                                                <property name="name">thdid_paid</property>
+                                                <text-property name="displayName">thdid_paid</text-property>
+                                                <expression name="expression" type="javascript">dataSetRow["thdid_paid"]</expression>
+                                                <property name="dataType">integer</property>
+                                            </structure>
+                                            <structure>
+                                                <property name="name">thdid_retained_count</property>
+                                                <text-property name="displayName">thdid_retained_count</text-property>
+                                                <expression name="expression" type="javascript">dataSetRow["thdid_retained_count"]</expression>
+                                                <property name="dataType">integer</property>
+                                            </structure>
+                                            <structure>
+                                                <property name="name">thdid_paid_retained_count</property>
+                                                <text-property name="displayName">thdid_paid_retained_count</text-property>
+                                                <expression name="expression" type="javascript">dataSetRow["thdid_paid_retained_count"]</expression>
+                                                <property name="dataType">integer</property>
+                                            </structure>
+                                            <structure>
+                                                <property name="name">thdid_paid_retained</property>
+                                                <text-property name="displayName">thdid_paid_retained</text-property>
+                                                <expression name="expression" type="javascript">dataSetRow["thdid_paid_retained"]</expression>
+                                                <property name="dataType">integer</property>
+                                            </structure>
+                                            <structure>
+                                                <property name="name">thirty0105</property>
+                                                <text-property name="displayName">thirty0105</text-property>
+                                                <expression name="expression" type="javascript">dataSetRow["thirty0105"]</expression>
+                                                <property name="dataType">float</property>
+                                            </structure>
+                                            <structure>
+                                                <property name="name">thirty0625</property>
+                                                <text-property name="displayName">thirty0625</text-property>
+                                                <expression name="expression" type="javascript">dataSetRow["thirty0625"]</expression>
+                                                <property name="dataType">float</property>
+                                            </structure>
+                                            <structure>
+                                                <property name="name">thirty2630</property>
+                                                <text-property name="displayName">thirty2630</text-property>
+                                                <expression name="expression" type="javascript">dataSetRow["thirty2630"]</expression>
+                                                <property name="dataType">float</property>
+                                            </structure>
+                                            <structure>
+                                                <property name="name">thirty3150</property>
+                                                <text-property name="displayName">thirty3150</text-property>
+                                                <expression name="expression" type="javascript">dataSetRow["thirty3150"]</expression>
+                                                <property name="dataType">float</property>
+                                            </structure>
+                                            <structure>
+                                                <property name="name">thirty5160</property>
+                                                <text-property name="displayName">thirty5160</text-property>
+                                                <expression name="expression" type="javascript">dataSetRow["thirty5160"]</expression>
+                                                <property name="dataType">float</property>
+                                            </structure>
+                                            <structure>
+                                                <property name="name">thirty61</property>
+                                                <text-property name="displayName">thirty61</text-property>
+                                                <expression name="expression" type="javascript">dataSetRow["thirty61"]</expression>
+                                                <property name="dataType">float</property>
+                                            </structure>
+                                        </list-property>
+                                        <property name="resultSetColumn">thirty61</property>
+                                    </data>
+                                </cell>
+                            </row>
+                        </detail>
+                    </table>
+                </cell>
+            </row>
+        </grid>
+    </body>
+</report>

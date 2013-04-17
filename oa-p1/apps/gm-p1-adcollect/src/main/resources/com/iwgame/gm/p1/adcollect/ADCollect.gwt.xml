@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module rename-to='adcollect'>
+  <!-- Inherit the core Web Toolkit stuff.                        -->
+  <inherits name='com.google.gwt.user.User'/>
+
+  <inherits name='com.google.gwt.user.theme.clean.Clean'/>
+
+  <!-- Other module inherits                                      -->
+	<inherits name="com.iwgame.gm.p1.adcollect.modules.keys.Keys"/>
+	<inherits name="com.iwgame.gm.p1.adcollect.modules.reports.Reports"/>
+	<inherits name="com.iwgame.gm.p1.adcollect.modules.baidu.account.Account"/>
+	<inherits name="com.iwgame.gm.p1.adcollect.modules.crl.Crl"/>
+	<inherits name="com.iwgame.gm.p1.adcollect.modules.landing.Landing"/>
+	<inherits name="com.iwgame.gm.p1.adcollect.modules.hard.admin.Admin"/>
+	<inherits name="com.iwgame.gm.p1.adcollect.modules.customreport.Customreport"/>
+	<inherits name="com.iwgame.gm.p1.adcollect.modules.frame.Frame"/>
+	<inherits name="com.iwgame.gm.p1.adcollect.modules.explain.Explain"/>
+
+
+  <!-- Specify the paths for translatable code                    -->
+  <source path='client'/>
+  <source path='shared'/>
+  
+  <!-- 加载 CSS -->
+  <stylesheet src="table.css" />
+</module>

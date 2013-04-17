@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:jaxrs="http://cxf.apache.org/jaxrs" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+	 http://cxf.apache.org/jaxrs
+	 http://cxf.apache.org/schemas/jaxrs.xsd
+     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+     http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+	
+	<import resource="classpath:conf/applicationContext-pconf.xml" />
+	<import resource="classpath:conf/applicationContext-connector.xml" />
+	
+	<context:component-scan base-package="com.iwgame.xengine.xtask.game" />
+	<context:annotation-config />
+	
+	<!-- 加载配置文件 加密的 -->
+	<bean class="org.jasypt.spring.properties.EncryptablePropertyPlaceholderConfigurer">
+		<constructor-arg ref="configurationEncryptor" />
+		<property name="order" value="1" />
+		<property name="ignoreUnresolvablePlaceholders" value="true" />
+		<property name="ignoreResourceNotFound" value="true" />
+		<property name="locations">
+			<list>
+				<!--开发环境下的配置文件 -->
+				<value>classpath:xtask-p1-game-mq.properties</value>
+				
+				<!-- 生产环境下的配置文件 -->
+				<value>${XTASK_HOME}/xtask-p1-game-mq.properties</value>
+
+			</list>
+		</property>
+		<property name="fileEncoding" value="utf-8" />
+	</bean>
+	
+	
+	<!-- unlock监控 数据库连接  -->
+	<bean id="securityOADataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close"> 
+		<!-- 数据库连接基本信息 -->
+		<property name="jdbcUrl" value="${db.oa.security.driver-url}" />
+		<property name="driverClass" value="${db.oa.security.driver-class}" />
+		<property name="user" value="${db.oa.security.username}" />
+		<property name="password" value="${db.oa.security.password}" />
+		<!-- 连接池大小控制 -->
+		<property name="maxPoolSize" value="${c3p0.maxPoolSize}" />
+		<property name="initialPoolSize" value="${c3p0.initialPoolSize}" />
+		<property name="minPoolSize" value="${c3p0.minPoolSize}" />
+		<property name="acquireIncrement" value="${c3p0.acquireIncrement}" />
+		<!-- 优化信息 -->
+		<property name="idleConnectionTestPeriod" value="120"/>
+		<property name="maxIdleTime" value="120"/>
+		<property name="preferredTestQuery" value="select now()" />
+		<property name="testConnectionOnCheckin" value="true"/>
+		<property name="testConnectionOnCheckout"  value="true"/>
+	</bean>
+	
+	<bean id="sqlSessionFactory-securityOA" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="securityOADataSource" />
+		<property name="mapperLocations" value="classpath:sqlmapper/**/SecurityOASqlMapper.xml" />
+	</bean>
+
+	<bean id="mapperScanner-unlock" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory-securityOA" />
+		<property name="basePackage" value="com.iwgame.xengine.xtask.game.dao"  />
+	</bean>
+	
+	
+	<!-- 配置MQ连接源 -->
+	<bean id="rabbitMQSource" class="com.rabbitmq.client.ConnectionFactory">
+		<property name="username" value="${mq.username}" />
+		<property name="password" value="${mq.password}" />
+		<property name="virtualHost" value="${mq.virtualhost}" />
+		<property name="host" value="${mq.host}" />
+		<property name="port" value="${mq.port}" />
+		<property name="requestedHeartbeat" value="5" />
+	</bean>
+
+	<bean id="connectionFactory" class="org.springframework.amqp.rabbit.connection.CachingConnectionFactory">
+		<constructor-arg ref="rabbitMQSource" />
+		<property name="channelCacheSize" value="${mq.channelcachesize}" />
+	</bean>
+
+	<!-- 创建rabbitAdmin 代理类,初始调用initialize,它会指定执行我们定义的Exchange,Queue,Binding -->
+	<bean class="org.springframework.amqp.rabbit.core.RabbitAdmin"	init-method="initialize">
+		<constructor-arg ref="connectionFactory" />
+	</bean>
+	
+	<bean id="rabbitTemplate" class="org.springframework.amqp.rabbit.core.RabbitTemplate">
+		<constructor-arg ref="connectionFactory"></constructor-arg>
+	</bean>
+
+	<!-- 声明消息转换器为SimpleMessageConverter -->
+	<bean id="messageConverter"	class="org.springframework.amqp.support.converter.SimpleMessageConverter" />
+
+
+	<!-- 自定义配置文件 -->
+	<bean class="com.iwgame.xengine.xtask.game.util.ConfigProperties" init-method="init">
+		<property name="fileEncoding" value="UTF-8" />
+		<property name="ignoreResourceNotFound" value="true" />
+		<property name="locations">
+			<list>
+				<!-- 开发环境下的配置文件 -->
+				<value>classpath:game-utils.properties</value>
+
+				<!-- 生产环境下的配置文件 -->
+				<value>${XTASK_HOME}/game-utils.properties</value>
+			</list>
+		</property>
+	</bean>
+
+</beans>

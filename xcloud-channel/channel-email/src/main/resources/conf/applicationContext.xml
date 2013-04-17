@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:jaxrs="http://cxf.apache.org/jaxrs" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://cxf.apache.org/jaxrs
+	 http://cxf.apache.org/schemas/jaxrs.xsd
+     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+     http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+	<import resource="classpath:conf/applicationContext-pconf.xml" />
+
+	<context:component-scan base-package="com.iwgame.xengine.xtask.email" />
+	<context:annotation-config />
+	
+	<!-- 加载配置文件 加密的 -->
+	<bean class="org.jasypt.spring.properties.EncryptablePropertyPlaceholderConfigurer">
+		<constructor-arg ref="configurationEncryptor" />
+		<property name="order" value="1" />
+		<property name="ignoreUnresolvablePlaceholders" value="true" />
+		<property name="ignoreResourceNotFound" value="true" />
+		<property name="locations">
+			<list>
+				<!--开发环境下的配置文件 -->
+				<value>classpath:xtask-email-mq.properties</value>
+				<!-- 生产环境下的配置文件 -->
+				<value>file:/var/config/xtask-email/xtask-email-mq.properties</value>
+			</list>
+		</property>
+		<property name="fileEncoding" value="utf-8" />
+	</bean>
+	
+	<!-- 自定义配置文件 -->
+	<bean class="com.iwgame.xengine.xtask.email.tools.utils.ProperUtils" init-method="init">
+		<property name="fileEncoding" value="UTF-8" />
+		<property name="ignoreResourceNotFound" value="true" />
+		<property name="locations">
+			<list>
+				<!-- 开发环境下的配置文件 -->
+				<value>classpath:email-utils.properties</value>
+
+				<!-- 生产环境下的配置文件 -->
+				<value>file:/var/config/xtask-email/email-utils.properties</value>
+			</list>
+		</property>
+	</bean>
+	
+	
+	<!-- 邮件管理后台数据库 -->
+	<bean id="dataSource-goalmanage" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<!-- 数据库连接基本信息 -->
+		<property name="jdbcUrl" value="${db.goal.driver-url}" />
+		<property name="driverClass" value="${db.goal.driver-class}" />
+		<property name="user" value="${db.goal.user}" />
+		<property name="password" value="${db.goal.password}" />
+		<!-- 连接池大小控制 -->
+		<property name="maxPoolSize" value="${c3p0.maxPoolSize}" />
+		<property name="initialPoolSize" value="${c3p0.initialPoolSize}" />
+		<property name="minPoolSize" value="${c3p0.minPoolSize}" />
+		<property name="acquireIncrement" value="${c3p0.acquireIncrement}" />
+		<!-- 优化信息 -->
+		<property name="idleConnectionTestPeriod" value="120" />
+		<property name="maxIdleTime" value="120" />
+		<property name="preferredTestQuery" value="select now()" />
+		<property name="testConnectionOnCheckin" value="true" />
+	</bean>
+	
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource-goalmanage" />
+		<property name="mapperLocations" value="classpath:sqlmapper/**/*.xml" />
+	</bean>
+
+	<bean id="mapperScanner" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="basePackage" value="com.iwgame.xengine.xtask.email.dao"  />
+	</bean>
+</beans>

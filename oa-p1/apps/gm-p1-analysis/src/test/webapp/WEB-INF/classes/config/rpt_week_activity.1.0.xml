@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rpt:report xmlns:rpt="http://www.iwgame.com/report"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.iwgame.com/report report.xsd ">
+
+	<!-- 布局配置 -->
+	<rpt:form title="周活跃数据报表" pageSize="20">
+	    <rpt:parameter dataType="selector" selectorType="guid" fieldname="zone" labelname="大区列表" allowBlank="true"/>
+		<rpt:parameter dataType="dateRange" fieldname="daterange" 	labelname="起始时间" dateShortcut="5,15,30,45,60"/>
+	</rpt:form>
+	<!-- 设计文件配置 -->
+	<rpt:designFiles>
+		<rpt:designFile filename="rpt_week_activity.rptdesign"
+			title="周活跃数据报表" />
+	</rpt:designFiles>
+	
+</rpt:report>

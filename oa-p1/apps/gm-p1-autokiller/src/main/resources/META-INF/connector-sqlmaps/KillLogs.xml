@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kill.logs">
+
+	<resultMap type="com.iwgame.account.kill.modules.logs.shared.model.AutoKillLog" id="autoKillLog">
+		<result property="policy" column="policyContent" typeHandler="com.iwgame.account.kill.modules.policy.shared.model.JsonTypeHandler" />
+		<result property="policyContent"  column="policyContent"/>
+	</resultMap>
+
+	<select id="getAutoLogs" resultMap="autoKillLog">
+		SELECT 	
+			id, 
+			opt_type as optType, 
+			policy_title as policyTitle, 
+			policy_content as policyContent, 
+			accountid, 
+			kill_days as killDays,
+ 			account_name as accountName, 
+			kill_time as killTime, 
+			remark, 
+			object_id as objectId, 
+			object, 
+			operator
+		FROM 
+			kill_log 
+		<where>
+			<if test="killDays != null and killDays != 0 ">	
+				kill_days = #{killDays}
+			</if>
+			<if test="policyTitle != null and policyTitle != '' ">	
+				AND policy_title LIKE '%${policyTitle}%' 
+			</if>
+			<if test="accountName != null and accountName != '' ">	
+	 			AND account_name LIKE '%${accountName}%' 
+			</if>
+			<if test="startTime != null and endTime != null and startTime != '' and endTime != '' ">	
+				AND kill_time BETWEEN #{startTime} AND #{endTime}
+			</if>
+		</where>
+		ORDER BY id DESC
+		<if test="offset != null and limit != null ">
+			LIMIT #{offset},#{limit}
+		</if>
+	</select>
+	<select id="getAutoLogsCount" resultType="int">
+		SELECT 	
+			COUNT(id) 
+		FROM 
+			kill_log 
+		<where>
+			<if test="killDays != null and killDays != 0 ">	
+				kill_days = #{killDays}
+			</if>
+			<if test="policyTitle != null and policyTitle != '' ">	
+				AND policy_title LIKE '%${policyTitle}%' 
+			</if>
+			<if test="accountName != null and accountName != '' ">	
+	 			AND account_name LIKE '%${accountName}%' 
+			</if>
+			<if test="startTime != null and endTime != null and startTime != '' and endTime != '' ">	
+				AND kill_time BETWEEN #{startTime} AND #{endTime}
+			</if>
+		</where>
+	</select>
+</mapper>

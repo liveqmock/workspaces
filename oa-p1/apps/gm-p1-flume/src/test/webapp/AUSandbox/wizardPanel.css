@@ -1,0 +1,18 @@
+.iwgame-WizardPanel {
+	
+}
+
+.iwgame-WizardPanel-titleBar {
+	background-color: #eee;
+	padding: 3px;
+	font-weight: bolder;
+}
+
+.iwgame-WizardPanel-childPanel {
+	margin: 3px;
+	
+}
+
+.iwgame-WizardPanel-buttonBar {
+	background-color: #eee;
+}

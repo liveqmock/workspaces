@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<appunit>
+	<!-- AU类型,枚举值normal: 包含UI功能的AU, core:后台组件模块 -->
+	<type>normal</type>
+	<!-- AU名称 -->
+	<name>LogMonitor</name>
+	<!-- AU标题,主要用于管理平台中的菜单显示用 -->
+	<title>日志监控</title>
+	<!-- AU的功能描述 -->
+	<description>对业务日志和游戏日志进行进行监控</description>
+	<!-- AU版本号的声明 -->
+	<version>1.0</version>
+	<!-- AU使用的产品 -->
+	<product>P-P1,P-P1.5</product>
+	<!-- 标志,用于分组 -->
+	<app>GM</app>
+	<!-- GWT Module Name,被框架继承 -->
+	<gwt-module>com.iwgame.gm.p1.logmonitor.LogMonitor</gwt-module>
+	<!-- 菜单路径配置 -->
+	<menupaths>
+		<!-- 样例
+		<menupath name="菜单名" title="菜单标题" url="appname/modulename/action" type="normal" access="appname-modulename-action" />
+		 -->		
+		 <menupath name="lm.biz.warning" title="预警列表" url="logmonitor/business/warning" type="normal" access="logmonitor-biz-warning" />
+		 <menupath name="lm.biz.src" title="模块来源监控" url="logmonitor/business/source" type="normal" access="logmonitor-biz-src" />
+		 <menupath name="lm.biz.ip" title="独立访问IP监控" url="logmonitor/business/ip" type="normal" access="logmonitor-biz-ip" />
+		 <menupath name="lm.biz.account" title="独立帐号监控" url="logmonitor/business/account" type="normal" access="logmonitor-biz-account" />
+		 <menupath name="lm.biz.details" title="监控日志明细" url="logmonitor/business/detail" type="normal" access="logmonitor-biz-detail" />
+		 <menupath name="lm.game.login.realtime" title="实时登录次数监控" url="logmonitor/game/realtimelogin" type="normal" access="logmonitor-game-login-realtime" />
+		 <menupath name="lm.game.login.history" title="历史登录次数查询" url="logmonitor/game/historylogin" type="normal" access="logmonitor-game-login-history" />
+		 <menupath name="lm.game.config.warning" title="预警设置" url="logmonitor/config/warning" type="normal" access="logmonitor-config-warning" />
+		 <menupath name="lm.xhttpservice.logdetail" title="通道日志明细" url="logmonitor/xhttpservice/logdetail" type="normal" access="logmonitor-xhttpservice-logdetail" />
+		 <menupath name="lm.xhttpservice.logreport" title="通道日志报表" url="logmonitor/xhttpservice/logreport" type="normal" access="logmonitor-xhttpservice-logreport" />
+	</menupaths>
+	
+	<!-- 模块配置 -->
+	<modules>
+		<module id="Game" name="game" package="com.iwgame.gm.p1.logmonitor.modules.game.client" />
+		<module id="Business" name="business" package="com.iwgame.gm.p1.logmonitor.modules.business.client" />
+		<module id="Config" name="config" package="com.iwgame.gm.p1.logmonitor.modules.config.client" />
+		<module id="Xhttpservice" name="xhttpservice" package="com.iwgame.gm.p1.logmonitor.modules.xhttpservice.client" />
+	</modules>
+	
+	<!-- 后台服务配置 -->
+	<services>
+		<!-- 样例
+		<service endpoint="" class="" /> -->
+		<service endpoint="com.iwgame.gm.p1.logmonitor.modules.game.shared.rpc.LoginService">
+			<property name="factory" value="spring" />
+			<property name="source" value="gm.p1.logmonitor.game.service" />
+		</service>
+		<service endpoint="com.iwgame.gm.p1.logmonitor.modules.business.shared.rpc.BusinessService">
+			<property name="factory" value="spring" />
+			<property name="source" value="gm.p1.logmonitor.biz.service" />
+		</service>
+		<service endpoint="com.iwgame.gm.p1.logmonitor.modules.config.shared.rpc.ConfigService">
+			<property name="factory" value="spring" />
+			<property name="source" value="gm.p1.logmonitor.config.service" />
+		</service>
+		<service endpoint="com.iwgame.gm.p1.logmonitor.modules.xhttpservice.shared.rpc.CommonChannelService">
+			<property name="factory" value="spring" />
+			<property name="source" value="gm.p1.logmonitor.xhttpservice.service" />
+		</service>
+	</services>
+	
+	<!-- 访问控制策略 -->
+	<accesses>
+		<!-- 样例
+			<access name="appname-modulename-action" title="标题" />
+		 -->		
+		<access name="logmonitor-biz-warning" title="预警列表" /> 
+		<access name="logmonitor-biz-src" title="模块来源监控" /> 
+		<access name="logmonitor-biz-ip" title="独立访问IP监控" /> 
+		<access name="logmonitor-biz-account" title="独立帐号监控" /> 
+		<access name="logmonitor-game-login-realtime" title="实时登录次数监控" /> 
+		<access name="logmonitor-game-login-history" title="历史登录次数查询" /> 
+		<access name="logmonitor-biz-detail" title="监控日志明细" /> 
+		<access name="logmonitor-config-warning" title="预警设置" /> 
+		<access name="logmonitor-xhttpservice-logdetail" title="通道日志明细" /> 
+		<access name="logmonitor-xhttpservice-logreport" title="通道日志报表" /> 
+	</accesses>
+</appunit>

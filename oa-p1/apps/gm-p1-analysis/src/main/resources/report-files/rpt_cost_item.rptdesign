@@ -1,0 +1,660 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.22" id="1">
+    <property name="createdBy">Eclipse BIRT Designer Version 2.6.2.r262_v20110209 Build &lt;2.6.2.v20110214-1523></property>
+    <list-property name="userProperties">
+        <structure>
+            <property name="name">gameItemReport.getGameItemReport.x</property>
+            <property name="type">integer</property>
+            <property name="isVisible">false</property>
+        </structure>
+        <structure>
+            <property name="name">gameItemReport.getGameItemReport.y</property>
+            <property name="type">integer</property>
+            <property name="isVisible">false</property>
+        </structure>
+        <structure>
+            <property name="name">gameItemReport.getGameItemReport.width</property>
+            <property name="type">integer</property>
+            <property name="isVisible">false</property>
+        </structure>
+        <structure>
+            <property name="name">gameItemReport.getGameItemReport.height</property>
+            <property name="type">integer</property>
+            <property name="isVisible">false</property>
+        </structure>
+    </list-property>
+    <property name="gameItemReport.getGameItemReport.x">127</property>
+    <property name="gameItemReport.getGameItemReport.y">17</property>
+    <property name="gameItemReport.getGameItemReport.width">150</property>
+    <property name="gameItemReport.getGameItemReport.height">200</property>
+    <property name="units">in</property>
+    <method name="initialize"><![CDATA[//开始时间
+var sTime=reportContext.getParameterValue("beginDate");
+//结束时间
+var eTime=reportContext.getParameterValue("endDate");
+//大区
+var guid = reportContext.getParameterValue("zone");
+
+//开始日期
+if(sTime!=null){
+    var start = sTime.substr(0,10);
+}
+//结束日期
+if(eTime!=null){
+    var end = eTime.substr(0,10);
+}
+
+]]></method>
+    <property name="iconFile">/templates/blank_report.gif</property>
+    <property name="layoutPreference">auto layout</property>
+    <property name="bidiLayoutOrientation">ltr</property>
+    <data-sources>
+        <oda-data-source extensionID="org.eclipse.birt.report.data.oda.jdbc" name="DataSource" id="569">
+            <list-property name="privateDriverProperties">
+                <ex-property>
+                    <name>disabledMetadataBidiFormatStr</name>
+                </ex-property>
+                <ex-property>
+                    <name>disabledContentBidiFormatStr</name>
+                </ex-property>
+                <ex-property>
+                    <name>contentBidiFormatStr</name>
+                    <value>ILYNN</value>
+                </ex-property>
+                <ex-property>
+                    <name>metadataBidiFormatStr</name>
+                    <value>ILYNN</value>
+                </ex-property>
+            </list-property>
+            <property name="odaDriverClass">com.mysql.jdbc.Driver</property>
+            <property name="odaURL">jdbc:mysql://192.168.10.181:3306/gamedb</property>
+            <property name="odaUser">reports</property>
+            <encrypted-property name="odaPassword" encryptionID="base64">cmVwb3J0cw==</encrypted-property>
+        </oda-data-source>
+    </data-sources>
+    <data-sets>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="itemDataSet" id="396">
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">date</property>
+                    <text-property name="displayName">date</text-property>
+                    <text-property name="heading">date</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">itemid</property>
+                    <text-property name="displayName">itemid</text-property>
+                    <text-property name="heading">itemid</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">name</property>
+                    <text-property name="displayName">name</text-property>
+                    <text-property name="heading">name</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">itemcount</property>
+                    <text-property name="displayName">itemcount</text-property>
+                    <text-property name="heading">itemcount</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">costgold</property>
+                    <text-property name="displayName">costgold</text-property>
+                    <text-property name="heading">costgold</text-property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">date</property>
+                        <property name="dataType">date</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">itemid</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">name</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">itemcount</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">costgold</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <method name="beforeOpen"><![CDATA[var startTime =reportContext.getParameterValue("beginDate");
+var endTime =reportContext.getParameterValue("endDate");
+var zone =reportContext.getParameterValue("zone");
+
+this.queryText +=" where 1=1 ";
+if(startTime != null &amp;&amp; endTime !=null){
+	this.queryText +=" and date between '"+startTime.substr(0,10)+"' and '"+ endTime+"'";
+} 
+if( zone != null){
+    this.queryText +=" and zone='"+ zone+"'"; 
+}
+	this.queryText +=" group by date,itemid ";
+	this.queryText +=" order by date desc ";
+	
+]]></method>
+            <property name="dataSource">DataSource</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">date</property>
+                    <property name="nativeName">date</property>
+                    <property name="dataType">date</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">itemid</property>
+                    <property name="nativeName">itemid</property>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">name</property>
+                    <property name="nativeName">name</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">itemcount</property>
+                    <property name="nativeName">itemcount</property>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">costgold</property>
+                    <property name="nativeName">costgold</property>
+                    <property name="dataType">float</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[select date,
+	itemid,
+	t_game_items.name,
+	sum(itemcount) as itemcount,
+	sum(costgold)/100 as costgold
+from  rpt_cost_item
+left join t_game_items on itemid = t_game_items.id
+]]></xml-property>
+            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
+  <Version>2.0</Version>
+  <design:ResultSets derivedMetaData="true">
+    <design:resultSetDefinitions>
+      <design:resultSetColumns>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>date</design:name>
+              <design:position>1</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>91</design:nativeDataTypeCode>
+            <design:precision>10</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>date</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>date</design:label>
+            <design:formattingHints>
+              <design:displaySize>10</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>itemid</design:name>
+              <design:position>2</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>11</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>itemid</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>itemid</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>itemcount</design:name>
+              <design:position>3</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>3</design:nativeDataTypeCode>
+            <design:precision>32</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>itemcount</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>itemcount</design:label>
+            <design:formattingHints>
+              <design:displaySize>33</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>costgold</design:name>
+              <design:position>4</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>3</design:nativeDataTypeCode>
+            <design:precision>32</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>costgold</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>costgold</design:label>
+            <design:formattingHints>
+              <design:displaySize>33</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+      </design:resultSetColumns>
+    </design:resultSetDefinitions>
+  </design:ResultSets>
+</model:DesignValues>]]></xml-property>
+        </oda-data-set>
+    </data-sets>
+    <cubes>
+        <tabular-cube name="gameItemReport" id="397">
+            <property name="dimensions">
+                <tabular-dimension name="groupDate" id="398">
+                    <property name="isTimeType">false</property>
+                    <property name="defaultHierarchy">NewTabularHierarchy</property>
+                    <property name="hierarchies">
+                        <tabular-hierarchy name="NewTabularHierarchy" id="399">
+                            <property name="levels">
+                                <tabular-level name="date" id="400">
+                                    <property name="dataType">date</property>
+                                    <property name="columnName">date</property>
+                                </tabular-level>
+                            </property>
+                        </tabular-hierarchy>
+                    </property>
+                </tabular-dimension>
+                <tabular-dimension name="groupItem" id="401">
+                    <property name="defaultHierarchy">NewTabularHierarchy1</property>
+                    <property name="hierarchies">
+                        <tabular-hierarchy name="NewTabularHierarchy1" id="402">
+                            <property name="levels">
+                                <tabular-level name="item" id="403">
+                                    <property name="dataType">string</property>
+                                    <property name="levelType">dynamic</property>
+                                    <property name="columnName">name</property>
+                                </tabular-level>
+                            </property>
+                        </tabular-hierarchy>
+                    </property>
+                </tabular-dimension>
+            </property>
+            <property name="measureGroups">
+                <tabular-measure-group name="itemCount" id="404">
+                    <property name="measures">
+                        <tabular-measure name="itemcount" id="405">
+                            <expression name="measureExpression">dataSetRow["itemcount"]</expression>
+                            <property name="dataType">decimal</property>
+                        </tabular-measure>
+                    </property>
+                </tabular-measure-group>
+                <tabular-measure-group name="itemCostGold" id="406">
+                    <property name="measures">
+                        <tabular-measure name="costgold" id="407">
+                            <expression name="measureExpression">dataSetRow["costgold"]</expression>
+                            <property name="dataType">decimal</property>
+                        </tabular-measure>
+                    </property>
+                </tabular-measure-group>
+            </property>
+            <property name="dataSet">itemDataSet</property>
+        </tabular-cube>
+    </cubes>
+    <styles>
+        <style name="report" id="4">
+            <property name="fontFamily">"Verdana"</property>
+            <property name="fontSize">10pt</property>
+        </style>
+        <style name="crosstab-cell" id="5">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+        <style name="crosstab" id="6">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+    </styles>
+    <page-setup>
+        <simple-master-page name="Simple MasterPage" id="2">
+            <property name="type">custom</property>
+            <property name="height">12in</property>
+            <property name="width">16in</property>
+            <property name="leftMargin">0.25in</property>
+        </simple-master-page>
+    </page-setup>
+    <body>
+        <text-data id="395">
+            <property name="fontSize">14pt</property>
+            <property name="fontWeight">bold</property>
+            <property name="marginBottom">2pt</property>
+            <property name="textAlign">center</property>
+            <expression name="valueExpr">(BirtComp.equalTo(guid,null)?"全区":guid)+"道具销售明细报表"</expression>
+            <property name="contentType">html</property>
+        </text-data>
+        <text-data id="394">
+            <property name="marginBottom">5pt</property>
+            <property name="textAlign">center</property>
+            <expression name="valueExpr">(start+"至"+end)</expression>
+            <property name="contentType">html</property>
+        </text-data>
+        <extended-item extensionName="Crosstab" extensionVersion="2.5.0" id="457">
+            <property name="cube">gameItemReport</property>
+            <property name="measureDirection">vertical</property>
+            <property name="measures">
+                <extended-item extensionName="MeasureView" id="474">
+                    <property name="measure">costgold</property>
+                    <property name="detail">
+                        <extended-item extensionName="AggregationCell" id="475">
+                            <property name="aggregationOnRow">groupItem/item</property>
+                            <property name="aggregationOnColumn">groupDate/date</property>
+                            <property name="content">
+                                <data id="538">
+                                    <structure name="numberFormat">
+                                        <property name="category">Fixed</property>
+                                        <property name="pattern">#,##0</property>
+                                    </structure>
+                                    <property name="resultSetColumn">itemcount_groupItem/item_groupDate/date</property>
+                                </data>
+                            </property>
+                        </extended-item>
+                    </property>
+                    <property name="header">
+                        <extended-item extensionName="CrosstabCell" id="477">
+                            <property name="content">
+                                <label id="473">
+                                    <text-property name="text">数量</text-property>
+                                </label>
+                            </property>
+                        </extended-item>
+                    </property>
+                </extended-item>
+                <extended-item extensionName="MeasureView" id="469">
+                    <property name="measure">itemcount</property>
+                    <property name="detail">
+                        <extended-item extensionName="AggregationCell" id="470">
+                            <property name="aggregationOnRow">groupItem/item</property>
+                            <property name="aggregationOnColumn">groupDate/date</property>
+                            <property name="content">
+                                <data id="537">
+                                    <structure name="numberFormat">
+                                        <property name="category">Currency</property>
+                                        <property name="pattern">￥#,##0</property>
+                                    </structure>
+                                    <property name="resultSetColumn">costgold_groupItem/item_groupDate/date</property>
+                                </data>
+                            </property>
+                        </extended-item>
+                    </property>
+                    <property name="aggregations">
+                        <extended-item extensionName="AggregationCell" id="559">
+                            <property name="aggregationOnColumn">groupDate/date</property>
+                            <property name="content">
+                                <data id="567">
+                                    <structure name="numberFormat">
+                                        <property name="category">Currency</property>
+                                        <property name="pattern">￥#,##0</property>
+                                    </structure>
+                                    <property name="resultSetColumn">Column Binding</property>
+                                </data>
+                            </property>
+                        </extended-item>
+                    </property>
+                    <property name="header">
+                        <extended-item extensionName="CrosstabCell" id="472">
+                            <property name="content">
+                                <label id="478">
+                                    <text-property name="text">金额</text-property>
+                                </label>
+                            </property>
+                        </extended-item>
+                        <extended-item extensionName="CrosstabCell" id="561">
+                            <property name="content">
+                                <label id="562">
+                                    <text-property name="text">总消费额</text-property>
+                                </label>
+                            </property>
+                        </extended-item>
+                    </property>
+                </extended-item>
+                <extended-item extensionName="MeasureView" id="489">
+                    <property name="measure">itemcount</property>
+                    <property name="detail">
+                        <extended-item extensionName="AggregationCell" id="490">
+                            <property name="aggregationOnRow">groupItem/item</property>
+                            <property name="aggregationOnColumn">groupDate/date</property>
+                            <property name="borderBottomStyle">solid</property>
+                            <property name="borderBottomWidth">thin</property>
+                            <property name="borderBottomColor">#808080</property>
+                            <property name="content">
+                                <data id="536">
+                                    <structure name="numberFormat">
+                                        <property name="category">Percent</property>
+                                        <property name="pattern">Percent</property>
+                                    </structure>
+                                    <property name="resultSetColumn">percentCostGold</property>
+                                </data>
+                            </property>
+                        </extended-item>
+                    </property>
+                    <property name="header">
+                        <extended-item extensionName="CrosstabCell" id="492">
+                            <property name="content">
+                                <label id="493">
+                                    <text-property name="text">百分比</text-property>
+                                </label>
+                            </property>
+                            <property name="borderBottomStyle">solid</property>
+                            <property name="borderBottomWidth">thin</property>
+                            <property name="borderBottomColor">#808080</property>
+                        </extended-item>
+                    </property>
+                </extended-item>
+            </property>
+            <property name="rows">
+                <extended-item extensionName="CrosstabView" id="464">
+                    <property name="grandTotal">
+                        <extended-item extensionName="CrosstabCell" id="558"/>
+                    </property>
+                    <property name="views">
+                        <extended-item extensionName="DimensionView" id="465">
+                            <property name="dimension">groupItem</property>
+                            <property name="levels">
+                                <extended-item extensionName="LevelView" name="NewLevel View1" id="466">
+                                    <property name="level">groupItem/item</property>
+                                    <property name="member">
+                                        <extended-item extensionName="CrosstabCell" id="467">
+                                            <property name="content">
+                                                <data name="item" id="468">
+                                                    <property name="resultSetColumn">item</property>
+                                                </data>
+                                            </property>
+                                            <property name="backgroundColor">#9DDFFF</property>
+                                            <property name="borderBottomStyle">solid</property>
+                                            <property name="borderBottomWidth">thin</property>
+                                            <property name="borderBottomColor">#808080</property>
+                                        </extended-item>
+                                    </property>
+                                </extended-item>
+                            </property>
+                        </extended-item>
+                    </property>
+                    <property name="grandTotalLocation">after</property>
+                </extended-item>
+            </property>
+            <property name="columns">
+                <extended-item extensionName="CrosstabView" id="459">
+                    <property name="views">
+                        <extended-item extensionName="DimensionView" id="460">
+                            <property name="dimension">groupDate</property>
+                            <property name="levels">
+                                <extended-item extensionName="LevelView" name="NewLevel View" id="461">
+                                    <property name="level">groupDate/date</property>
+                                    <property name="member">
+                                        <extended-item extensionName="CrosstabCell" id="462">
+                                            <property name="content">
+                                                <data name="date" id="463">
+                                                    <structure name="dateTimeFormat">
+                                                        <property name="category">Custom</property>
+                                                        <property name="pattern">MM-dd</property>
+                                                    </structure>
+                                                    <property name="resultSetColumn">date</property>
+                                                </data>
+                                            </property>
+                                            <property name="backgroundColor">#9DDFFF</property>
+                                        </extended-item>
+                                    </property>
+                                </extended-item>
+                            </property>
+                        </extended-item>
+                    </property>
+                    <property name="grandTotalLocation">after</property>
+                </extended-item>
+            </property>
+            <property name="header">
+                <extended-item extensionName="CrosstabCell" id="458">
+                    <property name="content">
+                        <text id="502"/>
+                    </property>
+                    <property name="backgroundColor">#9DDFFF</property>
+                </extended-item>
+            </property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">date</property>
+                    <expression name="expression">dimension["groupDate"]["date"]</expression>
+                    <property name="dataType">date</property>
+                </structure>
+                <structure>
+                    <property name="name">item</property>
+                    <expression name="expression">dimension["groupItem"]["item"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">itemcount_groupItem/item_groupDate/date</property>
+                    <expression name="expression">measure["itemcount"]</expression>
+                    <property name="dataType">decimal</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>groupItem/item</value>
+                        <value>groupDate/date</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                </structure>
+                <structure>
+                    <property name="name">costgold_groupItem/item_groupDate/date</property>
+                    <expression name="expression">measure["costgold"]</expression>
+                    <property name="dataType">decimal</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>groupItem/item</value>
+                        <value>groupDate/date</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                </structure>
+                <structure>
+                    <property name="name">totalCostGold</property>
+                    <text-property name="displayName">totalCostGold</text-property>
+                    <property name="dataType">integer</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>groupDate/date</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">measure["costgold"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">percentCostGold</property>
+                    <expression name="expression">(data["totalCostGold"] != 0)?data["costgold_groupItem/item_groupDate/date"]/data["totalCostGold"]:null</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">costgold_groupDate/date</property>
+                    <property name="dataType">decimal</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>groupItem/item</value>
+                        <value>groupDate/date</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">measure["costgold"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">itemcount_groupDate/date</property>
+                    <expression name="expression">measure["itemcount"]</expression>
+                    <property name="dataType">decimal</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>groupDate/date</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                </structure>
+                <structure>
+                    <property name="name">Column Binding</property>
+                    <text-property name="displayName">totalCostgoold</text-property>
+                    <expression name="expression">data["totalCostGold"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+            </list-property>
+        </extended-item>
+    </body>
+</report>

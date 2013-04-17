@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.iwgame.dao.XDao">
+
+	<resultMap id="actWinner" type="com.iwgame.xcloud.searcher.model.ActWinner">
+		<result property="idx" column="idx"  />
+		<result property="accountid" column="accountid"  />
+		<result property="user_name" column="user_name" />
+		<result property="role_name" column="role_name" />
+		<result property="gameid" column="gameid" />
+		<result property="actid" column="actid" />
+		<result property="type" column="type" />
+		<result property="zone" column="zone" />
+		<result property="value" column="vingve" />
+		<result property="flag" column="flag" />
+		<result property="addtime" column="addtime" />
+	</resultMap>
+
+
+	<select id="selectActWinner" parameterType="hashmap" resultMap="actWinner">
+	<![CDATA[	SELECT 	`idx`, 
+				`actid`, 
+				`accountid`, 
+				`user_name`, 
+				`role_name`, 
+				`type`, 
+				`gameid`, 
+				`zone`, 
+				`value`, 
+				`flag`, 
+				`addtime`
+				 FROM 
+				`act_winner` 
+				where `idx` >= #{maxid} and flag = 0 
+		]]>
+		<if test="gameid > 0">
+			AND gameid = #{gameid}
+		</if>
+		<if test="actid > 0">
+			AND actid = #{actid}
+		</if>
+		Order by idx  LIMIT #{limit}
+	</select>
+
+
+	<update id="updateWinnersFlag" parameterType="hashmap">
+	<![CDATA[
+		update act_winner set flag = 1
+		where idx < #{maxid} and flag = 0 and idx > (#{maxid}-200)
+	]]>
+		<if test="gameid > 0">
+			AND gameid=#{gameid}
+		</if>
+		<if test="actid > 0">
+			AND actid=#{actid}
+		</if>
+	</update>
+
+</mapper>

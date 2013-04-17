@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<appunit>
+	<!-- AU类型,枚举值normal: 包含UI功能的AU, core:后台组件模块 -->
+	<type>normal</type>
+	<!-- AU名称 -->
+	<name>FlumeAdmin</name>
+	<!-- AU标题,主要用于管理平台中的菜单显示用 -->
+	<title>数据采集后台管理</title>
+	<!-- AU的功能描述 -->
+	<description>数据采集后台管理，提供数据采集的当前和历史数据监控</description>
+	<!-- AU版本号的声明 -->
+	<version>1.0</version>
+	<!-- AU使用的产品 -->
+	<product>P-P1,P-P1.5,P-WG1,P-P3</product>
+	<!-- 标志,用于分组 -->
+	<app>GM</app>
+	<!-- GWT Module Name,被框架继承 -->
+	<gwt-module>com.iwgame.iwcloud.flume.admin.FlumeAdmin</gwt-module>
+	<!-- 菜单路径配置 -->
+	<menupaths>
+		<menupath name="todayGroupMonitor" title="当天采集监控"
+			url="flumeadmin/monitor/group" type="normal" access="flume-today-monitor" />
+		<menupath name="historyGroupMonitor" title="历史采集监控"
+			url="flumeadmin/history/group" type="normal" access="flume-history-monitor" />
+			
+		<menupath name="dataIntegrityMonitor" title="数据完整性报表"
+			url="flumeadmin/history/dataintegrity" type="normal" access="flume-dataintegrity-monitor" />	
+			
+		<menupath name="flumeChannelMonitor" title="通道管理"
+			url="flumeadmin/config/channels" type="normal" access="flume-channel-manage" />
+		<menupath name="flumeNodesMonitor" title="节点管理"
+			url="flumeadmin/config/nodes" type="normal" access="flume-nodes-manage" />
+		<menupath name="flumeEtcconfigMonitor" title="采集脚本管理"
+			url="flumeadmin/config/etcconfig" type="normal" access="flume-etcconfig-manage" />
+		<menupath name="flumeNodesMonitor" title="数据完整性"
+			url="flumeadmin/datas/integrity" type="normal" access="flume-datas-integrity" />
+
+	</menupaths>
+	<modules>
+		<module id="Monitor" name="monitor"
+			package="com.iwgame.iwcloud.flume.admin.modules.monitor.client" />
+		<module id="History" name="history"
+			package="com.iwgame.iwcloud.flume.admin.modules.history.client" />
+		<module id="Config" name="config"
+			package="com.iwgame.iwcloud.flume.admin.modules.config.client" />
+		<module id="Datas" name="datas"
+			package="com.iwgame.iwcloud.flume.admin.modules.datas.client" />
+	</modules>
+	<!-- 后台服务配置 -->
+	<services>
+		<service
+			endpoint="com.iwgame.iwcloud.flume.admin.modules.monitor.shared.service.MonitorService">
+			<property name="factory" value="spring" />
+			<property name="source" value="monitorService" />
+		</service>
+		<service
+			endpoint="com.iwgame.iwcloud.flume.admin.modules.datas.shared.service.DatasService">
+			<property name="factory" value="spring" />
+			<property name="source" value="datasService" />
+		</service>
+		<service
+			endpoint="com.iwgame.iwcloud.flume.admin.modules.history.shared.service.HistoryService">
+			<property name="factory" value="spring" />
+			<property name="source" value="historyService" />
+		</service>
+		<service
+			endpoint="com.iwgame.iwcloud.flume.admin.modules.config.shared.service.ConfigService">
+			<property name="factory" value="spring" />
+			<property name="source" value="configService" />
+		</service>
+	</services>
+	<!-- 访问控制策略 -->
+	<accesses>
+		<access name="flume-today-monitor" title="当天采集监控" />
+		<access name="flume-history-monitor" title="历史采集监控" />
+		<access name="flume-dataintegrity-monitor" title="数据完整性报表" />
+		<access name="flume-channel-manage" title="通道管理" />
+		<access name="flume-nodes-manage" title="节点管理" />
+		<access name="flume-etcconfig-manage" title="采集脚本管理" />
+		<access name="flume-datas-integrity" title="数据完整性" />
+		
+		<access name="flumeadmin-history-group-query" title="查询组历史数据" />
+		<access name="flumeadmin-history-channel-query" title="查询通道历史数据" />
+		<access name="flumeadmin-history-channel-time-query" title="查询通道分时历史数据" />
+		<access name="flumeadmin-history-group-time-query" title="查询组分时历史数据" />
+
+	</accesses>
+</appunit>

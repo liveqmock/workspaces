@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rpt:report xmlns:rpt="http://www.iwgame.com/report" 
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+ xsi:schemaLocation="http://www.iwgame.com/report report.xsd ">
+    <rpt:dataSource targetType="game"  groupId="${pid}-UcenterPay"/>
+ 
+    <!-- 布局配置 -->
+    <rpt:form title="渠道库存统计" >
+        <rpt:parameter dataType="dateRange" fieldname="daterange" labelname="起始时间" dateShortcut="5,15,30,60" />
+        <rpt:parameter dataType="string" fieldname="keyword" labelname="渠道名称" allowBlank="true" />
+    </rpt:form>
+	
+  <!-- 设计文件配置 -->
+    <rpt:designFiles>
+      <rpt:designFile filename="ucenter_rpt_payment_stock.rptdesign" title="渠道库存统计"/>
+    </rpt:designFiles>
+</rpt:report>

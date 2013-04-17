@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:jaxrs="http://cxf.apache.org/jaxrs" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+	 http://cxf.apache.org/jaxrs
+	 http://cxf.apache.org/schemas/jaxrs.xsd
+     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+     http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+	<!-- 自动注入Service & Dao -->
+	<context:component-scan base-package="com.iwgame.xengine.xtask.killer"></context:component-scan>
+	<context:annotation-config />
+
+
+	<bean id="killerContextService" class="com.iwgame.xengine.xtask.killer.service.impl.ContextServiceImpl">
+		<property name="productId" value="${killer.productId}"/>
+	</bean>
+	<bean id="killerAccountService" class="com.iwgame.xengine.xtask.killer.service.impl.AccountServiceImpl">
+		<property name="productId" value="${killer.productId}"/>
+	</bean>
+	<bean id="killEventPool" class="com.iwgame.xengine.xtask.killer.service.impl.KillEventPoolImpl">
+	</bean>
+	<bean id="killService" class="com.iwgame.xengine.xtask.killer.service.impl.KillServiceImpl">
+		<property name="productId" value="${killer.productId}"/>
+		<property name="exchange" value="${killer.server.exchange.name}"/>
+		<property name="routeKey" value="${killer.server.task.kill.queue.binding.routingkey}"/>
+	</bean>
+</beans>

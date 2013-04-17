@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<!-- 配置MQ连接源P-P1.5 GAME -->
+	<bean id="rabbitMQSourceZxy" class="com.rabbitmq.client.ConnectionFactory">
+		<property name="username" value="${zxy.game.mq.username}" />
+		<property name="password" value="${zxy.game.mq.password}" />
+		<property name="virtualHost" value="${zxy.game.mq.virtualhost}" />
+		<property name="host" value="${zxy.game.mq.host}" />
+		<property name="port" value="${zxy.game.mq.port}" />
+		<property name="requestedHeartbeat" value="5" />
+	</bean>
+	<bean id="connectionFactoryZxy"	class="org.springframework.amqp.rabbit.connection.CachingConnectionFactory">
+		<constructor-arg ref="rabbitMQSourceZxy" />
+		<property name="channelCacheSize" value="${zxy.game.mq.channelcachesize}" />
+	</bean>
+	<bean id="rabbitTemplateZxy" class="org.springframework.amqp.rabbit.core.RabbitTemplate">
+		<constructor-arg ref="connectionFactoryZxy" />
+	</bean>
+
+	<!-- 配置MQ连接源P-P1 GAME-->
+	<bean id="rabbitMQSourceSm" class="com.rabbitmq.client.ConnectionFactory">
+		<property name="username" value="${sm.game.mq.username}" />
+		<property name="password" value="${sm.game.mq.password}" />
+		<property name="virtualHost" value="${sm.game.mq.virtualhost}" />
+		<property name="host" value="${sm.game.mq.host}" />
+		<property name="port" value="${sm.game.mq.port}" />
+		<property name="requestedHeartbeat" value="5" />
+	</bean>
+	<bean id="connectionFactorySm"	class="org.springframework.amqp.rabbit.connection.CachingConnectionFactory">
+		<constructor-arg ref="rabbitMQSourceSm" />
+		<property name="channelCacheSize" value="${sm.game.mq.channelcachesize}" />
+	</bean>
+	<bean id="rabbitTemplateSm" class="org.springframework.amqp.rabbit.core.RabbitTemplate">
+		<constructor-arg ref="connectionFactorySm" />
+	</bean>
+	
+	
+	<!-- 配置MQ连接源P-P1.5 Ucenter -->
+	<bean id="rabbitMQSourceZxyUcenter" class="com.rabbitmq.client.ConnectionFactory">
+		<property name="username" value="${zxy.ucenter.mq.username}" />
+		<property name="password" value="${zxy.ucenter.mq.password}" />
+		<property name="virtualHost" value="${zxy.ucenter.mq.virtualhost}" />
+		<property name="host" value="${zxy.ucenter.mq.host}" />
+		<property name="port" value="${zxy.ucenter.mq.port}" />
+		<property name="requestedHeartbeat" value="5" />
+	</bean>
+	<bean id="connectionFactoryZxyUcenter"	class="org.springframework.amqp.rabbit.connection.CachingConnectionFactory">
+		<constructor-arg ref="rabbitMQSourceZxyUcenter" />
+		<property name="channelCacheSize" value="${zxy.ucenter.mq.channelcachesize}" />
+	</bean>
+	<bean id="rabbitTemplateZxyUcenter" class="org.springframework.amqp.rabbit.core.RabbitTemplate">
+		<constructor-arg ref="connectionFactoryZxyUcenter" />
+	</bean>
+
+	<!-- 配置MQ连接源P-P1 Ucenter-->
+	<bean id="rabbitMQSourceSmUcenter" class="com.rabbitmq.client.ConnectionFactory">
+		<property name="username" value="${sm.ucenter.mq.username}" />
+		<property name="password" value="${sm.ucenter.mq.password}" />
+		<property name="virtualHost" value="${sm.ucenter.mq.virtualhost}" />
+		<property name="host" value="${sm.ucenter.mq.host}" />
+		<property name="port" value="${sm.ucenter.mq.port}" />
+		<property name="requestedHeartbeat" value="5" />
+	</bean>
+	<bean id="connectionFactorySmUcenter"	class="org.springframework.amqp.rabbit.connection.CachingConnectionFactory">
+		<constructor-arg ref="rabbitMQSourceSmUcenter" />
+		<property name="channelCacheSize" value="${sm.ucenter.mq.channelcachesize}" />
+	</bean>
+	<bean id="rabbitTemplateSmUcenter" class="org.springframework.amqp.rabbit.core.RabbitTemplate">
+		<constructor-arg ref="connectionFactorySmUcenter" />
+	</bean>
+	
+	
+	<!-- 配置MQ连接源COMMON 公告消息-->
+	<bean id="rabbitMQSourceCommon" class="com.rabbitmq.client.ConnectionFactory">
+		<property name="username" value="${common.mq.username}" />
+		<property name="password" value="${common.mq.password}" />
+		<property name="virtualHost" value="${common.mq.virtualhost}" />
+		<property name="host" value="${common.mq.host}" />
+		<property name="port" value="${common.mq.port}" />
+		<property name="requestedHeartbeat" value="5" />
+	</bean>
+	<bean id="connectionFactoryCommon"	class="org.springframework.amqp.rabbit.connection.CachingConnectionFactory">
+		<constructor-arg ref="rabbitMQSourceCommon" />
+		<property name="channelCacheSize" value="${common.mq.channelcachesize}" />
+	</bean>
+	<bean id="rabbitTemplateCommon" class="org.springframework.amqp.rabbit.core.RabbitTemplate">
+		<constructor-arg ref="connectionFactoryCommon" />
+	</bean>
+
+</beans>

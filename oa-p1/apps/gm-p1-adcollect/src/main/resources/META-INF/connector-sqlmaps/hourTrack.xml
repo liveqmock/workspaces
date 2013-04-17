@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ad.hour.track">
+	
+	<resultMap type="com.iwgame.gm.p1.adcollect.shared.model.HourDataBase" id="hourTrackBase" />
+	<resultMap type="com.iwgame.gm.p1.adcollect.shared.model.AdvidHour" id="byIdMap" extends="hourTrackBase" />
+	<resultMap type="com.iwgame.gm.p1.adcollect.shared.model.AdvtxtHour" id="byTxtMap" extends="hourTrackBase" />
+
+	<select id="getHourTrackListById" resultMap="byIdMap" parameterType="java.util.Map">
+		SELECT 
+			advid_id AS `id`,
+			advid_date AS `date`,
+			advid_ad_id AS `adId`,
+			advid_key_name AS `keyName`,
+			advid_click AS `click`,
+			advid_reg AS `reg`,
+			advid_new_reg AS `newReg`,
+			advid_sub_new_reg AS `subNewReg`
+		FROM rpt_search_baidu_advid_hour_${tableName}
+		<where>
+			<if test="key  != null and key != '' ">
+				advid_key_name = #{key}
+			</if>
+			<if test="beganTime  != null and endTime != null ">
+				AND advid_date BETWEEN #{beganTime} AND #{endTime}
+			</if>
+		</where>
+		<if test="sortField != null">
+			ORDER BY `${sortField}` ${sortDir}
+		</if>
+		<if test="offset != null and limit != null ">
+			LIMIT #{offset},#{limit}
+		</if>
+	</select>
+	<select id="getHourTrackListByIdCount" resultType="int" parameterType="java.util.Map">
+		SELECT COUNT(advid_id) FROM rpt_search_baidu_advid_hour_${tableName}
+		<where>
+			<if test="key  != null and key != '' ">
+				advid_key_name = #{key}
+			</if>
+			<if test="beganTime  != null and endTime != null ">
+				AND advid_date BETWEEN #{beganTime} AND #{endTime}
+			</if>
+		</where> 
+	</select>
+
+	<select id="getHourTrackListByTxt" resultMap="byTxtMap" parameterType="java.util.Map">
+		SELECT 
+			advtxt_id AS `id`,
+			advtxt_date AS `date`,
+			advtxt_key_name AS `keyName`,
+			advtxt_click AS `click`,
+			advtxt_reg AS `reg`,
+			advtxt_new_reg AS `newReg`,
+			advtxt_sub_new_reg AS `subNewReg`,
+			advtxt_ad_id_sub AS `adIdSub`
+		FROM rpt_search_baidu_advtxt_hour_${tableName}
+		<where>
+			<if test="key  != null and key != '' ">
+				advtxt_key_name = #{key}
+			</if>
+			<if test="beganTime  != null and endTime != null ">
+				AND advtxt_date BETWEEN #{beganTime} AND #{endTime}
+			</if>
+		</where> 
+		<if test="sortField != null">
+			ORDER BY `${sortField}` ${sortDir}
+		</if>
+		<if test="offset != null and limit != null ">
+			LIMIT #{offset},#{limit}
+		</if>
+	</select>
+	<select id="getHourTrackListByTxtCount" resultType="int" parameterType="java.util.Map">
+		SELECT COUNT(advtxt_id) FROM rpt_search_baidu_advtxt_hour_${tableName}
+		<where>
+			<if test="key  != null and key != '' ">
+				advtxt_key_name = #{key}
+			</if>
+			<if test="beganTime  != null and endTime != null ">
+				AND advtxt_date BETWEEN #{beganTime} AND #{endTime}
+			</if>
+		</where> 
+	</select>
+	
+</mapper>

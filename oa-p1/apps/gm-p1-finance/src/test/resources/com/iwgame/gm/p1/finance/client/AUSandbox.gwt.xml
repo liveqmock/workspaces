@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module rename-to='AUSandbox'>
+	<!-- Inherit the AU  -->
+	
+	<inherits name="com.iwgame.xportal.common.Common" />
+	<inherits name='com.iwgame.gm.p1.finance.finance' />
+	
+	<inherits name='com.iwgame.xmvp.XMVP' />
+	
+	<!-- Inherit the default GWT style sheet. You can change -->
+	<!-- the theme of your GWT application by uncommenting -->
+	<!-- any one of the following lines. -->
+	<inherits name='com.google.gwt.user.theme.standard.Standard'/>
+	<!-- <inherits name='com.google.gwt.user.theme.chrome.Chrome'/> -->
+	<!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/> -->
+	<!-- Specify the app entry point class. -->
+	
+	<!-- GWT日志 -->
+	<set-property name="gwt.logging.enabled" value="TRUE"/>
+	
+	<entry-point class='com.iwgame.gm.p1.finance.client.AUSandbox' />
+
+
+	<!-- Specify the paths for translatable code -->
+	<source path='client' />
+	<source path='shared' />
+
+	<!-- 编译的目标浏览器 -->
+	<set-property name="user.agent" value="gecko1_8,safari"/>
+</module>

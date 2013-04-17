@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	
+    <!-- Email配置相关 START -->
+	<!-- 声明MQ Exchange,需要注意不同的Exchange类型 -->
+    <bean id="accountExchange"  class="org.springframework.amqp.core.DirectExchange">  
+        <constructor-arg value="${security.account.exchange.name}" />  
+    </bean>  
+    
+    <!-- 帐号封杀,冻结 -->
+	<bean id="lockaccountQueue"	class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${task.security.lockaccount.queue.name}" />
+	</bean>
+    <bean id="lockaccountQueueBinding" class="org.springframework.amqp.core.Binding">  
+        <constructor-arg index="0" value="${task.security.lockaccount.queue.name}" />  
+        <constructor-arg index="1" value="QUEUE" />  
+        <constructor-arg index="2" value="${security.account.exchange.name}" />  
+        <constructor-arg index="3" value="${task.security.lockaccount.queue.routingkey}" />  
+        <constructor-arg index="4"><null/></constructor-arg>  
+    </bean>  
+    
+    <!-- 帐号解封 -->
+	<bean id="unLockaccountQueue"	class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${task.security.unlockaccount.queue.name}" />
+	</bean>
+    <bean id="unLockaccountQueueBinding" class="org.springframework.amqp.core.Binding">  
+        <constructor-arg index="0" value="${task.security.unlockaccount.queue.name}" />  
+        <constructor-arg index="1" value="QUEUE" />  
+        <constructor-arg index="2" value="${security.account.exchange.name}" />  
+        <constructor-arg index="3" value="${task.security.unlockaccount.queue.routingkey}" />  
+        <constructor-arg index="4"><null/></constructor-arg>  
+    </bean>  
+    
+    <!-- 安全模式 -->
+    <bean id="safeQueue" class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${task.security.safemodel.queue.name}" />
+	</bean>
+    <bean id="safeQueueBinding" class="org.springframework.amqp.core.Binding">  
+        <constructor-arg index="0" value="${task.security.safemodel.queue.name}" />  
+        <constructor-arg index="1" value="QUEUE" />  
+        <constructor-arg index="2" value="${security.account.exchange.name}" />  
+        <constructor-arg index="3" value="${task.security.safemodel.queue.routingkey}" />  
+        <constructor-arg index="4"><null/></constructor-arg>  
+    </bean>
+    
+    <!-- 解除安全模式 -->
+    <bean id="unSafeQueue" class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${task.security.unsafemodel.queue.name}" />
+	</bean>
+    <bean id="unSafeQueueBinding" class="org.springframework.amqp.core.Binding">  
+        <constructor-arg index="0" value="${task.security.unsafemodel.queue.name}" />  
+        <constructor-arg index="1" value="QUEUE" />  
+        <constructor-arg index="2" value="${security.account.exchange.name}" />  
+        <constructor-arg index="3" value="${task.security.unsafemodel.queue.routingkey}" />  
+        <constructor-arg index="4"><null/></constructor-arg>  
+    </bean>
+   
+</beans>

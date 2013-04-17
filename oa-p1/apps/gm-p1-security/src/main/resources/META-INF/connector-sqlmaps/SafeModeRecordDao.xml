@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="security.SafeModeRecord">
+	
+	<resultMap type="com.iwgame.gm.p1.security.common.shared.model.SafeModeRecord" id="safeModeRecordMap">
+		<result property="id" column="id"/>
+		<result property="rolename" column="rolename"/>
+		<result property="username" column="username"/>
+		<result property="dbid" column="dbid"/>
+		<result property="optime" column="optime"/>
+		<result property="operator" column="operator"/>
+		<result property="modeType" column="mode_type"/>
+		<result property="causeNote" column="cause_note"/>
+	</resultMap>
+	<select id="selectCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+		select count(0) from safe_mode_record where 1=1 
+			<if test="modeType!=null and  modeType!='' and modeType !='null'">
+				AND mode_type = #{modeType} 
+			</if>
+			<if test="rolename!=null and  rolename!='' and rolename !='null'">
+				AND rolename = #{rolename}
+			</if>
+			<if test="dbid!=null and  dbid!='' and dbid !='null'">
+				AND dbid = #{dbid}
+			</if>
+			<if test="operator!=null and operator!='null' and operator!=''">
+				AND operator like '%${operator}%' 
+			</if>	
+			<if test="startDate != null and startDate !='' and endDate != null and endDate !=''">
+				AND optime BETWEEN '${startDate} 00:00:00' AND '${endDate} 23:59:59' 
+			</if>
+	</select>
+	
+	<select id="select" parameterType="java.util.Map" resultMap="safeModeRecordMap">
+		select * from safe_mode_record where 1=1 
+			<if test="modeType!=null and  modeType!='' and modeType !='null'">
+				AND mode_type = #{modeType} 
+			</if>
+			<if test="rolename!=null and  rolename!='' and rolename !='null'">
+				AND rolename = #{rolename}
+			</if>
+			<if test="dbid!=null and  dbid!='' and dbid !='null'">
+				AND dbid = #{dbid}
+			</if>
+			<if test="operator!=null and operator!='null' and operator!=''">
+				AND operator like '%${operator}%' 
+			</if>	
+			<if test="startDate != null and startDate !='' and endDate != null and endDate !=''">
+				AND optime BETWEEN '${startDate} 00:00:00' AND '${endDate} 23:59:59' 
+			</if>
+			<if test="sortColumn !=null and sortColumn !='' and sortType !=null and sortType !=''">
+				ORDER BY ${sortColumn} ${sortType} 
+			</if>
+			<if test="limit >0 and offset >=0 ">
+				LIMIT #{offset},#{limit}
+			</if>
+	</select>
+	<insert id="insert" parameterType="com.iwgame.gm.p1.security.common.shared.model.SafeModeRecord" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO safe_mode_record (
+				rolename, 
+				dbid, 
+				optime, 
+				operator,
+				mode_type,
+				cause_note,
+				groupname,	 
+				guid,
+				username
+			)VALUES(
+				#{rolename}, 
+				#{dbid},
+				NOW(), 
+				#{operator},
+				#{modeType},
+				#{causeNote},
+				#{groupname},	 
+				#{guid},
+				#{username}
+			)
+	</insert>
+</mapper>

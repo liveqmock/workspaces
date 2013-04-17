@@ -1,0 +1,87 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.iwgame</groupId>
+		<artifactId>iwgame</artifactId>
+		<version>1.0</version>
+	</parent>
+	<groupId>com.iwgame.gm.p1.killer</groupId>
+	<artifactId>gm-p1-killer</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<packaging>jar</packaging>
+
+	<name>帐号封杀管理</name>
+	<url>http://wiki.iwgame.tec/display/APPKILL/Home</url>
+	<properties>
+			<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+			<gwtVersion>2.4.0</gwtVersion>
+			<!-- Convenience property to set the GWT version -->
+			<!-- GWT needs at least java 1.5 -->
+			<maven.compiler.source>1.6</maven.compiler.source>
+			<maven.compiler.target>1.6</maven.compiler.target>
+			<webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
+			<junitVersion>3.8.1</junitVersion>
+		</properties>
+	<dependencies>
+			<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.8.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.iwgame.gm.p1.common</groupId>
+			<artifactId>gm-p1-common</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.amqp</groupId>
+			<artifactId>spring-amqp</artifactId>
+			<version>1.0.0.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.amqp</groupId>
+			<artifactId>spring-rabbit</artifactId>
+			<version>1.0.0.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>com.iwgame</groupId>
+			<artifactId>iw-security</artifactId>
+			<version>1.0</version>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.1</version>
+				<configuration>
+					<source>${maven.compiler.source}</source>
+					<target>${maven.compiler.target}</target>
+				</configuration>
+			</plugin>
+
+		</plugins>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>**/*.xml</include>
+					<include>**/*.properties</include>
+					<include>**/*.css</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**/client/**/*.java</include>
+					<include>**/shared/**/*.java</include>
+				</includes>
+			</resource>
+		</resources>
+	</build>
+	<description>帐号封杀管理模块，主要对帐号封杀策略的配置管理和帐号封杀日志的查询</description>
+</project>
+

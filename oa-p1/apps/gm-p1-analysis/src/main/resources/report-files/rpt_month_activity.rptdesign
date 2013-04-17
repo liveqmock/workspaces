@@ -1,0 +1,624 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.22" id="1">
+    <property name="createdBy">Eclipse BIRT Designer Version 2.6.2.r262_v20110209 Build &lt;2.6.2.v20110214-1523></property>
+    <property name="units">in</property>
+    <list-property name="propertyBindings">
+        <structure>
+            <property name="name">queryText</property>
+            <property name="id">361</property>
+        </structure>
+        <structure>
+            <property name="name">queryTimeOut</property>
+            <property name="id">361</property>
+        </structure>
+    </list-property>
+    <method name="initialize"><![CDATA[//开始时间
+var start=reportContext.getParameterValue("beginDate");;
+//结束时间
+var end=reportContext.getParameterValue("beginDate");
+if( start!=null){
+    var years = start.substr(0,4);
+}
+//开始时间
+if( start!=null){
+    var mstart = start.substr(5,2);
+}
+//结束时间
+if(end !=null){
+    var mend = end.substr(8,2);
+}
+//大区
+var guid = reportContext.getParameterValue("zone");
+
+
+]]></method>
+    <property name="iconFile">/templates/blank_report.gif</property>
+    <property name="layoutPreference">auto layout</property>
+    <property name="bidiLayoutOrientation">ltr</property>
+    <data-sources>
+        <oda-data-source extensionID="org.eclipse.birt.report.data.oda.jdbc" name="DataSource" id="390">
+            <list-property name="privateDriverProperties">
+                <ex-property>
+                    <name>disabledMetadataBidiFormatStr</name>
+                </ex-property>
+                <ex-property>
+                    <name>disabledContentBidiFormatStr</name>
+                </ex-property>
+                <ex-property>
+                    <name>contentBidiFormatStr</name>
+                    <value>ILYNN</value>
+                </ex-property>
+                <ex-property>
+                    <name>metadataBidiFormatStr</name>
+                    <value>ILYNN</value>
+                </ex-property>
+            </list-property>
+            <property name="odaDriverClass">com.mysql.jdbc.Driver</property>
+            <property name="odaURL">jdbc:mysql://192.168.10.181:3306/gamedb</property>
+            <property name="odaUser">reports</property>
+            <encrypted-property name="odaPassword" encryptionID="base64">cmVwb3J0cw==</encrypted-property>
+        </oda-data-source>
+    </data-sources>
+    <data-sets>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="monthDataSet" id="361">
+            <property name="nullsOrdering">nulls lowest</property>
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">year</property>
+                    <text-property name="displayName">year</text-property>
+                    <text-property name="heading">year</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">month</property>
+                    <text-property name="displayName">month</text-property>
+                    <text-property name="heading">month</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">online_peak</property>
+                    <text-property name="displayName">online_peak</text-property>
+                    <text-property name="heading">online_peak</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">online_peak_avg</property>
+                    <text-property name="displayName">online_peak_avg</text-property>
+                    <text-property name="heading">online_peak_avg</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">login</property>
+                    <text-property name="displayName">login</text-property>
+                    <text-property name="heading">login</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">activity</property>
+                    <text-property name="displayName">activity</text-property>
+                    <text-property name="heading">activity</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">paid</property>
+                    <text-property name="displayName">paid</text-property>
+                    <text-property name="heading">paid</text-property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">year</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">month</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">online_peak</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">online_peak_avg</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">login</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">activity</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">paid</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="needsCache">false</property>
+            <method name="beforeOpen"><![CDATA[var startTime =reportContext.getParameterValue("beginDate");
+var endTime =reportContext.getParameterValue("endDate");
+var zone =reportContext.getParameterValue("zone");
+
+//年
+if(startTime!=null){
+    var year = startTime.substr(0,4);
+}
+//开始月份
+if(startTime!=null){
+    var startMonth = startTime.substr(5,2);
+}
+//结束月份
+if(endTime!=null){
+    var endMonth = endTime.substr(8,2);
+}
+this.queryText+=" where 1=1 ";
+ if( zone != null){
+    this.queryText +=" and zone='"+ zone+"'"; 
+}
+if(year!=null &amp;&amp; startMonth!=null &amp;&amp; endMonth!=null){ 
+ this.queryText+=" and `year`="+year+" and `month` between "+ startMonth +" and "+endMonth;
+ }
+this.queryText += " group by `year`, `month` order by `month` desc";
+]]></method>
+            <property name="dataSource">DataSource</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">year</property>
+                    <property name="nativeName">year</property>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">month</property>
+                    <property name="nativeName">month</property>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">online_peak</property>
+                    <property name="nativeName">online_peak</property>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">online_peak_avg</property>
+                    <property name="nativeName">online_peak_avg</property>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">login</property>
+                    <property name="nativeName">login</property>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="position">6</property>
+                    <property name="name">activity</property>
+                    <property name="nativeName">activity</property>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="position">7</property>
+                    <property name="name">paid</property>
+                    <property name="nativeName">paid</property>
+                    <property name="dataType">float</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[select `year`, `month`,
+	sum(`online_peak`) as `online_peak`,
+	sum(`online_peak_avg`) as `online_peak_avg`,
+	sum(`login`) as `login`,
+	sum(`activity`) as `activity`,
+	sum(`paid`) as `paid`
+	from rpt_account_activity_month 
+]]></xml-property>
+            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
+  <Version>2.0</Version>
+  <design:ResultSets derivedMetaData="true">
+    <design:resultSetDefinitions>
+      <design:resultSetColumns>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>id</design:name>
+              <design:position>1</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>-5</design:nativeDataTypeCode>
+            <design:precision>20</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>id</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>id</design:label>
+            <design:formattingHints>
+              <design:displaySize>20</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>date</design:name>
+              <design:position>2</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>91</design:nativeDataTypeCode>
+            <design:precision>10</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>date</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>date</design:label>
+            <design:formattingHints>
+              <design:displaySize>10</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>zone</design:name>
+              <design:position>3</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>16</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>zone</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>zone</design:label>
+            <design:formattingHints>
+              <design:displaySize>16</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>logincount</design:name>
+              <design:position>4</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>11</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>logincount</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>logincount</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>activecount</design:name>
+              <design:position>5</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>11</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>activecount</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>activecount</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>savingcount</design:name>
+              <design:position>6</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>11</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>savingcount</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>savingcount</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+      </design:resultSetColumns>
+    </design:resultSetDefinitions>
+  </design:ResultSets>
+</model:DesignValues>]]></xml-property>
+        </oda-data-set>
+    </data-sets>
+    <styles>
+        <style name="report" id="4">
+            <property name="fontFamily">"Verdana"</property>
+            <property name="fontSize">10pt</property>
+        </style>
+        <style name="crosstab-cell" id="5">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+        <style name="crosstab" id="6">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+    </styles>
+    <page-setup>
+        <simple-master-page name="Simple MasterPage" id="2">
+            <property name="orientation">landscape</property>
+            <page-footer>
+                <text id="3">
+                    <property name="contentType">html</property>
+                    <text-property name="content"><![CDATA[<value-of>new Date()</value-of>]]></text-property>
+                </text>
+            </page-footer>
+        </simple-master-page>
+    </page-setup>
+    <body>
+        <text-data id="362">
+            <property name="fontSize">14pt</property>
+            <property name="fontWeight">bold</property>
+            <property name="textAlign">center</property>
+            <expression name="valueExpr">(BirtComp.equalTo(guid,null)?"全区":guid)+"月活跃数据报表"</expression>
+            <property name="contentType">html</property>
+        </text-data>
+        <text-data id="363">
+            <property name="marginBottom">10pt</property>
+            <property name="textAlign">center</property>
+            <expression name="valueExpr">if(years!=null&amp;&amp;mstart!=null&amp;&amp;mend!=null){(years)+"年"+(mstart+"月至"+mend)+"月"}</expression>
+            <property name="contentType">html</property>
+        </text-data>
+        <table id="364">
+            <property name="fontSize">12pt</property>
+            <property name="borderBottomColor">#000000</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">thin</property>
+            <property name="borderLeftColor">#000000</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">thin</property>
+            <property name="borderRightColor">#000000</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">thin</property>
+            <property name="borderTopColor">#000000</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">thin</property>
+            <property name="marginBottom">10pt</property>
+            <property name="textAlign">center</property>
+            <property name="dataSet">monthDataSet</property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">month</property>
+                    <expression name="expression">dataSetRow["month"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">onlinePeakValue</property>
+                    <expression name="expression" type="javascript">dataSetRow["online_peak"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">onlinePeakAvgValue</property>
+                    <expression name="expression" type="javascript">dataSetRow["online_peak_avg"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">loginValue</property>
+                    <expression name="expression" type="javascript">dataSetRow["login"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">activityValue</property>
+                    <expression name="expression" type="javascript">dataSetRow["activity"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">paidValue</property>
+                    <expression name="expression" type="javascript">dataSetRow["paid"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">activityPercent</property>
+                    <text-property name="displayName">活跃率</text-property>
+                    <expression name="expression" type="javascript">if(dataSetRow["login"]!=0 || dataSetRow["login"]!=null)&#13;
+{dataSetRow["activity"]/dataSetRow["login"];}</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">paidPercent</property>
+                    <text-property name="displayName">充值率</text-property>
+                    <expression name="expression" type="javascript">if(dataSetRow["activity"]!=0 || dataSetRow["activity"]!=null){&#13;
+dataSetRow["paid"]/dataSetRow["activity"];&#13;
+}</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">year</property>
+                    <expression name="expression" type="javascript">dataSetRow["year"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">month_1</property>
+                    <expression name="expression" type="javascript">dataSetRow["month"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+            </list-property>
+            <column id="403"/>
+            <column id="404"/>
+            <column id="418"/>
+            <column id="405"/>
+            <column id="406"/>
+            <column id="407"/>
+            <column id="408"/>
+            <column id="409"/>
+            <header>
+                <row id="365">
+                    <property name="backgroundColor">#9DDFFF</property>
+                    <cell id="366">
+                        <label id="367">
+                            <text-property name="text">月份</text-property>
+                        </label>
+                    </cell>
+                    <cell id="368">
+                        <label id="369">
+                            <text-property name="text">最高峰值</text-property>
+                        </label>
+                    </cell>
+                    <cell id="415">
+                        <label id="419">
+                            <text-property name="text">平均峰值</text-property>
+                        </label>
+                    </cell>
+                    <cell id="370">
+                        <label id="371">
+                            <text-property name="text">登录帐号数</text-property>
+                        </label>
+                    </cell>
+                    <cell id="372">
+                        <label id="373">
+                            <text-property name="text">活跃帐号数</text-property>
+                        </label>
+                    </cell>
+                    <cell id="374">
+                        <label id="375">
+                            <text-property name="text">充值帐号数</text-property>
+                        </label>
+                    </cell>
+                    <cell id="376">
+                        <label id="377">
+                            <text-property name="text">活跃/登录</text-property>
+                        </label>
+                    </cell>
+                    <cell id="378">
+                        <label id="379">
+                            <text-property name="text">充值/活跃</text-property>
+                        </label>
+                    </cell>
+                </row>
+            </header>
+            <detail>
+                <row id="380">
+                    <list-property name="highlightRules">
+                        <structure>
+                            <property name="operator">eq</property>
+                            <property name="backgroundColor">#E4E4E4</property>
+                            <expression name="testExpr">row.__rownum%2</expression>
+                            <simple-property-list name="value1">
+                                <value>1</value>
+                            </simple-property-list>
+                        </structure>
+                    </list-property>
+                    <cell id="381">
+                        <data id="382">
+                            <structure name="dateTimeFormat">
+                                <property name="category">Custom</property>
+                                <property name="pattern">yyy-MM</property>
+                            </structure>
+                            <property name="resultSetColumn">month</property>
+                        </data>
+                    </cell>
+                    <cell id="383">
+                        <data id="425">
+                            <property name="resultSetColumn">onlinePeakValue</property>
+                        </data>
+                    </cell>
+                    <cell id="416">
+                        <data id="426">
+                            <property name="resultSetColumn">onlinePeakAvgValue</property>
+                        </data>
+                    </cell>
+                    <cell id="385">
+                        <data id="427">
+                            <property name="resultSetColumn">loginValue</property>
+                        </data>
+                    </cell>
+                    <cell id="387">
+                        <data id="428">
+                            <property name="resultSetColumn">activityValue</property>
+                        </data>
+                    </cell>
+                    <cell id="389">
+                        <data id="429">
+                            <property name="resultSetColumn">paidValue</property>
+                        </data>
+                    </cell>
+                    <cell id="391">
+                        <data id="430">
+                            <structure name="numberFormat">
+                                <property name="category">Percent</property>
+                                <property name="pattern">###0.00%{RoundingMode=HALF_UP}</property>
+                            </structure>
+                            <property name="resultSetColumn">activityPercent</property>
+                        </data>
+                    </cell>
+                    <cell id="393">
+                        <data id="431">
+                            <structure name="numberFormat">
+                                <property name="category">Percent</property>
+                                <property name="pattern">###0.00%{RoundingMode=HALF_UP}</property>
+                            </structure>
+                            <property name="resultSetColumn">paidPercent</property>
+                        </data>
+                    </cell>
+                </row>
+            </detail>
+            <footer>
+                <row id="395">
+                    <cell id="396"/>
+                    <cell id="397"/>
+                    <cell id="417"/>
+                    <cell id="398"/>
+                    <cell id="399"/>
+                    <cell id="400"/>
+                    <cell id="401"/>
+                    <cell id="402"/>
+                </row>
+            </footer>
+        </table>
+    </body>
+</report>

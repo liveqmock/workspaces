@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ad.frame">
+	<insert id="insertFrame"
+		parameterType="com.iwgame.gm.p1.adcollect.shared.model.FrameDataBase"
+		keyProperty="id" keyColumn="frame_id">
+		<selectKey keyProperty="id" resultType="int" order="AFTER">
+			SELECT
+			LAST_INSERT_ID()
+		</selectKey>
+		INSERT INTO `iw_frame_info`
+		(
+		`frame_name`, `frame_media_id`, `frame_media_name`, `frame_begin_amount`,
+		`frame_rebate`,
+		`frame_security_deposit`, `frame_start_time`, `frame_end_time`, `frame_balance`
+		)
+		VALUES
+		(
+		#{name}, #{media}, #{mediaName}, #{amount}, #{rebate},
+		#{securityDeposit}, #{startTime}, #{endTime}, #{amount}
+		);
+	</insert>
+	<resultMap type="com.iwgame.gm.p1.adcollect.shared.model.FrameDataBase"
+		id="FrameDataBase" />
+	<select id="getFrameList" resultMap="FrameDataBase"
+		parameterType="java.util.Map">
+		SELECT
+		frame_id AS `id`,
+		frame_name AS `name`,
+		frame_media_id `media`,
+		frame_media_name AS `mediaName`,
+		frame_begin_amount AS amount,
+		frame_rebate AS rebate,
+		frame_security_deposit AS securityDeposit,
+		frame_start_time AS startTime,
+		frame_end_time AS endTime,
+		frame_balance AS balance
+		FROM iw_frame_info
+		<where>
+			<if test="name  != null and name != '' ">
+				and frame_name = #{name}
+			</if>
+			<if test="media  != null and media != '-1' ">
+				and frame_media_id = #{media}
+			</if>
+			<if test="mediaType  != null and mediaType != '-1' ">
+				and frame_media_id LIKE '${mediaType}%'
+			</if>
+			<if test="startDate != null ">
+				and frame_start_time &gt;= #{startDate}
+			</if>
+			<if test="endDate != null ">
+				and frame_end_time &lt; #{endDate}
+			</if>
+		</where>
+		ORDER BY frame_id DESC
+		<if test="offset != null  and limit != null">
+			LIMIT #{offset},#{limit}
+		</if>
+	</select>
+	<select id="getFrameListCount" resultType="int" parameterType="java.util.Map">
+		SELECT COUNT(frame_id) FROM iw_frame_info
+		<where>
+			<if test="name  != null and name != '' ">
+				and frame_name = #{name}
+			</if>
+			<if test="media  != null and media != '-1' ">
+				and frame_media_id = #{media}
+			</if>
+			<if test="mediaType  != null and mediaType != '-1' ">
+				and frame_media_id LIKE '${mediaType}%'
+			</if>
+			<if test="startDate != null ">
+				and frame_start_time &gt;= #{startDate}
+			</if>
+			<if test="endDate != null ">
+				and frame_end_time &lt; #{endDate}
+			</if>
+		</where>
+	</select>
+	<select id="checkFrameName" resultType="int" parameterType="String">
+		SELECT COUNT(frame_id) FROM iw_frame_info WHERE frame_name = #{name}
+	</select>
+	<select id="getFrameTimeByMediaId" resultMap="FrameDataBase"
+		parameterType="String">
+		SELECT
+		frame_start_time AS startTime,
+		frame_end_time AS endTime
+		FROM iw_frame_info
+		<where>
+			frame_media_id = #{mediaId}
+		</where>
+		ORDER BY frame_id DESC
+	</select>
+	<select id="getFrameById" resultMap="FrameDataBase"
+		parameterType="int">
+		SELECT
+		frame_id AS `id`,
+		frame_rebate AS rebate,
+		frame_security_deposit AS securityDeposit,
+		frame_start_time AS startTime,
+		frame_end_time AS endTime
+		FROM iw_frame_info
+		<where>
+			frame_id = #{id}
+		</where>
+	</select>
+	<update id="updateFrameById"
+		parameterType="com.iwgame.gm.p1.adcollect.shared.model.FrameDataBase">
+		UPDATE iw_frame_info SET
+		frame_rebate = #{rebate},
+		frame_security_deposit = #{securityDeposit},
+		frame_start_time = #{startTime},
+		frame_end_time = #{endTime}
+		WHERE
+		frame_id = #{id}
+	</update>
+	<delete id="delFrameByIds" parameterType="java.util.Map">
+		DELETE FROM
+		iw_frame_info WHERE frame_id IN (${ids})
+	</delete>
+
+	<resultMap type="com.iwgame.gm.p1.adcollect.shared.model.DropDownListData"
+		id="dropDownListData">
+		<result column="id" property="id" javaType="java.lang.String"
+			jdbcType="INTEGER" />
+		<result column="generate" property="generate" javaType="java.lang.String" />
+		<result column="name" property="name" javaType="java.lang.String" />
+	</resultMap>
+	<select id="getFrameName" resultMap="dropDownListData"
+		parameterType="String">
+		SELECT frame_id AS `id`, frame_name AS `name`
+		,frame_balance AS `generate` FROM iw_frame_info WHERE frame_media_id =
+		#{mediaId}
+	</select>
+	<!-- 最后一个是输出参数，返回0为成功，返回1为错误 -->
+	<select id="insertUseFrame" statementType="CALLABLE"
+		parameterType="com.iwgame.gm.p1.adcollect.shared.model.UseFrameDataBase">
+		{ call sp_insert_frame_detail(#{mediaId}, #{mediaName}, #{frameId},
+		#{frameName}, #{changes},
+		#{changeAmount}, #{contractId},#{contractItmo}, #{usedDetails},
+		#{effectTracking},#{result})}
+	</select>
+	<resultMap type="com.iwgame.gm.p1.adcollect.shared.model.UseFrameDataBase"
+		id="useFrameDataBase" />
+	<select id="getUseFrameList" resultMap="useFrameDataBase"
+		parameterType="java.util.Map">
+		SELECT 	
+			detail_id as `id`, 
+			detail_media_id as `mediaId`, 
+			detail_media_name as mediaName, 
+			detail_frame_id as frameId, 
+			detail_frame_name as frameName, 
+			detail_update_time as updateTime, 
+			detail_changes as changes, 
+			detail_change_amount as changeAmount, 
+			detail_balance as balance, 
+			detail_contract_id as contractId, 
+			detail_contract_itmo as contractItmo, 
+			detail_used_details as usedDetails, 
+			detail_effect_tracking as effectTracking
+		FROM 
+			iw_frame_detail 
+		<where>
+			<if test="name  != null and name != '' ">
+				and detail_frame_name = #{name}
+			</if>
+			<if test="media  != null and media != '-1' ">
+				and detail_media_id = #{media}
+			</if>
+			<if test="mediaType  != null and mediaType != '-1' ">
+				and detail_media_id LIKE '${mediaType}%'
+			</if>
+		</where>
+		ORDER BY detail_id DESC
+		<if test="offset != null  and limit != null">
+			LIMIT #{offset},#{limit}
+		</if>
+	</select>
+	<select id="getUseFrameListCount" resultType="int"
+		parameterType="java.util.Map">
+		SELECT 	
+			COUNT(detail_id)
+		FROM 
+			iw_frame_detail 
+		<where>
+			<if test="name  != null and name != '' ">
+				and detail_frame_name = #{name}
+			</if>
+			<if test="media  != null and media != '-1' ">
+				and detail_media_id = #{media}
+			</if>
+			<if test="mediaType  != null and mediaType != '-1' ">
+				and detail_media_id LIKE '${mediaType}%'
+			</if>
+		</where>
+	</select>
+	<delete id="delUseFrameByIds" parameterType="java.util.Map">
+		DELETE FROM iw_frame_detail WHERE detail_id IN (${ids})
+	</delete>
+	
+</mapper>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<!-- Killer上下文配置相关 START  
+	<bean id="killerContextExchange" class="org.springframework.amqp.core.DirectExchange">
+		<constructor-arg value="${killer.context.exchange.name}" />
+	</bean>
+
+	<bean id="killerUpdatePolicyQueue" class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${killer.task.policy.queue.name}" />
+	</bean>
+	<bean id="killerUpdatePolicyQueueBinding" class="org.springframework.amqp.core.Binding">
+		<constructor-arg index="0"
+			value="${killer.task.policy.queue.name}" />
+		<constructor-arg index="1" value="QUEUE" />
+		<constructor-arg index="2"
+			value="${killer.context.exchange.name}" />
+		<constructor-arg index="3"
+			value="${killer.task.policy.queue.binding.routingkey}" />
+		<constructor-arg index="4">
+			<null />
+		</constructor-arg>
+	</bean>
+	Killer上下文配置相关 END -->
+</beans>

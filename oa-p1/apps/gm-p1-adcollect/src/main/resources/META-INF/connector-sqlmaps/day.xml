@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ad.day">
+
+	<resultMap type="com.iwgame.gm.p1.adcollect.shared.model.DayIdDate" id="byIdMap" >
+		<result property="adId" column="adId"  javaType="int" />
+	</resultMap>
+	<resultMap type="com.iwgame.gm.p1.adcollect.shared.model.DayTxtDate" id="byTxtMap" >
+	</resultMap>
+	<!-- 汇总  -->
+	<select id="getAggregateDayByTxt" resultMap="byTxtMap" parameterType="java.util.Map">
+		SELECT 
+		SUM(atxts.seqtxt_used) AS used,
+		SUM(atxts.seqtxt_show) AS `show`,
+		SUM(atxts.seqtxt_click) AS click,
+		IFNULL(SUM(atxts.seqtxt_used)/SUM(atxts.seqtxt_click),0) AS  clickPrice ,
+		MAX(atxts.seqtxt_rank) AS rank ,
+		SUM(atxts.seqtxt_reg) AS  reg ,
+		SUM(atxts.seqtxt_reg_login) AS  regLogin ,
+		IFNULL(SUM(atxts.seqtxt_click)/SUM(atxts.seqtxt_show),0) AS  clickRatio ,
+		IFNULL((SUM(atxts.seqtxt_used)/SUM(atxts.seqtxt_show))*1000,0) AS  cpm ,
+		IFNULL(SUM(atxts.seqtxt_used)/SUM(atxts.seqtxt_reg),0) AS  cpa ,
+		IFNULL(SUM(atxts.seqtxt_used)/SUM(atxts.seqtxt_reg_login),0) AS  loginPrice ,
+		SUM(atxts.seqtxt_new_reg) AS  newReg ,
+		IFNULL((SUM(atxts.seqtxt_new_reg)/SUM(atxts.seqtxt_reg)),0) AS  newRegRatio ,
+		SUM(atxts.seqtxt_sub_new_reg) AS  subNewReg ,
+		IFNULL((SUM(atxts.seqtxt_sub_new_reg)/SUM(atxts.seqtxt_reg)),0) AS  subNewRegRatio ,
+		SUM(atxts.seqtxt_old_reg) AS  oldReg ,
+		IFNULL((SUM(atxts.seqtxt_old_reg)/SUM(atxts.seqtxt_reg)),0) AS  oldRegRatio ,
+		SUM(atxts.seqtxt_new_login) AS  newLogin ,
+		SUM(atxts.seqtxt_sub_new_login) AS  subNewLogin ,
+		SUM(atxts.seqtxt_old_login) AS  oldLogin ,
+		IFNULL(SUM(atxts.seqtxt_reg)/SUM(atxts.seqtxt_click),0) AS  regRatio
+		FROM rpt_search_baidu_advtxt_seq AS atxts 
+		<where>
+			<if test="key  != null and key != '' ">
+				atxts.seqtxt_key_name = #{key}
+			</if>
+			<if test="beganTime  != null ">
+				AND atxts.seqtxt_date &gt;= #{beganTime}
+			</if>
+			<if test="endTime != null ">
+				AND atxts.seqtxt_date &lt; #{endTime}
+			</if>
+			<if test="list != null and list != '' ">
+				AND atxts.seqtxt_ad_type IN ${list}
+	 		</if>
+		</where> 
+	</select>
+	<select id="getDaySummaryByTxt" resultMap="byTxtMap" parameterType="java.util.Map">
+		SELECT 
+		atxts.seqtxt_date AS `date`,
+		atxts.seqtxt_ad_type AS `type`,
+		atxts.seqtxt_key_name AS keyName,
+		SUM(atxts.seqtxt_used) AS used,
+		SUM(atxts.seqtxt_show) AS `show`,
+		SUM(atxts.seqtxt_click) AS click,
+		IFNULL(SUM(atxts.seqtxt_used)/SUM(atxts.seqtxt_click),0) AS  clickPrice ,
+		MAX(atxts.seqtxt_rank) AS rank ,
+		SUM(atxts.seqtxt_reg) AS  reg ,
+		SUM(atxts.seqtxt_reg_login) AS  regLogin ,
+		IFNULL(SUM(atxts.seqtxt_click)/SUM(atxts.seqtxt_show),0) AS  clickRatio ,
+		IFNULL((SUM(atxts.seqtxt_used)/SUM(atxts.seqtxt_show))*1000,0) AS  cpm ,
+		IFNULL(SUM(atxts.seqtxt_used)/SUM(atxts.seqtxt_reg),0) AS  cpa ,
+		IFNULL(SUM(atxts.seqtxt_used)/SUM(atxts.seqtxt_reg_login),0) AS  loginPrice ,
+		SUM(atxts.seqtxt_new_reg) AS  newReg ,
+		IFNULL((SUM(atxts.seqtxt_new_reg)/SUM(atxts.seqtxt_reg)),0) AS  newRegRatio ,
+		SUM(atxts.seqtxt_sub_new_reg) AS  subNewReg ,
+		IFNULL((SUM(atxts.seqtxt_sub_new_reg)/SUM(atxts.seqtxt_reg)),0) AS  subNewRegRatio ,
+		SUM(atxts.seqtxt_old_reg) AS  oldReg ,
+		IFNULL((SUM(atxts.seqtxt_old_reg)/SUM(atxts.seqtxt_reg)),0) AS  oldRegRatio ,
+		SUM(atxts.seqtxt_new_login) AS  newLogin ,
+		SUM(atxts.seqtxt_sub_new_login) AS  subNewLogin ,
+		SUM(atxts.seqtxt_old_login) AS  oldLogin ,
+		IFNULL(SUM(atxts.seqtxt_reg)/SUM(atxts.seqtxt_click),0) AS  regRatio ,
+		atxts.seqtxt_ad_id_sub AS  adIdSub 
+		FROM rpt_search_baidu_advtxt_seq AS atxts 
+		<where>
+			<if test="key  != null and key != '' ">
+				atxts.seqtxt_key_name = #{key}
+			</if>
+			<if test="beganTime  != null ">
+				AND atxts.seqtxt_date &gt;= #{beganTime}
+			</if>
+			<if test="endTime != null ">
+				AND atxts.seqtxt_date &lt; #{endTime}
+			</if>
+			<if test="list != null and list != '' ">
+				AND atxts.seqtxt_ad_type IN ${list}
+	 		</if>
+		</where> 
+		GROUP BY atxts.seqtxt_key_name 
+		<if test="sortField != null ">
+			ORDER BY `${sortField}` ${sortDir}
+		</if>
+		<if test="sortField == null ">
+			ORDER BY atxts.seqtxt_date DESC, atxts.seqtxt_ad_type , atxts.seqtxt_key_name ASC
+		</if>
+		<if test="offset != null and limit != null ">
+			LIMIT #{offset},#{limit}
+		</if>
+	</select>
+	<select id="getDaySummaryByTxtCount" resultType="int" parameterType="java.util.Map">
+		SELECT COUNT(*) FROM (SELECT 
+		COUNT(atxts.seqtxt_key_name)
+		FROM rpt_search_baidu_advtxt_seq AS atxts 
+		<where>
+			<if test="key  != null and key != '' ">
+				atxts.seqtxt_key_name = #{key}
+			</if>
+			<if test="beganTime  != null ">
+				AND atxts.seqtxt_date &gt;= #{beganTime}
+			</if>
+			<if test="endTime != null ">
+				AND atxts.seqtxt_date &lt; #{endTime}
+			</if>
+			<if test="list != null and list != '' ">
+				AND atxts.seqtxt_ad_type IN ${list}
+	 		</if>
+		</where> 
+		GROUP BY atxts.seqtxt_key_name ) AS b
+	</select>
+	<select id="getAggregateDayById" resultMap="byIdMap" parameterType="java.util.Map">
+		SELECT 
+		SUM(aids.seqadid_reg) AS `reg`,
+		SUM(aids.seqadid_reg_login) AS `regLogin`,
+		SUM(aids.seqadid_new_reg) AS `newReg`,
+		IFNULL((SUM(aids.seqadid_new_reg)/SUM(aids.seqadid_reg)),0) AS `newRegRatio`, 
+		SUM(aids.seqadid_sub_new_reg) AS `subNewReg`,
+		IFNULL((SUM(aids.seqadid_sub_new_reg)/SUM(aids.seqadid_reg)),0) AS `subNewRegRatio`, 
+		SUM(aids.seqadid_old_reg) AS `oldReg`,
+		IFNULL((SUM(aids.seqadid_sub_new_reg)/SUM(aids.seqadid_old_reg)),0) AS `oldRegRatio`, 
+		SUM(aids.seqadid_new_login) AS `newLogin`,
+		SUM(aids.seqadid_sub_new_login) AS `subNewLogin`,
+		SUM(aids.seqadid_old_login) AS `oldLogin`
+		FROM rpt_search_baidu_advid_seq AS aids
+		<where>
+			<if test="key  != null and key != '' ">
+				aids.seqadid_key_name = #{key}
+			</if>
+			<if test="beganTime  != null ">
+				AND aids.seqadid_date &gt;= #{beganTime}
+			</if>
+			<if test="endTime != null ">
+				AND aids.seqadid_date &lt; #{endTime}
+			</if>
+			<if test="list != null and list != '' ">
+				AND aids.seqadid_type IN ${list}
+	 		</if>
+		</where> 
+	</select>
+	<select id="getDaySummaryById" resultMap="byIdMap" parameterType="java.util.Map">
+		SELECT 
+		aids.seqadid_date AS `date`,
+		aids.seqadid_type AS `type`,
+		aids.seqadid_key_name AS `keyName`,
+		aids.seqadid_ad_id AS `adId`,
+		SUM(aids.seqadid_reg) AS `reg`,
+		SUM(aids.seqadid_reg_login) AS `regLogin`,
+		SUM(aids.seqadid_new_reg) AS `newReg`,
+		IFNULL((SUM(aids.seqadid_new_reg)/SUM(aids.seqadid_reg)),0) AS `newRegRatio`, 
+		SUM(aids.seqadid_sub_new_reg) AS `subNewReg`,
+		IFNULL((SUM(aids.seqadid_sub_new_reg)/SUM(aids.seqadid_reg)),0) AS `subNewRegRatio`, 
+		SUM(aids.seqadid_old_reg) AS `oldReg`,
+		IFNULL((SUM(aids.seqadid_sub_new_reg)/SUM(aids.seqadid_old_reg)),0) AS `oldRegRatio`, 
+		SUM(aids.seqadid_new_login) AS `newLogin`,
+		SUM(aids.seqadid_sub_new_login) AS `subNewLogin`,
+		SUM(aids.seqadid_old_login) AS `oldLogin`
+		FROM rpt_search_baidu_advid_seq AS aids
+		<where>
+			<if test="key  != null and key != '' ">
+				aids.seqadid_key_name = #{key}
+			</if>
+			<if test="beganTime  != null ">
+				AND aids.seqadid_date &gt;= #{beganTime}
+			</if>
+			<if test="endTime != null ">
+				AND aids.seqadid_date &lt; #{endTime}
+			</if>
+			<if test="list != null and list != '' ">
+				AND aids.seqadid_type IN ${list}
+	 		</if>
+		</where> 
+		GROUP BY aids.seqadid_ad_id 
+		<if test="sortField != null ">
+			ORDER BY `${sortField}` ${sortDir}
+		</if>
+		<if test="sortField == null ">
+			ORDER BY aids.seqadid_date DESC, aids.seqadid_type , aids.seqadid_key_name ASC
+		</if>
+		<if test="offset != null and limit != null ">
+			LIMIT #{offset},#{limit}
+		</if>
+	</select>
+	
+	<select id="getDaySummaryByIdCount" resultType="int" parameterType="java.util.Map">
+		SELECT COUNT(*) FROM (SELECT 
+		Count(aids.seqadid_key_name)
+		FROM rpt_search_baidu_advid_seq AS aids
+		<where>
+			<if test="key  != null and key != '' ">
+				aids.seqadid_key_name = #{key}
+			</if>
+			<if test="beganTime  != null ">
+				AND aids.seqadid_date &gt;= #{beganTime}
+			</if>
+			<if test="endTime != null ">
+				AND aids.seqadid_date &lt; #{endTime}
+			</if>
+			<if test="list != null and list != '' ">
+				AND aids.seqadid_type IN ${list}
+	 		</if>
+		</where> 
+		GROUP BY aids.seqadid_ad_id) AS b
+		
+	</select>
+	<!-- 明细  -->
+	<select id="getAggregateDaydetailByTxt" resultMap="byTxtMap" parameterType="java.util.Map">
+		SELECT 
+		SUM(atxts.seqtxt_used) AS used,
+		SUM(atxts.seqtxt_show) AS `show`,
+		SUM(atxts.seqtxt_click) AS click,
+		IFNULL(SUM(atxts.seqtxt_used)/SUM(atxts.seqtxt_click),0) AS  clickPrice ,
+		MAX(atxts.seqtxt_rank) AS rank ,
+		SUM(atxts.seqtxt_reg) AS  reg ,
+		SUM(atxts.seqtxt_reg_login) AS  regLogin ,
+		IFNULL(SUM(atxts.seqtxt_click)/SUM(atxts.seqtxt_show),0) AS  clickRatio ,
+		IFNULL((SUM(atxts.seqtxt_used)/SUM(atxts.seqtxt_show))*1000,0) AS  cpm ,
+		IFNULL(SUM(atxts.seqtxt_used)/SUM(atxts.seqtxt_reg),0) AS  cpa ,
+		IFNULL(SUM(atxts.seqtxt_used)/SUM(atxts.seqtxt_reg_login),0) AS  loginPrice ,
+		SUM(atxts.seqtxt_new_reg) AS  newReg ,
+		IFNULL((SUM(atxts.seqtxt_new_reg)/SUM(atxts.seqtxt_reg)),0) AS  newRegRatio ,
+		SUM(atxts.seqtxt_sub_new_reg) AS  subNewReg ,
+		IFNULL((SUM(atxts.seqtxt_sub_new_reg)/SUM(atxts.seqtxt_reg)),0) AS  subNewRegRatio ,
+		SUM(atxts.seqtxt_old_reg) AS  oldReg ,
+		IFNULL((SUM(atxts.seqtxt_old_reg)/SUM(atxts.seqtxt_reg)),0) AS  oldRegRatio ,
+		SUM(atxts.seqtxt_new_login) AS  newLogin ,
+		SUM(atxts.seqtxt_sub_new_login) AS  subNewLogin ,
+		SUM(atxts.seqtxt_old_login) AS  oldLogin ,
+		IFNULL(SUM(atxts.seqtxt_reg)/SUM(atxts.seqtxt_click),0) AS  regRatio 
+		FROM rpt_search_baidu_advtxt_seq AS atxts 
+		<where>
+			<if test="key  != null and key != '' ">
+				atxts.seqtxt_key_name = #{key}
+			</if>
+			<if test="beganTime  != null ">
+				AND atxts.seqtxt_date &gt;= #{beganTime}
+			</if>
+			<if test="endTime != null ">
+				AND atxts.seqtxt_date &lt; #{endTime}
+			</if>
+			<if test="list != null and list != '' ">
+				AND atxts.seqtxt_ad_type IN ${list}
+	 		</if>
+		</where> 
+	</select>
+	<select id="getDaydetailByTxt" resultMap="byTxtMap" parameterType="java.util.Map">
+		SELECT 
+		atxts.seqtxt_date AS `date`,
+		atxts.seqtxt_ad_type AS `type`,
+		atxts.seqtxt_key_name AS keyName,
+		SUM(atxts.seqtxt_used) AS used,
+		SUM(atxts.seqtxt_show) AS `show`,
+		SUM(atxts.seqtxt_click) AS click,
+		IFNULL(SUM(atxts.seqtxt_used)/SUM(atxts.seqtxt_click),0) AS  clickPrice ,
+		MAX(atxts.seqtxt_rank) AS rank ,
+		SUM(atxts.seqtxt_reg) AS  reg ,
+		SUM(atxts.seqtxt_reg_login) AS  regLogin ,
+		IFNULL(SUM(atxts.seqtxt_click)/SUM(atxts.seqtxt_show),0) AS  clickRatio ,
+		IFNULL((SUM(atxts.seqtxt_used)/SUM(atxts.seqtxt_show))*1000,0) AS  cpm ,
+		IFNULL(SUM(atxts.seqtxt_used)/SUM(atxts.seqtxt_reg),0) AS  cpa ,
+		IFNULL(SUM(atxts.seqtxt_used)/SUM(atxts.seqtxt_reg_login),0) AS  loginPrice ,
+		SUM(atxts.seqtxt_new_reg) AS  newReg ,
+		IFNULL((SUM(atxts.seqtxt_new_reg)/SUM(atxts.seqtxt_reg)),0) AS  newRegRatio ,
+		SUM(atxts.seqtxt_sub_new_reg) AS  subNewReg ,
+		IFNULL((SUM(atxts.seqtxt_sub_new_reg)/SUM(atxts.seqtxt_reg)),0) AS  subNewRegRatio ,
+		SUM(atxts.seqtxt_old_reg) AS  oldReg ,
+		IFNULL((SUM(atxts.seqtxt_old_reg)/SUM(atxts.seqtxt_reg)),0) AS  oldRegRatio ,
+		SUM(atxts.seqtxt_new_login) AS  newLogin ,
+		SUM(atxts.seqtxt_sub_new_login) AS  subNewLogin ,
+		SUM(atxts.seqtxt_old_login) AS  oldLogin ,
+		IFNULL(SUM(atxts.seqtxt_reg)/SUM(atxts.seqtxt_click),0) AS  regRatio ,
+		atxts.seqtxt_ad_id_sub AS  adIdSub 
+		FROM rpt_search_baidu_advtxt_seq AS atxts 
+		<where>
+			<if test="key  != null and key != '' ">
+				atxts.seqtxt_key_name = #{key}
+			</if>
+			<if test="beganTime  != null ">
+				AND atxts.seqtxt_date &gt;= #{beganTime}
+			</if>
+			<if test="endTime != null ">
+				AND atxts.seqtxt_date &lt; #{endTime}
+			</if>
+			<if test="list != null and list != '' ">
+				AND atxts.seqtxt_ad_type IN ${list}
+	 		</if>
+		</where> 
+		GROUP BY atxts.seqtxt_key_name ,atxts.seqtxt_date
+		<if test="sortField != null ">
+			ORDER BY `${sortField}` ${sortDir}
+		</if>
+		<if test="sortField == null ">
+			ORDER BY atxts.seqtxt_date DESC, atxts.seqtxt_ad_type , atxts.seqtxt_key_name ASC
+		</if>
+		<if test="offset != null and limit != null ">
+			LIMIT #{offset},#{limit}
+		</if>
+	</select>
+	<select id="getDaydetailByTxtCount" resultType="int" parameterType="java.util.Map">
+		SELECT COUNT(*) FROM (SELECT 
+		COUNT(atxts.seqtxt_key_name)
+		FROM rpt_search_baidu_advtxt_seq AS atxts 
+		<where>
+			<if test="key  != null and key != '' ">
+				atxts.seqtxt_key_name = #{key}
+			</if>
+			<if test="beganTime  != null ">
+				AND atxts.seqtxt_date &gt;= #{beganTime}
+			</if>
+			<if test="endTime != null ">
+				AND atxts.seqtxt_date &lt; #{endTime}
+			</if>
+			<if test="list != null and list != '' ">
+				AND atxts.seqtxt_ad_type IN ${list}
+	 		</if>
+		</where> 
+		GROUP BY atxts.seqtxt_key_name ,atxts.seqtxt_date) AS b
+	</select>
+	<select id="getAggregateDaydetailById" resultMap="byIdMap" parameterType="java.util.Map">
+		SELECT 
+		SUM(aids.seqadid_reg) AS `reg`,
+		SUM(aids.seqadid_reg_login) AS `regLogin`,
+		SUM(aids.seqadid_new_reg) AS `newReg`,
+		IFNULL((SUM(aids.seqadid_new_reg)/SUM(aids.seqadid_reg)),0) AS `newRegRatio`, 
+		SUM(aids.seqadid_sub_new_reg) AS `subNewReg`,
+		IFNULL((SUM(aids.seqadid_sub_new_reg)/SUM(aids.seqadid_reg)),0) AS `subNewRegRatio`, 
+		SUM(aids.seqadid_old_reg) AS `oldReg`,
+		IFNULL((SUM(aids.seqadid_sub_new_reg)/SUM(aids.seqadid_old_reg)),0) AS `oldRegRatio`, 
+		SUM(aids.seqadid_new_login) AS `newLogin`,
+		SUM(aids.seqadid_sub_new_login) AS `subNewLogin`,
+		SUM(aids.seqadid_old_login) AS `oldLogin`
+		FROM rpt_search_baidu_advid_seq AS aids
+		<where>
+			<if test="key  != null and key != '' ">
+				aids.seqadid_key_name = #{key}
+			</if>
+			<if test="beganTime  != null ">
+				AND aids.seqadid_date &gt;= #{beganTime}
+			</if>
+			<if test="endTime != null ">
+				AND aids.seqadid_date &lt; #{endTime}
+			</if>
+			<if test="list != null and list != '' ">
+				AND aids.seqadid_type IN ${list}
+	 		</if>
+		</where> 
+	</select>
+	<select id="getDaydetailById" resultMap="byIdMap" parameterType="java.util.Map">
+		SELECT 
+		aids.seqadid_date AS `date`,
+		aids.seqadid_type AS `type`,
+		aids.seqadid_key_name AS `keyName`,
+		aids.seqadid_ad_id AS `adId`,
+		SUM(aids.seqadid_reg) AS `reg`,
+		SUM(aids.seqadid_reg_login) AS `regLogin`,
+		SUM(aids.seqadid_new_reg) AS `newReg`,
+		IFNULL((SUM(aids.seqadid_new_reg)/SUM(aids.seqadid_reg)),0) AS `newRegRatio`, 
+		SUM(aids.seqadid_sub_new_reg) AS `subNewReg`,
+		IFNULL((SUM(aids.seqadid_sub_new_reg)/SUM(aids.seqadid_reg)),0) AS `subNewRegRatio`, 
+		SUM(aids.seqadid_old_reg) AS `oldReg`,
+		IFNULL((SUM(aids.seqadid_sub_new_reg)/SUM(aids.seqadid_old_reg)),0) AS `oldRegRatio`, 
+		SUM(aids.seqadid_new_login) AS `newLogin`,
+		SUM(aids.seqadid_sub_new_login) AS `subNewLogin`,
+		SUM(aids.seqadid_old_login) AS `oldLogin`
+		FROM rpt_search_baidu_advid_seq AS aids
+		<where>
+			<if test="key  != null and key != '' ">
+				aids.seqadid_key_name = #{key}
+			</if>
+			<if test="beganTime  != null ">
+				AND aids.seqadid_date &gt;= #{beganTime}
+			</if>
+			<if test="endTime != null ">
+				AND aids.seqadid_date &lt; #{endTime}
+			</if>
+			<if test="list != null and list != '' ">
+				AND aids.seqadid_type IN ${list}
+	 		</if>
+		</where> 
+		GROUP BY aids.seqadid_ad_id ,aids.seqadid_date
+		<if test="sortField != null ">
+			ORDER BY `${sortField}` ${sortDir}
+		</if>
+		<if test="sortField == null ">
+			ORDER BY aids.seqadid_date DESC, aids.seqadid_type , aids.seqadid_key_name ASC
+		</if>
+		<if test="offset != null and limit != null ">
+			LIMIT #{offset},#{limit}
+		</if>
+	</select>
+	
+	<select id="getDaydetailByIdCount" resultType="int" parameterType="java.util.Map">
+		SELECT COUNT(*) FROM (SELECT 
+		Count(aids.seqadid_key_name)
+		FROM rpt_search_baidu_advid_seq AS aids
+		<where>
+			<if test="key  != null and key != '' ">
+				aids.seqadid_key_name = #{key}
+			</if>
+			<if test="beganTime  != null ">
+				AND aids.seqadid_date &gt;= #{beganTime}
+			</if>
+			<if test="endTime != null ">
+				AND aids.seqadid_date &lt; #{endTime}
+			</if>
+			<if test="list != null and list != '' ">
+				AND aids.seqadid_type IN ${list}
+	 		</if>
+		</where> 
+		GROUP BY aids.seqadid_ad_id ,aids.seqadid_date) AS b
+		
+	</select>
+</mapper>

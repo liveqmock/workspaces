@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<!--道具卡激活,Exchange配置 -->
+	<bean id="p1ItemCardExchange" class="org.springframework.amqp.core.DirectExchange">
+		<constructor-arg value="${p1.itemcard.exchange.name}" />
+	</bean>
+	<bean id="p1ItemCardQueue" class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${task.itemcard.queue.name}" />
+	</bean>
+	<bean id="p1ItemCardQueueBinding" class="org.springframework.amqp.core.Binding">
+		<constructor-arg index="0" value="${task.itemcard.queue.name}" />
+		<constructor-arg index="1" value="QUEUE" />
+		<constructor-arg index="2" value="${p1.itemcard.exchange.name}" />
+		<constructor-arg index="3"
+			value="${task.itemcard.queue.binding.routingkey}" />
+		<constructor-arg index="4">
+			<null />
+		</constructor-arg>
+	</bean>
+
+	<bean id="backupItemCardQueue" class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${backup.itemcard.queue.name}" />
+	</bean>
+	<bean id="backupItemCardQueueBinding" class="org.springframework.amqp.core.Binding">
+		<constructor-arg index="0" value="${backup.itemcard.queue.name}" />
+		<constructor-arg index="1" value="QUEUE" />
+		<constructor-arg index="2" value="${p1.itemcard.exchange.name}" />
+		<constructor-arg index="3"
+			value="${backup.itemcard.queue.binding.routingkey}" />
+		<constructor-arg index="4">
+			<null />
+		</constructor-arg>
+	</bean>
+
+
+	<!--密保卡激活,Exchange配置 -->
+	<bean id="p1SecurityCardExchange" class="org.springframework.amqp.core.DirectExchange">
+		<constructor-arg value="${p1.securitycard.exchange.name}" />
+	</bean>
+	<bean id="p1SecurityCardQueue" class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${task.securitycard.queue.name}" />
+	</bean>
+	<bean id="p1SecurityCardQueueBinding" class="org.springframework.amqp.core.Binding">
+		<constructor-arg index="0"
+			value="${task.securitycard.queue.name}" />
+		<constructor-arg index="1" value="QUEUE" />
+		<constructor-arg index="2"
+			value="${p1.securitycard.exchange.name}" />
+		<constructor-arg index="3"
+			value="${task.securitycard.queue.binding.routingkey}" />
+		<constructor-arg index="4">
+			<null />
+		</constructor-arg>
+	</bean>
+
+	<!-- 备份 -->
+	<bean id="backupSecurityCardQueue" class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${backup.securitycard.queue.name}" />
+	</bean>
+	<bean id="backupSecurityCardQueueBinding" class="org.springframework.amqp.core.Binding">
+		<constructor-arg index="0"
+			value="${backup.securitycard.queue.name}" />
+		<constructor-arg index="1" value="QUEUE" />
+		<constructor-arg index="2"
+			value="${p1.securitycard.exchange.name}" />
+		<constructor-arg index="3"
+			value="${backup.securitycard.queue.binding.routingkey}" />
+		<constructor-arg index="4">
+			<null />
+		</constructor-arg>
+	</bean>
+
+
+
+
+	<!-- 帐号操作,Exchange配置 -->
+	<bean id="p1AccountExchange" class="org.springframework.amqp.core.DirectExchange">
+		<constructor-arg value="${p1.account.exchange.name}" />
+	</bean>
+	<!-- 踢人 -->
+	<bean id="taskKickUserQueue" class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${task.kickuser.queue.name}" />
+	</bean>
+	<bean id="taskKickUserQueueBinding" class="org.springframework.amqp.core.Binding">
+		<constructor-arg index="0" value="${task.kickuser.queue.name}" />
+		<constructor-arg index="1" value="QUEUE" />
+		<constructor-arg index="2" value="${p1.account.exchange.name}" />
+		<constructor-arg index="3"
+			value="${task.kickuser.queue.binding.routingkey}" />
+		<constructor-arg index="4">
+			<null />
+		</constructor-arg>
+	</bean>
+	<!-- 备份踢人 -->
+	<bean id="backupKickUserQueue" class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${backup.kickuser.queue.name}" />
+	</bean>
+	<bean id="backupKickUserQueueBinding" class="org.springframework.amqp.core.Binding">
+		<constructor-arg index="0" value="${backup.kickuser.queue.name}" />
+		<constructor-arg index="1" value="QUEUE" />
+		<constructor-arg index="2" value="${p1.account.exchange.name}" />
+		<constructor-arg index="3"
+			value="${backup.kickuser.queue.binding.routingkey}" />
+		<constructor-arg index="4">
+			<null />
+		</constructor-arg>
+	</bean>
+
+
+
+	<!-- 帐号封停&解封 -->
+	<bean id="taskLockAccountQueue" class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${task.lockaccount.queue.name}" />
+	</bean>
+	<bean id="taskLockAccountQueueBinding" class="org.springframework.amqp.core.Binding">
+		<constructor-arg index="0"
+			value="${task.lockaccount.queue.name}" />
+		<constructor-arg index="1" value="QUEUE" />
+		<constructor-arg index="2" value="${p1.account.exchange.name}" />
+		<constructor-arg index="3"
+			value="${task.lockaccount.queue.binding.routingkey}" />
+		<constructor-arg index="4">
+			<null />
+		</constructor-arg>
+	</bean>
+
+	<!-- 备份帐号封停 -->
+	<bean id="backupLockAccountQueue" class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${backup.lockaccount.queue.name}" />
+	</bean>
+	<bean id="backupLockAccountQueueBinding" class="org.springframework.amqp.core.Binding">
+		<constructor-arg index="0"
+			value="${backup.lockaccount.queue.name}" />
+		<constructor-arg index="1" value="QUEUE" />
+		<constructor-arg index="2" value="${p1.account.exchange.name}" />
+		<constructor-arg index="3"
+			value="${backup.lockaccount.queue.binding.routingkey}" />
+		<constructor-arg index="4">
+			<null />
+		</constructor-arg>
+	</bean>
+
+
+	<!-- 帐号解封 -->
+	<bean id="taskUnLockAccountQueue" class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${task.unlockaccount.queue.name}" />
+	</bean>
+	<bean id="taskUnLockAccountQueueBinding" class="org.springframework.amqp.core.Binding">
+		<constructor-arg index="0"
+			value="${task.unlockaccount.queue.name}" />
+		<constructor-arg index="1" value="QUEUE" />
+		<constructor-arg index="2" value="${p1.account.exchange.name}" />
+		<constructor-arg index="3"
+			value="${task.unlockaccount.queue.binding.routingkey}" />
+		<constructor-arg index="4">
+			<null />
+		</constructor-arg>
+	</bean>
+
+	<!-- 备份帐号解封 -->
+	<bean id="backupUnLockAccountQueue" class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${backup.unlockaccount.queue.name}" />
+	</bean>
+	<bean id="backupUnLockAccountQueueBinding" class="org.springframework.amqp.core.Binding">
+		<constructor-arg index="0"
+			value="${backup.unlockaccount.queue.name}" />
+		<constructor-arg index="1" value="QUEUE" />
+		<constructor-arg index="2" value="${p1.account.exchange.name}" />
+		<constructor-arg index="3"
+			value="${backup.unlockaccount.queue.binding.routingkey}" />
+		<constructor-arg index="4">
+			<null />
+		</constructor-arg>
+	</bean>
+
+
+
+
+
+	<!-- 禁言 与 解禁 -->
+	<bean id="taskNoTalkQueue" class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${task.notalkuser.queue.name}" />
+	</bean>
+	<bean id="taskNoTalkQueueBinding" class="org.springframework.amqp.core.Binding">
+		<constructor-arg index="0" value="${task.notalkuser.queue.name}" />
+		<constructor-arg index="1" value="QUEUE" />
+		<constructor-arg index="2" value="${p1.account.exchange.name}" />
+		<constructor-arg index="3"
+			value="${task.notalkuser.queue.binding.routingkey}" />
+		<constructor-arg index="4">
+			<null />
+		</constructor-arg>
+	</bean>
+
+	<bean id="taskTalkQueue" class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${task.talkuser.queue.name}" />
+	</bean>
+	<bean id="taskTalkQueueBinding" class="org.springframework.amqp.core.Binding">
+		<constructor-arg index="0" value="${task.talkuser.queue.name}" />
+		<constructor-arg index="1" value="QUEUE" />
+		<constructor-arg index="2" value="${p1.account.exchange.name}" />
+		<constructor-arg index="3"
+			value="${task.talkuser.queue.binding.routingkey}" />
+		<constructor-arg index="4">
+			<null />
+		</constructor-arg>
+	</bean>
+
+
+	<!-- 备份禁言 与 解禁 -->
+	<bean id="backupNoTalkQueue" class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${backup.notalkuser.queue.name}" />
+	</bean>
+	<bean id="backupNoTalkQueueBinding" class="org.springframework.amqp.core.Binding">
+		<constructor-arg index="0"
+			value="${backup.notalkuser.queue.name}" />
+		<constructor-arg index="1" value="QUEUE" />
+		<constructor-arg index="2" value="${p1.account.exchange.name}" />
+		<constructor-arg index="3"
+			value="${backup.notalkuser.queue.binding.routingkey}" />
+		<constructor-arg index="4">
+			<null />
+		</constructor-arg>
+	</bean>
+
+	<bean id="backupTalkQueue" class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${backup.talkuser.queue.name}" />
+	</bean>
+	<bean id="backupTalkQueueBinding" class="org.springframework.amqp.core.Binding">
+		<constructor-arg index="0" value="${backup.talkuser.queue.name}" />
+		<constructor-arg index="1" value="QUEUE" />
+		<constructor-arg index="2" value="${p1.account.exchange.name}" />
+		<constructor-arg index="3"
+			value="${backup.talkuser.queue.binding.routingkey}" />
+		<constructor-arg index="4">
+			<null />
+		</constructor-arg>
+	</bean>
+	
+	
+	
+	
+	
+	<!-- 安全模式 -->
+	<bean id="safeModelQueue" class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${task.safemodel.queue.name}" />
+	</bean>
+	<bean id="safeModelQueueBinding" class="org.springframework.amqp.core.Binding">
+		<constructor-arg index="0"
+			value="${task.safemodel.queue.name}" />
+		<constructor-arg index="1" value="QUEUE" />
+		<constructor-arg index="2" value="${p1.account.exchange.name}" />
+		<constructor-arg index="3"
+			value="${task.safemodel.queue.binding.routingkey}" />
+		<constructor-arg index="4">
+			<null />
+		</constructor-arg>
+	</bean>
+
+	<!-- 安全模式备份  -->
+	<bean id="backupSafeModelQueue" class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${backup.safemodel.queue.name}" />
+	</bean>
+	<bean id="backupUsafeModelQueueBinding" class="org.springframework.amqp.core.Binding">
+		<constructor-arg index="0" value="${backup.safemodel.queue.name}" />
+		<constructor-arg index="1" value="QUEUE" />
+		<constructor-arg index="2" value="${p1.account.exchange.name}" />
+		<constructor-arg index="3" value="${backup.safemodel.queue.binding.routingkey}" />
+		<constructor-arg index="4">	<null /> </constructor-arg>
+	</bean>
+
+
+
+	<!-- 解除安全模式 -->
+	<bean id="unSafeModelQueue" class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${task.unsafemodel.queue.name}" />
+	</bean>
+	<bean id="unSafeModelQueueBinding" class="org.springframework.amqp.core.Binding">
+		<constructor-arg index="0" value="${task.unsafemodel.queue.name}" />
+		<constructor-arg index="1" value="QUEUE" />
+		<constructor-arg index="2" value="${p1.account.exchange.name}" />
+		<constructor-arg index="3" value="${task.unsafemodel.queue.binding.routingkey}" />
+		<constructor-arg index="4"><null /></constructor-arg>
+	</bean>
+
+	<!-- 安全模式备份  -->
+	<bean id="backupUnSafeModelQueue" class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${backup.unsafemodel.queue.name}" />
+	</bean>
+	<bean id="backupUnsafeModelQueueBinding" class="org.springframework.amqp.core.Binding">
+		<constructor-arg index="0" value="${backup.unsafemodel.queue.name}" />
+		<constructor-arg index="1" value="QUEUE" />
+		<constructor-arg index="2" value="${p1.account.exchange.name}" />
+		<constructor-arg index="3" value="${backup.unsafemodel.queue.binding.routingkey}" />
+		<constructor-arg index="4">	<null /> </constructor-arg>
+	</bean>
+</beans>

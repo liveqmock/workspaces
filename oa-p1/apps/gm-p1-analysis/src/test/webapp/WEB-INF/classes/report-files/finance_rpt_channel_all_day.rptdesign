@@ -1,0 +1,647 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.22" id="1">
+    <property name="createdBy">Eclipse BIRT Designer Version 2.6.2.r262_v20110209 Build &lt;2.6.2.v20110214-1523></property>
+    <property name="units">in</property>
+    <method name="initialize"><![CDATA[var dateTime =reportContext.getParameterValue("date");
+
+
+]]></method>
+    <property name="iconFile">/templates/blank_report.gif</property>
+    <property name="layoutPreference">auto layout</property>
+    <property name="bidiLayoutOrientation">ltr</property>
+    <property name="imageDPI">96</property>
+    <data-sources>
+        <oda-data-source extensionID="org.eclipse.birt.report.data.oda.jdbc" name="DataSource" id="7">
+            <list-property name="privateDriverProperties">
+                <ex-property>
+                    <name>disabledMetadataBidiFormatStr</name>
+                </ex-property>
+                <ex-property>
+                    <name>disabledContentBidiFormatStr</name>
+                </ex-property>
+                <ex-property>
+                    <name>contentBidiFormatStr</name>
+                    <value>ILYNN</value>
+                </ex-property>
+                <ex-property>
+                    <name>metadataBidiFormatStr</name>
+                    <value>ILYNN</value>
+                </ex-property>
+            </list-property>
+            <property name="odaDriverClass">com.mysql.jdbc.Driver</property>
+            <property name="odaURL">jdbc:mysql://192.168.10.181/finance?autoReconnect=true&amp;createDatabaseIfNotExist=true&amp;useUnicode=true&amp;characterEncoding=utf-8</property>
+            <property name="odaUser">root</property>
+            <encrypted-property name="odaPassword" encryptionID="base64">cm9vdA==</encrypted-property>
+        </oda-data-source>
+    </data-sources>
+    <data-sets>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="DataSet" id="8">
+            <property name="nullsOrdering">nulls lowest</property>
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">channel_date</property>
+                    <text-property name="displayName">channel_date</text-property>
+                    <text-property name="heading">channel_date</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">channel_name</property>
+                    <text-property name="displayName">channel_name</text-property>
+                    <text-property name="heading">channel_name</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">channel_value</property>
+                    <text-property name="displayName">channel_value</text-property>
+                    <text-property name="heading">channel_value</text-property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">channel_date</property>
+                        <property name="dataType">date</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">channel_name</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">channel_value</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <method name="beforeOpen"><![CDATA[var dates =reportContext.getParameterValue("date");
+if(dates != null){
+var firstday = dates+"-01";
+importPackage(Packages.java.text);
+importPackage(Packages.java.util);
+         format = new  SimpleDateFormat("yyyy-MM-dd"); 
+        dt = format.parse(firstday); 
+        cal=Calendar.getInstance(); 
+        cal.setTime(dt); 
+        days=cal.getActualMaximum(Calendar.DAY_OF_MONTH); 
+        cal.set(Calendar.DAY_OF_MONTH,days); 
+        endTime=format.format(cal.getTime()); 
+   
+   this.queryText +=" and channel_date between '"+firstday+"' and '"+ endTime +"'";
+}
+
+
+
+]]></method>
+            <property name="dataSource">DataSource</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">channel_date</property>
+                    <property name="nativeName">channel_date</property>
+                    <property name="dataType">date</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">channel_name</property>
+                    <property name="nativeName">channel_name</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">channel_value</property>
+                    <property name="nativeName">channel_value</property>
+                    <property name="dataType">float</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[SELECT channel_date,
+       channel_name,
+       channel_value
+ FROM `rpt_channel_all_day`
+where 1=1 ]]></xml-property>
+            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
+  <Version>2.0</Version>
+  <design:ResultSets derivedMetaData="true">
+    <design:resultSetDefinitions>
+      <design:resultSetColumns>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>date</design:name>
+              <design:position>1</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>91</design:nativeDataTypeCode>
+            <design:precision>10</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>date</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>date</design:label>
+            <design:formattingHints>
+              <design:displaySize>10</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>agency_name</design:name>
+              <design:position>2</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>25</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>agency_name</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>agency_name</design:label>
+            <design:formattingHints>
+              <design:displaySize>25</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>par_value</design:name>
+              <design:position>3</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>20</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>par_value</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>par_value</design:label>
+            <design:formattingHints>
+              <design:displaySize>20</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>amount</design:name>
+              <design:position>4</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>4</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>amount</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>amount</design:label>
+            <design:formattingHints>
+              <design:displaySize>4</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+      </design:resultSetColumns>
+      <design:criteria/>
+    </design:resultSetDefinitions>
+  </design:ResultSets>
+</model:DesignValues>]]></xml-property>
+        </oda-data-set>
+    </data-sets>
+    <cubes>
+        <tabular-cube name="Data Cube" id="152">
+            <property name="dimensions">
+                <tabular-dimension name="Group" id="153">
+                    <property name="isTimeType">false</property>
+                    <property name="defaultHierarchy">NewTabularHierarchy</property>
+                    <property name="hierarchies">
+                        <tabular-hierarchy name="NewTabularHierarchy" id="154">
+                            <property name="levels">
+                                <tabular-level name="channel_date" id="155">
+                                    <property name="dataType">date</property>
+                                    <property name="columnName">channel_date</property>
+                                </tabular-level>
+                            </property>
+                        </tabular-hierarchy>
+                    </property>
+                </tabular-dimension>
+                <tabular-dimension name="Group1" id="156">
+                    <property name="defaultHierarchy">NewTabularHierarchy1</property>
+                    <property name="hierarchies">
+                        <tabular-hierarchy name="NewTabularHierarchy1" id="157">
+                            <property name="levels">
+                                <tabular-level name="channel_name" id="158">
+                                    <property name="dataType">string</property>
+                                    <property name="columnName">channel_name</property>
+                                </tabular-level>
+                            </property>
+                        </tabular-hierarchy>
+                    </property>
+                </tabular-dimension>
+            </property>
+            <property name="measureGroups">
+                <tabular-measure-group name="Summary Field" id="159">
+                    <property name="measures">
+                        <tabular-measure name="channel_value" id="160">
+                            <expression name="measureExpression" type="javascript">dataSetRow["channel_value"]</expression>
+                            <property name="dataType">float</property>
+                        </tabular-measure>
+                    </property>
+                </tabular-measure-group>
+            </property>
+            <property name="dataSet">DataSet</property>
+        </tabular-cube>
+    </cubes>
+    <styles>
+        <style name="report" id="4">
+            <property name="fontFamily">sans-serif</property>
+            <property name="fontSize">10pt</property>
+        </style>
+        <style name="crosstab-cell" id="5">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+        <style name="crosstab" id="6">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+    </styles>
+    <page-setup>
+        <simple-master-page name="Simple MasterPage" id="2">
+            <property name="orientation">landscape</property>
+            <page-footer>
+                <text id="3">
+                    <property name="contentType">html</property>
+                    <text-property name="content"><![CDATA[<value-of>new Date()</value-of>]]></text-property>
+                </text>
+            </page-footer>
+        </simple-master-page>
+    </page-setup>
+    <body>
+        <grid id="148">
+            <column id="149"/>
+            <row id="150">
+                <cell id="151">
+                    <property name="textAlign">left</property>
+                    <grid id="35">
+                        <property name="width">10.260416666666666in</property>
+                        <column id="36">
+                            <property name="width">10.260416666666666in</property>
+                        </column>
+                        <row id="37">
+                            <cell id="38">
+                                <property name="textAlign">center</property>
+                                <text-data id="143">
+                                    <property name="fontSize">16pt</property>
+                                    <property name="fontWeight">bold</property>
+                                    <expression name="valueExpr">if(dateTime!=null){&#13;
+"所有渠道充值（开卡）月表（"+dateTime+" 月)";&#13;
+}else{"所有渠道充值（开卡）月表"}</expression>
+                                    <property name="contentType">html</property>
+                                </text-data>
+                            </cell>
+                        </row>
+                        <row id="39">
+                            <cell id="40">
+                                <property name="textAlign">center</property>
+                                <extended-item extensionName="Crosstab" extensionVersion="2.5.0" id="161">
+                                    <property name="cube">Data Cube</property>
+                                    <property name="measures">
+                                        <extended-item extensionName="MeasureView" id="173">
+                                            <property name="measure">channel_value</property>
+                                            <property name="detail">
+                                                <extended-item extensionName="AggregationCell" id="174">
+                                                    <property name="aggregationOnRow">Group/channel_date</property>
+                                                    <property name="aggregationOnColumn">Group1/channel_name</property>
+                                                    <property name="borderTopWidth">thin</property>
+                                                    <property name="borderTopColor">#808080</property>
+                                                    <property name="borderLeftWidth">thin</property>
+                                                    <property name="borderLeftColor">#808080</property>
+                                                    <property name="borderBottomWidth">thin</property>
+                                                    <property name="borderBottomColor">#808080</property>
+                                                    <property name="borderRightWidth">thin</property>
+                                                    <property name="borderRightColor">#808080</property>
+                                                    <property name="content">
+                                                        <data id="175">
+                                                            <structure name="numberFormat">
+                                                                <property name="category">Fixed</property>
+                                                                <property name="pattern">#,##0{RoundingMode=HALF_UP}</property>
+                                                            </structure>
+                                                            <property name="resultSetColumn">channel_value_Group/channel_date_Group1/channel_name</property>
+                                                        </data>
+                                                    </property>
+                                                </extended-item>
+                                            </property>
+                                            <property name="aggregations">
+                                                <extended-item extensionName="AggregationCell" id="179">
+                                                    <property name="aggregationOnColumn">Group1/channel_name</property>
+                                                    <property name="borderTopWidth">thin</property>
+                                                    <property name="borderTopColor">#808080</property>
+                                                    <property name="borderLeftWidth">thin</property>
+                                                    <property name="borderLeftColor">#808080</property>
+                                                    <property name="borderBottomWidth">thin</property>
+                                                    <property name="borderBottomColor">#808080</property>
+                                                    <property name="borderRightWidth">thin</property>
+                                                    <property name="borderRightColor">#808080</property>
+                                                    <property name="content">
+                                                        <data id="180">
+                                                            <structure name="numberFormat">
+                                                                <property name="category">Fixed</property>
+                                                                <property name="pattern">#,##0{RoundingMode=HALF_UP}</property>
+                                                            </structure>
+                                                            <property name="resultSetColumn">channel_value_Group1/channel_name</property>
+                                                        </data>
+                                                    </property>
+                                                </extended-item>
+                                                <extended-item extensionName="AggregationCell" id="183">
+                                                    <property name="aggregationOnRow">Group/channel_date</property>
+                                                    <property name="borderTopWidth">thin</property>
+                                                    <property name="borderTopColor">#808080</property>
+                                                    <property name="borderLeftWidth">thin</property>
+                                                    <property name="borderLeftColor">#808080</property>
+                                                    <property name="borderBottomWidth">thin</property>
+                                                    <property name="borderBottomColor">#808080</property>
+                                                    <property name="borderRightWidth">thin</property>
+                                                    <property name="borderRightColor">#808080</property>
+                                                    <property name="content">
+                                                        <data id="184">
+                                                            <structure name="numberFormat">
+                                                                <property name="category">Fixed</property>
+                                                                <property name="pattern">#,##0{RoundingMode=HALF_UP}</property>
+                                                            </structure>
+                                                            <property name="resultSetColumn">channel_value_Group/channel_date</property>
+                                                        </data>
+                                                    </property>
+                                                </extended-item>
+                                                <extended-item extensionName="AggregationCell" id="185">
+                                                    <property name="borderTopWidth">thin</property>
+                                                    <property name="borderTopColor">#808080</property>
+                                                    <property name="borderLeftWidth">thin</property>
+                                                    <property name="borderLeftColor">#808080</property>
+                                                    <property name="borderBottomWidth">thin</property>
+                                                    <property name="borderBottomColor">#808080</property>
+                                                    <property name="borderRightWidth">thin</property>
+                                                    <property name="borderRightColor">#808080</property>
+                                                    <property name="content">
+                                                        <data id="186">
+                                                            <structure name="numberFormat">
+                                                                <property name="category">Fixed</property>
+                                                                <property name="pattern">#,##0{RoundingMode=HALF_UP}</property>
+                                                            </structure>
+                                                            <property name="resultSetColumn">channel_value</property>
+                                                        </data>
+                                                    </property>
+                                                </extended-item>
+                                            </property>
+                                            <property name="header">
+                                                <extended-item extensionName="CrosstabCell" id="176">
+                                                    <property name="backgroundColor">#357AE8</property>
+                                                    <property name="borderTopWidth">thin</property>
+                                                    <property name="borderTopColor">#808080</property>
+                                                    <property name="borderLeftWidth">thin</property>
+                                                    <property name="borderLeftColor">#808080</property>
+                                                    <property name="borderBottomWidth">thin</property>
+                                                    <property name="borderBottomColor">#808080</property>
+                                                    <property name="borderRightWidth">thin</property>
+                                                    <property name="borderRightColor">#808080</property>
+                                                </extended-item>
+                                                <extended-item extensionName="CrosstabCell" id="187">
+                                                    <property name="backgroundColor">#357AE8</property>
+                                                    <property name="borderTopWidth">thin</property>
+                                                    <property name="borderTopColor">#808080</property>
+                                                    <property name="borderLeftWidth">thin</property>
+                                                    <property name="borderLeftColor">#808080</property>
+                                                    <property name="borderBottomWidth">thin</property>
+                                                    <property name="borderBottomColor">#808080</property>
+                                                    <property name="borderRightWidth">thin</property>
+                                                    <property name="borderRightColor">#808080</property>
+                                                </extended-item>
+                                            </property>
+                                        </extended-item>
+                                    </property>
+                                    <property name="rows">
+                                        <extended-item extensionName="CrosstabView" id="163">
+                                            <property name="grandTotal">
+                                                <extended-item extensionName="CrosstabCell" id="178">
+                                                    <property name="content">
+                                                        <label id="181">
+                                                            <text-property name="text">合计</text-property>
+                                                        </label>
+                                                    </property>
+                                                    <property name="borderTopWidth">thin</property>
+                                                    <property name="borderTopColor">#808080</property>
+                                                    <property name="borderLeftWidth">thin</property>
+                                                    <property name="borderLeftColor">#808080</property>
+                                                    <property name="borderBottomWidth">thin</property>
+                                                    <property name="borderBottomColor">#808080</property>
+                                                    <property name="borderRightWidth">thin</property>
+                                                    <property name="borderRightColor">#808080</property>
+                                                </extended-item>
+                                            </property>
+                                            <property name="views">
+                                                <extended-item extensionName="DimensionView" id="164">
+                                                    <property name="dimension">Group</property>
+                                                    <property name="levels">
+                                                        <extended-item extensionName="LevelView" name="NewLevel View" id="165">
+                                                            <property name="level">Group/channel_date</property>
+                                                            <property name="member">
+                                                                <extended-item extensionName="CrosstabCell" id="166">
+                                                                    <property name="content">
+                                                                        <data name="channel_date" id="167">
+                                                                            <structure name="dateTimeFormat">
+                                                                                <property name="category">Medium Date</property>
+                                                                                <property name="pattern">Medium Date</property>
+                                                                                <property name="locale">zh</property>
+                                                                            </structure>
+                                                                            <structure name="numberFormat">
+                                                                                <property name="category">Unformatted</property>
+                                                                                <property name="locale">zh</property>
+                                                                            </structure>
+                                                                            <property name="whiteSpace">nowrap</property>
+                                                                            <property name="resultSetColumn">channel_date</property>
+                                                                        </data>
+                                                                    </property>
+                                                                    <property name="borderTopWidth">thin</property>
+                                                                    <property name="borderTopColor">#808080</property>
+                                                                    <property name="borderLeftWidth">thin</property>
+                                                                    <property name="borderLeftColor">#808080</property>
+                                                                    <property name="borderBottomWidth">thin</property>
+                                                                    <property name="borderBottomColor">#808080</property>
+                                                                    <property name="borderRightWidth">thin</property>
+                                                                    <property name="borderRightColor">#808080</property>
+                                                                </extended-item>
+                                                            </property>
+                                                        </extended-item>
+                                                    </property>
+                                                </extended-item>
+                                            </property>
+                                            <property name="grandTotalLocation">after</property>
+                                        </extended-item>
+                                    </property>
+                                    <property name="columns">
+                                        <extended-item extensionName="CrosstabView" id="168">
+                                            <property name="grandTotal">
+                                                <extended-item extensionName="CrosstabCell" id="182">
+                                                    <property name="content">
+                                                        <label id="189">
+                                                            <property name="fontWeight">bold</property>
+                                                            <property name="color">white</property>
+                                                            <property name="whiteSpace">nowrap</property>
+                                                            <text-property name="text">合计（元）</text-property>
+                                                        </label>
+                                                    </property>
+                                                    <property name="backgroundColor">#357AE8</property>
+                                                    <property name="borderTopWidth">thin</property>
+                                                    <property name="borderTopColor">#808080</property>
+                                                    <property name="borderLeftWidth">thin</property>
+                                                    <property name="borderLeftColor">#808080</property>
+                                                    <property name="borderBottomWidth">thin</property>
+                                                    <property name="borderBottomColor">#808080</property>
+                                                    <property name="borderRightWidth">thin</property>
+                                                    <property name="borderRightColor">#808080</property>
+                                                </extended-item>
+                                            </property>
+                                            <property name="views">
+                                                <extended-item extensionName="DimensionView" id="169">
+                                                    <property name="dimension">Group1</property>
+                                                    <property name="levels">
+                                                        <extended-item extensionName="LevelView" name="NewLevel View1" id="170">
+                                                            <property name="level">Group1/channel_name</property>
+                                                            <property name="member">
+                                                                <extended-item extensionName="CrosstabCell" id="171">
+                                                                    <property name="content">
+                                                                        <data name="channel_name" id="172">
+                                                                            <property name="fontWeight">bold</property>
+                                                                            <property name="color">white</property>
+                                                                            <property name="whiteSpace">nowrap</property>
+                                                                            <property name="resultSetColumn">channel_name</property>
+                                                                        </data>
+                                                                    </property>
+                                                                    <property name="backgroundColor">#357AE8</property>
+                                                                    <property name="borderTopWidth">thin</property>
+                                                                    <property name="borderTopColor">#808080</property>
+                                                                    <property name="borderLeftWidth">thin</property>
+                                                                    <property name="borderLeftColor">#808080</property>
+                                                                    <property name="borderBottomWidth">thin</property>
+                                                                    <property name="borderBottomColor">#808080</property>
+                                                                    <property name="borderRightWidth">thin</property>
+                                                                    <property name="borderRightColor">#808080</property>
+                                                                </extended-item>
+                                                            </property>
+                                                        </extended-item>
+                                                    </property>
+                                                </extended-item>
+                                            </property>
+                                            <property name="grandTotalLocation">after</property>
+                                        </extended-item>
+                                    </property>
+                                    <property name="header">
+                                        <extended-item extensionName="CrosstabCell" id="162">
+                                            <property name="content">
+                                                <label id="190">
+                                                    <text-property name="text">日期</text-property>
+                                                </label>
+                                            </property>
+                                            <property name="fontWeight">bold</property>
+                                            <property name="color">white</property>
+                                            <property name="backgroundColor">#357AE8</property>
+                                            <property name="borderTopWidth">thin</property>
+                                            <property name="borderTopColor">#808080</property>
+                                            <property name="borderLeftWidth">thin</property>
+                                            <property name="borderLeftColor">#808080</property>
+                                            <property name="borderBottomWidth">thin</property>
+                                            <property name="borderBottomColor">#808080</property>
+                                            <property name="borderRightWidth">thin</property>
+                                            <property name="borderRightColor">#808080</property>
+                                        </extended-item>
+                                    </property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <property name="borderTopColor">#808080</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderLeftColor">#808080</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderBottomColor">#808080</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderRightColor">#808080</property>
+                                    <list-property name="boundDataColumns">
+                                        <structure>
+                                            <property name="name">channel_date</property>
+                                            <expression name="expression">dimension["Group"]["channel_date"]</expression>
+                                            <property name="dataType">date</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">channel_name</property>
+                                            <expression name="expression">dimension["Group1"]["channel_name"]</expression>
+                                            <property name="dataType">string</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">channel_value_Group/channel_date_Group1/channel_name</property>
+                                            <expression name="expression">measure["channel_value"]</expression>
+                                            <property name="dataType">float</property>
+                                            <simple-property-list name="aggregateOn">
+                                                <value>Group/channel_date</value>
+                                                <value>Group1/channel_name</value>
+                                            </simple-property-list>
+                                            <property name="aggregateFunction">SUM</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">channel_value_Group1/channel_name</property>
+                                            <expression name="expression">measure["channel_value"]</expression>
+                                            <property name="dataType">float</property>
+                                            <simple-property-list name="aggregateOn">
+                                                <value>Group1/channel_name</value>
+                                            </simple-property-list>
+                                            <property name="aggregateFunction">SUM</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">channel_value_Group/channel_date</property>
+                                            <expression name="expression">measure["channel_value"]</expression>
+                                            <property name="dataType">float</property>
+                                            <simple-property-list name="aggregateOn">
+                                                <value>Group/channel_date</value>
+                                            </simple-property-list>
+                                            <property name="aggregateFunction">SUM</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">channel_value</property>
+                                            <expression name="expression">measure["channel_value"]</expression>
+                                            <property name="dataType">float</property>
+                                            <property name="aggregateFunction">SUM</property>
+                                        </structure>
+                                    </list-property>
+                                </extended-item>
+                            </cell>
+                        </row>
+                    </grid>
+                </cell>
+            </row>
+        </grid>
+    </body>
+</report>

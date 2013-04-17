@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:jaxrs="http://cxf.apache.org/jaxrs" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+	 http://cxf.apache.org/jaxrs
+	 http://cxf.apache.org/schemas/jaxrs.xsd
+     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+     http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+    <!-- 自动注入Service & Dao -->
+	<context:component-scan base-package="com.iwgame.gm.p1.task"></context:component-scan>
+	<context:annotation-config />
+	
+	<!-- 加载相关的properties配置文件设置 -->
+	<bean id="environmentVariablesConfiguration" class="com.iwgame.security.config.EnvironmentStringPBEConfig" />
+	<bean id="configurationEncryptor" class="org.jasypt.encryption.pbe.StandardPBEStringEncryptor">
+		<property name="config" ref="environmentVariablesConfiguration" />
+	</bean>
+	<bean
+		class="org.jasypt.spring.properties.EncryptablePropertyPlaceholderConfigurer">
+		<constructor-arg ref="configurationEncryptor" />
+		<property name="order" value="1" />
+		<property name="ignoreUnresolvablePlaceholders" value="true" />
+		<property name="ignoreResourceNotFound" value="true" />
+		<property name="locations">
+			<list>
+				<!--开发环境下的配置文件 -->
+				<value>classpath:xportal-xtask.properties</value>
+				<!-- 生产环境下的配置文件 -->
+				<value>${XTASK_HOME}/xportal-xtask.properties</value>
+			</list>
+		</property>
+		<property name="fileEncoding" value="utf-8" />
+	</bean>
+
+	<!-- admonitor监控 数据库连接  -->
+	<bean id="adMonitorDBDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close"> 
+		<!-- 数据库连接基本信息 -->
+		<property name="jdbcUrl" value="${db.normal.driver-url}" />
+		<property name="driverClass" value="${db.normal.driver-class}" />
+		<property name="user" value="${db.normal.user}" />
+		<property name="password" value="${db.normal.password}" />
+		<!-- 连接池大小控制 -->
+		<property name="maxPoolSize" value="${c3p0.maxPoolSize}" />
+		<property name="initialPoolSize" value="${c3p0.initialPoolSize}" />
+		<property name="minPoolSize" value="${c3p0.minPoolSize}" />
+		<property name="acquireIncrement" value="${c3p0.acquireIncrement}" />
+		<!-- 优化信息 -->
+		<property name="idleConnectionTestPeriod" value="120"/>
+		<property name="maxIdleTime" value="120"/>
+		<property name="preferredTestQuery" value="select now()" />
+		<property name="testConnectionOnCheckin" value="true"/>
+		<property name="testConnectionOnCheckout"  value="true"/>
+	</bean>
+	
+	<bean id="sqlSessionFactory-adMonitor" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="adMonitorDBDataSource" />
+		<property name="typeAliasesPackage" value="com.iwgame.gm.p1.task.bean" />
+		<property name="mapperLocations"
+			value="classpath:com/iwgame/gm/p1/task/dao/sqlmap/**/AdcollectMonitor.xml" />
+	</bean>
+
+	<bean id="mapperScanner-adMonitor" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory-adMonitor"></property>
+		<property name="basePackage" value="com.iwgame.gm.p1.task.dao"></property>
+	</bean>
+
+	
+	<!-- Service模块定义 -->
+	<bean id="adcollectMonitorService"
+		class="com.iwgame.gm.p1.task.service.impl.AdcollectMonitorServiceImpl">
+	</bean>
+	<bean id="customReportService"
+		class="com.iwgame.gm.p1.task.service.impl.CustomReportServiceImpl">
+		<property name="dataSource" ref="adMonitorDBDataSource" />
+		<property name="policy" value="${custom.report.policy}" />
+		<property name="remainColumnString" value="${remain.column.string}" />
+		<property name="remainSheduleColumnString" value="${remain.shedule.column.string}" />
+		<property name="remainColumnTitleString" value="${remain.column.title.string}" />
+		<property name="remainSheduleColumnTitleString" value="${remain.shedule.column.title.string}" />
+		<property name="paymentColumnString" value="${payment.column.string}" />
+		<property name="paymentSheduleColumnString" value="${payment.shedule.column.string}" />
+		<property name="paymentColumnTitleString" value="${payment.column.title.string}" />
+		<property name="paymentSheduleColumnTitleString" value="${payment.shedule.column.title.string}" />
+		<property name="filePath" value="${file.path}" />
+	</bean>
+
+	
+	<!-- Task列表定义 -->
+	<!-- 任务调度定义IpMapAreaJob -->
+	<!-- 要调用的工作类 -->
+	<bean id="ipMapAreaJob"
+		class="com.iwgame.gm.p1.task.process.IpMapAreaJob">
+			<property name="adcollectMonitorService" ref="adcollectMonitorService" />
+	</bean>
+	<!-- 定义调用对象和调用对象的方法 -->
+	<bean id="ipMapAreaJobtask"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<!-- 调用的类 -->
+		<property name="targetObject" ref="ipMapAreaJob" />
+		<!-- 调用类中的方法 -->
+		<property name="targetMethod" value="work" />
+		<!-- 表示任务不会并发的执行,需要等第一个任务执行完才会执行第二个任务 -->
+		<property name="concurrent" value="false" />
+	</bean>
+
+
+	<!-- Task列表定义 -->
+	<!-- 任务调度定义customReportJob -->
+	<!-- 要调用的工作类 -->
+	<bean id="customReportJob"
+		class="com.iwgame.gm.p1.task.process.CustomReportJob">
+			<property name="customReportService" ref="customReportService" />
+	</bean>
+	<!-- 定义调用对象和调用对象的方法 -->
+	<bean id="customReportJobtask"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<!-- 调用的类 -->
+		<property name="targetObject" ref="customReportJob" />
+		<!-- 调用类中的方法 -->
+		<property name="targetMethod" value="work" />
+		<!-- 表示任务不会并发的执行,需要等第一个任务执行完才会执行第二个任务 -->
+		<property name="concurrent" value="false" />
+	</bean>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<!-- 安全配置MQ -->
+	<bean id="securityRabbitMQSource" class="com.rabbitmq.client.ConnectionFactory">
+		<property name="username" value="${security.oa.mq.username}" />
+		<property name="password" value="${security.oa.mq.password}" />
+		<property name="virtualHost" value="${security.oa.mq.virtualhost}" />
+		<property name="host" value="${security.oa.mq.host}" />
+		<property name="port" value="${security.oa.mq.port}" />
+		<property name="requestedHeartbeat" value="5" />
+	</bean>
+
+	<bean id="securityConnectionFactory" class="org.springframework.amqp.rabbit.connection.CachingConnectionFactory">
+		<constructor-arg ref="securityRabbitMQSource" />
+		<property name="channelCacheSize" value="${security.oa.mq.channelcachesize}" />
+	</bean>
+
+	<!-- 创建rabbitAdmin 代理类,初始调用initialize,它会指定执行我们定义的Exchange,Queue,Binding -->
+	<bean class="org.springframework.amqp.rabbit.core.RabbitAdmin"
+		init-method="initialize">
+		<constructor-arg ref="securityConnectionFactory" />
+	</bean>
+	
+	<!-- 声明消息转换器为SimpleMessageConverter -->
+	<bean id="messageConverter"	class="org.springframework.amqp.support.converter.SimpleMessageConverter" />
+	
+	
+	<!-- 配置信息 -->
+	<bean id="securityConfig" class="com.iwgame.gm.p1.task.bean.SecurityConfig">
+		<property name="mailswitch"  value="${mailswitch}" />
+		<property name="websgs_key_sm"  value="${websgs_key_sm}"/>
+		<property name="websgs_url_sm"  value="${websgs_url_sm}"/>
+		<property name="websgs_key_zxy"  value="${websgs_key_zxy}"/>
+		<property name="websgs_url_zxy"  value="${websgs_url_zxy}"/>
+		<property name="xhttpservice_key"  value="${xhttpservice_key}"/>
+		<property name="xhttpservice_url"  value="${xhttpservice_url}" />
+		<property name="xhttpservice_url_solr"  value="${xhttpservice_url_solr}" />
+	</bean>	
+	
+	
+	<!-- sm监控 数据库连接  -->
+	<bean id="smAccountStoreDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close"> 
+		<!-- 数据库连接基本信息 -->
+		<property name="jdbcUrl" value="${db.sm.unlock.driver-url}" />
+		<property name="driverClass" value="${db.sm.unlock.driver-class}" />
+		<property name="user" value="${db.sm.unlock.username}" />
+		<property name="password" value="${db.sm.unlock.password}" />
+		<!-- 连接池大小控制 -->
+		<property name="maxPoolSize" value="${c3p0.maxPoolSize}" />
+		<property name="initialPoolSize" value="${c3p0.initialPoolSize}" />
+		<property name="minPoolSize" value="${c3p0.minPoolSize}" />
+		<property name="acquireIncrement" value="${c3p0.acquireIncrement}" />
+		<!-- 优化信息 -->
+		<property name="idleConnectionTestPeriod" value="120"/>
+		<property name="maxIdleTime" value="120"/>
+		<property name="preferredTestQuery" value="select now()" />
+		<property name="testConnectionOnCheckin" value="true"/>
+		<property name="testConnectionOnCheckout"  value="true"/>
+	</bean>
+	
+	<bean id="smSqlSessionFactory-accountStore" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="smAccountStoreDataSource" />
+		<property name="mapperLocations" value="classpath:com/iwgame/gm/p1/task/dao/sqlmap/**/smAccountDataStore.xml" />
+	</bean>
+
+	<bean id="smMapperScanner-unlock" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="sqlSessionFactory" ref="smSqlSessionFactory-accountStore" />
+		<property name="basePackage" value="com.iwgame.gm.p1.task.security.dao.sm"  />
+	</bean>
+	
+	
+	<!-- zxy监控 数据库连接  -->
+	<bean id="zxyAccountStoreDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close"> 
+		<!-- 数据库连接基本信息 -->
+		<property name="jdbcUrl" value="${db.zxy.unlock.driver-url}" />
+		<property name="driverClass" value="${db.zxy.unlock.driver-class}" />
+		<property name="user" value="${db.zxy.unlock.username}" />
+		<property name="password" value="${db.zxy.unlock.password}" />
+		<!-- 连接池大小控制 -->
+		<property name="maxPoolSize" value="${c3p0.maxPoolSize}" />
+		<property name="initialPoolSize" value="${c3p0.initialPoolSize}" />
+		<property name="minPoolSize" value="${c3p0.minPoolSize}" />
+		<property name="acquireIncrement" value="${c3p0.acquireIncrement}" />
+		<!-- 优化信息 -->
+		<property name="idleConnectionTestPeriod" value="120"/>
+		<property name="maxIdleTime" value="120"/>
+		<property name="preferredTestQuery" value="select now()" />
+		<property name="testConnectionOnCheckin" value="true"/>
+		<property name="testConnectionOnCheckout"  value="true"/>
+	</bean>
+	
+	<bean id="zxySqlSessionFactory-accountStore" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="zxyAccountStoreDataSource" />
+		<property name="mapperLocations" value="classpath:com/iwgame/gm/p1/task/dao/sqlmap/**/zxyAccountDataStore.xml" />
+	</bean>
+
+	<bean id="zxyMapperScanner-unlock" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="sqlSessionFactory" ref="zxySqlSessionFactory-accountStore" />
+		<property name="basePackage" value="com.iwgame.gm.p1.task.security.dao.zxy"  />
+	</bean>
+	
+</beans>

@@ -1,0 +1,26 @@
+.iwgame-CheckBoxList {
+	display: block;
+	width: 100%;
+}
+
+
+.iwgame-form .iwgame-form-table .iwgame-CheckBoxList td {
+	border: none;
+	padding: 0px;
+	background: none;
+}
+
+.iwgame-CheckBoxListItem {
+	padding: 2px;
+	display: block;
+	width: 100%;
+}
+
+.iwgame-CheckBoxListItem.checked {
+	background: #eee;
+}
+
+.iwgame-CheckBoxListItem-Label {
+	display: block;
+	width: 100%;
+}

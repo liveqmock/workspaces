@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+	xsi:schemaLocation="http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit.xsd http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<bean id="lockAccountTask" class="com.iwgame.gm.p1.task.worker.lock.LockAccountHandlerTask" />
+	<bean id="lockAccountListenerAdapter" class="org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter">
+		<constructor-arg ref="lockAccountTask" />
+		<property name="defaultListenerMethod" value="handleMessage" />
+		<property name="messageConverter" ref="messageConverter" />
+	</bean>
+	<bean
+		class="org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer">
+		<property name="queueNames" value="${task.security.lockaccount.queue.name}"></property>
+		<property name="connectionFactory" ref="securityConnectionFactory"></property>
+		<property name="messageListener" ref="lockAccountListenerAdapter"></property>
+		<property name="concurrentConsumers" value="3" />
+	</bean>
+	
+
+	<bean id="unLockAccountTaskHandler"	class="com.iwgame.gm.p1.task.worker.unlock.UnLockAccountHandlerTask" />
+	<bean id="unLockAccountListenerAdapter"
+		class="org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter">
+		<constructor-arg ref="unLockAccountTaskHandler" />
+		<property name="defaultListenerMethod" value="handleMessage" />
+		<property name="messageConverter" ref="messageConverter" />
+	</bean>
+	<bean
+		class="org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer">
+		<property name="queueNames" value="${task.security.unlockaccount.queue.name}"></property>
+		<property name="connectionFactory" ref="securityConnectionFactory"></property>
+		<property name="messageListener" ref="unLockAccountListenerAdapter"></property>
+		<property name="concurrentConsumers" value="3"></property>
+	</bean>
+	
+	
+	
+	
+	<bean id="safeModelTask" class="com.iwgame.gm.p1.task.worker.safemodel.SafeModelTask" />
+	<bean id="safeModelListenerAdapter"
+		class="org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter">
+		<constructor-arg ref="safeModelTask" />
+		<property name="defaultListenerMethod" value="handleMessage" />
+		<property name="messageConverter" ref="messageConverter" />
+	</bean>
+	<bean class="org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer">
+		<property name="queueNames" value="${task.security.safemodel.queue.name}"></property>
+		<property name="connectionFactory" ref="securityConnectionFactory"></property>
+		<property name="messageListener" ref="safeModelListenerAdapter"></property>
+		<property name="concurrentConsumers" value="3"></property>
+	</bean>
+	
+
+	<bean id="unSafeModelTaskHandler"	class="com.iwgame.gm.p1.task.worker.unsafemodel.UnSafeModelTask" />
+	<bean id="unSafeModelListenerAdapter"	class="org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter">
+		<constructor-arg ref="unSafeModelTaskHandler" />
+		<property name="defaultListenerMethod" value="handleMessage" />
+		<property name="messageConverter" ref="messageConverter" />
+	</bean>
+	<bean class="org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer">
+		<property name="queueNames" value="${task.security.unsafemodel.queue.name}"></property>
+		<property name="connectionFactory" ref="securityConnectionFactory"></property>
+		<property name="messageListener" ref="unSafeModelListenerAdapter"></property>
+		<property name="concurrentConsumers" value="3"></property>
+	</bean>
+</beans>

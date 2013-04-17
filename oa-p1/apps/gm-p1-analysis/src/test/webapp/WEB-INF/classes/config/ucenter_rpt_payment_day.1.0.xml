@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rpt:report xmlns:rpt="http://www.iwgame.com/report" 
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+ xsi:schemaLocation="http://www.iwgame.com/report report.xsd ">
+    <rpt:dataSource targetType="game"  groupId="${pid}-UcenterPay"/>
+    
+    <!-- 布局配置 -->
+    <rpt:form title="蜀门数据统计——日充值明细" >
+        <rpt:parameter dataType="date" fieldname="date" labelname="时间" />
+    </rpt:form>
+	
+  <!-- 设计文件配置 -->
+    <rpt:designFiles>
+      <rpt:designFile filename="ucenter_rpt_payment_day.rptdesign" title="蜀门数据统计——日充值明细"/>
+    </rpt:designFiles>
+</rpt:report>

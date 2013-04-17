@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rpt:report xmlns:rpt="http://www.iwgame.com/report" 
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+ xsi:schemaLocation="http://www.iwgame.com/report report.xsd " columns="false"  canExport="false">
+    <rpt:dataSource targetType="game"  groupId="${pid}-FINANCE"/>
+ 
+    <!-- 布局配置 -->
+    <rpt:form title="未消耗钻石统计月报表" >
+       <rpt:parameter dataType="ymd" fieldname="date" labelname="查询时间" startYear="2009" showMonth="true" showDay="false"/>
+    </rpt:form>
+	
+  <!-- 设计文件配置 -->
+    <rpt:designFiles>
+      <rpt:designFile filename="finance_rpt_unconsumed_area_month.rptdesign" title="未消耗钻石统计月报表"/>
+    </rpt:designFiles>
+</rpt:report>

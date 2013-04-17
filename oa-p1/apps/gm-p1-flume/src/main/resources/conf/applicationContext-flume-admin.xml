@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+     http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+
+	<import resource="classpath:conf/applicationContext-pconf.xml" />
+	<import resource="classpath:conf/applicationContext-connector.xml" />
+	<import resource="classpath:conf/applicationContext-common.xml" />
+
+	<!-- Spring annotation scan -->
+	<context:component-scan base-package="com.iwgame.iwcloud.flume.admin" />
+
+	<!-- 加载配置文件 -->
+	<bean id="environmentVariablesConfiguration" class="com.iwgame.security.config.EnvironmentStringPBEConfig" />
+	<bean id="configurationEncryptor" class="org.jasypt.encryption.pbe.StandardPBEStringEncryptor">
+		<property name="config" ref="environmentVariablesConfiguration" />
+	</bean>
+
+	<bean
+		class="org.jasypt.spring.properties.EncryptablePropertyPlaceholderConfigurer">
+		<constructor-arg ref="configurationEncryptor" />
+		<property name="order" value="1" />
+		<property name="ignoreUnresolvablePlaceholders" value="true" />
+		<property name="ignoreResourceNotFound" value="true" />
+		<property name="locations">
+			<list>
+				<!--开发环境下的配置文件 -->
+				<value>classpath:flumeadmin.properties</value>
+				<!-- 生产环境下的配置文件 -->
+				<value>file:/var/config/xportal-oa/flume/flumeadmin.properties</value>
+			</list>
+		</property>
+		<property name="fileEncoding" value="utf-8" />
+	</bean>
+
+	<!-- Redis 操作相关 -->
+	<bean id="flumeRedisConfig" class="redis.clients.jedis.JedisPoolConfig">
+		<property name="maxActive" value="${flume.redis.pool.maxActive}" />
+		<property name="maxIdle" value="${flume.redis.pool.maxIdle}" />
+		<property name="minIdle" value="${flume.redis.pool.minIdle}" />
+		<property name="maxWait" value="${flume.redis.pool.maxWait}" />
+	</bean>
+	<bean id="flumeRedisConnectionFactory"
+		class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+		<property name="poolConfig" ref="flumeRedisConfig"></property>
+		<property name="usePool" value="true"></property>
+		<property name="hostName" value="${flume.redis.server}"></property>
+		<property name="password" value="${flume.redis.passwd}"></property>
+		<property name="port" value="${flume.redis.port}"></property>
+		<property name="database" value="${flume.redis.database}"></property>
+		<property name="timeout" value="${flume.redis.timeout}"></property>
+	</bean>
+	<bean id="flumeRedisTemplate" class="org.springframework.data.redis.core.StringRedisTemplate">
+		<property name="connectionFactory" ref="flumeRedisConnectionFactory"></property>
+	</bean>
+	
+	<bean id="flumeRedisDataConnectionFactory"
+		class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+		<property name="poolConfig" ref="flumeRedisConfig"></property>
+		<property name="usePool" value="true"></property>
+		<property name="hostName" value="${flume.redis.server}"></property>
+		<property name="password" value="${flume.redis.passwd}"></property>
+		<property name="port" value="${flume.redis.port}"></property>
+		<property name="database" value="1"></property>
+		<property name="timeout" value="${flume.redis.timeout}"></property>
+	</bean>
+	<bean id="flumeRedisDataTemplate" class="org.springframework.data.redis.core.StringRedisTemplate">
+		<property name="connectionFactory" ref="flumeRedisDataConnectionFactory"></property>
+	</bean>
+
+	<!-- 用户自定义 -->
+	<bean id="monitorService" class="com.iwgame.iwcloud.flume.admin.sever.MonitorServiceImpl">
+		<!-- <property name="masterHost" value="${flume.master.host}" />
+		<property name="adminPort" value="${flume.master.port.admin}" />
+		<property name="reportPort" value="${flume.master.port.report}" /> -->
+	</bean>
+	<bean id="datasService" class="com.iwgame.iwcloud.flume.admin.sever.DatasServiceImpl">
+	</bean>
+	<bean id="historyService" class="com.iwgame.iwcloud.flume.admin.sever.HistoryServiceImpl">
+	</bean>
+	<bean id="configService" class="com.iwgame.iwcloud.flume.admin.sever.ConfigServiceImpl">
+	</bean>
+	<bean id="flumeManageService" class="com.iwgame.iwcloud.flume.admin.sever.service.impl.FlumeManageServiceImpl">
+		<property name="masterHost" value="${flume.master.host}" />
+		<property name="masterPort" value="${flume.master.port.admin}" />
+	</bean>
+
+</beans>

@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	<!-- 发奖模块消息配置相关 START -->
+	<!-- 声明MQ Exchange,需要注意不同的Exchange类型 -->
+    <bean class="org.springframework.amqp.core.DirectExchange">  
+        <constructor-arg value="${wg1.reward.exchange.name}"></constructor-arg>  
+    </bean>  
+    
+    <!-- 发资源 -->
+	<!-- 声明Queue并设定Queue的名称 -->
+	<bean class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${task.reward.queue.name}"></constructor-arg>
+	</bean>
+	<!-- 通过Binding来判定Queue、Exchange、routingKey -->  
+    <bean class="org.springframework.amqp.core.Binding">  
+        <constructor-arg index="0" value="${task.reward.queue.name}"></constructor-arg>  
+        <constructor-arg index="1" value="QUEUE"></constructor-arg>  
+        <constructor-arg index="2" value="${wg1.reward.exchange.name}"></constructor-arg>  
+        <constructor-arg index="3" value="${task.reward.queue.binding.routingkey}"></constructor-arg>  
+        <constructor-arg index="4"><null/></constructor-arg>  
+    </bean>  
+    
+    <!-- 发宝石 -->
+	<!-- 声明Queue并设定Queue的名称 -->
+	<bean class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${task.rewardgemstone.queue.name}"></constructor-arg>
+	</bean>
+	<!-- 通过Binding来判定Queue、Exchange、routingKey -->  
+    <bean class="org.springframework.amqp.core.Binding">  
+        <constructor-arg index="0" value="${task.rewardgemstone.queue.name}"></constructor-arg>  
+        <constructor-arg index="1" value="QUEUE"></constructor-arg>  
+        <constructor-arg index="2" value="${wg1.reward.exchange.name}"></constructor-arg>  
+        <constructor-arg index="3" value="${task.rewardgemstone.queue.binding.routingkey}"></constructor-arg>  
+        <constructor-arg index="4"><null/></constructor-arg>  
+    </bean> 
+    
+    <!-- 发装备 -->
+	<!-- 声明Queue并设定Queue的名称 -->
+	<bean class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${task.rewardequipment.queue.name}"></constructor-arg>
+	</bean>
+	<!-- 通过Binding来判定Queue、Exchange、routingKey -->  
+    <bean class="org.springframework.amqp.core.Binding">  
+        <constructor-arg index="0" value="${task.rewardequipment.queue.name}"></constructor-arg>  
+        <constructor-arg index="1" value="QUEUE"></constructor-arg>  
+        <constructor-arg index="2" value="${wg1.reward.exchange.name}"></constructor-arg>  
+        <constructor-arg index="3" value="${task.rewardequipment.queue.binding.routingkey}"></constructor-arg>  
+        <constructor-arg index="4"><null/></constructor-arg>  
+    </bean> 
+    
+     <!-- 发宠物 -->
+	<!-- 声明Queue并设定Queue的名称 -->
+	<bean class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${task.rewardpet.queue.name}"></constructor-arg>
+	</bean>
+	<!-- 通过Binding来判定Queue、Exchange、routingKey -->  
+    <bean class="org.springframework.amqp.core.Binding">  
+        <constructor-arg index="0" value="${task.rewardpet.queue.name}"></constructor-arg>  
+        <constructor-arg index="1" value="QUEUE"></constructor-arg>  
+        <constructor-arg index="2" value="${wg1.reward.exchange.name}"></constructor-arg>  
+        <constructor-arg index="3" value="${task.rewardpet.queue.binding.routingkey}"></constructor-arg>  
+        <constructor-arg index="4"><null/></constructor-arg>  
+    </bean> 
+    
+    
+    <!-- 发奖备用通道,用于处理异常发送用 -->
+    <!-- 声明MQ Exchange,需要注意不同的Exchange类型 -->
+    <bean class="org.springframework.amqp.core.DirectExchange">  
+        <constructor-arg value="wg1.reward-backup.exchange"></constructor-arg>  
+    </bean>  
+    
+    <!-- 发资源备用 -->
+	<!-- 声明Queue并设定Queue的名称 -->
+	<bean class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="task.reward-backup.queue"></constructor-arg>
+	</bean>
+	<!-- 通过Binding来判定Queue、Exchange、routingKey -->  
+    <bean class="org.springframework.amqp.core.Binding">  
+        <constructor-arg index="0" value="task.reward-backup.queue"></constructor-arg>  
+        <constructor-arg index="1" value="QUEUE"></constructor-arg>  
+        <constructor-arg index="2" value="wg1.reward-backup.exchange"></constructor-arg>  
+        <constructor-arg index="3" value="reward-backup"></constructor-arg>  
+        <constructor-arg index="4"><null/></constructor-arg>  
+    </bean>  
+    
+    <!-- 发装备备用 -->
+    <!-- 声明Queue并设定Queue的名称 -->
+	<bean class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="task.rewardequipment-backup.queue"></constructor-arg>
+	</bean>
+	<!-- 通过Binding来判定Queue、Exchange、routingKey -->  
+    <bean class="org.springframework.amqp.core.Binding">  
+        <constructor-arg index="0" value="task.rewardequipment-backup.queue"></constructor-arg>  
+        <constructor-arg index="1" value="QUEUE"></constructor-arg>  
+        <constructor-arg index="2" value="wg1.reward-backup.exchange"></constructor-arg>  
+        <constructor-arg index="3" value="rewardequipment-backup"></constructor-arg>  
+        <constructor-arg index="4"><null/></constructor-arg>  
+    </bean>  
+    
+    <!-- 发宝石备用 -->
+    <!-- 声明Queue并设定Queue的名称 -->
+	<bean class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="task.rewardgemstone-backup.queue"></constructor-arg>
+	</bean>
+	<!-- 通过Binding来判定Queue、Exchange、routingKey -->  
+    <bean class="org.springframework.amqp.core.Binding">  
+        <constructor-arg index="0" value="task.rewardgemstone-backup.queue"></constructor-arg>  
+        <constructor-arg index="1" value="QUEUE"></constructor-arg>  
+        <constructor-arg index="2" value="wg1.reward-backup.exchange"></constructor-arg>  
+        <constructor-arg index="3" value="rewardgemstone-backup"></constructor-arg>  
+        <constructor-arg index="4"><null/></constructor-arg>  
+    </bean>  
+    
+     <!-- 赠送宠物备用 -->
+    <!-- 声明Queue并设定Queue的名称 -->
+	<bean class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="task.rewardpet-backup.queue"></constructor-arg>
+	</bean>
+	<!-- 通过Binding来判定Queue、Exchange、routingKey -->  
+    <bean class="org.springframework.amqp.core.Binding">  
+        <constructor-arg index="0" value="task.rewardpet-backup.queue"></constructor-arg>  
+        <constructor-arg index="1" value="QUEUE"></constructor-arg>  
+        <constructor-arg index="2" value="wg1.reward-backup.exchange"></constructor-arg>  
+        <constructor-arg index="3" value="rewardpet-backup"></constructor-arg>  
+        <constructor-arg index="4"><null/></constructor-arg>  
+    </bean>  
+    <!-- 发奖模块消息配置相关 END -->
+    
+    
+    <!-- 运营管理配置相关 START -->
+	<!-- 声明MQ Exchange,需要注意不同的Exchange类型 -->
+    <bean id="wg1SettingsExchange"  
+        class="org.springframework.amqp.core.DirectExchange">  
+        <constructor-arg value="${wg1.settings.exchange.name}"></constructor-arg>  
+    </bean>  
+	<!-- 声明Queue并设定Queue的名称 -->
+	<bean id="taskSystemparamQueue"
+		class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${task.systemparam.queue.name}"></constructor-arg>
+	</bean>
+	<!-- 通过Binding来判定Queue、Exchange、routingKey -->  
+    <bean id="taskSystemparamQueueBinding"  
+        class="org.springframework.amqp.core.Binding">  
+        <constructor-arg index="0" value="${task.systemparam.queue.name}"></constructor-arg>  
+        <constructor-arg index="1" value="QUEUE"></constructor-arg>  
+        <constructor-arg index="2" value="${wg1.settings.exchange.name}"></constructor-arg>  
+        <constructor-arg index="3" value="${task.systemparam.queue.binding.routingkey}"></constructor-arg>  
+        <constructor-arg index="4"><null/></constructor-arg>  
+    </bean>  
+    <!-- 运营管理消息配置相关 END -->
+    
+    
+    <!-- 公告发送配置相关 START -->
+	<!-- 声明MQ Exchange,需要注意不同的Exchange类型 -->
+    <bean id="wg1NoticeExchange"  
+        class="org.springframework.amqp.core.DirectExchange">  
+        <constructor-arg value="${wg1.notice.exchange.name}"></constructor-arg>  
+    </bean>  
+	<!-- 声明Queue并设定Queue的名称 -->
+	<bean id="taskNoticeSendingQueue"
+		class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${task.noticesending.queue.name}"></constructor-arg>
+	</bean>
+	<!-- 通过Binding来判定Queue、Exchange、routingKey -->  
+    <bean id="taskNoticeSendingQueueBinding"  
+        class="org.springframework.amqp.core.Binding">  
+        <constructor-arg index="0" value="${task.noticesending.queue.name}"></constructor-arg>  
+        <constructor-arg index="1" value="QUEUE"></constructor-arg>  
+        <constructor-arg index="2" value="${wg1.notice.exchange.name}"></constructor-arg>  
+        <constructor-arg index="3" value="${task.noticesending.queue.binding.routingkey}"></constructor-arg>  
+         <constructor-arg index="4"><null/></constructor-arg>  
+    </bean>  
+    <!-- 公告发送消息配置相关 END -->
+    
+    <!-- 邮件发送配置相关 START -->
+	<!-- 声明MQ Exchange,需要注意不同的Exchange类型 -->
+    <bean id="wg1MailExchange"  
+        class="org.springframework.amqp.core.DirectExchange">  
+        <constructor-arg value="${wg1.mail.exchange.name}"></constructor-arg>  
+    </bean>  
+	<!-- 声明Queue并设定Queue的名称 -->
+	<bean id="taskMailSendingQueue"
+		class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${task.mailsending.queue.name}"></constructor-arg>
+	</bean>
+	<!-- 通过Binding来判定Queue、Exchange、routingKey -->  
+    <bean id="taskMailSendingQueueBinding"  
+        class="org.springframework.amqp.core.Binding">  
+        <constructor-arg index="0" value="${task.mailsending.queue.name}"></constructor-arg>  
+        <constructor-arg index="1" value="QUEUE"></constructor-arg>  
+        <constructor-arg index="2" value="${wg1.mail.exchange.name}"></constructor-arg>  
+        <constructor-arg index="3" value="${task.mailsending.queue.binding.routingkey}"></constructor-arg>  
+        <constructor-arg index="4"><null/></constructor-arg>  
+    </bean>  
+    <!-- 邮件发送消息配置相关 END -->
+    
+    <!-- 玩家管理模块Exchange START-->
+    <bean id="wg1AccountExchange"  
+        class="org.springframework.amqp.core.DirectExchange">  
+        <constructor-arg value="${wg1.account.exchange.name}"></constructor-arg>  
+    </bean>  
+     <!-- 玩家管理模块Exchange END-->
+    
+     <!--玩家踢人相关 START -->
+	<!-- 声明Queue并设定Queue的名称 -->
+	<bean id="taskKickUserQueue"
+		class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${task.kickuser.queue.name}"></constructor-arg>
+	</bean>
+	<!-- 通过Binding来判定Queue、Exchange、routingKey -->  
+    <bean id="taskKickUserQueueBinding"  
+        class="org.springframework.amqp.core.Binding">  
+        <constructor-arg index="0" value="${task.kickuser.queue.name}"></constructor-arg>  
+        <constructor-arg index="1" value="QUEUE"></constructor-arg>  
+        <constructor-arg index="2" value="${wg1.account.exchange.name}"></constructor-arg>  
+        <constructor-arg index="3" value="${task.kickuser.queue.binding.routingkey}"></constructor-arg>  
+        <constructor-arg index="4"><null/></constructor-arg>  
+    </bean>  
+    <!-- 玩家踢人相关 END -->
+    
+	<!--玩家账号封禁相关 START -->
+	<!-- 声明Queue并设定Queue的名称 -->
+	<bean id="taskLockAccountQueue"
+		class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${task.lockaccount.queue.name}"></constructor-arg>
+	</bean>
+	<!-- 通过Binding来判定Queue、Exchange、routingKey -->  
+    <bean id="taskLockAccountQueueBinding"  
+        class="org.springframework.amqp.core.Binding">  
+        <constructor-arg index="0" value="${task.lockaccount.queue.name}"></constructor-arg>  
+        <constructor-arg index="1" value="QUEUE"></constructor-arg>  
+        <constructor-arg index="2" value="${wg1.account.exchange.name}"></constructor-arg>  
+        <constructor-arg index="3" value="${task.lockaccount.queue.binding.routingkey}"></constructor-arg>  
+        <constructor-arg index="4"><null/></constructor-arg>  
+    </bean>  
+     <!-- 玩家账号封禁相关 END -->
+     
+    <!--玩家账号解封相关 START -->
+    <!-- 声明Queue并设定Queue的名称 -->
+	<bean id="taskUnLockAccountQueue"
+		class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${task.unlockaccount.queue.name}"></constructor-arg>
+	</bean>
+	<!-- 通过Binding来判定Queue、Exchange、routingKey -->  
+    <bean id="taskUnLockAccountQueueBinding"  
+        class="org.springframework.amqp.core.Binding">  
+        <constructor-arg index="0" value="${task.unlockaccount.queue.name}"></constructor-arg>  
+        <constructor-arg index="1" value="QUEUE"></constructor-arg>  
+        <constructor-arg index="2" value="${wg1.account.exchange.name}"></constructor-arg>  
+        <constructor-arg index="3" value="${task.unlockaccount.queue.binding.routingkey}"></constructor-arg>  
+        <constructor-arg index="4"><null/></constructor-arg>  
+    </bean>  
+    <!-- 玩家账号解封相关 END -->
+    
+    <!--解禁IP相关 START -->
+    <!-- 声明Queue并设定Queue的名称 -->
+	<bean id="taskNoTalkQueue"
+		class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${task.notalkuser.queue.name}"></constructor-arg>
+	</bean>
+	<!-- 通过Binding来判定Queue、Exchange、routingKey -->  
+    <bean id="taskNoTalkQueueBinding"  
+        class="org.springframework.amqp.core.Binding">  
+        <constructor-arg index="0" value="${task.notalkuser.queue.name}"></constructor-arg>  
+        <constructor-arg index="1" value="QUEUE"></constructor-arg>  
+        <constructor-arg index="2" value="${wg1.account.exchange.name}"></constructor-arg>  
+        <constructor-arg index="3" value="${task.notalkuser.queue.binding.routingkey}"></constructor-arg>  
+        <constructor-arg index="4"><null/></constructor-arg>  
+    </bean>  
+    <!-- 玩家禁言相关 END -->
+    
+    <!--玩家解除禁言相关 START -->
+    <!-- 声明Queue并设定Queue的名称 -->
+	<bean id="taskTalkQueue"
+		class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${task.talkuser.queue.name}"></constructor-arg>
+	</bean>
+	<!-- 通过Binding来判定Queue、Exchange、routingKey -->  
+    <bean id="taskTalkQueueBinding"  
+        class="org.springframework.amqp.core.Binding">  
+        <constructor-arg index="0" value="${task.talkuser.queue.name}"></constructor-arg>  
+        <constructor-arg index="1" value="QUEUE"></constructor-arg>  
+        <constructor-arg index="2" value="${wg1.account.exchange.name}"></constructor-arg>  
+        <constructor-arg index="3" value="${task.talkuser.queue.binding.routingkey}"></constructor-arg>  
+        <constructor-arg index="4"><null/></constructor-arg>  
+    </bean>  
+    <!-- 玩家解除禁言相关 END -->
+    
+    <!--封禁IP相关 START -->
+    <!-- 声明Queue并设定Queue的名称 -->
+	<bean id="taskLockIpQueue"
+		class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${task.lockip.queue.name}"></constructor-arg>
+	</bean>
+	<!-- 通过Binding来判定Queue、Exchange、routingKey -->  
+    <bean id="taskLockIpQueueBinding"  
+        class="org.springframework.amqp.core.Binding">  
+        <constructor-arg index="0" value="${task.lockip.queue.name}"></constructor-arg>  
+        <constructor-arg index="1" value="QUEUE"></constructor-arg>  
+        <constructor-arg index="2" value="${wg1.account.exchange.name}"></constructor-arg>  
+        <constructor-arg index="3" value="${task.lockip.queue.binding.routingkey}"></constructor-arg>  
+        <constructor-arg index="4"><null/></constructor-arg>  
+    </bean>  
+    <!-- 解禁玩家角色相关 END -->
+    
+    <!--玩家解除禁言相关 START -->
+    <!-- 声明Queue并设定Queue的名称 -->
+	<bean id="taskUnLockIpQueue"
+		class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${task.unlockip.queue.name}"></constructor-arg>
+	</bean>
+	<!-- 通过Binding来判定Queue、Exchange、routingKey -->  
+    <bean id="taskUnLockIpQueueBinding"  
+        class="org.springframework.amqp.core.Binding">  
+        <constructor-arg index="0" value="${task.unlockip.queue.name}"></constructor-arg>  
+        <constructor-arg index="1" value="QUEUE"></constructor-arg>  
+        <constructor-arg index="2" value="${wg1.account.exchange.name}"></constructor-arg>  
+        <constructor-arg index="3" value="${task.unlockip.queue.binding.routingkey}"></constructor-arg>  
+        <constructor-arg index="4"><null/></constructor-arg>  
+    </bean>  
+    <!-- 解禁IP相关 END -->
+    
+    
+    <!--封禁玩家角色相关 START -->
+    <!-- 声明Queue并设定Queue的名称 -->
+	<bean id="tasklockuserQueue"
+		class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${task.lockuser.queue.name}"></constructor-arg>
+	</bean>
+	<!-- 通过Binding来判定Queue、Exchange、routingKey -->  
+    <bean id="tasklockuserQueueBinding"  
+        class="org.springframework.amqp.core.Binding">  
+        <constructor-arg index="0" value="${task.lockuser.queue.name}"></constructor-arg>  
+        <constructor-arg index="1" value="QUEUE"></constructor-arg>  
+        <constructor-arg index="2" value="${wg1.account.exchange.name}"></constructor-arg>  
+        <constructor-arg index="3" value="${task.lockuser.queue.binding.routingkey}"></constructor-arg>  
+        <constructor-arg index="4"><null/></constructor-arg>  
+    </bean>  
+    <!-- 封禁玩家角色相关 END -->
+    
+    <!--玩家解除禁言相关 START -->
+    <!-- 声明Queue并设定Queue的名称 -->
+	<bean id="taskUnlockUserQueue"
+		class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${task.unlockuser.queue.name}"></constructor-arg>
+	</bean>
+	<!-- 通过Binding来判定Queue、Exchange、routingKey -->  
+    <bean id="taskUnlockUserQueueBinding"  
+        class="org.springframework.amqp.core.Binding">  
+        <constructor-arg index="0" value="${task.unlockuser.queue.name}"></constructor-arg>  
+        <constructor-arg index="1" value="QUEUE"></constructor-arg>  
+        <constructor-arg index="2" value="${wg1.account.exchange.name}"></constructor-arg>  
+        <constructor-arg index="3" value="${task.unlockuser.queue.binding.routingkey}"></constructor-arg>  
+        <constructor-arg index="4"><null/></constructor-arg>  
+    </bean>  
+    <!-- 解禁玩家角色相关 END -->
+    
+    <!--积分服务相关 START -->
+    <!-- 声明MQ Exchange,需要注意不同的Exchange类型 -->
+    <bean id="wg1PointsExchange"  
+        class="org.springframework.amqp.core.DirectExchange">  
+        <constructor-arg value="${wg1.points.exchange.name}"></constructor-arg>  
+    </bean> 
+    <!-- 声明Queue并设定Queue的名称 -->
+	<bean id="taskWg1PointsUserQueue"
+		class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${task.wg1points.queue.name}"></constructor-arg>
+	</bean>
+	<!-- 通过Binding来判定Queue、Exchange、routingKey -->  
+    <bean id="taskWg1PointsUserQueueBinding"  
+        class="org.springframework.amqp.core.Binding">  
+        <constructor-arg index="0" value="${task.wg1points.queue.name}"></constructor-arg>  
+        <constructor-arg index="1" value="QUEUE"></constructor-arg>  
+        <constructor-arg index="2" value="${wg1.points.exchange.name}"></constructor-arg>  
+        <constructor-arg index="3" value="${task.wg1points.queue.binding.routingkey}"></constructor-arg>  
+        <constructor-arg index="4"><null/></constructor-arg>  
+    </bean>  
+    <!-- 积分服务相关 END -->
+    
+    <!--人民币充值相关 START -->
+    <!-- 声明MQ Exchange,需要注意不同的Exchange类型 -->
+    <bean id="wg1RmbCZNoticeExchange"  
+        class="org.springframework.amqp.core.DirectExchange">  
+        <constructor-arg value="${wg1.rmbcznotice.exchange.name}"></constructor-arg>  
+    </bean> 
+    <!-- 声明Queue并设定Queue的名称 -->
+	<bean id="taskwg1RmbCZNoticeUserQueue"
+		class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${task.wg1rmbcznotice.queue.name}"></constructor-arg>
+	</bean>
+	<!-- 通过Binding来判定Queue、Exchange、routingKey -->  
+    <bean id="taskwg1RmbCZNoticeUserQueueBinding"  
+        class="org.springframework.amqp.core.Binding">  
+        <constructor-arg index="0" value="${task.wg1rmbcznotice.queue.name}"></constructor-arg>  
+        <constructor-arg index="1" value="QUEUE"></constructor-arg>  
+        <constructor-arg index="2" value="${wg1.rmbcznotice.exchange.name}"></constructor-arg>  
+        <constructor-arg index="3" value="${task.wg1rmbcznotice.queue.binding.routingkey}"></constructor-arg>  
+        <constructor-arg index="4"><null/></constructor-arg>  
+    </bean>  
+    <!-- 人民币充值相关 END -->
+</beans>

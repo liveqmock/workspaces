@@ -1,0 +1,22 @@
+模块说明：
+
+channel-email
+邮件发送后台守护程序；
+
+channel-sms
+短信发送后台守护程序；
+
+channel-p1game
+与游戏相关的处理程序，包括道具卡，封杀，禁言等；
+
+channel-p1ucenter
+与会员中心相关的处理程序，包括水晶等；
+
+channel-http(web)
+公共服务接口，部署在jetty环境，提供短信，邮件，道具卡等；
+
+channel-webservice(web)
+公共服务接口，部署在tomcat，提供水晶；
+
+tools
+-xtask-monitor 通道监控程序，提供MQ信息预警；

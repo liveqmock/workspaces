@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	
+	<!-- GUILD MQ配置相关 START -->
+    <bean id="guildBackServiceExchange"  class="org.springframework.amqp.core.DirectExchange">  
+        <constructor-arg value="${guild.service.exchange.name}" />  
+    </bean>
+    
+  
+	<bean id="guildRegistGuildQueue"	class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${guild.task.registguild.queue.name}" />
+	</bean>	
+	<bean id="guildRegistGuildQueueBinding"  
+        class="org.springframework.amqp.core.Binding">  
+        <constructor-arg index="0" value="${guild.task.registguild.queue.name}" />  
+        <constructor-arg index="1" value="QUEUE" />  
+        <constructor-arg index="2" value="${guild.service.exchange.name}" />  
+        <constructor-arg index="3" value="${guild.task.registguild.queue.binding.routingkey}" />  
+        <constructor-arg index="4"><null/></constructor-arg>  
+    </bean>   
+	
+    
+	<bean id="guildJoinRaceQueue"	class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${guild.task.joinrace.queue.name}" />
+	</bean>	
+	<bean id="guildJoinRaceQueueBinding"  
+        class="org.springframework.amqp.core.Binding">  
+        <constructor-arg index="0" value="${guild.task.joinrace.queue.name}" />  
+        <constructor-arg index="1" value="QUEUE" />  
+        <constructor-arg index="2" value="${guild.service.exchange.name}" />  
+        <constructor-arg index="3" value="${guild.task.joinrace.queue.binding.routingkey}" />  
+        <constructor-arg index="4"><null/></constructor-arg>  
+    </bean>   
+    
+    <bean id="guildOpenRaceQueue"	class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${guild.task.openrace.queue.name}" />
+	</bean>	
+	<bean id="guildOpenRaceQueueBinding"  
+        class="org.springframework.amqp.core.Binding">  
+        <constructor-arg index="0" value="${guild.task.openrace.queue.name}" />  
+        <constructor-arg index="1" value="QUEUE" />  
+        <constructor-arg index="2" value="${guild.service.exchange.name}" />  
+        <constructor-arg index="3" value="${guild.task.openrace.queue.binding.routingkey}" />  
+        <constructor-arg index="4"><null/></constructor-arg>  
+    </bean> 
+    
+    <bean id="guildCloseRaceQueue"	class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${guild.task.closerace.queue.name}" />
+	</bean>	
+	<bean id="guildCloseRaceQueueBinding"  
+        class="org.springframework.amqp.core.Binding">  
+        <constructor-arg index="0" value="${guild.task.closerace.queue.name}" />  
+        <constructor-arg index="1" value="QUEUE" />  
+        <constructor-arg index="2" value="${guild.service.exchange.name}" />  
+        <constructor-arg index="3" value="${guild.task.closerace.queue.binding.routingkey}" />  
+        <constructor-arg index="4"><null/></constructor-arg>  
+    </bean>
+    
+    <bean id="guildForbitRaceQueue"	class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${guild.task.forbitjoiner.queue.name}" />
+	</bean>	
+	<bean id="guildForbitJoinerQueueBinding"  
+        class="org.springframework.amqp.core.Binding">  
+        <constructor-arg index="0" value="${guild.task.forbitjoiner.queue.name}" />  
+        <constructor-arg index="1" value="QUEUE" />  
+        <constructor-arg index="2" value="${guild.service.exchange.name}" />  
+        <constructor-arg index="3" value="${guild.task.forbitjoiner.queue.binding.routingkey}" />  
+        <constructor-arg index="4"><null/></constructor-arg>  
+    </bean> 
+	
+	
+	<bean id="addGuildRaceQueue"	class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${guild.task.addguild.queue.name}" />
+	</bean>	
+	<bean id="addGuildQueueBinding"  
+        class="org.springframework.amqp.core.Binding">  
+        <constructor-arg index="0" value="${guild.task.addguild.queue.name}" />  
+        <constructor-arg index="1" value="QUEUE" />  
+        <constructor-arg index="2" value="${guild.service.exchange.name}" />  
+        <constructor-arg index="3" value="${guild.task.addguild.queue.binding.routingkey}" />  
+        <constructor-arg index="4"><null/></constructor-arg>  
+    </bean> 
+    
+    <!-- GUILD MQ配置相关 END -->
+</beans>

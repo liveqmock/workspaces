@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:jaxrs="http://cxf.apache.org/jaxrs" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+	 http://cxf.apache.org/jaxrs
+	 http://cxf.apache.org/schemas/jaxrs.xsd
+     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+     http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+	<!-- 连接池 -->
+	<bean id="dataSource3307" class="com.mchange.v2.c3p0.ComboPooledDataSource"	destroy-method="close">
+		<!-- 数据库连接基本信息 -->
+		<property name="jdbcUrl" value="${db.prototype.driver-url}" />
+		<property name="driverClass" value="${db.prototype.driver-class}" />
+		<property name="user" value="${db.prototype.user}" />
+		<property name="password" value="${db.prototype.password}" />
+		<!-- 连接池大小控制 -->
+		<property name="maxPoolSize" value="${c3p0.maxPoolSize}" />
+		<property name="initialPoolSize" value="${c3p0.initialPoolSize}" />
+		<property name="minPoolSize" value="${c3p0.minPoolSize}" />
+		<property name="acquireIncrement" value="${c3p0.acquireIncrement}" />
+		<!-- 优化信息 -->
+		<property name="idleConnectionTestPeriod" value="120" />
+		<property name="maxIdleTime" value="120" />
+		<property name="preferredTestQuery" value="select now()" />
+		<property name="testConnectionOnCheckin" value="true" />
+	</bean>
+
+	<!-- 连接池 -->
+	<bean id="dataSource3306" class="com.mchange.v2.c3p0.ComboPooledDataSource"	destroy-method="close">
+		<!-- 数据库连接基本信息 -->
+		<property name="jdbcUrl" value="${db.alter.driver-url}" />
+		<property name="driverClass" value="${db.alter.driver-class}" />
+		<property name="user" value="${db.alter.user}" />
+		<property name="password" value="${db.alter.password}" />
+		<!-- 连接池大小控制 -->
+		<property name="maxPoolSize" value="${c3p0.maxPoolSize}" />
+		<property name="initialPoolSize" value="${c3p0.initialPoolSize}" />
+		<property name="minPoolSize" value="${c3p0.minPoolSize}" />
+		<property name="acquireIncrement" value="${c3p0.acquireIncrement}" />
+		<!-- 优化信息 -->
+		<property name="idleConnectionTestPeriod" value="120" />
+		<property name="maxIdleTime" value="120" />
+		<property name="preferredTestQuery" value="select now()" />
+		<property name="testConnectionOnCheckin" value="true" />
+	</bean>
+</beans>

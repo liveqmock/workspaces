@@ -1,0 +1,649 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<library xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.22" id="1">
+    <property name="createdBy">Eclipse BIRT Designer Version 2.6.2.r262_v20110209 Build &lt;2.6.2.v20110214-1523></property>
+    <property name="units">in</property>
+    <property name="theme">defaultTheme</property>
+    <parameters>
+        <scalar-parameter name="offset" id="77">
+            <property name="hidden">true</property>
+            <text-property name="promptText">Offset</text-property>
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">integer</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="constant">null</value>
+            </simple-property-list>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="limit" id="78">
+            <property name="hidden">true</property>
+            <text-property name="promptText">Limit</text-property>
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">integer</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="constant">15</value>
+            </simple-property-list>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="total" id="82">
+            <property name="hidden">true</property>
+            <property name="valueType">static</property>
+            <property name="dataType">integer</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="constant">0</value>
+            </simple-property-list>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+    </parameters>
+    <themes>
+        <theme name="defaultTheme" id="4">
+            <list-property name="cssStyleSheets">
+                <structure>
+                    <property name="fileName">paginate.css</property>
+                </structure>
+            </list-property>
+        </theme>
+    </themes>
+    <page-setup>
+        <simple-master-page name="PaginateMasterPage" id="3">
+            <page-header>
+                <grid name="PaginateToolbar" id="61">
+                    <property name="fontFamily">"宋体"</property>
+                    <list-property name="boundDataColumns">
+                        <structure>
+                            <property name="name">Column Binding</property>
+                            <expression name="expression" type="javascript">params["total"].value</expression>
+                            <property name="dataType">integer</property>
+                        </structure>
+                    </list-property>
+                    <property name="allowExport">false</property>
+                    <column id="62"/>
+                    <column id="63"/>
+                    <column id="86"/>
+                    <column id="65"/>
+                    <column id="66"/>
+                    <row id="91">
+                        <cell id="92">
+                            <property name="colSpan">5</property>
+                            <property name="rowSpan">1</property>
+                            <property name="style">paginateToolbar</property>
+                            <property name="paddingTop">5pt</property>
+                            <property name="paddingBottom">5pt</property>
+                            <property name="paddingRight">5pt</property>
+                            <property name="textAlign">right</property>
+                            <property name="verticalAlign">middle</property>
+                            <image name="FirstPage" id="97">
+                                <property name="style">paginateIcon</property>
+                                <property name="paddingTop">0pt</property>
+                                <property name="paddingLeft">0pt</property>
+                                <property name="paddingBottom">0pt</property>
+                                <property name="paddingRight">0pt</property>
+                                <property name="display">inline</property>
+                                <property name="height">16px</property>
+                                <property name="width">16px</property>
+                                <method name="onRender"><![CDATA[
+var format=reportContext.getParameterValue("format");
+
+if(format=="excel"){
+	reportContext.setParameterValue("offset",null);	
+	reportContext.setParameterValue("limit",null);	
+}else{
+	var offset=reportContext.getParameterValue("offset");
+	var pageSize=reportContext.getPersistentGlobalVariable("pageSize");
+	reportContext.setParameterValue("limit",pageSize);	
+	offset=BirtMath.subtract(offset,pageSize);
+	if(offset<0){
+		offset=0;
+		this.URI="images/FirstPage_disabled.gif";
+	}else{
+		this.URI="images/FirstPage.gif";
+		this.action = this.createAction();
+		link=reportContext.getPersistentGlobalVariable("actionlink");
+		link=link+"offset=0&amp;limit="+pageSize;
+		this.action.setHyperlink(link,"_self");
+	}
+}
+
+]]></method>
+                                <property name="allowExport">false</property>
+                                <property name="source">file</property>
+                                <expression name="uri" type="constant">images/FirstPage.gif</expression>
+                                <text-property name="altText">第一页</text-property>
+                                <text-property name="helpText">第一页</text-property>
+                            </image>
+                            <image name="PreviousPage" id="98">
+                                <property name="style">paginateIcon</property>
+                                <property name="paddingTop">0pt</property>
+                                <property name="paddingLeft">0pt</property>
+                                <property name="paddingBottom">0pt</property>
+                                <property name="paddingRight">0pt</property>
+                                <property name="display">inline</property>
+                                <property name="height">16px</property>
+                                <property name="width">16px</property>
+                                <method name="onRender"><![CDATA[
+var format=reportContext.getParameterValue("format");
+if(format=="excel"){
+	var offset=null;
+	var limit=null;
+}else{
+var offset=reportContext.getParameterValue("offset");
+var pageSize=reportContext.getPersistentGlobalVariable("pageSize");
+offset=BirtMath.subtract(offset,pageSize);
+if(offset<0){
+	offset=0;
+	this.URI="images/PreviousPage_disabled.gif";
+}else{
+	this.URI="images/PreviousPage.gif";
+	this.action = this.createAction();
+	link=reportContext.getPersistentGlobalVariable("actionlink");
+	link=link+"offset="+offset+"&amp;limit="+pageSize;
+	this.action.setHyperlink(link,"_self");
+}}]]></method>
+                                <property name="source">file</property>
+                                <expression name="uri" type="constant">images/PreviousPage.gif</expression>
+                                <text-property name="altText">上一页</text-property>
+                                <text-property name="helpText">上一页</text-property>
+                            </image>
+                            <label name="lbl1" id="106">
+                                <property name="style">paginateNumber</property>
+                                <property name="fontSize">12pt</property>
+                                <property name="display">inline</property>
+                                <method name="onRender"><![CDATA[
+var format=reportContext.getParameterValue("format");
+if(format=="excel"){
+	var offset=null;
+	var limit=null;
+}else{
+	pages=reportContext.getPersistentGlobalVariable("pages");
+	page=reportContext.getPersistentGlobalVariable("page");
+	displayPage=1;
+	if(BirtComp.greaterOrEqual(pages,displayPage)){
+		if(BirtComp.lessOrEqual(page,5)){
+			if(BirtComp.equalTo(page,1)){
+				this.getStyle().color="red";
+			}
+		}else if(BirtComp.greaterOrEqual(BirtMath.add(page,4),pages)){
+			displayPage=BirtMath.subtract(pages,8);
+			this.text=""+displayPage;
+		}else{
+			displayPage=BirtMath.subtract(page,4)
+			this.text=""+displayPage;
+		}
+		 
+		var pageSize=reportContext.getPersistentGlobalVariable("pageSize");
+		var offset=BirtMath.multiply(pageSize,BirtMath.subtract(displayPage,1));
+		this.action = this.createAction();
+	
+		link=reportContext.getPersistentGlobalVariable("actionlink");
+		link=link+"offset="+offset+"&amp;limit="+pageSize;
+		this.action.setHyperlink(link,"_self");
+		
+		
+	}else{
+		this.getStyle().display="none";
+	}
+}
+]]></method>
+                                <text-property name="text">1</text-property>
+                            </label>
+                            <label name="lbl2" id="116">
+                                <property name="style">paginateNumber</property>
+                                <property name="fontSize">12pt</property>
+                                <property name="display">inline</property>
+                                <method name="onRender"><![CDATA[
+var format=reportContext.getParameterValue("format");
+if(format=="excel"){
+	var offset=null;
+	var limit=null;
+}else{
+	pages=reportContext.getPersistentGlobalVariable("pages");
+	page=reportContext.getPersistentGlobalVariable("page");
+	displayPage=2;
+	if(BirtComp.greaterOrEqual(pages,displayPage)){
+		if(BirtComp.lessOrEqual(page,5)){
+			if(BirtComp.equalTo(page,2)){
+				this.getStyle().color="red";
+			}
+		}else if(BirtComp.greaterOrEqual(BirtMath.add(page,4),pages)){
+			displayPage=BirtMath.subtract(pages,7);
+			this.text=""+displayPage;
+		}else{
+			displayPage=BirtMath.subtract(page,3)
+			this.text=""+displayPage;
+		}
+		
+		var pageSize=reportContext.getPersistentGlobalVariable("pageSize");
+		var offset=BirtMath.multiply(pageSize,BirtMath.subtract(displayPage,1));
+		this.action = this.createAction();
+		
+		link=reportContext.getPersistentGlobalVariable("actionlink");
+		link=link+"offset="+offset+"&amp;limit="+pageSize;
+		this.action.setHyperlink(link,"_self");
+		
+	}else{
+		this.getStyle().display="none";
+	}
+}]]></method>
+                                <text-property name="text">2</text-property>
+                            </label>
+                            <label name="lbl3" id="115">
+                                <property name="style">paginateNumber</property>
+                                <property name="fontSize">12pt</property>
+                                <property name="display">inline</property>
+                                <method name="onRender"><![CDATA[
+var format=reportContext.getParameterValue("format");
+if(format=="excel"){
+	var offset=null;
+	var limit=null;
+}else{
+	pages=reportContext.getPersistentGlobalVariable("pages");
+	page=reportContext.getPersistentGlobalVariable("page");
+	displayPage=3;
+	if(BirtComp.greaterOrEqual(pages,displayPage)){
+		if(BirtComp.lessOrEqual(page,5)){
+			if(BirtComp.equalTo(page,3)){
+				this.getStyle().color="red";
+			}
+		}else if(BirtComp.greaterOrEqual(BirtMath.add(page,4),pages)){
+			displayPage=BirtMath.subtract(pages,6);
+			this.text=""+displayPage;
+		}else{
+			displayPage=BirtMath.subtract(page,2);
+			this.text=""+ displayPage;
+		}
+		
+		var pageSize=reportContext.getPersistentGlobalVariable("pageSize");
+		var offset=BirtMath.multiply(pageSize,BirtMath.subtract(displayPage,1));
+		this.action = this.createAction();
+		link=reportContext.getPersistentGlobalVariable("actionlink");
+		link=link+"offset="+offset+"&amp;limit="+pageSize;
+		this.action.setHyperlink(link,"_self");
+	}else{
+		this.getStyle().display="none";
+	}
+}]]></method>
+                                <text-property name="text">3</text-property>
+                            </label>
+                            <label name="lbl4" id="114">
+                                <property name="style">paginateNumber</property>
+                                <property name="fontSize">12pt</property>
+                                <property name="display">inline</property>
+                                <method name="onRender"><![CDATA[
+var format=reportContext.getParameterValue("format");
+if(format=="excel"){
+	var offset=null;
+	var limit=null;
+}else{
+	pages=reportContext.getPersistentGlobalVariable("pages");
+	page=reportContext.getPersistentGlobalVariable("page");
+	displayPage=4;
+	if(BirtComp.greaterOrEqual(pages,displayPage)){
+		if(BirtComp.lessOrEqual(page,5)){
+			if(BirtComp.equalTo(page,4)){
+				this.getStyle().color="red";
+			}
+		}else if(BirtComp.greaterOrEqual(BirtMath.add(page,4),pages)){
+			displayPage=BirtMath.subtract(pages,5);
+			this.text=""+displayPage;
+		}else{
+			displayPage=BirtMath.subtract(page,1);
+			this.text=""+displayPage;
+		}
+		
+		var pageSize=reportContext.getPersistentGlobalVariable("pageSize");
+		var offset=BirtMath.multiply(pageSize,BirtMath.subtract(displayPage,1));
+		this.action = this.createAction();
+		link=reportContext.getPersistentGlobalVariable("actionlink");
+		link=link+"offset="+offset+"&amp;limit="+pageSize;
+		this.action.setHyperlink(link,"_self");
+	}else{
+		this.getStyle().display="none";
+	}
+}]]></method>
+                                <text-property name="text">4</text-property>
+                            </label>
+                            <label name="lbl5" id="113">
+                                <property name="style">paginateNumber</property>
+                                <property name="fontSize">12pt</property>
+                                <property name="display">inline</property>
+                                <method name="onRender"><![CDATA[
+var format=reportContext.getParameterValue("format");
+if(format=="excel"){
+	var offset=null;
+	var limit=null;
+}else{
+	pages=reportContext.getPersistentGlobalVariable("pages");
+	page=reportContext.getPersistentGlobalVariable("page");
+	displayPage=5;
+	if(BirtComp.greaterOrEqual(pages,displayPage)){
+		if(BirtComp.lessOrEqual(page,5)){
+			if(BirtComp.equalTo(page,5)){
+				this.getStyle().color="red";
+			}
+		}else if(BirtComp.greaterOrEqual(BirtMath.add(page,4),pages)){
+			displayPage=BirtMath.subtract(pages,4);
+			this.text=""+displayPage;
+			if(BirtComp.equalTo(page,displayPage)){
+				this.getStyle().color="red";
+			}
+		}else{
+			this.getStyle().color="red";
+			displayPage=page;
+			this.text=""+displayPage;
+		}
+		
+		var pageSize=reportContext.getPersistentGlobalVariable("pageSize");
+		var offset=BirtMath.multiply(pageSize,BirtMath.subtract(displayPage,1));
+		this.action = this.createAction();
+		link=reportContext.getPersistentGlobalVariable("actionlink");
+		link=link+"offset="+offset+"&amp;limit="+pageSize;
+		this.action.setHyperlink(link,"_self");
+	}else{
+		this.getStyle().display="none";
+	}
+}
+]]></method>
+                                <text-property name="text">5</text-property>
+                            </label>
+                            <label name="lbl6" id="112">
+                                <property name="style">paginateNumber</property>
+                                <property name="fontSize">12pt</property>
+                                <property name="display">inline</property>
+                                <method name="onRender"><![CDATA[
+var format=reportContext.getParameterValue("format");
+if(format=="excel"){
+	var offset=null;
+	var limit=null;
+}else{
+	pages=reportContext.getPersistentGlobalVariable("pages");
+	page=reportContext.getPersistentGlobalVariable("page");
+	displayPage=6;
+	if(BirtComp.greaterOrEqual(pages,displayPage)){
+		if(BirtComp.lessOrEqual(page,5)){
+			if(BirtComp.equalTo(page,6)){
+				this.getStyle().color="red";
+			}
+		}else if(BirtComp.greaterOrEqual(BirtMath.add(page,4),pages)){
+			displayPage=BirtMath.subtract(pages,3);
+			this.text=""+displayPage;
+			if(BirtComp.equalTo(page,displayPage)){
+				this.getStyle().color="red";
+			}
+		}else{
+			displayPage=BirtMath.add(page,1);
+			this.text=""+displayPage;
+		}
+		
+		var pageSize=reportContext.getPersistentGlobalVariable("pageSize");
+		var offset=BirtMath.multiply(pageSize,BirtMath.subtract(displayPage,1));
+		this.action = this.createAction();
+		link=reportContext.getPersistentGlobalVariable("actionlink");
+		link=link+"offset="+offset+"&amp;limit="+pageSize;
+		this.action.setHyperlink(link,"_self");
+	}else{
+		this.getStyle().display="none";
+	}
+}
+]]></method>
+                                <text-property name="text">6</text-property>
+                            </label>
+                            <label name="lbl7" id="111">
+                                <property name="style">paginateNumber</property>
+                                <property name="fontSize">12pt</property>
+                                <property name="display">inline</property>
+                                <method name="onRender"><![CDATA[
+var format=reportContext.getParameterValue("format");
+if(format=="excel"){
+	var offset=null;
+	var limit=null;
+}else{
+	pages=reportContext.getPersistentGlobalVariable("pages");
+	page=reportContext.getPersistentGlobalVariable("page");
+	displayPage=7
+	if(BirtComp.greaterOrEqual(pages,displayPage)){
+		if(BirtComp.lessOrEqual(page,5)){
+			if(BirtComp.equalTo(page,6)){
+				this.getStyle().color="red";
+			}
+		}else if(BirtComp.greaterOrEqual(BirtMath.add(page,4),pages)){
+			displayPage=BirtMath.subtract(pages,2);
+			this.text=""+displayPage;
+			if(BirtComp.equalTo(page,displayPage)){
+				this.getStyle().color="red";
+			}
+		}else{
+			displayPage=BirtMath.add(page,2);
+			this.text=""+displayPage;
+		}
+		
+		var pageSize=reportContext.getPersistentGlobalVariable("pageSize");
+		var offset=BirtMath.multiply(pageSize,BirtMath.subtract(displayPage,1));
+		this.action = this.createAction();
+		link=reportContext.getPersistentGlobalVariable("actionlink");
+		link=link+"offset="+offset+"&amp;limit="+pageSize;
+		this.action.setHyperlink(link,"_self");
+	}else{
+		this.getStyle().display="none";
+	}
+}
+]]></method>
+                                <text-property name="text">7</text-property>
+                            </label>
+                            <label name="lbl8" id="110">
+                                <property name="style">paginateNumber</property>
+                                <property name="fontSize">12pt</property>
+                                <property name="display">inline</property>
+                                <method name="onRender"><![CDATA[
+var format=reportContext.getParameterValue("format");
+if(format=="excel"){
+	var offset=null;
+	var limit=null;
+}else{
+	pages=reportContext.getPersistentGlobalVariable("pages");
+	page=reportContext.getPersistentGlobalVariable("page");
+	displayPage=8;
+	if(BirtComp.greaterOrEqual(pages,displayPage)){
+		if(BirtComp.lessOrEqual(page,5)){
+			if(BirtComp.equalTo(page,6)){
+				this.getStyle().color="red";
+			}
+		}else if(BirtComp.greaterOrEqual(BirtMath.add(page,4),pages)){
+			displayPage=BirtMath.subtract(pages,1);
+			this.text=""+displayPage;
+			if(BirtComp.equalTo(page,displayPage)){
+				this.getStyle().color="red";
+			}
+		}else{
+			displayPage=BirtMath.add(page,3);
+			this.text=""+displayPage;
+		}
+		
+		var pageSize=reportContext.getPersistentGlobalVariable("pageSize");
+		var offset=BirtMath.multiply(pageSize,BirtMath.subtract(displayPage,1));
+		this.action = this.createAction();
+		link=reportContext.getPersistentGlobalVariable("actionlink");
+		link=link+"offset="+offset+"&amp;limit="+pageSize;
+		this.action.setHyperlink(link,"_self");
+	}else{
+		this.getStyle().display="none";
+	}
+}]]></method>
+                                <text-property name="text">8</text-property>
+                            </label>
+                            <label name="lbl9" id="109">
+                                <property name="style">paginateNumber</property>
+                                <property name="fontSize">12pt</property>
+                                <property name="display">inline</property>
+                                <method name="onRender"><![CDATA[
+var format=reportContext.getParameterValue("format");
+if(format=="excel"){
+	var offset=null;
+	var limit=null;
+}else{
+	pages=reportContext.getPersistentGlobalVariable("pages");
+	page=reportContext.getPersistentGlobalVariable("page");
+	displayPage=9;
+	if(BirtComp.greaterOrEqual(pages,displayPage)){
+		if(BirtComp.lessOrEqual(page,5)){
+			if(BirtComp.equalTo(page,6)){
+				this.getStyle().color="red";
+			}
+		}else if(BirtComp.greaterOrEqual(BirtMath.add(page,4),pages)){
+			displayPage=pages;
+			this.text=""+displayPage;
+			if(BirtComp.equalTo(page,pages)){
+				this.getStyle().color="red";
+			}
+		}else{
+			displayPage=BirtMath.add(page,4);
+			this.text=""+displayPage;
+		}
+		
+		var pageSize=reportContext.getPersistentGlobalVariable("pageSize");
+		var offset=BirtMath.multiply(pageSize,BirtMath.subtract(displayPage,1));
+		this.action = this.createAction();
+		link=reportContext.getPersistentGlobalVariable("actionlink");
+		link=link+"offset="+offset+"&amp;limit="+pageSize;
+		this.action.setHyperlink(link,"_self");
+	}else{
+		this.getStyle().display="none";
+	}
+}]]></method>
+                                <text-property name="text">9</text-property>
+                            </label>
+                            <image name="NextPage" id="99">
+                                <property name="style">paginateIcon</property>
+                                <property name="paddingTop">0pt</property>
+                                <property name="paddingLeft">0pt</property>
+                                <property name="paddingBottom">0pt</property>
+                                <property name="paddingRight">0pt</property>
+                                <property name="display">inline</property>
+                                <property name="height">16px</property>
+                                <property name="width">16px</property>
+                                <method name="onRender"><![CDATA[
+var format=reportContext.getParameterValue("format");
+if(format=="excel"){
+	var offset=null;
+	var limit=null;
+}else{
+	var page=reportContext.getPersistentGlobalVariable("page");
+	var pages=reportContext.getPersistentGlobalVariable("pages");
+	if(page==pages){
+		this.URI="images/NextPage_disabled.gif";
+	}else{
+		this.URI="images/NextPage.gif";
+		this.action = this.createAction();
+		var offset=reportContext.getParameterValue("offset");
+		var pageSize=reportContext.getPersistentGlobalVariable("pageSize");
+		link=reportContext.getPersistentGlobalVariable("actionlink");
+		link=link+"offset="+BirtMath.add(offset,pageSize)+"&amp;limit="+pageSize;
+		this.action.setHyperlink(link,"_self");
+	}
+}]]></method>
+                                <property name="source">file</property>
+                                <expression name="uri" type="constant">images/NextPage.gif</expression>
+                                <text-property name="altText">上一页</text-property>
+                                <text-property name="helpText">下一页</text-property>
+                            </image>
+                            <image name="LastPage" id="100">
+                                <property name="style">paginateIcon</property>
+                                <property name="paddingTop">0pt</property>
+                                <property name="paddingLeft">0pt</property>
+                                <property name="paddingBottom">0pt</property>
+                                <property name="paddingRight">0pt</property>
+                                <property name="display">inline</property>
+                                <property name="height">16px</property>
+                                <property name="width">16px</property>
+                                <method name="onRender"><![CDATA[
+var format=reportContext.getParameterValue("format");
+if(format=="excel"){
+	var offset=null;
+	var limit=null;
+}else{
+	var page=reportContext.getPersistentGlobalVariable("page");
+	var pages=reportContext.getPersistentGlobalVariable("pages");
+	if(page==pages){
+		this.URI="images/LastPage_disabled.gif";
+	}else{
+		this.URI="images/LastPage.gif";
+		this.action = this.createAction();
+		var offset=reportContext.getParameterValue("offset");
+		var pageSize=reportContext.getPersistentGlobalVariable("pageSize");
+		var page=reportContext.getPersistentGlobalVariable("pages");
+		link=reportContext.getPersistentGlobalVariable("actionlink");
+		link=link+"offset="+BirtMath.multiply(BirtMath.subtract(page,1),pageSize)+"&amp;limit="+pageSize;
+		this.action.setHyperlink(link,"_self");
+	}
+}]]></method>
+                                <property name="source">file</property>
+                                <expression name="uri" type="constant">images/LastPage.gif</expression>
+                                <text-property name="altText">最后一页</text-property>
+                                <text-property name="helpText">最后一页</text-property>
+                            </image>
+                            <text-data name="Details" id="101">
+                                <property name="display">inline</property>
+                                <method name="onCreate"><![CDATA[
+var format=reportContext.getParameterValue("format");
+if(format=="excel"){
+	var offset=null;
+	var limit=null;
+}else{
+	var offset=reportContext.getParameterValue("offset");
+	var pageSize=reportContext.getPersistentGlobalVariable("pageSize");
+	total=this.text;
+	reportContext.setParameterValue("total",total);
+	if(BirtComp.equalTo(total,0)){
+		reportContext.setPersistentGlobalVariable("page","0");
+		reportContext.setPersistentGlobalVariable("pages","0");
+	}else{
+		page=BirtMath.add(BirtMath.divide(offset,pageSize),1);
+		reportContext.setPersistentGlobalVariable("page",""+page);
+		pages=BirtMath.roundUp(BirtMath.divide(total,pageSize));
+		reportContext.setPersistentGlobalVariable("pages",""+pages);
+	}
+}]]></method>
+                                <method name="onRender"><![CDATA[
+var format=reportContext.getParameterValue("format");
+if(format=="excel"){
+	var offset=null;
+	var limit=null;
+}else{
+	total=reportContext.getParameterValue("total");
+	limit=reportContext.getPersistentGlobalVariable("pageSize");
+	offset=reportContext.getParameterValue("offset");
+	last=BirtMath.add(offset,limit);
+	pages=reportContext.getPersistentGlobalVariable("pages");
+	page=reportContext.getPersistentGlobalVariable("page");
+	if(BirtComp.equalTo(total,0)){
+		this.text="(无数据)";
+	}else{
+		this.text="(共"+total+"条/共"+pages+"页)";
+	}
+}
+]]></method>
+                                <expression name="valueExpr">row["total"]</expression>
+                                <property name="contentType">html</property>
+                            </text-data>
+                        </cell>
+                    </row>
+                </grid>
+            </page-header>
+        </simple-master-page>
+    </page-setup>
+</library>

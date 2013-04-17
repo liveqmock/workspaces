@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ad.addata">
+
+	<resultMap id="resultMap" type="com.iwgame.gm.p1.adcollect.shared.model.ADDataBase"> 
+		<result column="minute_adid"   property="adId"   javaType="java.lang.String"    jdbcType="INTEGER" /> 
+		<result column="minute_hit"   property="click"    javaType="java.lang.Integer"   jdbcType="INTEGER"  /> 
+		<result column="minute_hit_idp"   property="ipClick"    javaType="java.lang.Integer"    jdbcType="INTEGER" /> 
+		<result column="minute_reg"   property="reg"    javaType="java.lang.Integer"    jdbcType="INTEGER" /> 
+		<result column="minute_reg_idp"   property="ipReg"    javaType="java.lang.Integer"    jdbcType="INTEGER" /> 
+		<result column="minute_time"   property="date"  /> 
+	</resultMap> 
+
+	<!--total 总计录数 --> <!--  mid媒体ID--><!--adid  广告ID--><!--startTime 开始时间 --> <!--endTime 结束时间 --><!-- offset分页参数 --><!-- limit分页参数 -->
+	<!-- isload是否有分页 -->	<!--  isKey是有是关键字-->
+	<select id="spShowRptBaiduMinute"  parameterType="hashmap"  statementType="CALLABLE" resultMap="resultMap">
+		{call show_rpt_baidu_minute(#{mid,jdbcType=VARCHAR, mode=IN },#{adid,jdbcType=VARCHAR, mode=IN },#{startTime,jdbcType=VARCHAR, mode=IN },#{endTime,jdbcType=VARCHAR, mode=IN },
+		#{offset,jdbcType=INTEGER, mode=IN },#{limit,jdbcType=INTEGER, mode=IN },#{type,jdbcType=INTEGER, mode=IN },#{isload,jdbcType=INTEGER, mode=IN },#{isKey,jdbcType=INTEGER, mode=IN },#{total,jdbcType=INTEGER, mode=OUT })}
+	</select>
+	
+</mapper>

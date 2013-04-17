@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<assembly>
+	<id>full</id>
+	<formats>
+		<format>dir</format>
+	</formats>
+	<includeBaseDirectory>false</includeBaseDirectory>
+	<moduleSets>
+		<moduleSet>
+			<includes>
+				<include>com.iwgame.oa.p1:xportal-xtask</include>
+			</includes>
+			<binaries>
+				<outputDirectory>xportal-xtask/lib</outputDirectory>
+				<includeDependencies>true</includeDependencies>
+				<unpack>false</unpack>
+			</binaries>
+		</moduleSet>
+		<!-- tools -->
+		<moduleSet>
+			<includes>
+				<include>com.iwgame.iwcloud.flume.task:baidu-task</include>
+			</includes>
+			<binaries>
+				<outputDirectory>tools/baidu-task/lib</outputDirectory>
+				<includeDependencies>true</includeDependencies>
+				<unpack>false</unpack>
+			</binaries>
+		</moduleSet>
+		<moduleSet>
+			<includes>
+				<include>com.iwgame.iwcloud.flume.task:log-monitor-task</include>
+			</includes>
+			<binaries>
+				<outputDirectory>tools/log-monitor-task/lib</outputDirectory>
+				<includeDependencies>true</includeDependencies>
+				<unpack>false</unpack>
+			</binaries>
+		</moduleSet>
+		<moduleSet>
+			<includes>
+				<include>com.iwgame.xengine.xtask:xtask-killer</include>
+			</includes>
+			<binaries>
+				<outputDirectory>tools/xtask-killer/lib</outputDirectory>
+				<includeDependencies>true</includeDependencies>
+				<unpack>false</unpack>
+			</binaries>
+		</moduleSet>
+	</moduleSets>
+	<fileSets>
+		<fileSet>
+			<outputDirectory>/</outputDirectory>
+			<directory>readme/</directory>
+		</fileSet>
+		<!-- xtask -->
+		<fileSet>
+			<outputDirectory>xportal-xtask/readme</outputDirectory>
+			<directory>task/readme</directory>
+		</fileSet>
+		<fileSet>
+			<outputDirectory>xportal-xtask/conf</outputDirectory>
+			<directory>task/log4j</directory>
+		</fileSet>
+		<!-- Wrapper config -->
+		<fileSet>
+			<outputDirectory>xportal-xtask/bin</outputDirectory>
+			<directory>task/wrapper/wrapper-linux-x86-64-3.5.11/bin
+			</directory>
+			<fileMode>0755</fileMode>
+		</fileSet>
+		<fileSet>
+			<outputDirectory>xportal-xtask/conf</outputDirectory>
+			<directory>task/wrapper/wrapper-linux-x86-64-3.5.11/conf
+			</directory>
+		</fileSet>
+		<fileSet>
+			<outputDirectory>xportal-xtask/lib</outputDirectory>
+			<directory>task/wrapper/wrapper-linux-x86-64-3.5.11/lib
+			</directory>
+		</fileSet>
+		<fileSet>
+			<outputDirectory>xportal-xtask/logs</outputDirectory>
+			<directory>task/wrapper/wrapper-linux-x86-64-3.5.11/logs
+			</directory>
+		</fileSet>
+		
+		<!-- xportal -->
+		<fileSet>
+			<outputDirectory>xportal-oa/webapps/xportal</outputDirectory>
+			<directory>portal/target/portal-1.0.0-SNAPSHOT/</directory>
+		</fileSet>
+		<!-- reports -->
+		<fileSet>
+			<outputDirectory>reports/report-configs</outputDirectory>
+			<directory>apps/gm-p1-adcollect/src/main/resources/config/</directory>
+		</fileSet>
+		<fileSet>
+			<outputDirectory>reports/report-configs</outputDirectory>
+			<directory>apps/gm-p1-analysis/src/main/resources/config/</directory>
+		</fileSet>
+		<fileSet>
+			<outputDirectory>reports/report-files</outputDirectory>
+			<directory>apps/gm-p1-adcollect/report-files/</directory>
+		</fileSet>
+		<fileSet>
+			<outputDirectory>reports/report-files</outputDirectory>
+			<directory>apps/gm-p1-analysis/src/main/resources/report-files/</directory>
+		</fileSet>
+		
+		
+		<!-- tools -->
+		<!-- baidu-task -->
+		<fileSet>
+			<outputDirectory>tools/baidu-task/readme</outputDirectory>
+			<directory>tools/baidu-task/readme</directory>
+		</fileSet>
+		<fileSet>
+			<outputDirectory>tools/baidu-task/conf</outputDirectory>
+			<directory>tools/baidu-task/log4j</directory>
+		</fileSet>
+		<!-- Wrapper config -->
+		<fileSet>
+			<outputDirectory>tools/baidu-task/bin</outputDirectory>
+			<directory>tools/baidu-task/wrapper/wrapper-linux-x86-64-3.5.11/bin
+			</directory>
+			<fileMode>0755</fileMode>
+		</fileSet>
+		<fileSet>
+			<outputDirectory>tools/baidu-task/conf</outputDirectory>
+			<directory>tools/baidu-task/wrapper/wrapper-linux-x86-64-3.5.11/conf
+			</directory>
+		</fileSet>
+		<fileSet>
+			<outputDirectory>tools/baidu-task/lib</outputDirectory>
+			<directory>tools/baidu-task/wrapper/wrapper-linux-x86-64-3.5.11/lib
+			</directory>
+		</fileSet>
+		<fileSet>
+			<outputDirectory>tools/baidu-task/logs</outputDirectory>
+			<directory>tools/baidu-task/wrapper/wrapper-linux-x86-64-3.5.11/logs
+			</directory>
+		</fileSet>
+		
+		<!-- log-monitor-task -->
+		<fileSet>
+			<outputDirectory>tools/log-monitor-task/readme</outputDirectory>
+			<directory>tools/log-monitor-task/readme</directory>
+		</fileSet>
+		<fileSet>
+			<outputDirectory>tools/log-monitor-task/conf</outputDirectory>
+			<directory>tools/log-monitor-task/log4j</directory>
+		</fileSet>
+		<!-- Wrapper config -->
+		<fileSet>
+			<outputDirectory>tools/log-monitor-task/bin</outputDirectory>
+			<directory>tools/log-monitor-task/wrapper/wrapper-linux-x86-64-3.5.11/bin
+			</directory>
+			<fileMode>0755</fileMode>
+		</fileSet>
+		<fileSet>
+			<outputDirectory>tools/log-monitor-task/conf</outputDirectory>
+			<directory>tools/log-monitor-task/wrapper/wrapper-linux-x86-64-3.5.11/conf
+			</directory>
+		</fileSet>
+		<fileSet>
+			<outputDirectory>tools/log-monitor-task/lib</outputDirectory>
+			<directory>tools/log-monitor-task/wrapper/wrapper-linux-x86-64-3.5.11/lib
+			</directory>
+		</fileSet>
+		<fileSet>
+			<outputDirectory>tools/log-monitor-task/logs</outputDirectory>
+			<directory>tools/log-monitor-task/wrapper/wrapper-linux-x86-64-3.5.11/logs
+			</directory>
+		</fileSet>
+		
+		<!-- xtask-killer -->
+		<fileSet>
+			<outputDirectory>tools/xtask-killer/readme</outputDirectory>
+			<directory>tools/xtask-killer/readme</directory>
+		</fileSet>
+		<fileSet>
+			<outputDirectory>tools/xtask-killer/conf</outputDirectory>
+			<directory>tools/xtask-killer/log4j</directory>
+		</fileSet>
+		<!-- Wrapper config -->
+		<fileSet>
+			<outputDirectory>tools/xtask-killer/bin</outputDirectory>
+			<directory>tools/xtask-killer/wrapper/wrapper-linux-x86-64-3.5.11/bin
+			</directory>
+			<fileMode>0755</fileMode>
+		</fileSet>
+		<fileSet>
+			<outputDirectory>tools/xtask-killer/conf</outputDirectory>
+			<directory>tools/xtask-killer/wrapper/wrapper-linux-x86-64-3.5.11/conf
+			</directory>
+		</fileSet>
+		<fileSet>
+			<outputDirectory>tools/xtask-killer/lib</outputDirectory>
+			<directory>tools/xtask-killer/wrapper/wrapper-linux-x86-64-3.5.11/lib
+			</directory>
+		</fileSet>
+		<fileSet>
+			<outputDirectory>tools/xtask-killer/logs</outputDirectory>
+			<directory>tools/xtask-killer/wrapper/wrapper-linux-x86-64-3.5.11/logs
+			</directory>
+		</fileSet>
+	</fileSets>
+</assembly>

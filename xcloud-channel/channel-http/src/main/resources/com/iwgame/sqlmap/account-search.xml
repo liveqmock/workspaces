@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="account-search">
+
+	<resultMap id="account" type="java.util.HashMap">
+		<id column="dbid" property="dbid" jdbcType="BIGINT" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="accountid" property="accountid" jdbcType="BIGINT" />
+		<result column="totalexp" property="totalexp" jdbcType="BIGINT" />
+		<result column="totalgodexp" property="totalgodexp" jdbcType="BIGINT" />
+		<result column="deleted" property="deleted" jdbcType="INTEGER" />
+		<result column="locked" property="locked" jdbcType="INTEGER" />
+		<result column="lockedtime" property="lockedtime" jdbcType="INTEGER" />
+		<result column="deletetime" property="deletetime" jdbcType="INTEGER" />
+		<result column="createtime" property="createtime" jdbcType="INTEGER" />
+		<result column="party" property="party" jdbcType="INTEGER" />
+		<result column="level" property="level" jdbcType="INTEGER" />
+		<result column="lastlevuptime" property="lastlevuptime" jdbcType="INTEGER" />
+		<result column="onlinetime" property="onlinetime" jdbcType="INTEGER" />
+		<result column="lastupdatetime" property="lastupdatetime" jdbcType="INTEGER" />
+		<result column="ip" property="ip" jdbcType="INTEGER" />
+		<result column="ipsafe" property="ipsafe" jdbcType="INTEGER" />
+		<result column="ipptime" property="ipptime" jdbcType="INTEGER" />
+		<result column="money" property="money" jdbcType="INTEGER" />
+		<result column="bankmoney" property="bankmoney" jdbcType="INTEGER" />
+		<result column="svr" property="svr" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<select id="getAccounts" parameterType="hashmap" resultMap="account">
+		SELECT *
+		FROM t_game_role
+		WHERE
+		1=1
+		<if test="accountid != null">
+			AND accountid=#{accountid}
+		</if>
+	</select>
+	
+	
+	<select id="getAccountBydbid" parameterType="hashmap" resultMap="account">
+		SELECT *
+		FROM t_game_role
+		WHERE
+		1=1
+		<if test="dbid != null">
+			AND dbid=#{dbid}
+		</if>
+	</select>
+</mapper>

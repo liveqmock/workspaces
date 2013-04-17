@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:jaxrs="http://cxf.apache.org/jaxrs" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+	 http://cxf.apache.org/jaxrs
+	 http://cxf.apache.org/schemas/jaxrs.xsd
+     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+     http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+	<import resource="classpath:conf/applicationContext-pconf.xml" />
+	<import resource="classpath:conf/applicationContext-connector.xml" />
+
+	<context:component-scan base-package="com.iwgame.xengine.xtask.killer" />
+	<context:annotation-config />
+
+
+	<!-- 加载配置文件 -->
+	<bean
+		class="org.jasypt.spring.properties.EncryptablePropertyPlaceholderConfigurer">
+		<constructor-arg ref="configurationEncryptor" />
+		<property name="order" value="1" />
+		<property name="ignoreUnresolvablePlaceholders" value="true" />
+		<property name="ignoreResourceNotFound" value="true" />
+		<property name="locations">
+			<list>
+				<!--开发环境下的配置文件 -->
+				<value>classpath:xtask-killer-mq.properties</value>
+				<!-- 生产环境下的配置文件 -->
+				<value>${XTASK_HOME}/xtask-killer-mq.properties</value>
+			</list>
+		</property>
+		<property name="fileEncoding" value="utf-8" />
+	</bean>
+
+	<!-- 配置MQ连接源 -->
+	<bean id="killerRabbitMQSource" class="com.rabbitmq.client.ConnectionFactory">
+		<property name="username" value="${killer.mq.username}" />
+		<property name="password" value="${killer.mq.password}" />
+		<property name="virtualHost" value="${killer.mq.virtualhost}" />
+		<property name="host" value="${killer.mq.host}" />
+		<property name="port" value="${killer.mq.port}" />
+		<property name="requestedHeartbeat" value="5" />
+	</bean>
+	<bean id="flumeRabbitMQSource" class="com.rabbitmq.client.ConnectionFactory">
+		<property name="username" value="${flume.mq.username}" />
+		<property name="password" value="${flume.mq.password}" />
+		<property name="virtualHost" value="${flume.mq.virtualhost}" />
+		<property name="host" value="${flume.mq.host}" />
+		<property name="port" value="${flume.mq.port}" />
+		<property name="requestedHeartbeat" value="5" />
+	</bean>
+	<bean id="killServiceRabbitMQSource" class="com.rabbitmq.client.ConnectionFactory">
+		<property name="username" value="${killer.server.mq.username}" />
+		<property name="password" value="${killer.server.mq.password}" />
+		<property name="virtualHost" value="${killer.server.mq.virtualhost}" />
+		<property name="host" value="${killer.server.mq.host}" />
+		<property name="port" value="${killer.server.mq.port}" />
+		<property name="requestedHeartbeat" value="5" />
+	</bean>
+
+	<bean id="killerConnectionFactory"
+		class="org.springframework.amqp.rabbit.connection.CachingConnectionFactory">
+		<constructor-arg ref="killerRabbitMQSource" />
+		<property name="channelCacheSize" value="${killer.mq.channelcachesize}" />
+	</bean>
+	<bean id="flumeConnectionFactory"
+		class="org.springframework.amqp.rabbit.connection.CachingConnectionFactory">
+		<constructor-arg ref="flumeRabbitMQSource" />
+		<property name="channelCacheSize" value="${flume.mq.channelcachesize}" />
+	</bean>
+	<bean id="killerServiceConnectionFactory"
+		class="org.springframework.amqp.rabbit.connection.CachingConnectionFactory">
+		<constructor-arg ref="killServiceRabbitMQSource" />
+		<property name="channelCacheSize" value="${killer.server.mq.channelcachesize}" />
+	</bean>
+
+	<bean id="killerRabbitTemplate" class="org.springframework.amqp.rabbit.core.RabbitTemplate">
+		<constructor-arg ref="killerConnectionFactory"></constructor-arg>
+	</bean>	
+	<bean id="killerServiceRabbitTemplate" class="org.springframework.amqp.rabbit.core.RabbitTemplate">
+		<constructor-arg ref="killerServiceConnectionFactory"></constructor-arg>
+	</bean>	
+	<bean id="flumeRabbitTemplate" class="org.springframework.amqp.rabbit.core.RabbitTemplate">
+		<constructor-arg ref="flumeConnectionFactory"></constructor-arg>
+	</bean>
+
+	<!-- 创建rabbitAdmin 代理类,初始调用initialize,它会指定执行我们定义的Exchange,Queue,Binding -->
+	<bean class="org.springframework.amqp.rabbit.core.RabbitAdmin"
+		init-method="initialize">
+		<constructor-arg ref="killerConnectionFactory" />
+	</bean>
+
+	<!-- 声明消息转换器为SimpleMessageConverter -->
+	<bean id="messageConverter"
+		class="org.springframework.amqp.support.converter.SimpleMessageConverter" />
+
+	<!-- 检查封杀策略是否过期  -->
+	<!-- 要调用的工作类 -->
+	<bean id="checkPolicyDueJob"
+		class="com.iwgame.xengine.xtask.killer.process.CheckPolicyDueJob">
+	</bean>
+	<!-- 定义调用对象和调用对象的方法 -->
+	<bean id="checkPolicyDueJobtask"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<!-- 调用的类 -->
+		<property name="targetObject" ref="checkPolicyDueJob" />
+		<!-- 调用类中的方法 -->
+		<property name="targetMethod" value="work" />
+		<!-- 表示任务不会并发的执行,需要等第一个任务执行完才会执行第二个任务 -->
+		<property name="concurrent" value="false" />
+	</bean>
+	
+	<!-- 执行封杀  -->
+	<!-- 要调用的工作类 -->
+	<bean id="killJob"
+		class="com.iwgame.xengine.xtask.killer.process.KillJob">
+	</bean>
+	<!-- 定义调用对象和调用对象的方法 -->
+	<bean id="killJobtask"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<!-- 调用的类 -->
+		<property name="targetObject" ref="killJob" />
+		<!-- 调用类中的方法 -->
+		<property name="targetMethod" value="work" />
+		<!-- 表示任务不会并发的执行,需要等第一个任务执行完才会执行第二个任务 -->
+		<property name="concurrent" value="false" />
+	</bean>
+	
+	<!-- 执行计数器清零  -->
+	<!-- 要调用的工作类 -->
+	<bean id="cleanPolicyCounterJob"
+		class="com.iwgame.xengine.xtask.killer.process.CleanPolicyCounterJob">
+	</bean>
+	<!-- 定义调用对象和调用对象的方法 -->
+	<bean id="cleanPolicyCounterJobtask"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<!-- 调用的类 -->
+		<property name="targetObject" ref="cleanPolicyCounterJob" />
+		<!-- 调用类中的方法 -->
+		<property name="targetMethod" value="work" />
+		<!-- 表示任务不会并发的执行,需要等第一个任务执行完才会执行第二个任务 -->
+		<property name="concurrent" value="false" />
+	</bean>
+</beans>

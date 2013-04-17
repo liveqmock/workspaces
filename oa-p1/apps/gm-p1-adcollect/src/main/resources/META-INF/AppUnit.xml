@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<appunit>
+	<!-- AU类型,枚举值normal: 包含UI功能的AU, core:后台组件模块 -->
+	<type>normal</type>
+	<!-- AU名称 -->
+	<name>ADCollect</name>
+	<!-- AU标题,主要用于管理平台中的菜单显示用 -->
+	<title>广告监测</title>
+	<!-- AU的功能描述 -->
+	<description>广告监测(包括百度广告，硬广，以及一些公共管理功能)</description>
+	<!-- AU版本号的声明 -->
+	<version>1.0</version>
+	<!-- AU使用的产品 -->
+	<product>P-P1,P-P1.5</product>
+	<!-- 标志,用于分组 -->
+	<app>GM</app>
+	<!-- GWT Module Name,被框架继承 -->
+	<gwt-module>com.iwgame.gm.p1.adcollect.ADCollect</gwt-module>
+	<!-- 菜单路径配置 -->
+	<menupaths>
+		<menupath name="ad.keys.input" title="百度关键字列表管理" url="adcollect/keys/keysinput"
+			type="normal" access="ad-keys-input" />
+		<menupath name="ad.reports.list" title="百度关键字小时追踪表"
+			url="adcollect/reports/list" type="normal" access="ad-reports-list" />
+		<menupath name="ad.reports.daylist" title="百度关键字日汇总表"
+			url="adcollect/reports/daylist" type="normal" access="ad-reports-daylist" />
+		<menupath name="ad.reports.addata" title="广告数据实时追踪"
+			url="adcollect/reports/addata" type="normal" access="ad-reports-addata" />
+		<menupath name="ad.baidu.account" title="百度帐号管理"
+			url="adcollect/account/baidu" type="normal" access="ad-baidu-account" />
+
+		<menupath name="ad.crl.forbidden" title="黑名单管理"
+			url="adcollect/crl/forbidden" type="normal" access="ad-crl-forbidden" />
+		<menupath name="ad.crl.list" title="黑名单列表" url="adcollect/crl/list"
+			type="normal" access="ad-crl-list" />
+		<menupath name="ad.crl.account" title="黑名单账户列表" url="adcollect/crl/account"
+			type="normal" access="ad-crl-account" />
+		<menupath name="ad.landing.age" title="广告到达页管理"
+			url="adcollect/landing/page" type="normal" access="ad-landing-page" />
+		<menupath name="ad.admin.payable" title="合同抬头管理"
+			url="adcollect/admin/payable" type="normal" access="ad-admin-payable" />
+		<menupath name="ad.admin.logos" title="LOGO管理" url="adcollect/admin/logos"
+			type="normal" access="ad-admin-logos" />
+		<menupath name="ad.admin.contract" title="合同管理"
+			url="adcollect/admin/contract" type="normal" access="ad-admin-contract" />
+
+		<menupath name="ad.admin.material" title="硬广素材管理"
+			url="adcollect/admin/material" type="normal" access="ad-admin-material" />
+		<menupath name="ad.admin.media" title="媒体管理" url="adcollect/admin/media"
+			type="normal" access="ad-admin-media" />
+		<menupath name="ad.admin.group" title="广告组管理" url="adcollect/admin/group"
+			type="normal" access="ad-admin-group" />
+		<menupath name="ad.admin.postion" title="广告位管理"
+			url="adcollect/admin/postion" type="normal" access="ad-admin-postion" />
+		<menupath name="ad.admin.shedule" title="广告排期管理"
+			url="adcollect/admin/shedule" type="normal" access="ad-admin-shedule" />
+		<menupath name="ad.admin.netbarip" title="媒体对应ip表"
+			url="adcollect/admin/netbarip" type="normal" access="ad-admin-netbarip" />
+		<menupath name="ad.admin.netbarclient" title="客户端识别码"
+			url="adcollect/admin/netbarclient" type="normal" access="ad-admin-netbarclient" />
+
+		<menupath name="ad.customreport.customreport" title="定制报表管理"
+			url="adcollect/customreport/customreport" type="normal"
+			access="ad-customreport-customreport" />
+		<menupath name="ad.frame.manage" title="框架管理"
+			url="adcollect/frame/manage" type="normal"
+			access="ad-frame-manage" />
+		<menupath name="ad.frame.use" title="使用框架"
+			url="adcollect/frame/use" type="normal"
+			access="ad-frame-use" />
+		<menupath name="ad.explain.dictionary" title="数据字典"
+			url="adcollect/explain/dictionary" type="normal"
+			access="adcollect-explain-dictionary" />
+	</menupaths>
+	<modules>
+		<module id="Keys" name="keys"
+			package="com.iwgame.gm.p1.adcollect.modules.keys.client" />
+		<module id="Reports" name="reports"
+			package="com.iwgame.gm.p1.adcollect.modules.reports.client" />
+		<module id="Landing" name="landing"
+			package="com.iwgame.gm.p1.adcollect.modules.landing.client" />
+		<module id="Crl" name="crl"
+			package="com.iwgame.gm.p1.adcollect.modules.crl.client" />
+		<module id="Admin" name="admin"
+			package="com.iwgame.gm.p1.adcollect.modules.hard.admin.client" />
+		<module id="Account" name="account"
+			package="com.iwgame.gm.p1.adcollect.modules.baidu.account.client" />
+		<module id="Customreport" name="customreport"
+			package="com.iwgame.gm.p1.adcollect.modules.customreport.client" />
+		<module id="Frame" name="frame"
+			package="com.iwgame.gm.p1.adcollect.modules.frame.client" />
+		<module id="Explain" name="explain"
+			package="com.iwgame.gm.p1.adcollect.modules.explain.client" />
+	</modules>
+	<!-- 后台服务配置 -->
+	<services>
+		<service
+			endpoint="com.iwgame.gm.p1.adcollect.modules.keys.shared.rpc.KeysService">
+			<property name="factory" value="spring" />
+			<property name="source" value="gm-p1-ad-keys-service" />
+		</service>
+		<service
+			endpoint="com.iwgame.gm.p1.adcollect.modules.crl.shared.rpc.CrlService">
+			<property name="factory" value="spring" />
+			<property name="source" value="gm-p1-ad-crl-service" />
+		</service>
+		<service
+			endpoint="com.iwgame.gm.p1.adcollect.modules.reports.shared.rpc.HourTrackService">
+			<property name="factory" value="spring" />
+			<property name="source" value="gm-p1-ad-keys-hourTrackService" />
+		</service>
+		<service
+			endpoint="com.iwgame.gm.p1.adcollect.modules.reports.shared.rpc.DayService">
+			<property name="factory" value="spring" />
+			<property name="source" value="gm-p1-ad-keys-dayService" />
+		</service>
+		<service
+			endpoint="com.iwgame.gm.p1.adcollect.modules.reports.shared.rpc.ADDataService">
+			<property name="factory" value="spring" />
+			<property name="source" value="gm-p1-ad-reports-aDDataService" />
+		</service>
+		<service
+			endpoint="com.iwgame.gm.p1.adcollect.modules.landing.shared.rpc.LandingService">
+			<property name="factory" value="spring" />
+			<property name="source" value="gm-p1-ad-landing-landingService" />
+		</service>
+		<service
+			endpoint="com.iwgame.gm.p1.adcollect.modules.hard.admin.shared.rpc.AdminMgrService">
+			<property name="factory" value="spring" />
+			<property name="source" value="gm-p1-ad-admin-adminMgrService" />
+		</service>
+		<service
+			endpoint="com.iwgame.gm.p1.adcollect.modules.baidu.account.shared.rpc.BaiduAccountService">
+			<property name="factory" value="spring" />
+			<property name="source" value="gm-p1-ad-baidu-accountService" />
+		</service>
+		<service
+			endpoint="com.iwgame.gm.p1.adcollect.modules.customreport.shared.rpc.CustomreportService">
+			<property name="factory" value="spring" />
+			<property name="source" value="gm-p1-ad-customreport" />
+		</service>
+		<service
+			endpoint="com.iwgame.gm.p1.adcollect.modules.frame.shared.rpc.FrameMgrService">
+			<property name="factory" value="spring" />
+			<property name="source" value="gm-p1-ad-framemgrservice" />
+		</service>
+		<service
+			endpoint="com.iwgame.gm.p1.adcollect.modules.explain.shared.rpc.ExplainMgrService">
+			<property name="factory" value="spring" />
+			<property name="source" value="gm-p1-ad-explainmgrservice" />
+		</service>
+	</services>
+	<!-- 访问控制策略 -->
+	<accesses>
+		
+		<access name="ad-keys-input" title="百度关键字录入">
+			<action name="ad-keys-getLog" title="查询关键字修改日志列表" />
+			<action name="ad-keys-queryAdInfo" title="查询关键字列表" />
+			<action name="ad-keys-insertAdInfo" title="增加关键字列表" />
+			<action name="ad-keys-updateAdInfo" title="修改关键字列表" />
+			<action name="ad-keys-batchInput" title="批量增加关键字列表" />
+			<action name="ad-keys-batchUpdate" title="批量修改关键字列表" />
+			<action name="ad-keys-export" title="导出关键字列表" />
+		</access>
+
+		<access name="ad-reports-list" title="百度关键字小时追踪表">
+			<action name="ad-reports-id-hour-export" title="按ID小时追踪数据导出" />
+			<action name="ad-reports-txt-hour-export" title="按文本小时追踪数据导出" />
+		</access>
+
+		<access name="ad-reports-daylist" title="百度关键字日汇总表">
+			<action name="ad-reports-id-day-export" title="按ID日汇总表数据导出" />
+			<action name="ad-reports-txt-day-export" title="按文本日汇总表数据导出" />
+		</access>
+
+		<access name="ad-reports-addata" title="广告数据实时追踪" />
+
+		<access name="ad-baidu-account" title="百度帐号管理">
+			<action name="ad-baidu-account-modifypwd" title="修改百度帐号密码" />
+		</access>
+
+		<access name="ad-customreport-customreport" title="定制报表">
+			<action name="ad-customreport-getCustomReportList" title="定时报表--查询" />
+			<action name="ad-customreport-delCustomReport" title="定时报表--删除" />
+			<action name="ad-customreport-addCustomReport" title="定时报表--添加" />
+		</access>
+
+		<access name="ad-crl-forbidden" title="黑名单管理">
+			<action name="ad-crl-getBlackListRules" title="查询黑名单规则列表" />
+			<action name="ad-crl-updateStatus" title="修改黑名单规则状态" />
+			<action name="ad-crl-delAccount" title="删除黑名单账号列表" />
+			<action name="ad-crl-batchAdd" title="批量增加黑名单账号列表" />
+			<action name="ad-crl-batchDel" title="批量删除黑名单账号列表" />
+		</access>
+		<access name="ad-crl-list" title="黑名单列表">
+			<action name="ad-crl-insertBlackManage" title="增加黑名单" />
+			<action name="ad-keys-crlbatchinput" title="批量增加黑名单" />
+		</access>
+		<access name="ad-crl-account" title="黑名单账户列表">
+			<action name="ad-crl-getAccountList" title="查询黑名单账户列表" />
+			<action name="ad-crl-getBlackManageList" title="查询黑名单管理列表" />
+		</access>
+
+		<access name="ad-landing-page" title="广告到达页管理">
+			<action name="ad-landing-landing-update" title="修改" />
+			<action name="ad-landing-landing-add" title="添加" />
+		</access>
+
+		<access name="ad-admin-material" title="硬广素材管理">
+			<action name="ad-hard-admin-material-add" title="添加" />
+		</access>
+
+		<access name="ad-admin-media" title="硬广媒体管理">
+			<action name="ad-hard-admin-media-add" title="添加" />
+			<action name="ad-hard-admin-media-update" title="修改" />
+			<action name="ad-reports-hard-admin-media-export" title="导出" />
+		</access>
+
+		<access name="ad-admin-group" title="硬广组织管理">
+			<action name="ad-hard-admin-group-add" title="添加" />
+		</access>
+
+		<access name="ad-admin-postion" title="广告位管理">
+			<action name="ad-hard-admin-pos-uploadfile" title="上传" />
+			<action name="ad-hard-admin-update-pos" title="修改" />
+			<action name="ad-hard-admin-add-pos" title="添加" />
+			<action name="ad-reports-hard-admin-pos-export" title="导出" />
+		</access>
+
+		<access name="ad-admin-payable" title="合同抬头管理" />
+		<access name="ad-admin-logos" title="LOGO管理" />
+
+		<access name="ad-admin-contract" title="合同管理">
+			<action name="ad-hard-admin-contract-uploadfile" title="上传" />
+			<action name="ad-hard-admin-contract-update" title="修改" />
+			<action name="ad-hard-admin-contract-add" title="添加" />
+		</access>
+
+		<access name="ad-admin-shedule" title="广告排期管理">
+			<action name="ad-hard-admin-add-shedule" title="添加" />
+			<action name="ad-hard-admin-update-shedule" title="修改" />
+			<action name="ad-reports-hard-admin-shedule-export" title="导出" />
+		</access>
+
+		<access name="ad-admin-netbarip" title="媒体对应ip表管理">
+			<action name="ad-hard-admin-batch-add-netbarip" title="批量添加" />
+			<action name="ad-hard-admin-add-netbarip" title="添加" />
+			<action name="ad-hard-admin-del-netbarip" title="删除" />
+		</access>
+
+		<access name="ad-admin-netbarclient" title="客户端识别码管理">
+			<action name="ad-hard-admin-add-netbar-clent" title="添加" />
+			<action name="ad-hard-admin-update-netbar-clent" title="修改" />
+		</access>
+
+		<access name="ad-frame-manage" title="框架管理">
+			<action name="ad-frame-manage-add" title="添加" />
+			<action name="ad-frame-manage-update" title="修改" /> 
+			<action name="ad-frame-manage-del" title="删除" /> 
+			<action name="ad-frame-manage-export" title="导出" /> 
+		</access>
+		
+		<access name="ad-frame-use" title="使用框架">
+ 			<action name="ad-frame-manage-use-frame-add" title="添加" />
+			<action name="ad-frame-manage-use-frame-del" title="删除" /> 
+			<action name="ad-frame-manage-use-frame-export" title="导出" />
+		</access>
+		
+		<access name="adcollect-explain-dictionary" title="数据字典">
+ 			<action name="ad-frame-manage-dictionary-add" title="上传" />
+			<action name="ad-frame-manage-dictionary-download" title="下载" /> 
+			<action name="ad-frame-manage-dictionary-del" title="删除" />
+		</access>
+		
+	</accesses>
+</appunit>

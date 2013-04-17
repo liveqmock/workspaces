@@ -1,0 +1,19 @@
+<rpt:report xmlns:rpt="http://www.iwgame.com/report"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.iwgame.com/report report.xsd " columns="false"  canExport="false" >
+
+    <!-- 数据源配置 -->
+    <rpt:dataSource targetType="game" groupId="${pid}-AD"/>
+
+    <!-- 布局配置 -->
+    <rpt:form title="百度关键字汇总三十日表（广告ID）"  >
+       <rpt:parameter  dataType="checkbox" fieldname="keytype" labelname="关键字类型" boxLabels="A品牌词,B竞品词,C通用词,D无关词"  boxValues="A,B,C,D" allowBlank="false
+"  boxCheckAll="true" />
+       <rpt:parameter  dataType="dateRange" fieldname="daterange" labelname="起始时间" dateShortcut="BASIC" />
+    </rpt:form>
+
+  <!-- 设计文件配置 -->
+    <rpt:designFiles >
+      <rpt:designFile filename="rpt_baidu_adid_detail_thirty.rptdesign" title="百度关键字汇总三十日表（广告ID）"/>
+        </rpt:designFiles>
+</rpt:report>

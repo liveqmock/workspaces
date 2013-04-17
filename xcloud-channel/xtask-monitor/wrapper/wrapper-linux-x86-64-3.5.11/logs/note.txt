@@ -1,0 +1,17 @@
+#MT状态代码
+#000	发送成功
+#100	SP API接口参数错误
+#200	MLINK平台内部过滤路由信息
+#300	MLINK平台内部SP配置信息
+#400	MLINK网关发送时错误
+#500	运行商反馈的信息
+#600	MLINK API发送时错误
+
+#RT消息状态 
+#ACCEPTD	000	API接口消息被接受
+#DELIVRD	000	短信送到手机
+#EXPIRED	500	短信过期
+#DELETED	500	短信被删除
+#UNDELIV	500	无法投递
+#UNKNOWN	500	状态不知
+#REJECTD	500	短信被拒绝

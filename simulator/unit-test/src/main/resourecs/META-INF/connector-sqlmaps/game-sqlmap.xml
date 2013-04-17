@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="game-sqlmap">
+	<!-- 插入命令,例如禁言,解除禁言,踢人 -->
+	<insert id="insertCommand" parameterType="java.util.Map">
+		insert into t_ui(txt)
+		values(#{txt})
+	</insert>
+
+	<!-- 更新帐号状态,帐号封杀 -->
+	<update id="lockAccount" parameterType="java.util.Map">
+		update t_account set ld = #{ld}, ls=#{ls}, le=#{le}, lr=#{lr} where name = #{name};
+	</update>
+
+	<!-- 密保卡业务 -->
+	<insert id="scecuritycardAction" parameterType="java.util.Map">
+		insert into
+		t_new(type, name, str3) values(#{type}, #{name}, #{str3});
+	</insert>
+
+	<!-- 道具卡激活 -->
+	<insert id="itemcardActivate" parameterType="java.util.Map">
+		insert into
+		t_new(type, name, str1,str2,i1,i2,i3)
+		values
+		(#{type}, #{name},#{str1},MD5(#{str2}),#{i1},#{i2},#{i3});
+	</insert>
+
+</mapper>

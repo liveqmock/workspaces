@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="security.LoginPassModifyMap">
+	<resultMap
+		type="com.iwgame.gm.p1.security.common.shared.model.LoginPassModifyRecord"
+		id="LoginPassModifyMap">
+		<id property="id" column="id" />
+		<result property="username" column="username" />
+		<result property="modifyPlace" column="modify_place" />
+		<result property="modifyip" column="modify_ip"/>
+		<result property="modifyTime" column="modify_time" />
+	</resultMap>
+
+	<select id="count" parameterType="java.util.Map" resultType="java.lang.Integer">
+		SELECT count(0) FROM login_pass_modify_record WHERE 1=1 
+		<if test="id!= null and id != ''">
+			AND id = #{id} 
+		</if>
+		<if test="list !=null and list != '' and list != 'null'">
+		AND username IN
+		<foreach collection="list" item="name"  open="(" separator="," close=")">  
+	            #{name}
+	    </foreach>
+	    </if>
+		<if test="startDate != null and startDate !='' and endDate != null and endDate !=''">
+			AND modify_time BETWEEN '${startDate} 00:00:00' AND '${endDate} 23:59:59' 
+		</if>
+	</select>
+
+	<select id="select" parameterType="java.util.Map" resultMap="LoginPassModifyMap">
+		SELECT * FROM login_pass_modify_record WHERE 1=1 
+		<if test="id!= null and id != ''">
+			AND id = #{id} 
+		</if>
+		<if test="list !=null and list != '' and list != 'null'">
+		AND username IN
+		<foreach collection="list" item="name"  open="(" separator="," close=")">  
+	            #{name}
+	    </foreach>
+	    </if>
+		<if test="startDate != null and startDate !='' and endDate != null and endDate !=''">
+			AND modify_time BETWEEN '${startDate} 00:00:00' AND '${endDate} 23:59:59' 
+		</if>
+		<if test="sortColumn !=null and sortColumn !='' and sortType !=null and sortType !=''">
+			ORDER BY ${sortColumn} ${sortType} 
+		</if>
+		<if test="limit >0 and offset >=0 ">
+			LIMIT #{offset},#{limit}
+		</if>
+	</select>
+</mapper>

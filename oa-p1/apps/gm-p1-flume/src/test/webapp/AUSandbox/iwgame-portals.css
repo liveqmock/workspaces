@@ -1,0 +1,41 @@
+.iwgame-portal {
+	width: 100%;
+	padding: 5px;
+}
+
+.iwgame-portal-header, .iwgame-portlet-header {
+	background-color: #ddd;
+	font-weight: bolder;
+	padding: 2px;
+	padding-left: 10px;
+}
+
+.iwgame-portal-config {
+
+}
+
+.iwgame-portal-column {
+	padding: 5px;
+}
+
+.iwgame-portlet {
+	width: 100%;
+	margin-bottom: 5px;
+	border: 1px solid #eee;
+}
+
+.iwgame-portlet-header {
+	background-color: #ddd;
+	font-weight: bolder;
+	padding: 2px;
+	padding-left: 10px;
+}
+
+.iwgame-portlet-header-over {
+	background-color: #aaa;
+	color: white;
+}
+
+.iwgame-portlet-container {
+	padding: 0 5px;
+}

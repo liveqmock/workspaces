@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="logmonitor.biz">
+
+	<resultMap type="com.iwgame.gm.p1.logmonitor.modules.business.shared.model.BizLogModelBean" id="logData">
+		<id property="id"/>
+		<result property="source" column="name"/>
+		<result property="type" column="type"/>
+		<result property="successCount" column="sucess"/>
+		<result property="failedCount" column="failure"/>
+		<result property="totalCount" column="totalCount"/>
+		<result property="date" column="time"/>
+		<result property="threshold" column="t_max_count"/>
+	</resultMap>
+	
+	<resultMap type="com.iwgame.gm.p1.logmonitor.modules.business.shared.model.BizLogDetailModelBean" id="logDetailData">
+		<id property="id"/>
+		<result property="requestTime" column="request_time"/>
+		<result property="requestIp" column="request_ip"/>
+		<result property="requestPid" column="request_pid"/>
+		<result property="requestUsername" column="request_user_name"/>
+		<result property="requestStatus" column="request_status"/>
+		<result property="requesetSource" column="request_source"/>
+		<result property="requestType" column="request_type"/>
+		<result property="requestMsg" column="request_msg"/>
+	</resultMap>
+	
+	<resultMap type="com.iwgame.gm.p1.logmonitor.modules.business.shared.model.WarningModelBean" id="warningData">
+		<id property="id" column="t_id"/>
+		<result property="monitorDate" column="t_monitor_date"/>
+		<result property="monitorType" column="t_monitor_type"/>
+		<result property="successCount" column="t_success_count"/>
+		<result property="failedCount" column="t_failed_count"/>
+		<result property="maxCount" column="t_max_count"/>
+	</resultMap>
+	
+	<resultMap type="com.iwgame.gm.p1.logmonitor.modules.business.shared.model.SourceWarningModelBean" id="swarningData">
+		<result property="name"/>
+		<result property="type"/>
+		<result property="hourTotal"/>
+		<result property="dayTotal"/>
+		<result property="threshold"/>
+	</resultMap>
+	
+	<select id="fetchWarning" resultMap="warningData">
+		SELECT t_id, t_monitor_date, t_monitor_type, t_success_count, t_failed_count, t_max_count
+		FROM t_monitor_warning
+		ORDER BY t_monitor_date DESC
+		LIMIT 0, 100
+	</select>
+	
+	<select id="fetchSourceWarning" resultMap="swarningData" parameterType="hashmap">
+		SELECT
+		rsh.`name` AS `name`,
+		rsh.type AS type,
+		rsh.sucess AS hourSuccess,
+		rsh.failure AS hourFailed,
+		rsh.failure+rsh.sucess AS hourTotal,
+		rsd.failure+rsd.sucess AS dayTotal,
+		p.t_max_count AS threshold
+		FROM
+		rpt_server_source_hour AS rsh ,rpt_server_source_day AS rsd, t_monitor_policy AS p
+		WHERE
+		rsh.time = '${hour}' AND
+		rsd.time = '${day}' AND
+		rsh.`name` = rsd.`name` AND 
+		rsh.type=rsd.type AND
+		p.t_monitor_type='source'
+		ORDER BY rsh.`name`
+	</select>
+	
+	<select id="fetchLogWarning" resultMap="logData" parameterType="hashmap">
+		SELECT r.id, r.name, r.type, r.sucess, r.failure, (r.sucess+r.failure) as totalCount, r.`time`, p.t_max_count
+		FROM rpt_server_${tableType}_${dateType} AS r, t_monitor_policy AS p
+		WHERE p.t_monitor_type=#{tableType}
+		ORDER BY `time` DESC, totalCount DESC
+		LIMIT 0, 20
+	</select>
+
+	<select id="fetchLog" resultMap="logData" parameterType="hashmap">
+		SELECT id, name, type, sucess, failure, (sucess+failure) as totalCount, `time`
+		FROM rpt_server_${tableType}_${dateType}
+		<where>
+			<if test="threshold != null">
+				AND sucess+failure>=#{threshold}
+			</if>
+			<if test="filter != null">
+				AND name=#{filter}
+			</if>
+		</where>
+		ORDER BY `time` DESC, totalCount DESC
+		LIMIT 0, 100
+	</select>
+	
+	<select id="fectchLogDetails" resultMap="logDetailData" parameterType="hashmap">
+		SELECT id, request_time, request_ip, request_pid, request_user_name, request_status, request_source, request_type, request_msg
+		FROM monitor_server_log
+		<where>
+			<if test="startDate != null and endDate != null">
+				AND request_time BETWEEN #{startDate} AND #{endDate}
+			</if>
+			<if test="requestType != null">
+				AND request_type=#{requestType}
+			</if>
+			<if test="requestIp != null">
+				AND request_ip=#{requestIp}
+			</if>
+			<if test="requestSource != null">
+				AND request_source LIKE '${requestSource}%'
+			</if>
+			<if test="requestSourceExt != null">
+				AND request_source = #{requestSourceExt}
+			</if>
+			<if test="requestStatus != null">
+				AND request_status=#{requestStatus}
+			</if>
+			<if test="requestUsername != null">
+				AND request_user_name=#{requestUsername}
+			</if>
+		</where>
+		ORDER BY request_time DESC
+		LIMIT #{offset}, #{limit}
+	</select>
+	
+	<select id="fectchLogDetailsCount" resultType="int" parameterType="hashmap">
+		SELECT count(*)
+		FROM monitor_server_log
+		<where>
+			<if test="startDate != null and endDate != null">
+				AND request_time BETWEEN #{startDate} AND #{endDate}
+			</if>
+			<if test="requestType != null">
+				AND request_type=#{requestType}
+			</if>
+			<if test="requestIp != null">
+				AND request_ip=#{requestIp}
+			</if>
+			<if test="requestSource != null">
+				AND request_source LIKE '${requestSource}%'
+			</if>
+			<if test="requestSourceExt != null">
+				AND request_source = #{requestSourceExt}
+			</if>
+			<if test="requestStatus != null">
+				AND request_status=#{requestStatus}
+			</if>
+			<if test="requestUsername != null">
+				AND request_user_name=#{requestUsername}
+			</if>
+		</where>
+	</select>
+	
+</mapper>

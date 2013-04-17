@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+   
+    <!-- SMS配置相关 START -->
+	<!-- 声明MQ Exchange,需要注意不同的Exchange类型   SmsActTask(活动系统短信下发通道) -->
+    <bean id="smsActExchange"  class="org.springframework.amqp.core.DirectExchange">  
+        <constructor-arg value="${common.sms.exchange.name}" />  
+    </bean>  
+    
+	<!-- 声明Queue并设定Queue的名称 -->
+	<bean id="smsActQueue"	class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${common.task.sms3722.queue.name}" />
+	</bean>
+	
+	<!-- 通过Binding来判定Queue、Exchange、routingKey -->  
+    <bean id="smsActSendingQueueBinding" class="org.springframework.amqp.core.Binding">  
+        <constructor-arg index="0" value="${common.task.sms3722.queue.name}" />  
+        <constructor-arg index="1" value="QUEUE" />  
+        <constructor-arg index="2" value="${common.sms.exchange.name}" />  
+        <constructor-arg index="3" value="${common.task.sms3722.queue.binding.routingkey}" />  
+        <constructor-arg index="4"><null/></constructor-arg>  
+    </bean>  
+    <!-- SMS发送消息配置相关 END -->
+    
+    
+    <!-- SMS配置相关 START -->
+	<!-- 声明MQ Exchange,需要注意不同的Exchange类型   SmsInnerTask(内部通知使用的通道) -->
+    <bean id="smsInnerExchange"  class="org.springframework.amqp.core.DirectExchange">  
+        <constructor-arg value="${common.sms.exchange.name}" />  
+    </bean>  
+    
+	<!-- 声明Queue并设定Queue的名称 -->
+	<bean id="smsInnerQueue"	class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${common.task.sms3664.queue.name}" />
+	</bean>
+	
+	<!-- 通过Binding来判定Queue、Exchange、routingKey -->  
+    <bean id="smsInnerSendingQueueBinding" class="org.springframework.amqp.core.Binding">  
+        <constructor-arg index="0" value="${common.task.sms3664.queue.name}" />  
+        <constructor-arg index="1" value="QUEUE" />  
+        <constructor-arg index="2" value="${common.sms.exchange.name}" />  
+        <constructor-arg index="3" value="${common.task.sms3664.queue.binding.routingkey}" />  
+        <constructor-arg index="4"><null/></constructor-arg>  
+    </bean>  
+    <!-- SMS发送消息配置相关 END -->
+    
+    
+    
+    
+    <!-- SMS配置相关 START  SmsWebSiteTask(蜀门/醉逍遥官网手机拉好友的活动通道) -->
+	<!-- 声明MQ Exchange,需要注意不同的Exchange类型   SmsInnerTask(内部通知使用的通道) -->
+    <bean id="smsWebSiteTaskExchange"  class="org.springframework.amqp.core.DirectExchange">  
+        <constructor-arg value="${common.sms.exchange.name}" />  
+    </bean>  
+    
+	<!-- 声明Queue并设定Queue的名称 -->
+	<bean id="smsWebSiteTaskQueue"	class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${common.task.sms7947.queue.name}" />
+	</bean>
+	
+	<!-- 通过Binding来判定Queue、Exchange、routingKey -->  
+    <bean id="smsWebSiteTaskSendingQueueBinding" class="org.springframework.amqp.core.Binding">  
+        <constructor-arg index="0" value="${common.task.sms7947.queue.name}" />  
+        <constructor-arg index="1" value="QUEUE" />  
+        <constructor-arg index="2" value="${common.sms.exchange.name}" />  
+        <constructor-arg index="3" value="${common.task.sms7947.queue.binding.routingkey}" />  
+        <constructor-arg index="4"><null/></constructor-arg>  
+    </bean>  
+    <!-- SMS发送消息配置相关 END -->
+    
+    
+    <!-- SMS配置相关 START  SmsMiBaoTask(蜀门密保手机短信通道) -->
+	<!-- 声明MQ Exchange,需要注意不同的Exchange类型   SmsInnerTask(内部通知使用的通道) -->
+    <bean id="smsMiBaoTaskTaskExchange"  class="org.springframework.amqp.core.DirectExchange">  
+        <constructor-arg value="${common.sms.exchange.name}" />  
+    </bean>  
+    
+	<!-- 声明Queue并设定Queue的名称 -->
+	<bean id="smsMiBaoTaskTaskQueue"	class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${common.task.sms3108.queue.name}" />
+	</bean>
+	
+	<!-- 通过Binding来判定Queue、Exchange、routingKey -->  
+    <bean id="smsMiBaoTaskTaskSendingQueueBinding" class="org.springframework.amqp.core.Binding">  
+        <constructor-arg index="0" value="${common.task.sms3108.queue.name}" />  
+        <constructor-arg index="1" value="QUEUE" />  
+        <constructor-arg index="2" value="${common.sms.exchange.name}" />  
+        <constructor-arg index="3" value="${common.task.sms3108.queue.binding.routingkey}" />  
+        <constructor-arg index="4"><null/></constructor-arg>  
+    </bean>  
+    <!-- SMS发送消息配置相关 END -->
+    
+</beans>

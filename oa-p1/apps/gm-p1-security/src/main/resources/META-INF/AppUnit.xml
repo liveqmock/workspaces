@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<appunit>
+	<!-- AU类型,枚举值normal: 包含UI功能的AU, core:后台组件模块 -->
+	<type>normal</type>
+	<!-- AU名称 -->
+	<name>Security</name>
+	<!-- AU标题,主要用于管理平台中的菜单显示用 -->
+	<title>安全封杀</title>
+	<!-- AU的功能描述 -->
+	<description>安全封杀，踢人，解冻</description>
+	<!-- AU版本号的声明 -->
+	<version>1.0</version>
+	<!-- AU使用的产品 -->
+	<product>P-P1,P-P1.5</product>
+	<!-- 标志,用于分组 -->
+	<app>GM</app>
+	<!-- GWT Module Name,被框架继承 -->
+	<gwt-module>com.iwgame.gm.p1.security.Security</gwt-module>
+	<!-- 菜单路径配置 -->
+	<menupaths>
+		<!-- 样例
+		<menupath name="菜单名" title="菜单标题" url="appname/modulename/action" type="normal" access="appname-modulename-action" />
+		 -->
+		<menupath name="securityLockAccount" title="封杀账号" url="security/operate/securityLockAccount" type="normal" 
+		 	access="security-operate-securityLockAccount"/>
+		<menupath name="securityUnlockAccount" title="解封账号" url="security/operate/securityUnlockAccount" type="normal" 
+		 	access="security-operate-securityUnlockAccount"/>
+		<menupath name="securitySafeMode" title="添加安全模式" url="security/operate/securitySafeMode" type="normal" 
+		 	access="security-operate-securitySafeMode"/>
+		<menupath name="securityUnsafeMode" title="解除安全模式" url="security/operate/securityUnsafeMode" type="normal" 
+		 	access="security-operate-securityUnsafeMode"/> 	
+		<menupath name="killedCause" title="账户封杀理由配置" url="security/manage/killedCause" type="normal" access="security-manage-killedCause" />		
+		<menupath name="safeModeCause" title="安全模式备注管理" url="security/manage/safeModeCause" type="normal" access="security-manage-safeModeCause" />
+		<menupath name="dangerIdCard" title="高危身份证" url="security/manage/dangerIdCard" type="normal" access="security-manage-dangerIdCard" />
+		<menupath name="loginPassModifyRecord" title="账号改密记录" url="security/query/loginPassModifyRecord" type="normal" access="security-query-loginPassModifyRecord" />
+		<menupath name="killedRecord" title="封杀记录查询" url="security/query/killedRecord" type="normal" access="security-query-killedRecord" />
+		<menupath name="regisInfoQuery" title="注册资料查询" url="security/query/regisInfoQuery" type="normal" access="security-query-regisInfoQuery" />
+		<menupath name="safeModeRecord" title="安全模式操作日志" url="security/query/safeModeRecord" type="normal" access="security-query-safeModeRecord" />
+		<menupath name="iwResultTrack" title="操作结果追踪" url="security/query/iwResultTrack" type="normal" access="security-query-iwResultTrack" />
+	</menupaths>
+	
+	<!-- 模块配置 -->
+	<modules>
+		<module id="Query" name="query" package="com.iwgame.gm.p1.security.modules.query.client" />
+		<module id="Operate" name="operate" package="com.iwgame.gm.p1.security.modules.operate.client" />
+		<module id="Manage" name="manage" package="com.iwgame.gm.p1.security.modules.manage.client" />
+	</modules>
+	
+	<!-- 后台服务配置 -->
+	<services>
+		<!-- 样例
+		<service endpoint="" class="" />
+		<service endpoint="com.iwgame.TestService">
+			<property name="factory" value="spring" />
+			<property name="source" value="beanid" />
+		</service>
+		 -->
+		<service endpoint="com.iwgame.gm.p1.security.modules.operate.shared.rpc.SecurityLockAccountService">
+			<property name="factory" value="spring" />
+			<property name="source" value="securityLockAccountService" />
+		</service>
+		<service endpoint="com.iwgame.gm.p1.security.modules.operate.shared.rpc.SecurityUnlockAccountService">
+			<property name="factory" value="spring" />
+			<property name="source" value="securityUnlockAccountService" />
+		</service>
+		<service endpoint="com.iwgame.gm.p1.security.modules.operate.shared.rpc.SecuritySafeModeService">
+			<property name="factory" value="spring" />
+			<property name="source" value="securitySafeModeService" />
+		</service>
+		<service endpoint="com.iwgame.gm.p1.security.modules.operate.shared.rpc.SecurityUnsafeModeService">
+			<property name="factory" value="spring" />
+			<property name="source" value="securityUnsafeModeService" />
+		</service>
+		<service endpoint="com.iwgame.gm.p1.security.modules.manage.shared.rpc.SecurityKilledCauseService">
+			<property name="factory" value="spring" />
+			<property name="source" value="securityKilledCauseService" />
+		</service>
+		<service endpoint="com.iwgame.gm.p1.security.modules.manage.shared.rpc.SecuritySafeModeCauseService">
+			<property name="factory" value="spring" />
+			<property name="source" value="securitySafeModeCauseService" />
+		</service>
+		<service endpoint="com.iwgame.gm.p1.security.modules.manage.shared.rpc.SecurityDangerIdCardService">
+			<property name="factory" value="spring" />
+			<property name="source" value="securityDangerIdCardService" />
+		</service>	
+		<service endpoint="com.iwgame.gm.p1.security.modules.query.shared.rpc.SecurityLoginPassModifyRecordService">
+			<property name="factory" value="spring" />
+			<property name="source" value="securityLoginPassModifyRecordService" />
+		</service>
+		<service endpoint="com.iwgame.gm.p1.security.modules.query.shared.rpc.SecurityKilledRecordService">
+			<property name="factory" value="spring" />
+			<property name="source" value="securityKilledRecordService" />
+		</service>
+		<service endpoint="com.iwgame.gm.p1.security.modules.query.shared.rpc.SecurityRegisInfoQueryService">
+			<property name="factory" value="spring" />
+			<property name="source" value="securityRegisInfoQueryService" />
+		</service>	
+		<service endpoint="com.iwgame.gm.p1.security.modules.query.shared.rpc.SecuritySafeModeRecordService">
+			<property name="factory" value="spring" />
+			<property name="source" value="safeModeRecordService" />
+		</service>	
+		<service endpoint="com.iwgame.gm.p1.security.common.shared.rpc.BizLoggerService">
+			<property name="factory" value="spring" />
+			<property name="source" value="bizLoggerService"/>
+		</service>
+		<service endpoint="com.iwgame.gm.p1.security.modules.query.shared.rpc.SecurityIwResultTrackService">
+			<property name="factory" value="spring" />
+			<property name="source" value="iwResultTrackService" />
+		</service>	
+	</services>
+	
+	<!-- 访问控制策略 -->
+	<accesses>
+		<!-- 样例
+			<access name="appname-modulename-action" title="标题" />
+		 -->	
+		 <access name="security-operate-securityLockAccount" title="封杀账号" />	
+		 <access name="security-operate-securityUnlockAccount" title="解封账号" />
+		 <access name="security-operate-securitySafeMode" title="添加安全模式" />	
+		 <access name="security-operate-securityUnsafeMode" title="解除安全模式" />	
+		 
+		 <access name="security-manage-killedCause" title="账户封杀理由配置">
+		 	<action name="security-manage-killedCause-add" title="账户封杀理由-新增"/>
+		 	<action name="security-manage-killedCause-update" title="账户封杀理由-修改"/>
+		 	<action name="security-manage-killedCause-delete" title="账户封杀理由-删除"/>
+		 </access>
+		 	
+		 <access name="security-manage-safeModeCause" title="安全模式备注管理">
+		 	<action name="security-manage-safeModeCause-add" title="安全模式备注-新增"/>
+		 	<action name="security-manage-safeModeCause-update" title="安全模式备注-修改"/>
+		 	<action name="security-manage-safeModeCause-delete" title="安全模式备注-删除"/>
+		 </access>
+		 
+		 <access name="security-manage-dangerIdCard" title="高危身份证">
+		 	<action name="security-manage-dangerIdCard-update" title="高危身份证-修改"/>
+		 	<action name="security-manage-dangerIdCard-add" title="高危身份证-新增"/>
+		 	<action name="security-manage-dangerIdCard-delete" title="高危身份证-删除"/>
+		 </access>	
+		 
+		 <access name="security-query-loginPassModifyRecord" title="账号改密记录"/>
+		 <access name="security-query-killedRecord" title="封杀记录查询"/>
+		 <access name="security-query-regisInfoQuery" title="注册资料查询">
+		 	<action name="security-query-regisInfoQuery-select" title="查询"/>
+		 	<action name="security-query-regisInfoQuery-export" title="导出数据"/>
+		 </access>
+		 <access name="security-query-safeModeRecord" title="安全模式操作日志"/>
+		  <access name="security-query-iwResultTrack" title="操作结果追踪"/>
+		  
+	</accesses>
+</appunit>

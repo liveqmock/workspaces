@@ -1,0 +1,798 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.22" id="1">
+    <property name="createdBy">Eclipse BIRT Designer Version 2.6.2.r262_v20110209 Build &lt;2.6.2.v20110214-1523></property>
+    <property name="units">in</property>
+    <method name="initialize"><![CDATA[reportContext.setPersistentGlobalVariable("pageSize","20");
+
+var start=reportContext.getParameterValue("beginDate").substr(0,7);
+var end=reportContext.getParameterValue("endDate").substr(0,7);
+
+//从配置文件读取分页后的URL
+importPackage( Packages.java.io );
+importPackage( Packages.java.util );
+fin = new java.io.FileInputStream("/var/config/report/reports-config/url.properties");
+props = new java.util.Properties( );
+props.load(fin);
+
+actionlink =  props.getProperty("URL");
+actionlink=actionlink+"reportName="+reportContext.getParameterValue("reportName")+"&amp;";
+actionlink=actionlink+"dbDriver="+reportContext.getParameterValue("dbDriver")+"&amp;";
+actionlink=actionlink+"dbURL="+encodeURIComponent(reportContext.getParameterValue("dbURL"))+"&amp;";
+actionlink=actionlink+"dbUserName="+reportContext.getParameterValue("dbUserName")+"&amp;";
+actionlink=actionlink+"dbPassword="+reportContext.getParameterValue("dbPassword")+"&amp;";
+actionlink=actionlink+"ts="+reportContext.getParameterValue("ts")+"&amp;";
+actionlink=actionlink+"sign="+reportContext.getParameterValue("sign")+"&amp;";
+actionlink=actionlink+"guid="+reportContext.getParameterValue("guid")+"&amp;";
+actionlink=actionlink+"pid="+reportContext.getParameterValue("pid")+"&amp;";
+actionlink=actionlink+"format="+reportContext.getParameterValue("format")+"&amp;";
+
+if(reportContext.getParameterValue("beginDate")!=null &amp;&amp; reportContext.getParameterValue("endDate")!=null){
+ actionlink=actionlink+"beginDate="+reportContext.getParameterValue("beginDate")+"&amp;";
+ actionlink=actionlink+"endDate="+reportContext.getParameterValue("endDate")+"&amp;";
+}
+
+reportContext.setPersistentGlobalVariable("actionlink",actionlink);]]></method>
+    <property name="iconFile">/templates/blank_report.gif</property>
+    <property name="layoutPreference">auto layout</property>
+    <property name="bidiLayoutOrientation">ltr</property>
+    <property name="imageDPI">96</property>
+    <list-property name="libraries">
+        <structure>
+            <property name="fileName">paginate.rptlibrary</property>
+            <property name="namespace">paginate</property>
+        </structure>
+    </list-property>
+    <parameters>
+        <scalar-parameter name="total" id="154">
+            <property name="hidden">true</property>
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="offset" id="155">
+            <property name="hidden">true</property>
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="constant">0</value>
+            </simple-property-list>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="limit" id="156">
+            <property name="hidden">true</property>
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="constant">20</value>
+            </simple-property-list>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+    </parameters>
+    <data-sources>
+        <oda-data-source extensionID="org.eclipse.birt.report.data.oda.jdbc" name="DataSource" id="7">
+            <list-property name="privateDriverProperties">
+                <ex-property>
+                    <name>disabledMetadataBidiFormatStr</name>
+                </ex-property>
+                <ex-property>
+                    <name>disabledContentBidiFormatStr</name>
+                </ex-property>
+                <ex-property>
+                    <name>contentBidiFormatStr</name>
+                    <value>ILYNN</value>
+                </ex-property>
+                <ex-property>
+                    <name>metadataBidiFormatStr</name>
+                    <value>ILYNN</value>
+                </ex-property>
+            </list-property>
+            <property name="odaDriverClass">com.mysql.jdbc.Driver</property>
+            <property name="odaURL">jdbc:mysql://192.168.10.181/finance?autoReconnect=true&amp;createDatabaseIfNotExist=true&amp;useUnicode=true&amp;characterEncoding=utf-8</property>
+            <property name="odaUser">root</property>
+            <encrypted-property name="odaPassword" encryptionID="base64">cm9vdA==</encrypted-property>
+        </oda-data-source>
+    </data-sources>
+    <data-sets>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="DataSet" id="115">
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">used_date</property>
+                    <text-property name="displayName">used_date</text-property>
+                    <text-property name="heading">used_date</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">used_channel_name</property>
+                    <text-property name="displayName">used_channel_name</text-property>
+                    <text-property name="heading">used_channel_name</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">used_pay_value</property>
+                    <text-property name="displayName">used_pay_value</text-property>
+                    <text-property name="heading">used_pay_value</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">used_pay_count</property>
+                    <text-property name="displayName">used_pay_count</text-property>
+                    <text-property name="heading">used_pay_count</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">used_sum_pay_value</property>
+                    <text-property name="displayName">used_sum_pay_value</text-property>
+                    <text-property name="heading">used_sum_pay_value</text-property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">used_date</property>
+                        <property name="dataType">date</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">used_channel_name</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">used_pay_value</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">used_pay_count</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">used_sum_pay_value</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <method name="beforeOpen"><![CDATA[var startTime=reportContext.getParameterValue("beginDate");
+//var endTime=reportContext.getParameterValue("endDate");
+var offset = reportContext.getParameterValue("offset");
+var limit = reportContext.getParameterValue("limit");
+
+
+var dates =reportContext.getParameterValue("endDate");
+var dateTime = null;
+if(dates != null){
+var firstday = dates+"-01";
+importPackage(Packages.java.text);
+importPackage(Packages.java.util);
+         format = new  SimpleDateFormat("yyyy-MM-dd"); 
+        dt = format.parse(firstday); 
+        cal=Calendar.getInstance(); 
+        cal.setTime(dt); 
+        days=cal.getActualMaximum(Calendar.DAY_OF_MONTH); 
+        cal.set(Calendar.DAY_OF_MONTH,days); 
+        result=format.format(cal.getTime()); 
+        
+    var dateTime = result;
+}
+
+if(startTime!=null &amp;&amp; dateTime!=null){
+    //查询条件
+    this.queryText+=" and used_date >='"+startTime.substr(0,7)+"-01"+"'";
+    this.queryText+=" and used_date <='"+dateTime+"'";
+}
+
+    this.queryText+=" group by left(used_date,7),used_channel_name,used_pay_value ";
+if(limit!=null &amp;&amp; offset !=null){
+    this.queryText+=" limit "+offset+","+limit;
+}]]></method>
+            <property name="dataSource">DataSource</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">used_date</property>
+                    <property name="nativeName">used_date</property>
+                    <property name="dataType">date</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">used_channel_name</property>
+                    <property name="nativeName">used_channel_name</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">used_pay_value</property>
+                    <property name="nativeName">used_pay_value</property>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">used_pay_count</property>
+                    <property name="nativeName">used_pay_count</property>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">used_sum_pay_value</property>
+                    <property name="nativeName">used_sum_pay_value</property>
+                    <property name="dataType">float</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[ SELECT used_date,
+       used_channel_name,
+       used_pay_value,
+       sum(used_pay_count) as used_pay_count,
+       sum(used_sum_pay_value) as used_sum_pay_value 
+ FROM `rpt_consume_all_day`
+where 1=1
+]]></xml-property>
+            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
+  <Version>2.0</Version>
+  <design:ResultSets derivedMetaData="true">
+    <design:resultSetDefinitions>
+      <design:resultSetColumns>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>into_date</design:name>
+              <design:position>1</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>91</design:nativeDataTypeCode>
+            <design:precision>10</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>into_date</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>into_date</design:label>
+            <design:formattingHints>
+              <design:displaySize>10</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>into_channel_name</design:name>
+              <design:position>2</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>100</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>into_channel_name</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>into_channel_name</design:label>
+            <design:formattingHints>
+              <design:displaySize>100</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>into_pay_value</design:name>
+              <design:position>3</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>11</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>into_pay_value</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>into_pay_value</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>into_pay_count</design:name>
+              <design:position>4</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>11</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>into_pay_count</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>into_pay_count</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>into_sum_pay_value</design:name>
+              <design:position>5</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>11</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>into_sum_pay_value</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>into_sum_pay_value</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+      </design:resultSetColumns>
+      <design:criteria/>
+    </design:resultSetDefinitions>
+  </design:ResultSets>
+</model:DesignValues>]]></xml-property>
+        </oda-data-set>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="total" id="150">
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">total</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <method name="beforeOpen"><![CDATA[var startTime=reportContext.getParameterValue("beginDate");
+//var endTime=reportContext.getParameterValue("endDate");
+
+
+
+var dates =reportContext.getParameterValue("endDate");
+var dateTime = null;
+if(dates != null){
+var firstday = dates+"-01";
+importPackage(Packages.java.text);
+importPackage(Packages.java.util);
+         format = new  SimpleDateFormat("yyyy-MM-dd"); 
+        dt = format.parse(firstday); 
+        cal=Calendar.getInstance(); 
+        cal.setTime(dt); 
+        days=cal.getActualMaximum(Calendar.DAY_OF_MONTH); 
+        cal.set(Calendar.DAY_OF_MONTH,days); 
+        result=format.format(cal.getTime()); 
+        
+    var dateTime = result;
+}
+
+if(startTime!=null &amp;&amp; dateTime!=null){
+    //查询条件
+    this.queryText+=" and used_date >='"+startTime.substr(0,7)+"-01"+"'";
+    this.queryText+=" and used_date <='"+dateTime+"'";
+}
+
+    this.queryText+=" group by left(used_date,7),used_channel_name,used_pay_value ) t ";
+
+]]></method>
+            <property name="dataSource">DataSource</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">total</property>
+                    <property name="nativeName">total</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[select count(*) as total
+ from (  SELECT used_date,
+       used_channel_name,
+       used_pay_value,
+       sum(used_pay_count) as used_pay_count,
+       sum(used_sum_pay_value) as used_sum_pay_value 
+ FROM `rpt_consume_all_day`
+where 1=1
+]]></xml-property>
+            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
+  <Version>2.0</Version>
+  <design:ResultSets derivedMetaData="true">
+    <design:resultSetDefinitions>
+      <design:resultSetColumns>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>total</design:name>
+              <design:position>1</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>-5</design:nativeDataTypeCode>
+            <design:precision>21</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>total</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>total</design:label>
+            <design:formattingHints>
+              <design:displaySize>21</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+      </design:resultSetColumns>
+      <design:criteria/>
+    </design:resultSetDefinitions>
+  </design:ResultSets>
+</model:DesignValues>]]></xml-property>
+        </oda-data-set>
+    </data-sets>
+    <styles>
+        <style name="report" id="4">
+            <property name="fontFamily">sans-serif</property>
+            <property name="fontSize">10pt</property>
+        </style>
+        <style name="crosstab-cell" id="5">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+        <style name="crosstab" id="6">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+    </styles>
+    <page-setup>
+        <simple-master-page name="PaginateMasterPage" id="151" extends="paginate.PaginateMasterPage">
+            <overridden-values>
+                <ref-entry baseId="61" name="PaginateToolbar" id="61"/>
+                <ref-entry baseId="62" id="62"/>
+                <ref-entry baseId="63" id="63"/>
+                <ref-entry baseId="86" id="86"/>
+                <ref-entry baseId="65" id="65"/>
+                <ref-entry baseId="66" id="66"/>
+                <ref-entry baseId="91" id="91"/>
+                <ref-entry baseId="92" id="92"/>
+                <ref-entry baseId="97" name="FirstPage" id="97"/>
+                <ref-entry baseId="98" name="PreviousPage" id="98"/>
+                <ref-entry baseId="106" name="lbl1" id="106"/>
+                <ref-entry baseId="116" name="lbl2" id="152"/>
+                <ref-entry baseId="115" name="lbl3" id="153"/>
+                <ref-entry baseId="114" name="lbl4" id="114"/>
+                <ref-entry baseId="113" name="lbl5" id="113"/>
+                <ref-entry baseId="112" name="lbl6" id="112"/>
+                <ref-entry baseId="111" name="lbl7" id="111"/>
+                <ref-entry baseId="110" name="lbl8" id="110"/>
+                <ref-entry baseId="109" name="lbl9" id="109"/>
+                <ref-entry baseId="99" name="NextPage" id="99"/>
+                <ref-entry baseId="100" name="LastPage" id="100"/>
+                <ref-entry baseId="101" name="Details" id="101">
+                    <property name="dataSet">total</property>
+                    <list-property name="boundDataColumns">
+                        <structure>
+                            <property name="name">total</property>
+                            <text-property name="displayName">total</text-property>
+                            <expression name="expression" type="javascript">dataSetRow["total"]</expression>
+                            <property name="dataType">decimal</property>
+                        </structure>
+                    </list-property>
+                </ref-entry>
+            </overridden-values>
+        </simple-master-page>
+    </page-setup>
+    <body>
+        <grid id="35">
+            <column id="36"/>
+            <row id="37">
+                <cell id="38">
+                    <label id="41">
+                        <property name="fontSize">16pt</property>
+                        <property name="fontWeight">bold</property>
+                        <property name="textAlign">center</property>
+                        <text-property name="text">所有渠道充值统计月报表</text-property>
+                    </label>
+                </cell>
+            </row>
+            <row id="162">
+                <cell id="163">
+                    <text-data id="164">
+                        <property name="fontWeight">bold</property>
+                        <property name="textAlign">center</property>
+                        <expression name="valueExpr">if(start!=null &amp;&amp; end !=null){&#13;
+"(从 "+start+" 到 "+ end +")";&#13;
+}</expression>
+                        <property name="contentType">html</property>
+                    </text-data>
+                </cell>
+            </row>
+            <row id="39">
+                <cell id="40">
+                    <table id="116">
+                        <property name="dataSet">DataSet</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">used_date</property>
+                                <text-property name="displayName">used_date</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["used_date"].toString().substr(0,7)</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">used_channel_name</property>
+                                <text-property name="displayName">used_channel_name</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["used_channel_name"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">used_pay_value</property>
+                                <text-property name="displayName">used_pay_value</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["used_pay_value"]</expression>
+                                <property name="dataType">integer</property>
+                            </structure>
+                            <structure>
+                                <property name="name">used_pay_count</property>
+                                <text-property name="displayName">used_pay_count</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["used_pay_count"]</expression>
+                                <property name="dataType">float</property>
+                            </structure>
+                            <structure>
+                                <property name="name">used_sum_pay_value</property>
+                                <text-property name="displayName">used_sum_pay_value</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["used_sum_pay_value"]</expression>
+                                <property name="dataType">float</property>
+                            </structure>
+                        </list-property>
+                        <column id="145"/>
+                        <column id="146"/>
+                        <column id="147"/>
+                        <column id="148"/>
+                        <column id="149"/>
+                        <header>
+                            <row id="117">
+                                <property name="backgroundColor">#357AE8</property>
+                                <property name="fontWeight">bold</property>
+                                <property name="color">white</property>
+                                <cell id="118">
+                                    <property name="borderBottomColor">#808080</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#808080</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#808080</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#808080</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <label id="119">
+                                        <text-property name="text">日期</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="120">
+                                    <property name="borderBottomColor">#808080</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#808080</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#808080</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#808080</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <label id="121">
+                                        <text-property name="text">渠道名称</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="122">
+                                    <property name="borderBottomColor">#808080</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#808080</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#808080</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#808080</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <label id="123">
+                                        <text-property name="text">面值</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="124">
+                                    <property name="borderBottomColor">#808080</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#808080</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#808080</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#808080</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <label id="125">
+                                        <text-property name="text">数量（张）</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="126">
+                                    <property name="borderBottomColor">#808080</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#808080</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#808080</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#808080</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <label id="127">
+                                        <text-property name="text">总面值(元)</text-property>
+                                    </label>
+                                </cell>
+                            </row>
+                        </header>
+                        <detail>
+                            <row id="128">
+                                <method name="onCreate"><![CDATA[if(row.__rownum % 2 == 0){
+this.getStyle().backgroundColor = "#E9EAEB";
+}else{
+this.getStyle().backgroundColor = "#FFFFFF";
+}]]></method>
+                                <property name="textAlign">center</property>
+                                <cell id="129">
+                                    <property name="borderBottomColor">#808080</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#808080</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#808080</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#808080</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <data id="157">
+                                        <property name="whiteSpace">nowrap</property>
+                                        <property name="resultSetColumn">used_date</property>
+                                    </data>
+                                </cell>
+                                <cell id="131">
+                                    <property name="borderBottomColor">#808080</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#808080</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#808080</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#808080</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <data id="158">
+                                        <property name="whiteSpace">nowrap</property>
+                                        <property name="resultSetColumn">used_channel_name</property>
+                                    </data>
+                                </cell>
+                                <cell id="133">
+                                    <property name="borderBottomColor">#808080</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#808080</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#808080</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#808080</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <data id="159">
+                                        <property name="whiteSpace">nowrap</property>
+                                        <property name="resultSetColumn">used_pay_value</property>
+                                    </data>
+                                </cell>
+                                <cell id="135">
+                                    <property name="borderBottomColor">#808080</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#808080</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#808080</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#808080</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <data id="160">
+                                        <structure name="numberFormat">
+                                            <property name="category">Fixed</property>
+                                            <property name="pattern">#,##0{RoundingMode=HALF_UP}</property>
+                                        </structure>
+                                        <property name="whiteSpace">nowrap</property>
+                                        <property name="resultSetColumn">used_pay_count</property>
+                                    </data>
+                                </cell>
+                                <cell id="137">
+                                    <property name="borderBottomColor">#808080</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftColor">#808080</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">thin</property>
+                                    <property name="borderRightColor">#808080</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">thin</property>
+                                    <property name="borderTopColor">#808080</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <data id="161">
+                                        <structure name="numberFormat">
+                                            <property name="category">Fixed</property>
+                                            <property name="pattern">#,##0{RoundingMode=HALF_UP}</property>
+                                        </structure>
+                                        <property name="whiteSpace">nowrap</property>
+                                        <property name="resultSetColumn">used_sum_pay_value</property>
+                                    </data>
+                                </cell>
+                            </row>
+                        </detail>
+                    </table>
+                </cell>
+            </row>
+        </grid>
+    </body>
+</report>

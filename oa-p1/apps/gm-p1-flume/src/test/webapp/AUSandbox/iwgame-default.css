@@ -1,0 +1,327 @@
+@CHARSET "UTF-8";
+
+body {
+	font: 11px Lucida Grande, Verdana, Arial, Helvetica, sans serif;
+}
+
+.iwgame-breadCrumb {
+	padding: 5px;
+	font-size: 13px;
+	font-weight: bolder;
+	color: #DD4B39;
+	background-color: #f5f5f5
+}
+
+.iwgame-grid {
+	border: 1px solid #ccc;
+}
+
+.iwgame-grid-header,.iwgame-grid-toolbar {
+	-moz-border-bottom-colors: none;
+	-moz-border-image: none;
+	-moz-border-left-colors: none;
+	-moz-border-right-colors: none;
+	-moz-border-top-colors: none;
+	background: none repeat scroll 0 0 #F5F5F5;
+	border-color: #f5f5f5;
+	border: 1px solid #ccc;
+	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+	outline: medium none;
+}
+
+.iwgame-grid-toolbar {
+	margin: 0px 2px 2px 2px;
+}
+
+.iwgame-grid-header {
+	font-size: 14px;
+	font-weight: bolder;
+	margin: 1px 2px 2px 2px;
+	padding: 5px 10px 5px 10px;
+}
+
+.iwgame-grid-toolbar .gwt-TextBox,.gwt-ListBox,.gwt-DateBox,.gwt-Label {
+	-moz-box-sizing: content-box;
+	-moz-padding-end: 0;
+	-moz-padding-start: 0;
+	vertical-align: middle;
+	height: 19px;
+	padding: 2px;
+	font-family: inherit;
+	font-size: inherit;
+}
+
+.gwt-TextBox,.gwt-ListBox,.gwt-DateBox {
+	border: 1px solid #B9B9B9;
+	outline: medium none;
+}
+
+.iwgame-grid-toolbar .gwt-DateBox,.gwt-ListBox {
+	height: auto;
+	width: auto;
+}
+
+.gwt-TextBox:focus,.gwt-ListBox:focus,.gwt-DateBox:focus {
+	border: 1px solid #4d90fe;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) inset;
+	outline: medium none;
+}
+
+.iwgame-grid-toolbar .iwgame-toolbar-separator {
+	background-position: center;
+	background-repeat: no-repeat;
+	font-size: 1px;
+	height: 16px;
+	width: 4px;
+	overflow: hidden;
+	cursor: default;
+	margin: 0 2px 0;
+	border: 0;
+}
+
+.iwgame-toolbar-fill {
+	width: 100%;
+}
+
+.iwgame-grid-toolbar .iwgame-toolbar-label {
+	padding: 2px;
+	line-height: 16px;
+}
+
+.iwgame-grid-toolbar .iwgame-toolbar-button,.iwgame-form-buttonbar .iwgame-toolbar-button
+	{
+	background-image: none;
+	background-color: #4D90FE;
+	border: 1px solid #3079ED;
+	border-radius: 2px 2px 2px 2px;
+	color: #FFFFFF;
+	cursor: default;
+	height: 29px;
+	line-height: 27px;
+	margin: 5px 4px;
+	min-width: 54px;
+	padding: 0 8px;
+	text-align: center;
+	text-shadow: 0 1px rgba(0, 0, 0, 0.1);
+}
+
+.iwgame-form-buttonbar .iwgame-toolbar-button {
+	margin: 0px 6px;
+}
+
+
+
+.iwgame-grid-toolbar .iwgame-toolbar-button:hover,.iwgame-form-buttonbar .iwgame-toolbar-button:hover
+	{
+	background-image: none;
+	background-color: #357AE8;
+	border: 1px solid #2F5BB7;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+	color: #FFFFFF;
+	cursor: pointer;
+	text-shadow: 0 1px rgba(0, 0, 0, 0.3);
+}
+
+.iwgame-progressBar {
+	padding: 5px;
+	text-align: left;
+}
+
+.iwgame-progressBar .iwgame-progressBarBox {
+	height: 20px;
+	border: 1px inset;
+	background: #eee;
+	width: 200px;
+}
+
+.iwgame-progressBar .iwgame-progressBarBoxContent {
+	width: 0;
+	height: 20px;
+	border-right: 1px solid #444;
+	background: #9ACB34;
+	text-align: center;
+	font-weight: bolder;
+}
+
+.iwgame-form {
+	padding: 1px;
+	margin: 5px;
+}
+
+.iwgame-grid-toolbar .iwgame-form {
+	border: none;
+	padding: 0px;
+	margin: 0px;
+}
+
+
+
+
+
+.iwgame-form .iwgame-form-table .iwgame-field-ip td {
+	border: none;
+	padding: 0px;
+	background: none;
+}
+
+.iwgame-form .iwgame-form-table .iwgame-advancedatebox td {
+	border: none;
+	padding: 0px;
+	background: none;
+}
+
+.iwgame-form .iwgame-form-table .iwgame-field-ip td .gwt-TextBox {
+	min-width: 25px;
+	width: 25px;
+}
+
+.iwgame-form .iwgame-form-table .iwgame-field-ip td.iwgame-field-ip-dot
+	{
+	text-align: center;
+	vertical-align: top;
+	font-weight: bold;
+}
+
+
+
+
+
+
+
+
+.iwgame-form td.iwgame-form-buttonbar,.iwgame-form-header {
+	background-color: #f5f5f5;
+	border: 1px solid #ccc;
+	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+	outline: medium none;
+	padding: 5px 10px 5px 10px;
+}
+
+.iwgame-form td.iwgame-form-buttonbar td {
+	padding: 0 2px 0 2px;
+}
+
+.iwgame-prettypager-button {
+	background-color: #4D90FE;
+	border: 1px solid #3079ED;
+	border-radius: 2px 2px 2px 2px;
+	color: #FFFFFF;
+	cursor: default;
+	font-family: inherit;
+	font-size: inherit;
+	line-height: 23px;
+	margin: 2px 2px;
+	min-width: 20px;
+	text-align: center;
+	text-shadow: 0 1px rgba(0, 0, 0, 0.1);
+}
+
+.iwgame-prettypager-button,.iwgame-dialog-button,.iwgame-form-button,.iwgame-grid-button
+	{
+	background-color: #4D90FE;
+	border: 1px solid #3079ED;
+	border-radius: 2px 2px 2px 2px;
+	color: #FFFFFF;
+	cursor: default;
+	font-family: inherit;
+	font-size: inherit;
+	line-height: 23px;
+	margin: 2px 2px;
+	min-width: 25px;
+	text-align: center;
+	text-shadow: 0 1px rgba(0, 0, 0, 0.1);
+}
+
+.iwgame-grid-button-popup {
+	background: none repeat scroll 0 0 transparent;
+	border: 0 none;
+	color: blue;
+	text-align: left;
+	text-decoration: underline;
+}
+
+.iwgame-dialog-button,.iwgame-form-button,.iwgame-grid-button {
+	min-width: 54px;
+}
+
+.iwgame-ie7 .iwgame-dialog-button,.iwgame-ie7 .iwgame-form-button,.iwgame-ie7  .iwgame-grid-button , .iwgame-ie7 .iwgame-toolbar-button{
+	width: 100px;
+}
+
+.iwgame-prettypager-button:hover,.iwgame-dialog-button:hover,.iwgame-form-button:hover,.iwgame-grid-button:hover
+	{
+	background-image: none;
+	background-color: #357AE8;
+	border: 1px solid #2F5BB7;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+	color: #FFFFFF;
+	cursor: pointer;
+	text-shadow: 0 1px rgba(0, 0, 0, 0.3);
+}
+
+.iwgame-grid-button-disabled,.iwgame-grid-button-disabled:hover {
+	background-color: #D5D5D5;
+	border: none;
+	cursor: default;
+	text-shadow: none;
+	box-shadow: none;
+}
+
+.iwgame-grid-button-popup:hover {
+	background: none repeat scroll 0 0 transparent;
+	border: 0 none;
+	color: blue;
+	text-align: left;
+	text-decoration: underline;
+	box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+}
+
+.iwgame-prettypager-button-disable,.iwgame-prettypager-button-disable:hover
+	{
+	color: #B9B9B9;
+	background-color: #F5F5F5;
+	border: 1px solid #B9B9B9;
+	text-shadow: 0 1px rgba(0, 0, 0, 0.1);
+}
+
+.iwgame-dialog-container {
+	border: 1px solid #ccc;
+}
+
+.iwgame-number-box {
+	ime-mode:disabled;
+}
+
+.iwgame-module-home {
+	padding: 5px;	
+}
+.iwgame-app-error{
+	color: red;
+	font-weight: bolder;
+	font-size: 14px;	
+}
+.iwgame-product-name{
+	padding: 5px;
+	color: black;
+	text-decoration: underline;
+}
+.iwgame-daterange-start, .iwgame-daterange-end {
+	width: 80px;	
+	-moz-box-sizing: content-box;
+	-moz-padding-end: 0;
+	-moz-padding-start: 0;
+	vertical-align: middle;
+	background-color: #f5f5f5;
+	padding: 2px;
+	color: #000;
+	border: 1px solid #B9B9B9;
+    outline: medium none;
+    height: 19px;
+}
+.iwgame-daterange-start:focus,.iwgame-daterange-end:focus {
+	border: 1px solid #4d90fe;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) inset;
+	outline: medium none;
+	background-color: #fff;
+}
+

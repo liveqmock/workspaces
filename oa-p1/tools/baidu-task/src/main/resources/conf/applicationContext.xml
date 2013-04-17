@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:jaxrs="http://cxf.apache.org/jaxrs" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+	 http://cxf.apache.org/jaxrs
+	 http://cxf.apache.org/schemas/jaxrs.xsd
+     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+     http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+	<!-- Import the common settings -->
+	<import resource="classpath:conf/applicationContext-pconf.xml" />
+	<import resource="classpath:conf/applicationContext-connector.xml" />
+
+	<!-- 自动注入Service & Dao -->
+	<context:component-scan base-package="com.iwgame.iwcloud.baidu.task" />
+	<context:annotation-config />
+
+	<!-- 加载配置文件 -->
+	<bean id="environmentVariablesConfiguration" class="com.iwgame.security.config.EnvironmentStringPBEConfig" />
+	<bean id="configurationEncryptor" class="org.jasypt.encryption.pbe.StandardPBEStringEncryptor">
+		<property name="config" ref="environmentVariablesConfiguration" />
+	</bean>
+
+	<bean
+		class="org.jasypt.spring.properties.EncryptablePropertyPlaceholderConfigurer">
+		<constructor-arg ref="configurationEncryptor" />
+		<property name="order" value="1" />
+		<property name="ignoreUnresolvablePlaceholders" value="true" />
+		<property name="ignoreResourceNotFound" value="true" />
+		<property name="locations">
+			<list>
+				<!--开发环境下的配置文件 -->
+				<value>classpath:baidu-task.properties</value>
+				<!-- 生产环境下的配置文件 -->
+				<value>file:/var/config/baidu/baidu-task.properties</value>
+			</list>
+		</property>
+		<property name="fileEncoding" value="utf-8" />
+	</bean>
+
+
+	<!-- 任务调度定义 BaiduAutoFetcherJob -->
+	<!-- 要调用的工作类 -->
+	<bean id="baiduAutoFetcherJob"	class="com.iwgame.iwcloud.baidu.task.process.BaiduAutoFetcherJob" />
+	<!-- 定义调用对象和调用对象的方法 -->
+	<bean id="baiduAutoFetcherJobtask"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<!-- 调用的类 -->
+		<property name="targetObject" ref="baiduAutoFetcherJob" />
+		<!-- 调用类中的方法 -->
+		<property name="targetMethod" value="work" />
+
+		<!-- 表示任务不会并发的执行,需要等第一个任务执行完才会执行第二个任务 -->
+		<property name="concurrent" value="false" />
+	</bean>
+
+	<!-- 任务调度定义 BaiduAutoFetcherJobKeyId -->
+	<!-- 要调用的工作类 -->
+	<bean id="baiduAutoFetcherJobKeyId"	class="com.iwgame.iwcloud.baidu.task.process.BaiduAutoFetcherJobKeyId" />
+	<!-- 定义调用对象和调用对象的方法 -->
+	<bean id="baiduAutoFetcherJobtaskKeyId"	class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<!-- 调用的类 -->
+		<property name="targetObject" ref="baiduAutoFetcherJobKeyId" />
+		<!-- 调用类中的方法 -->
+		<property name="targetMethod" value="work" />
+
+		<!-- 表示任务不会并发的执行,需要等第一个任务执行完才会执行第二个任务 -->
+		<property name="concurrent" value="false" />
+	</bean>
+	
+	
+	<!-- 本地任务调度定义 BaiduAutoFetcherJob -->
+	<!-- 要调用的工作类 -->
+	<bean id="baiduAutoFetcherJobLocal"	class="com.iwgame.iwcloud.baidu.task.process.BaiduAutoFetcherJobLocal" />
+	<!-- 定义调用对象和调用对象的方法 -->
+	<bean id="baiduAutoFetcherJobtaskLocal"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<!-- 调用的类 -->
+		<property name="targetObject" ref="baiduAutoFetcherJobLocal"/>
+		<!-- 调用类中的方法 -->
+		<property name="targetMethod" value="work" />
+
+		<!-- 表示任务不会并发的执行,需要等第一个任务执行完才会执行第二个任务 -->
+		<property name="concurrent" value="false" />
+	</bean>
+
+	<!-- 本地任务调度定义 BaiduAutoFetcherJobKeyId -->
+	<!-- 要调用的工作类 -->
+	<bean id="baiduAutoFetcherJobKeyIdLocal"	class="com.iwgame.iwcloud.baidu.task.process.BaiduAutoFetcherJobKeyIdLocal" />
+	<!-- 定义调用对象和调用对象的方法 -->
+	<bean id="baiduAutoFetcherJobtaskKeyIdLocal"	class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<!-- 调用的类 -->
+		<property name="targetObject" ref="baiduAutoFetcherJobKeyIdLocal" />
+		<!-- 调用类中的方法 -->
+		<property name="targetMethod" value="work" />
+
+		<!-- 表示任务不会并发的执行,需要等第一个任务执行完才会执行第二个任务 -->
+		<property name="concurrent" value="false" />
+	</bean>
+	
+	<!-- 抓取时间配置 -->
+	<bean id="fetcherConfig" class="com.iwgame.iwcloud.baidu.task.model.FetcherConfig">
+		<property name="fetcherBegin" value="${fetcherbegin}" />
+		<property name="fetcherEnd" value="${fetcherend}" />
+		<property name="saveFilePath" value="${savefilepath}" />
+		<property name="connectTimeoutMills" value="${connectTimeoutMills}" />
+		<property name="readTimeoutMills" value="${readTimeoutMills}" />
+		<property name="serverUrl" value="${serverUrl}" />
+		<property name="version" value="${version}" />
+		<property name="disableCNCheck" value="${disableCNCheck}" />
+	</bean>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<!-- 本地数据库配置 -->
+	
+	<!-- 蜀门 -->
+	<bean id="dataSourcesm" class="org.logicalcobwebs.proxool.ProxoolDataSource">
+		<property name="driverUrl" value="${sm.proxool.driver-url}" />
+		<property name="driver" value="${sm.proxool.driver-class}" />
+		<property name="user" value="${sm.user}" />
+		<property name="password" value="${sm.password}" />
+		<property name="alias" value="${sm.proxool.alias}" />
+		<property name="maximumActiveTime" value="${sm.proxool.maximum-active-time}" />
+		<property name="maximumConnectionCount" value="${sm.proxool.maximum-connection-count}" />
+		<property name="minimumConnectionCount" value="${sm.proxool.minimum-connection-count}" />
+		<property name="houseKeepingTestSql" value="${sm.proxool.house-keeping-test-sql}" />
+		<property name="testBeforeUse" value="${sm.proxool.test-before-use}" />
+		<property name="prototypeCount" value="${sm.proxool.prototype-count}" />
+	</bean>
+	<bean id="sqlSessionFactory-sm" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSourcesm" />
+		<property name="typeAliasesPackage" value="com.iwgame.iwcloud.baidu.task.model" />
+		<property name="mapperLocations" value="classpath:com/iwgame/sqlmap/**/*.xml" />
+	</bean>
+	<bean id="mapperScanner-sm" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory-sm" />
+		<property name="basePackage" value="com.iwgame.iwcloud.baidu.task.service.sm" />
+	</bean>
+	
+	
+	<!-- 醉逍遥 -->
+	<bean id="dataSourcezxy" class="org.logicalcobwebs.proxool.ProxoolDataSource">
+		<property name="driverUrl" value="${zxy.proxool.driver-url}" />
+		<property name="driver" value="${zxy.proxool.driver-class}" />
+		<property name="user" value="${zxy.user}" />
+		<property name="password" value="${zxy.password}" />
+		<property name="alias" value="${zxy.proxool.alias}" />
+		<property name="maximumActiveTime" value="${zxy.proxool.maximum-active-time}" />
+		<property name="maximumConnectionCount" value="${zxy.proxool.maximum-connection-count}" />
+		<property name="minimumConnectionCount" value="${zxy.proxool.minimum-connection-count}" />
+		<property name="houseKeepingTestSql" value="${zxy.proxool.house-keeping-test-sql}" />
+		<property name="testBeforeUse" value="${zxy.proxool.test-before-use}" />
+		<property name="prototypeCount" value="${zxy.proxool.prototype-count}" />
+	</bean>
+	<bean id="sqlSessionFactory-zxy" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSourcezxy" />
+		<property name="typeAliasesPackage" value="com.iwgame.iwcloud.baidu.task.model" />
+		<property name="mapperLocations" value="classpath:com/iwgame/sqlmap/**/*.xml" />
+	</bean>
+	<bean id="mapperScanner-zxy" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory-zxy" />
+		<property name="basePackage" value="com.iwgame.iwcloud.baidu.task.service.zxy" />
+	</bean>
+	
+	
+	<!-- 石器 -->
+	<bean id="dataSourcesq" class="org.logicalcobwebs.proxool.ProxoolDataSource">
+		<property name="driverUrl" value="${sq.proxool.driver-url}" />
+		<property name="driver" value="${sq.proxool.driver-class}" />
+		<property name="user" value="${sq.user}" />
+		<property name="password" value="${sq.password}" />
+		<property name="alias" value="${sq.proxool.alias}" />
+		<property name="maximumActiveTime" value="${sq.proxool.maximum-active-time}" />
+		<property name="maximumConnectionCount" value="${sq.proxool.maximum-connection-count}" />
+		<property name="minimumConnectionCount" value="${sq.proxool.minimum-connection-count}" />
+		<property name="houseKeepingTestSql" value="${sq.proxool.house-keeping-test-sql}" />
+		<property name="testBeforeUse" value="${sq.proxool.test-before-use}" />
+		<property name="prototypeCount" value="${sq.proxool.prototype-count}" />
+	</bean>
+	<bean id="sqlSessionFactory-sq" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSourcesq" />
+		<property name="typeAliasesPackage" value="com.iwgame.iwcloud.baidu.task.model" />
+		<property name="mapperLocations" value="classpath:com/iwgame/sqlmap/**/*.xml" />
+	</bean>
+	<bean id="mapperScanner-sq" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory-sq" />
+		<property name="basePackage" value="com.iwgame.iwcloud.baidu.task.service.sq" />
+	</bean>
+	
+</beans>

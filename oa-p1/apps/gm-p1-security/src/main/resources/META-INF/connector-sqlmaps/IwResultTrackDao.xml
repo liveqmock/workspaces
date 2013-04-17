@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="security.IwResultTrack">
+	<resultMap
+		type="com.iwgame.gm.p1.security.common.shared.model.IwResultTrack"
+		id="IwResultTrackMap">
+		<id property="id" column="id" />
+		<result property="batchid" column="batchid"/>
+		<result property="trackType" column="track_type" />
+		<result property="submitNum" column="submit_num"/>
+		<result property="successNum" column="success_num"/>
+		<result property="failedNum" column="failed_num"/>
+		<result property="submitTime" column="submit_time"/>
+		<result property="finishTime" column="finish_time"/>
+		<result property="operator" column="operator"/>
+	</resultMap>
+	<select id="selectCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+		select count(0) from iw_result_track where 1=1 
+			<if test="batchid!=null and  batchid!='' and batchid !='null'">
+				AND batchid = #{batchid}
+			</if>
+			<if test="operator!=null and operator!='null' and operator!=''">
+				AND operator like '%${operator}%' 
+			</if>	
+			<if test="startDate != null and startDate !='' and endDate != null and endDate !=''">
+				AND submit_time BETWEEN '${startDate} 00:00:00' AND '${endDate} 23:59:59' 
+			</if>
+	</select>
+	<select id="select" parameterType="java.util.Map" resultMap="IwResultTrackMap">
+		select * from iw_result_track where 1=1 
+			<if test="batchid!=null and  batchid!='' and batchid !='null'">
+				AND batchid = #{batchid}
+			</if>
+			<if test="operator!=null and operator!='null' and operator!=''">
+				AND operator like '%${operator}%' 
+			</if>	
+			<if test="startDate != null and startDate !='' and endDate != null and endDate !=''">
+				AND submit_time BETWEEN '${startDate} 00:00:00' AND '${endDate} 23:59:59' 
+			</if>
+			<if test="sortColumn !=null and sortColumn !='' and sortType !=null and sortType !=''">
+				ORDER BY ${sortColumn} ${sortType} 
+			</if>
+			<if test="limit >0 and offset >=0 ">
+				LIMIT #{offset},#{limit}
+			</if>
+	</select>
+	<insert id="insert" parameterType="com.iwgame.gm.p1.security.common.shared.model.IwResultTrack" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO iw_result_track (
+				batchid,
+				track_type,
+				submit_num,
+				submit_time,
+				operator
+			)VALUES(
+				#{batchid},
+				#{trackType},
+				#{submitNum},
+				NOW(),
+				#{operator}
+			)
+	</insert>
+	<update id="updateIwResultTrack" parameterType="com.iwgame.gm.p1.security.common.shared.model.IwResultTrack">
+		UPDATE iw_result_track
+		SET submit_num=#{submitNum}
+		WHERE batchid=#{batchid}
+	</update>
+</mapper>

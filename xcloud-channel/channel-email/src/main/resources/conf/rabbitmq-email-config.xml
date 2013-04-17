@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/rabbit 
+	http://www.springframework.org/schema/rabbit/spring-rabbit.xsd 
+	http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+
+	<!-- 配置MQ连接源 -->
+	<bean id="rabbitMailMQSource" class="com.rabbitmq.client.ConnectionFactory">
+		<property name="username" value="${mq.username}" />
+		<property name="password" value="${mq.password}" />
+		<property name="virtualHost" value="${mq.virtualhost}" />
+		<property name="host" value="${mq.host}" />
+		<property name="port" value="${mq.port}" />
+		<property name="requestedHeartbeat" value="5" />
+	</bean>
+
+	<bean id="connectionMailFactory" class="org.springframework.amqp.rabbit.connection.CachingConnectionFactory">
+		<constructor-arg ref="rabbitMailMQSource" />
+		<property name="channelCacheSize" value="${mq.channelcachesize}" />
+	</bean>
+
+	<!-- 创建rabbitAdmin 代理类,初始调用initialize,它会指定执行我们定义的Exchange,Queue,Binding -->
+	<bean class="org.springframework.amqp.rabbit.core.RabbitAdmin" init-method="initialize">
+		<constructor-arg ref="connectionMailFactory" />
+	</bean>
+
+	<!-- 声明消息转换器为SimpleMessageConverter -->
+	<bean id="messageConverter"	class="org.springframework.amqp.support.converter.SimpleMessageConverter" />
+
+
+	<bean id="rabbitMailTemplate" class="org.springframework.amqp.rabbit.core.RabbitTemplate">
+		<constructor-arg ref="connectionMailFactory" />
+	</bean>
+
+
+
+
+	<!-- Email 分发队列 -->
+	<bean id="emailDispatchExchange" class="org.springframework.amqp.core.DirectExchange">
+		<constructor-arg value="${common.email.exchange.name}" />
+	</bean>
+	<bean id="emailDispatchQueue" class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${common.task.email.dispatch.queue.name}" />
+	</bean>
+	<bean id="emailDispatchSendingQueueBinding" class="org.springframework.amqp.core.Binding">
+		<constructor-arg index="0" value="${common.task.email.dispatch.queue.name}" />
+		<constructor-arg index="1" value="QUEUE" />
+		<constructor-arg index="2" value="${common.email.exchange.name}" />
+		<constructor-arg index="3" value="${common.task.email.dispatch.queue.binding.routingkey}" />
+		<constructor-arg index="4">
+			<null />
+		</constructor-arg>
+	</bean>
+	<!-- Email 分发队列 END -->
+
+
+
+	<!-- Email 汉启消息队列 -->
+	<bean id="emailHQExchange" class="org.springframework.amqp.core.DirectExchange">
+		<constructor-arg value="${common.email.exchange.name}" />
+	</bean>
+	<bean id="emailHQQueue" class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${common.task.email.hq.queue.name}" />
+	</bean>
+	<bean id="emailHQSendingQueueBinding" class="org.springframework.amqp.core.Binding">
+		<constructor-arg index="0" value="${common.task.email.hq.queue.name}" />
+		<constructor-arg index="1" value="QUEUE" />
+		<constructor-arg index="2" value="${common.email.exchange.name}" />
+		<constructor-arg index="3" value="${common.task.email.hq.queue.binding.routingkey}" />
+		<constructor-arg index="4">
+			<null />
+		</constructor-arg>
+	</bean>
+	<!-- Email 汉启消息队列 END -->
+
+
+	<!-- Email 消息队列 -->
+	<bean id="emailYBLExchange" class="org.springframework.amqp.core.DirectExchange">
+		<constructor-arg value="${common.email.exchange.name}" />
+	</bean>
+	<bean id="emailYBLQueue" class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${common.task.email.ybl.queue.name}" />
+	</bean>
+	<bean id="emailYBLSendingQueueBinding" class="org.springframework.amqp.core.Binding">
+		<constructor-arg index="0" value="${common.task.email.ybl.queue.name}" />
+		<constructor-arg index="1" value="QUEUE" />
+		<constructor-arg index="2" value="${common.email.exchange.name}" />
+		<constructor-arg index="3" value="${common.task.email.ybl.queue.binding.routingkey}" />
+		<constructor-arg index="4">
+			<null />
+		</constructor-arg>
+	</bean>
+	<!-- Email 汉启消息队列 END -->
+	
+	
+	
+	<bean id="emailManageNotificationExchange" class="org.springframework.amqp.core.DirectExchange">
+		<constructor-arg value="${common.email.notification.exchange.name}" />
+	</bean>
+	<bean id="emailManageNotificationQueue" class="org.springframework.amqp.core.Queue">
+		<constructor-arg value="${common.task.email.notification.queue.name}" />
+	</bean>
+	<bean id="emailManageNoticeSendingQueueBinding" class="org.springframework.amqp.core.Binding">
+		<constructor-arg index="0" value="${common.task.email.notification.queue.name}" />
+		<constructor-arg index="1" value="QUEUE" />
+		<constructor-arg index="2" value="${common.email.exchange.name}" />
+		<constructor-arg index="3" value="${common.task.email.notification.queue.binding.routingkey}" />
+		<constructor-arg index="4">
+			<null />
+		</constructor-arg>
+	</bean>
+	<!-- Email 汉启消息队列 END -->
+
+</beans>

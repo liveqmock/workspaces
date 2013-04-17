@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.iwgame.channel</groupId>
+	<artifactId>xcloud-channel</artifactId>
+	<packaging>pom</packaging>
+	<name>Iwgame Platform</name>
+	<description />
+	<parent>
+		<groupId>com.developer</groupId>
+		<artifactId>developer</artifactId>
+		<version>1.0.0</version>
+	</parent>
+	<modules>
+		<module>data-handler</module>
+		<module>thirdparty</module>
+		<module>channel-email</module>
+		<module>channel-http</module>
+		<module>channel-p1game</module>
+		<module>channel-p1ucenter</module>
+		<module>channel-sms</module>
+		<module>channel-webservice</module>
+		<!-- <module>xtask-monitor</module> -->
+	</modules>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<additionalProjectnatures>
+						<projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>
+					</additionalProjectnatures>
+					<additionalBuildcommands>
+						<buildcommand>org.springframework.ide.eclipse.core.springbuilder</buildcommand>
+					</additionalBuildcommands>
+					<downloadSources>true</downloadSources>
+					<downloadJavadocs>false</downloadJavadocs>
+					<wtpversion>1.5</wtpversion>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.1</version>
+				<configuration>
+					<descriptors>
+						<descriptor>xcloud-channel-full.xml</descriptor>
+					</descriptors>
+					<finalName>xcloud-channel</finalName>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	<properties>
+		<!-- Framework dependency versions -->
+		<junit.version>4.8.1</junit.version>
+	</properties>
+</project>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+	xsi:schemaLocation="http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit.xsd http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+
+	<!-- 更新黑名单-监听生产者发送的消息开始 -->
+	<!-- 用于接收消息的处理类 -->
+	<bean id="updateCRLTaskHandler"
+		class="com.iwgame.xengine.xtask.cps.worker.context.UpdateCRLTask"/>
+
+	<!-- 用于消息的监听的代理类MessageListenerAdapter -->
+	<bean id="updateCRLTaskListenerAdapter"
+		class="org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter">
+		<constructor-arg ref="updateCRLTaskHandler" />
+		<property name="defaultListenerMethod" value="handleMessage" />
+		<property name="messageConverter" ref="messageConverter" />
+	</bean>
+
+	<!-- 用于消息的监听的容器类SimpleMessageListenerContainer，对于queueName的值一定要与定义的Queue的值相同 -->
+	<bean
+		class="org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer">
+		<property name="queueNames" value="${cps.task.updatecrl.queue.name}" />
+		<property name="connectionFactory" ref="cpsConnectionFactory" />
+		<property name="messageListener" ref="updateCRLTaskListenerAdapter" />
+		<property name="concurrentConsumers" value="3" />
+	</bean>
+	<!-- 更新黑名单-监听生产者发送的消息结束 -->
+	
+	<!-- 更新停用列表-监听生产者发送的消息开始 -->
+	<!-- 用于接收消息的处理类 -->
+	<bean id="updateDisableTaskHandler"
+		class="com.iwgame.xengine.xtask.cps.worker.context.UpdateDisableListTask"/>
+
+	<!-- 用于消息的监听的代理类MessageListenerAdapter -->
+	<bean id="updateDisableTaskListenerAdapter"
+		class="org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter">
+		<constructor-arg ref="updateDisableTaskHandler" />
+		<property name="defaultListenerMethod" value="handleMessage" />
+		<property name="messageConverter" ref="messageConverter" />
+	</bean>
+
+	<!-- 用于消息的监听的容器类SimpleMessageListenerContainer，对于queueName的值一定要与定义的Queue的值相同 -->
+	<bean
+		class="org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer">
+		<property name="queueNames" value="${cps.task.updatedisable.queue.name}" />
+		<property name="connectionFactory" ref="cpsConnectionFactory" />
+		<property name="messageListener" ref="updateDisableTaskListenerAdapter" />
+		<property name="concurrentConsumers" value="3" />
+	</bean>
+	<!-- 更新停用列表-监听生产者发送的消息结束 -->
+	
+	<!--更新分成方案-监听生产者发送的消息开始 -->
+	<!-- 用于接收消息的处理类 -->
+	<bean id="updatePSSTaskHandler"
+		class="com.iwgame.xengine.xtask.cps.worker.context.UpdateProfitSharingSchemaTask"/>
+
+	<!-- 用于消息的监听的代理类MessageListenerAdapter -->
+	<bean id="updatePSSTaskListenerAdapter"
+		class="org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter">
+		<constructor-arg ref="updatePSSTaskHandler" />
+		<property name="defaultListenerMethod" value="handleMessage" />
+		<property name="messageConverter" ref="messageConverter" />
+	</bean>
+
+	<!-- 用于消息的监听的容器类SimpleMessageListenerContainer，对于queueName的值一定要与定义的Queue的值相同 -->
+	<bean
+		class="org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer">
+		<property name="queueNames" value="${cps.task.updateprofitsharingschema.queue.name}" />
+		<property name="connectionFactory" ref="cpsConnectionFactory" />
+		<property name="messageListener" ref="updatePSSTaskListenerAdapter" />
+		<property name="concurrentConsumers" value="3" />
+	</bean>
+	<!-- 更新分成方案-监听生产者发送的消息结束 -->
+
+
+
+</beans>

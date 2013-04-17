@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="adcollect.keys">
+       
+        <resultMap type="com.iwgame.gm.p1.adcollect.shared.model.AdvertisementInfo" id="archivedGuildRace" >
+		<result property="id"  column="ad_id"  javaType="string" />
+		<result property="type" column="ad_type"  javaType="string" />
+		<result property="keyword" column="ad_key_name"  javaType="string" />
+		<result property="mark"  column="ad_mark"  javaType="string" />
+		<result property="url" column="ad_url"  javaType="string" />
+		<result property="addtime" column="ad_add_time"  javaType="string" />
+		<result property="media" column="media_id"  javaType="string" />
+		<result property="status" column="ad_status"  javaType="string" />
+	   </resultMap>    
+
+        <resultMap type="com.iwgame.gm.p1.adcollect.shared.model.Media" id="media" >
+		<result property="mediaId"  column="media_id"  javaType="string" />
+		<result property="mediaName" column="media_name"  javaType="string" />
+	   </resultMap>    
+        
+
+        
+        
+        
+      <!-- 查询修改前的广告 -->
+	 <select id="getInitInfo" resultMap="archivedGuildRace" parameterType="java.util.Map">
+		SELECT *
+		FROM 
+			iw_search_baidu_ad_info
+		<where>
+		<if test="adid != null and adid != ''">
+		  ad_id = #{adid}
+		</if>
+		</where>
+	</select>
+        
+     <!-- 查询媒体id -->
+    <select id="getMediaId" resultType="string" parameterType="java.util.Map">
+		SELECT media_id
+		FROM 
+			iw_search_baidu_media_info
+		where 1=1
+		<if test="mediaName != null and mediaName != ''">
+		  and media_name =#{mediaName}
+		</if>
+	</select>
+	
+     <!-- 查询最大广告id -->
+    <select id="getAdid" resultType="int" parameterType="java.util.Map">
+		SELECT 	max(ad_id)
+		FROM 
+			iw_search_baidu_ad_info
+	</select>
+    <!-- 查询广告ID是否存在 -->
+    <select id="getAdIdAccount" resultType="int" parameterType="java.util.Map">
+		SELECT 	count(*)
+		FROM 
+			iw_search_baidu_ad_info
+		where 1=1
+		<if test="adId != null and adId != ''">
+		  and ad_id=#{adId}
+		</if>
+	</select>
+     <!-- 模糊查询广告信息总条数 -->
+    <select id="getTotal" resultType="int" parameterType="java.util.Map">
+		SELECT 	count(*)
+		FROM 
+			iw_search_baidu_ad_info
+		where 1=1
+		<if test="media != null and media != ''">
+		  and media_id=#{media}
+		</if>
+		<if test="keyword != null and keyword != ''">
+		  and ad_key_name  like '%${keyword}%'
+		</if>
+		 <if test="type != null and type != ''">
+		  and ad_type in ${type}
+		</if>
+		<if test="mark != null and mark != ''">
+		  and ad_mark in ${mark}
+		</if>
+	</select>
+	 <!-- 模糊查询广告信息 -->
+	 <select id="getRace" resultMap="archivedGuildRace" parameterType="java.util.Map">
+		SELECT *
+		FROM 
+			iw_search_baidu_ad_info
+		where 1=1
+		<if test="media != null and media != ''">
+		  and media_id=#{media}
+		</if>
+		<if test="keyword != null and keyword != ''">
+		  and ad_key_name  like '%${keyword}%'
+		</if>
+		 <if test="type != null and type != ''">
+		  and ad_type in ${type}
+		</if>
+		<if test="mark != null and mark != ''">
+		  and ad_mark in ${mark}
+		</if>
+		order by ad_add_time desc
+		<if test="offset != null and limit != null ">
+			LIMIT #{offset},#{limit}
+		</if>
+	</select>
+     <!-- 精确查询广告信息总条数 -->
+    <select id="getTotalAcc" resultType="int" parameterType="java.util.Map">
+		SELECT 	count(*)
+		FROM 
+			iw_search_baidu_ad_info
+		where 1=1
+		<if test="media != null and media != ''">
+		  and media_id=#{media}
+		</if>
+		<if test="keyword != null and keyword != ''">
+		  and ad_key_name = #{keyword}
+		</if>
+		 <if test="type != null and type != ''">
+		  and ad_type in ${type}
+		</if>
+		<if test="mark != null and mark != ''">
+		  and ad_mark in ${mark}
+		</if>
+	</select>
+	 <!-- 精确查询广告信息 -->
+	 <select id="getRaceAcc" resultMap="archivedGuildRace" parameterType="java.util.Map">
+		SELECT *
+		FROM 
+			iw_search_baidu_ad_info
+		where 1=1
+		<if test="media != null and media != ''">
+		  and media_id=#{media}
+		</if>
+		<if test="keyword != null and keyword != ''">
+		  and ad_key_name = #{keyword}
+		</if>
+		 <if test="type != null and type != ''">
+		  and ad_type in ${type}
+		</if>
+		<if test="mark != null and mark != ''">
+		  and ad_mark in ${mark}
+		</if>
+		order by ad_add_time desc
+		<if test="offset != null and limit != null ">
+			LIMIT #{offset},#{limit}
+		</if>
+	</select>
+	
+     <!-- 按广告id查询广告信息总条数 -->
+    <select id="getTotalById" resultType="int" parameterType="java.util.Map">
+		SELECT 	count(*)
+		FROM 
+			iw_search_baidu_ad_info
+		where 1=1 
+		<if test="media != null and media != ''">
+		  and media_id=#{media}
+		</if>
+		<if test="adid != null and adid != ''">
+		  and ad_id  = #{adid}
+		</if>
+		 <if test="type != null and type != ''">
+		  and ad_type in ${type}
+		</if>
+		<if test="mark != null and mark != ''">
+		  and ad_mark in ${mark}
+		</if>
+	</select>
+	 <!-- 按广告id广告信息 -->
+	 <select id="getRaceById" resultMap="archivedGuildRace" parameterType="java.util.Map">
+		SELECT *
+		FROM 
+			iw_search_baidu_ad_info
+		where 1=1
+		<if test="media != null and media != ''">
+		  and media_id=#{media}
+		</if>
+		<if test="adid != null and adid != ''">
+		  and ad_id  = #{adid}
+		</if>
+		 <if test="type != null and type != ''">
+		  and ad_type in ${type}
+		</if>
+		<if test="mark != null and mark != ''">
+		  and ad_mark in ${mark}
+		</if>
+		order by ad_add_time desc
+		<if test="offset != null and limit != null ">
+			LIMIT #{offset},#{limit}
+		</if>
+	</select>
+	<!-- pfwang start -->
+	 <select id="getRaceListByKeyName" resultMap="archivedGuildRace" parameterType="java.util.Map">
+		SELECT *
+		FROM 
+			iw_search_baidu_ad_info
+		where 1=1
+		<if test="keyword != null and keyword != ''">
+		  and ad_key_name = #{keyword}
+		</if>
+		order by ad_add_time desc
+	</select>
+	<!-- pfwang  end -->
+    <!-- 插入广告信息 -->
+    <insert id="insertAdInfo" parameterType="java.util.Map">
+       insert into iw_search_baidu_ad_info 
+        (ad_type,
+        ad_key_name,
+        ad_mark,
+        ad_url,
+        media_id,
+        ad_id,
+        ad_add_time) 
+        values 
+        (#{type},
+        #{keyword},
+        #{mark},
+        #{link},
+        #{media},
+         #{adid},
+       now())
+    </insert>
+
+    <!-- 批量导入时插入广告信息 -->
+    <insert id="addAdInfo" parameterType="java.util.Map">
+       insert into iw_search_baidu_ad_info 
+        (ad_type,
+        ad_key_name,
+        ad_mark,
+        ad_url,
+        media_id,
+        ad_id,
+        ad_status,
+        ad_add_time) 
+        values 
+        (#{type},
+        #{keyword},
+        #{mark},
+        #{link},
+        #{media},
+         #{adid},
+         #{status},
+       now())
+    </insert>
+   
+    <!-- 批量更新媒体 -->
+	<update id="batchUpdateAdInfo"  parameterType="java.util.Map">
+		UPDATE `iw_search_baidu_ad_info` 
+		set   
+		    ad_type = #{type},
+	        ad_key_name = #{keyword},
+	        ad_mark = #{mark},
+	        ad_url =  #{link},
+	        media_id = #{media},
+	        ad_status = #{status}
+		<where>
+			<if test="adid != null and adid != ''">
+			  and ad_id = #{adid}
+			</if>
+		</where>
+	</update>
+   
+   
+   
+	 <!-- 媒体 -->
+	 <select id="getMedia" resultMap="media" parameterType="java.util.Map">
+		SELECT *
+		FROM 
+			iw_search_baidu_media_info
+	</select>
+    	
+
+	 <!-- 更新媒体 -->
+	<update id="updateAdInfo"  parameterType="com.iwgame.gm.p1.adcollect.shared.model.AdvertisementInfo">
+		UPDATE `iw_search_baidu_ad_info` 
+		set   
+		     ad_type  = #{type},
+		     ad_mark = #{mark},
+		      ad_url=#{url},
+		      ad_status =#{status}
+		<where>
+			<if test="id != null and id != ''">
+			  and ad_id = #{id}
+			</if>
+		</where>
+	</update>
+    	
+    	
+</mapper>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<appunit>
+	<!-- AU类型,枚举值normal: 包含UI功能的AU, core:后台组件模块 -->
+	<type>core</type>
+	<!-- AU名称 -->
+	<name>P1Analysis</name>
+	<!-- AU标题,主要用于管理平台中的菜单显示用 -->
+	<title>P1报表</title>
+	<!-- AU的功能描述 -->
+	<description>P1项目报表</description>
+	<!-- AU版本号的声明 -->
+	<version>1.0</version>
+	<!-- AU使用的产品 -->
+	<product>P-P1</product>
+	<!-- 标志,用于分组 -->
+	<app>GM</app>
+	<!-- GWT Module Name,被框架继承 -->
+	<gwt-module>com.iwgame.gm.p1.analysis.P1Analysis</gwt-module>
+	
+	
+	<!-- 后台服务配置 -->
+	<services>
+		<service endpoint="com.iwgame.gm.p1.analysis.modules.report.shared.rpc.ReportService">
+			<property name="factory" value="spring" />
+			<property name="source" value="test" />
+		</service>
+	</services>
+</appunit>

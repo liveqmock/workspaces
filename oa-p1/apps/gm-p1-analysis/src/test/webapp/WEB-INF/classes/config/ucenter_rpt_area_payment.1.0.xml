@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rpt:report xmlns:rpt="http://www.iwgame.com/report" 
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+ xsi:schemaLocation="http://www.iwgame.com/report report.xsd ">
+    <rpt:dataSource targetType="game"  groupId="${pid}-UcenterPay"/>
+ 
+    <!-- 布局配置 -->
+    <rpt:form title="数据统计——大区充值总汇" >
+        <rpt:parameter dataType="dateRange" fieldname="daterange" labelname="起始时间" dateShortcut="5,15,31" validateTimeSpan="31day"/>
+    </rpt:form>
+	
+  <!-- 设计文件配置 -->
+    <rpt:designFiles>
+      <rpt:designFile filename="ucenter_rpt_area_payment.rptdesign" title="数据统计——大区充值总汇"/>
+    </rpt:designFiles>
+</rpt:report>

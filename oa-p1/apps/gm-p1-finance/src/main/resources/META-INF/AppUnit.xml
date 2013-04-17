@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<appunit>
+	<!-- AU类型,枚举值normal: 包含UI功能的AU, core:后台组件模块 -->
+	<type>normal</type>
+	<!-- AU名称 -->
+	<name>finance</name>
+	<!-- AU标题,主要用于管理平台中的菜单显示用 -->
+	<title>finance</title>
+	<!-- AU的功能描述 -->
+	<description>finance</description>
+	<!-- AU版本号的声明 -->
+	<version>1.0</version>
+	<!-- AU使用的产品 -->
+	<product>P-P1,P-P1.5</product>
+	<!-- 标志,用于分组 -->
+	<app>GM</app>
+	<!-- GWT Module Name,被框架继承 -->
+	<gwt-module>com.iwgame.gm.p1.finance.finance</gwt-module>
+	<!-- 菜单路径配置 -->
+	<menupaths>
+		<!-- 样例
+		<menupath name="菜单名" title="菜单标题" url="appname/modulename/action" type="normal" access="appname-modulename-action" />
+		 -->		
+	</menupaths>
+	
+	<!-- 模块配置 -->
+	<modules>
+		<module id="CheckBill" name="checkBill" package="com.iwgame.gm.p1.finance.modules.checkBill.client" />
+	</modules>
+	
+	<!-- 后台服务配置 -->
+	<services>
+		<!-- 样例
+		<service endpoint="" class="" />
+		<service endpoint="com.iwgame.TestService">
+			<property name="factory" value="spring" />
+			<property name="source" value="beanid" />
+		</service>
+		 -->		
+	</services>
+	
+	<!-- 访问控制策略 -->
+	<accesses>
+		<!-- 样例
+			<access name="appname-modulename-action" title="标题" />
+		 -->		
+	</accesses>
+</appunit>

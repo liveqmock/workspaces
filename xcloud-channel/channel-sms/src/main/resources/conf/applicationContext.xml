@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:jaxrs="http://cxf.apache.org/jaxrs" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://cxf.apache.org/jaxrs
+	 http://cxf.apache.org/schemas/jaxrs.xsd
+     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+     http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+
+	<import resource="classpath:conf/applicationContext-support.xml" />
+
+	<context:component-scan base-package="com.iwgame.xengine.xtask.sms" />
+	<context:annotation-config />
+	
+	
+
+	<!-- 加载配置文件 加密的 -->
+	<bean class="org.jasypt.spring.properties.EncryptablePropertyPlaceholderConfigurer">
+		<constructor-arg ref="configurationEncryptor" />
+		<property name="order" value="1" />
+		<property name="ignoreUnresolvablePlaceholders" value="true" />
+		<property name="ignoreResourceNotFound" value="true" />
+		<property name="locations">
+			<list>
+				<!--开发环境下的配置文件 -->
+				<value>classpath:xtask-sms-mq.properties</value>
+
+				<!-- 生产环境下的配置文件 -->
+				<value>file:/var/config/xtask-sms/xtask-sms-mq.properties</value>
+
+			</list>
+		</property>
+		<property name="fileEncoding" value="utf-8" />
+	</bean>
+
+	<!-- 配置MQ连接源 -->
+	<bean id="rabbitMQSource" class="com.rabbitmq.client.ConnectionFactory">
+		<property name="username" value="${mq.username}" />
+		<property name="password" value="${mq.password}" />
+		<property name="virtualHost" value="${mq.virtualhost}" />
+		<property name="host" value="${mq.host}" />
+		<property name="port" value="${mq.port}" />
+		<property name="requestedHeartbeat" value="5" />
+	</bean>
+
+	<bean id="connectionFactory"
+		class="org.springframework.amqp.rabbit.connection.CachingConnectionFactory">
+		<constructor-arg ref="rabbitMQSource" />
+		<property name="channelCacheSize" value="${mq.channelcachesize}" />
+	</bean>
+
+	<!-- 创建rabbitAdmin 代理类,初始调用initialize,它会指定执行我们定义的Exchange,Queue,Binding -->
+	<bean class="org.springframework.amqp.rabbit.core.RabbitAdmin"
+		init-method="initialize">
+		<constructor-arg ref="connectionFactory" />
+	</bean>
+
+	<!-- 声明消息转换器为SimpleMessageConverter -->
+	<bean id="messageConverter"	class="org.springframework.amqp.support.converter.SimpleMessageConverter" />
+	
+	<!-- 自定义配置文件 -->
+	<bean class="com.iwgame.xengine.xtask.sms.util.ConfigProperties" init-method="init">
+		<property name="fileEncoding" value="UTF-8" />
+		<property name="ignoreResourceNotFound" value="true" />
+		<property name="locations">
+			<list>
+				<!-- 开发环境下的配置文件 -->
+				<value>classpath:sms-utils.properties</value>
+
+				<!-- 生产环境下的配置文件 -->
+				<value>file:/var/config/xtask-sms/sms-utils.properties</value>
+			</list>
+		</property>
+	</bean>
+
+</beans>

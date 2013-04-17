@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rpt:report xmlns:rpt="http://www.iwgame.com/report" 
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+ xsi:schemaLocation="http://www.iwgame.com/report report.xsd ">
+     
+    <!-- 数据源配置 -->
+    <rpt:dataSource targetType="game" groupId="${pid}-AD"/>
+    
+    <rpt:reportName template="#{productName}_30日报表_${mediaName}_#{queryDate}-#{beginDate}to#{endDate}"/>
+ 
+    <!-- 布局配置 -->
+    <rpt:form title="硬广数据三十日报表" columns="3" >
+       <rpt:parameter index="1" dataType="selector" selectorType="media"  fieldname="media" labelname="媒体类别" allowBlank="true" colspan="3" /> 
+       <rpt:parameter index="2" dataType="string" fieldname="ad_name" labelname="广告名称/ID" allowBlank="true" column="1"/>
+       <rpt:parameter index="3" dataType="string" fieldname="contract" labelname="合同编号" allowBlank="true" column="2"/>
+       <rpt:parameter index="4" dataType="string" fieldname="adgroup" labelname="广告组/ID" allowBlank="true" column="3"/>
+       <rpt:parameter index="5" dataType="dateRange" fieldname="daterange" labelname="起始时间" dateShortcut="BASIC" column="1" colspan="3"/> 
+       <rpt:parameter index="7" dataType="checkbox" fieldname="isgroup" labelname="广告名/合同/广告组" boxLabels="分组统计"  boxValues="true" allowBlank="true"  boxCheckAll="false" column="2"/> 
+    </rpt:form>
+	
+  <!-- 设计文件配置 -->
+    <rpt:designFiles title="报表类别" index="6" >
+      <rpt:designFile filename="rpt_hardads_thirty_detail_by_adname.rptdesign" title="广告名称明细"/>
+      <rpt:designFile filename="rpt_hardads_thirty_detail_by_adname_total.rptdesign" title="广告名称汇总"/>
+      <rpt:designFile filename="rpt_hardads_thirty_detail_by_adgroup.rptdesign" title="广告组明细"/>
+      <rpt:designFile filename="rpt_hardads_thirty_detail_by_adgroup_total.rptdesign" title="广告组汇总"/>
+      <rpt:designFile filename="rpt_hardads_thirty_detail_by_contract.rptdesign" title="合同名称明细"/>
+      <rpt:designFile filename="rpt_hardads_thirty_detail_by_contract_total.rptdesign" title="合同名称汇总"/>
+	</rpt:designFiles>
+</rpt:report>

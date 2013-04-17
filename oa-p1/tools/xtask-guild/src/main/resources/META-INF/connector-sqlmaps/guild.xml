@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="guild.xtask">
+
+
+	<!-- 加载当前开启的公会赛 -->
+	<select id="queryRace" resultType="com.iwgame.xengine.xtask.guild.model.Race">
+		SELECT 
+			race_id as id, 
+			score_formula as formula,
+			start_date as startDate,
+			end_date as endDate,
+			server_start_date as serverStartDate,
+			server_end_date as serverEndDate
+		FROM guild_race
+		WHERE status=1
+	</select>
+	
+	<!-- 加载当前开启公会赛的参赛用户 -->
+	<select id="queryRaceJoiner" resultType="com.iwgame.xengine.xtask.guild.model.CachedJoiner">
+		SELECT
+			grj.joiner_id as joinerId,
+			grj.guild_id as guildId,
+			grj.name as name,
+			grj.level as level,
+			grj.score as score,
+			grj.`status` as status
+		FROM 
+			guild_race_joiner AS grj, 
+			guild_race AS gr	
+		WHERE 
+				grj.race_id=gr.race_id 
+			AND 
+				gr.`status`=1
+			AND
+				grj.`status`>0
+	</select>
+	
+	<select id="canJoinRace" resultType="hashmap">
+		SELECT * FROM guild_race_current WHERE guild_id=#{guildId} AND race_id=#{raceId}
+	</select>
+	
+	<!-- 加载当前开启公会赛的参赛服务器 -->
+	<select id="queryRaceServer" resultType="com.iwgame.xengine.xtask.guild.model.CachedServer">
+		SELECT
+			grs.server_id as serverId,
+			grs.zone as zone,
+			grs.open_date as openDate,
+			grs.`status` as status
+		FROM 
+			guild_race_server AS grs, 
+			guild_race AS gr	
+		WHERE 
+				grs.race_id=gr.race_id 
+			AND 
+				gr.`status`=1
+	</select>
+
+	<!-- 新建一个公会 -->
+	<insert id="registGuild" parameterType="com.iwgame.xengine.xtask.guild.model.RegistGuild">
+		<selectKey resultType="int" keyProperty="guildId">  
+    		SELECT LAST_INSERT_ID()  
+  		</selectKey>
+		INSERT INTO guild_ext(account,name,reg_time,reg_ip,email,intro,`status`,password)
+		VALUES(#{username},#{name},#{regDateTime},#{ip},#{email},#{intro},0,#{password})
+	</insert>
+	
+	<select id="queryCurrentRaceGuild" resultType="com.iwgame.xengine.xtask.guild.model.CachedRank">
+		SELECT guild_id AS guildId, score
+		FROM guild_race_current
+		WHERE race_id=(select gr.race_id from guild_race as gr where gr.`status`=1)
+	</select>
+	
+	<insert id="joinRace" parameterType="hashmap">
+		<selectKey resultType="int" keyProperty="joinerId">  
+    		SELECT LAST_INSERT_ID()  
+  		</selectKey>
+		INSERT INTO guild_race_joiner(race_id,guild_id,name,atime,status,onlinetime,level,paid,consume,score)
+		VALUES((select gr.race_id from guild_race as gr where gr.`status`=1),#{guildId},#{name},#{regTime},9,0,0,0,0,0)
+	</insert>
+	
+	<update id="addConsume">
+		UPDATE guild_race_joiner SET consume=consume+#{money}
+		WHERE name=#{username} AND race_id=(select gr.race_id from guild_race as gr where gr.`status`=1)
+	</update>
+	
+	<update id="addPaid">
+		UPDATE guild_race_joiner SET paid=paid+#{money}
+		WHERE name=#{username} AND race_id=(select gr.race_id from guild_race as gr where gr.`status`=1)
+	</update>
+	
+	<update id="updateLogin">
+		UPDATE guild_race_joiner SET onlinetime=onlinetime+#{onlineTime}, last_login=#{lastLogin}
+		WHERE name=#{username} AND race_id=(select gr.race_id from guild_race as gr where gr.`status`=1)
+	</update>
+	
+	 <update id="updateActor">
+	 	UPDATE guild_race_joiner SET level=#{level}, zone=#{zone}, `group`=#{group}, score=#{score}
+		WHERE name=#{username} AND race_id=(select gr.race_id from guild_race as gr where gr.`status`=1)
+	 </update>
+	 
+	 <update id="updateGuildJoiner">
+	 	UPDATE 
+	 		guild_race_current 
+	 	Set 
+	 		joiners=joiners+1 
+	 	where 
+	 		race_id=(select gr.race_id from guild_race as gr where gr.`status`=1) 
+	 	and 
+	 		guild_id=#{guildId}
+	 </update>
+	 <update id="updateGuildScore">
+	 	UPDATE 
+	 		guild_race_current 
+	 	Set 
+	 		score=score+#{score} 
+	 	where 
+	 		race_id=(select gr.race_id from guild_race as gr where gr.`status`=1) 
+	 	and 
+	 		guild_id=#{guildId}
+	 </update>
+	 <update id="updateGuildPaid">
+	 	UPDATE 
+	 		guild_race_current 
+	 	Set 
+	 		paid=paid+#{paid} 
+	 	where 
+	 		race_id=(select gr.race_id from guild_race as gr where gr.`status`=1) 
+	 	and 
+	 		guild_id=#{guildId}
+	 </update>
+	 <update id="updateGuildConsume">
+	 	UPDATE 
+	 		guild_race_current 
+	 	Set 
+	 		consume=consume+#{consume} 
+	 	where 
+	 		race_id=(select gr.race_id from guild_race as gr where gr.`status`=1) 
+	 	and 
+	 		guild_id=#{guildId}
+	 </update>
+</mapper>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module rename-to='gmp1'>
+	<!-- This file must be overwrite by AppGenerator.-->
+	<inherits name='com.iwgame.gm.p1.analysis.P1Analysis'/>
+	<inherits name='com.iwgame.gm.p1.adcollect.ADCollect'/>
+	<inherits name='com.iwgame.gm.p1.security.Security'/>
+	<inherits name='com.iwgame.gm.p1.logmonitor.LogMonitor'/>
+	<inherits name='com.iwgame.iwcloud.flume.admin.FlumeAdmin'/>
+	<inherits name='com.iwgame.account.kill.Kill'/>
+</module>

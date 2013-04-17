@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="killer.xtask">
+
+	<resultMap type="com.iwgame.xengine.xtask.killer.model.Policy"
+		id="policy">
+		<id column="id" property="id" />
+		<result column="title" property="title" />
+		<result column="object" property="mac" />
+		<result column="rule" property="rule"
+			typeHandler="com.iwgame.xengine.xtask.killer.typehandler.JsonTypeHandler" />
+		<result column="content" property="content" />
+		<result column="start_date" property="startDate" />
+	</resultMap>
+
+	<!-- 查询所有启动的封杀策略 -->
+	<select id="queryPolicies" resultMap="policy">
+		SELECT id, title, object,
+		content, content as rule, start_date FROM kill_policy WHERE `status`=1
+		AND object_id='MAC'
+	</select>
+	<!-- 查询一条指定ID的封杀策略 -->
+	<select id="queryPolicy" resultMap="policy">
+		SELECT id, title, object,
+		content, content as rule, start_date FROM kill_policy WHERE `status`=1
+		AND object_id='MAC' AND id=#{id}
+	</select>
+	<!-- 查询一条指定ID的封杀理由 -->
+	<select id="queryReason" parameterType="int" resultType="string">
+		SELECT
+		reason FROM kill_reason WHERE id=#{id}
+	</select>
+	<!-- 启用一条封杀策略 -->
+	<update id="activePolicy" parameterType="hashmap">
+		UPDATE kill_policy SET
+		start_date=#{startDate}, modifier=#{modifier}, `status`=1 WHERE
+		id=#{id}
+	</update>
+	<!-- 停用一条封杀策略 -->
+	<update id="deactivePolicy" parameterType="hashmap">
+		UPDATE kill_policy SET
+		`status`=0, modifier=#{modifier} WHERE id=#{id}
+	</update>
+	<!-- 延期一天封杀策略 -->
+	<update id="prolongPolicy" parameterType="hashmap">
+		UPDATE kill_policy SET
+		start_date=#{startDate}, modifier=#{modifier} WHERE id=#{id}
+	</update>
+	<!-- 记录封杀日志 -->
+	<insert id="writeKillLog" parameterType="com.iwgame.xengine.xtask.killer.model.KillEvent">
+		INSERT INTO
+		kill_log(opt_type,policy_title,policy_content,accountid,account_name,kill_time,kill_days,remark,object_id,object)
+		values(1,#{title},#{content},#{accountid},#{accountName},#{killDate},#{days},#{reason},'MAC',#{mac})
+	</insert>
+	
+
+</mapper>

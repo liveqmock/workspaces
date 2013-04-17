@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+	xsi:schemaLocation="http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit.xsd http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	
+	
+	<!-- 道具卡用于接收消息的处理类 -->
+	<bean id="itemCardTaskHandler"	class="com.iwgame.xengine.xtask.game.worker.itemcard.ItemCardTask" />
+
+	<!-- 用于消息的监听的代理类MessageListenerAdapter -->
+	<bean id="itemCardTaskListenerAdapter" 	class="org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter">
+		<constructor-arg ref="itemCardTaskHandler" />
+		<property name="defaultListenerMethod" value="handleMessage" />
+		<property name="messageConverter" ref="messageConverter" />
+	</bean>
+
+	<!-- 用于消息的监听的容器类SimpleMessageListenerContainer，对于queueName的值一定要与定义的Queue的值相同 -->
+	<bean class="org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer">
+		<property name="queueNames" value="${task.itemcard.queue.name}" />
+		<property name="connectionFactory" ref="connectionFactory" />
+		<property name="messageListener" ref="itemCardTaskListenerAdapter" />
+		<property name="concurrentConsumers" value="2" />
+		<property name="prefetchCount" value="10"></property>
+	</bean>
+	
+	<!-- 备份道具卡用于接收消息的处理类 -->
+	<bean id="backupItemCardTaskHandler"	class="com.iwgame.xengine.xtask.game.worker.itemcard.BackupItemCardTask" />
+
+	<!-- 用于消息的监听的代理类MessageListenerAdapter -->
+	<bean id="backupItemCardTaskListenerAdapter" 	class="org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter">
+		<constructor-arg ref="backupItemCardTaskHandler" />
+		<property name="defaultListenerMethod" value="handleMessage" />
+		<property name="messageConverter" ref="messageConverter" />
+	</bean>
+
+	<!-- 用于消息的监听的容器类SimpleMessageListenerContainer，对于queueName的值一定要与定义的Queue的值相同 -->
+	<bean class="org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer">
+		<property name="queueNames" value="${backup.itemcard.queue.name}" />
+		<property name="connectionFactory" ref="connectionFactory" />
+		<property name="messageListener" ref="backupItemCardTaskListenerAdapter" />
+		<property name="concurrentConsumers" value="2" />
+		<property name="prefetchCount" value="10"></property>
+	</bean>
+	
+	
+	
+	
+	<!-- 密保卡用于接收消息的处理类 -->
+	<bean id="securityCardTaskHandler"	class="com.iwgame.xengine.xtask.game.worker.securitycard.SecurityCardTask" />
+	<!-- 用于消息的监听的代理类MessageListenerAdapter -->
+	<bean id="securityCardTaskListenerAdapter" 	class="org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter">
+		<constructor-arg ref="securityCardTaskHandler" />
+		<property name="defaultListenerMethod" value="handleMessage" />
+		<property name="messageConverter" ref="messageConverter" />
+	</bean>
+	<!-- 用于消息的监听的容器类SimpleMessageListenerContainer，对于queueName的值一定要与定义的Queue的值相同 -->
+	<bean class="org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer">
+		<property name="queueNames" value="${task.securitycard.queue.name}" />
+		<property name="connectionFactory" ref="connectionFactory" />
+		<property name="messageListener" ref="securityCardTaskListenerAdapter" />
+		<property name="concurrentConsumers" value="2" />
+		<property name="prefetchCount" value="10"></property>
+	</bean>
+	
+	<!-- 备份密保卡用于接收消息的处理类 -->
+	<bean id="backupSecurityCardTaskHandler"	class="com.iwgame.xengine.xtask.game.worker.securitycard.BackupSecurityCardTask" />
+	<!-- 用于消息的监听的代理类MessageListenerAdapter -->
+	<bean id="backupSecurityCardTaskListenerAdapter" 	class="org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter">
+		<constructor-arg ref="backupSecurityCardTaskHandler" />
+		<property name="defaultListenerMethod" value="handleMessage" />
+		<property name="messageConverter" ref="messageConverter" />
+	</bean>
+	<!-- 用于消息的监听的容器类SimpleMessageListenerContainer，对于queueName的值一定要与定义的Queue的值相同 -->
+	<bean class="org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer">
+		<property name="queueNames" value="${backup.securitycard.queue.name}" />
+		<property name="connectionFactory" ref="connectionFactory" />
+		<property name="messageListener" ref="backupSecurityCardTaskListenerAdapter" />
+		<property name="concurrentConsumers" value="2" />
+		<property name="prefetchCount" value="10"></property>
+	</bean>
+</beans>

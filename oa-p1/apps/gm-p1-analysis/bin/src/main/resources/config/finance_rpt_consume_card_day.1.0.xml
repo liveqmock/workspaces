@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rpt:report xmlns:rpt="http://www.iwgame.com/report" 
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+ xsi:schemaLocation="http://www.iwgame.com/report report.xsd " columns="false"  canExport="false">
+    <rpt:dataSource targetType="game"  groupId="${pid}-FINANCE"/>
+ 
+    <!-- 布局配置 -->
+    <rpt:form title="经销商渠道开卡统计日表" >
+        <rpt:parameter dataType="dateRange" fieldname="daterange" labelname="起始时间" dateShortcut="5,15,31" />
+    </rpt:form>
+	
+  <!-- 设计文件配置 -->
+    <rpt:designFiles>
+      <rpt:designFile filename="finance_rpt_consume_card_day.rptdesign" title="经销商渠道开卡统计日表"/>
+    </rpt:designFiles>
+</rpt:report>

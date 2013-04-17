@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="adcollect.crl">
+       
+        <resultMap type="com.iwgame.gm.p1.adcollect.shared.model.BlackListRules" id="blackListRules" >
+		<result property="id"  column="rules_id"  javaType="string" />
+		<result property="project" column="rules_project"  javaType="string" />
+		<result property="count" column="rules_count"  javaType="string" />
+		<result property="status"  column="rules_status"  javaType="string" />
+	   </resultMap>    
+
+
+       <resultMap type="com.iwgame.gm.p1.adcollect.shared.model.BlackUsers" id="blackUsers" >
+		<result property="id"  column="list_id"  javaType="string" />
+		<result property="userName" column="list_user_name"  javaType="string" />
+		<result property="regTime" column="list_reg_time"  javaType="java.util.Date" jdbcType="TIMESTAMP"  />
+		<result property="regIp"  column="list_reg_ip"  javaType="string" />
+		<result property="regEmail"  column="list_reg_email"  javaType="string" />
+		<result property="idCard"  column="list_reg_idcard"  javaType="string" />
+		<result property="sourceType"  column="list_source_type"  javaType="string" />
+		<result property="sourceId"  column="list_source_id"  javaType="string" />
+		<result property="loaction"  column="list_location"  javaType="string" />
+		<result property="reason"  column="list_reason"  javaType="string" />
+	   </resultMap>    
+        
+        
+       <resultMap type="com.iwgame.gm.p1.adcollect.shared.model.BlackListManage" id="blackListManage" >
+		<result property="manageId"  column="manage_id"  javaType="string" />
+		<result property="manageType" column="manage_type"  javaType="string" />
+		<result property="manageText" column="manage_text"  javaType="string" />
+		<result property="manageInsertTime"  column="manage_insertTime"   javaType="java.util.Date" jdbcType="TIMESTAMP"  />
+	   </resultMap>    
+          
+<!--黑名单规则列表  -->        
+    <select id="getBlackListRulesTotal" resultType="int" parameterType="java.util.Map">
+		SELECT 	count(*)
+		FROM 
+			iw_black_rules
+	</select>
+	 
+	 <select id="getBlackListRules" resultMap="blackListRules" parameterType="java.util.Map">
+		SELECT *
+		FROM 
+			iw_black_rules
+		<if test="offset != null and limit != null ">
+			LIMIT #{offset},#{limit}
+		</if>
+	</select>
+	 
+	<update id="updateBlackListRulesStatus"  parameterType="java.util.Map">
+		UPDATE  iw_black_rules
+		set   
+		<if test="status != null and status != ''">
+		     rules_status  = #{status}
+		</if>
+		where 1=1
+		<if test="id != null and id != ''">
+		  and rules_id = #{id}
+		</if>
+	</update>
+  
+<!--黑名账号列表则列表  -->        
+    <select id="getAccountListTotal" resultType="int" parameterType="java.util.Map">
+		SELECT 	count(*)
+		FROM 
+			iw_black_users
+        where 1=1
+		<if test="reason != null and reason != '' ">
+		and	list_reason = #{reason}
+		</if>
+		<if test="beginDate != null ">
+		and list_reg_time &gt;= #{beginDate}
+		</if>
+		<if test="endDate != null ">
+	    and list_reg_time &lt;  #{endDate}
+		</if>
+		<if test="username != null and username != ''">
+	    and list_user_name  like '%${username}%'
+		</if>
+		<if test="idcard != null and idcard != ''">
+	    and list_reg_idcard  = SHA1(#{idcard})
+		</if>
+		<if test="email != null and email != ''">
+	    and list_reg_email  =  SHA1(#{email})
+		</if>	
+		<if test="SHA1idcard != null and SHA1idcard != ''">
+	    and list_reg_idcard  = #{SHA1idcard}
+		</if>
+		<if test="SHA1email != null and SHA1email != ''">
+	    and list_reg_email  =  #{SHA1email}
+		</if>	
+	</select>
+	 
+	 <select id="getAccountList" resultMap="blackUsers" parameterType="java.util.Map">
+		SELECT *
+		FROM 
+			iw_black_users
+		where 1=1	
+		<if test="reason != null and reason != '' ">
+		and	list_reason = #{reason}
+		</if>
+		<if test="beginDate != null ">
+		and list_reg_time &gt;= #{beginDate}
+		</if>
+		<if test="endDate != null ">
+	    and list_reg_time &lt;  #{endDate}
+		</if>
+		<if test="username != null and username != ''">
+	    and list_user_name  like '%${username}%'
+		</if>
+		<if test="idcard != null and idcard != ''">
+	    and list_reg_idcard  = SHA1(#{idcard})
+		</if>
+		<if test="email != null and email != ''">
+	    and list_reg_email  =  SHA1(#{email})
+		</if>	
+		<if test="SHA1idcard != null and SHA1idcard != ''">
+	    and list_reg_idcard  = #{SHA1idcard}
+		</if>
+		<if test="SHA1email != null and SHA1email != ''">
+	    and list_reg_email  =  #{SHA1email}
+		</if>	
+		<if test="offset != null and limit != null ">
+			LIMIT #{offset},#{limit}
+		</if>
+	</select>  
+	
+<!--黑名单功能管理列表  -->        
+    <select id="getBlackManageListTotal" resultType="int" parameterType="java.util.Map">
+		SELECT 	count(*)
+		FROM 
+			iw_black_manage
+        where 1=1
+		<if test="beginDate != null ">
+		and manage_insertTime &gt;= #{beginDate}
+		</if>
+		<if test="endDate != null ">
+	    and manage_insertTime &lt;  #{endDate}
+		</if>
+		<if test="type != null and type != ''">
+	    and manage_type  = #{type}
+		</if>
+		<if test="keyword != null and keyword != ''">
+	    and manage_text  = SHA1(#{keyword})
+		</if>	
+		<if test="SHA1keyword != null and SHA1keyword != ''">
+	    and manage_text  = #{SHA1keyword}
+		</if>
+	</select>
+	 
+	 <select id="getBlackManageList" resultMap="blackListManage" parameterType="java.util.Map">
+		SELECT *
+		FROM 
+			iw_black_manage
+		where 1=1	
+		<if test="beginDate != null ">
+		and manage_insertTime &gt;= #{beginDate}
+		</if>
+		<if test="endDate != null ">
+	    and manage_insertTime &lt;  #{endDate}
+		</if>
+		<if test="type != null and type != ''">
+	    and manage_type  = #{type}
+		</if>
+		<if test="keyword != null and keyword != ''">
+	    and manage_text  = SHA1(#{keyword})
+		</if>	
+		<if test="SHA1keyword != null and SHA1keyword != ''">
+	    and manage_text  = #{SHA1keyword}
+		</if>
+		<if test="offset != null and limit != null ">
+			LIMIT #{offset},#{limit}
+		</if>
+	</select>  
+    
+    <insert id="insertBlackManage" parameterType="java.util.Map">
+       INSERT IGNORE INTO iw_black_manage (
+       manage_type,
+       manage_text,
+       manage_insertTime)
+       VALUES (
+       <if test="type != null and type != ''">
+		  #{type},
+		</if>
+       <if test="keyword != null and keyword != ''">
+		  SHA1(#{keyword}),
+		</if>
+       <if test="SHA1keyword != null and SHA1keyword != ''">
+		  #{SHA1keyword},
+		</if>
+       NOW()
+       );
+    </insert>	
+    	
+  <!-- 删除黑名单 -->
+        <delete id="delAccount" parameterType="java.util.Map">
+			DELETE FROM iw_black_users WHERE list_id IN(${ids}) 
+		</delete>  	
+    	<!-- 批量删除黑名单 -->
+        <delete id="batchDelUsername" parameterType="java.util.Map">
+			DELETE FROM iw_black_users WHERE list_user_name = #{username}
+		</delete>  	
+    	<!-- 批量增加黑名 -->
+    	<insert id="batchAddBlackUsers" parameterType="java.util.Map">
+	       INSERT IGNORE INTO iw_black_users(
+	          list_user_name,
+			  list_reg_time,
+			  list_reg_ip,
+			  list_reg_email,
+			  list_reg_idcard,
+			  list_source_type,
+			  list_source_id,
+			  list_location,
+			  list_reason)
+		   VALUES(
+			  #{userName},
+			  #{regTime},
+			  #{regIp},
+			  SHA1(#{regEmail}),
+			  SHA1(#{idCard}),
+			  #{sourceType},
+			  #{sourceId},
+			  #{loaction},
+			  #{reason}
+			)
+    </insert>	
+    	
+    	
+</mapper>

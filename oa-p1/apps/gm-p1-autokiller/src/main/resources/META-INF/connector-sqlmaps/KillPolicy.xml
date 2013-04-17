@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kill.policy">
+
+	<!-- 延时 -->
+	<update id="delayPolicy">
+		UPDATE kill_policy 
+			SET
+			start_date = NOW() ,
+			modifier = #{modifier},
+			last_modify_time = NOW()
+		WHERE 
+			id = #{id}
+	</update>
+
+	<update id="updateKillPolicy">
+		UPDATE kill_policy 
+			SET
+			title = #{title},  
+			content = #{content},  
+			last_modify_time = NOW(),  
+			modifier = #{modifier},  
+			object_id = #{objectId},  
+			object = #{object}
+		WHERE 
+			id = #{id}
+	</update>
+
+	<select id="erifyTitle" resultType="int">
+		SELECT 	COUNT(id)
+		FROM 
+			kill_policy
+		WHERE
+			title = #{title}
+	</select>
+
+	<!-- 启用 -->
+	<update id="enabledPolicyById">
+		UPDATE kill_policy 
+			SET
+				status = 1 ,
+				modifier = #{modifier},
+				last_modify_time = NOW()
+			WHERE
+				id =  #{id}
+	</update>
+	<!-- 停用 -->
+	<update id="stopPolicyById">
+		UPDATE kill_policy 
+			SET
+				status = 0 ,
+				modifier = #{modifier},
+				last_modify_time = NOW()
+			WHERE
+				id =  #{id}
+	</update>
+
+	<!-- 验证是否可以启用  验证当前启用数 -->
+	<select id="verifyEnabledCount" resultType="int">
+		SELECT 	COUNT(id)
+			FROM 
+			kill_policy 
+		WHERE 
+			status =1	
+	</select>
+	
+	<!-- 验证是否可以启用  验证是有已有MAC启动-->
+	<select id="verifyEnabledMACCount" resultType="int">
+		SELECT 	COUNT(id)
+			FROM 
+			kill_policy 
+		WHERE 
+			status =1	
+			and object = #{mac}
+	</select>
+
+	<resultMap type="com.iwgame.account.kill.modules.policy.shared.model.KillPolicy" id="killPolicy">
+		<result property="id" javaType="int" jdbcType="INTEGER"/>
+		<result property="title" javaType="string" />
+		<result property="status" javaType="int" jdbcType="TINYINT" />
+		<result property="startDate" javaType="java.util.Date" jdbcType="DATE" />
+		<result property="lastModifyTime" javaType="java.util.Date" jdbcType="DATE" />
+		<result property="policy" column="content" typeHandler="com.iwgame.account.kill.modules.policy.shared.model.JsonTypeHandler" />
+		<result property="creater" javaType="string" />
+		<result property="modifier" javaType="string" />
+		<result property="objectId" javaType="string" />
+		<result property="object" javaType="string" />
+	</resultMap>
+
+	<select id="getAllPolicy" resultMap="killPolicy">
+		SELECT 	id, 
+			title, 
+			status, 
+			start_date as startDate, 
+			last_modify_time as lastModifyTime, 
+			content,
+			creater, 
+			modifier, 
+			object_id as objectId, 
+			object
+		FROM 
+			kill_policy
+		<where>
+			<if test="statustype != null and statustype != -1 ">	
+				status = #{statustype}
+			</if>
+		</where>
+		ORDER BY status DESC , start_date DESC
+		LIMIT ${offset}, ${limit}
+	</select>
+	<select id="getAllPolicyCount" resultType="int">
+		SELECT 	COUNT(id) 
+		FROM 
+			kill_policy
+		<where>
+			<if test="statustype != null and statustype != -1 ">	
+				status = #{statustype}
+			</if>
+		</where>
+	</select>
+	<insert id="addKillPolicy">
+		INSERT INTO kill_policy
+		(
+			title, 
+			STATUS, 
+			
+			content, 
+			last_modify_time, 
+			creater, 
+			MODIFIER, 
+			object_id, 
+			object
+		)
+		VALUES
+		(
+			#{title}, 
+			0, 
+			
+			#{content}, 
+			NOW(), 
+			#{creater}, 
+			#{modifier}, 
+			#{objectId}, 
+			#{object}
+		)
+	</insert>
+</mapper>

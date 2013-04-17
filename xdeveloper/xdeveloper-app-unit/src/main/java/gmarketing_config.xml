@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<marketing>
+	<imagemarketings>
+		<imagemarketing>
+			<name>201umn</name>
+			<starttime>201202100000</starttime>
+			<endtime>201202120000</endtime>
+			<imageurl>201202120000mn.jpg</imageurl>
+			<des>alt信息201202120000</des>
+			<comment>中秋节201202120000</comment>
+		</imagemarketing>
+		<imagemarketing>
+			<name>201umn2</name>
+			<starttime>201202100000</starttime>
+			<endtime>201202120000</endtime>
+			<imageurl>201202120000mn.jpg</imageurl>
+			<des>alt信息201202120000</des>
+			<comment>中秋节201202120000</comment>
+		</imagemarketing>
+	</imagemarketings>
+	
+	<textmarketings>
+		<textmarketing>
+			<name>201icket</name>
+			<starttime>201202100000</starttime>
+			<endtime>201202120000</endtime>
+			<input>
+				201202120000
+			</input>
+			<des>alt信息201202120000</des>
+			<comment>xxxx201202120000</comment>
+		</textmarketing>
+		<textmarketing>
+			<name>201icket2</name>
+			<starttime>201202100000</starttime>
+			<endtime>201202120000</endtime>
+			<input>
+				201202120000
+			</input>
+			<des>alt信息201202120000</des>
+			<comment>xxxx201202120000</comment>
+		</textmarketing>		
+	</textmarketings>
+	
+	
+	<marqueemarketings>
+		<marqueemarketing>
+			<name>20ket</name>
+			<starttime>201202100000</starttime>
+			<endtime>201202120000</endtime>
+			<input>
+				201202120000
+			</input>
+			<des>alt信息201202120000</des>
+			<comment>“测试”201202120000</comment>
+		</marqueemarketing>	
+		<marqueemarketing>
+			<name>20ket2</name>
+			<starttime>201202100000</starttime>
+			<endtime>201202120000</endtime>
+			<input>
+				201202120000
+			</input>
+			<des>alt信息201202120000</des>
+			<comment>“测试”201202120000</comment>
+		</marqueemarketing>		
+	</marqueemarketings>
+	
+	<ipAuth>192.168.1.1</ipAuth> 
+</marketing>
+
+
+

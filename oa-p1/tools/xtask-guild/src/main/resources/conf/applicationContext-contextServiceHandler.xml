@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+	xsi:schemaLocation="http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit.xsd http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+
+	<!-- 开启公会赛模块-监听生产者发送的消息开始 -->
+	<!-- 用于接收消息的处理类 -->
+	<bean id="openRaceTaskHandler"
+		class="com.iwgame.xengine.xtask.guild.worker.context.OpenRaceTask">
+		<property name="contextService" ref="guildContextService"/>
+	</bean>
+
+	<!-- 用于消息的监听的代理类MessageListenerAdapter -->
+	<bean id="openRaceTaskListenerAdapter"
+		class="org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter">
+		<constructor-arg ref="openRaceTaskHandler" />
+		<property name="defaultListenerMethod" value="handleMessage" />
+		<property name="messageConverter" ref="messageConverter" />
+	</bean>
+
+	<!-- 用于消息的监听的容器类SimpleMessageListenerContainer，对于queueName的值一定要与定义的Queue的值相同 -->
+	<bean
+		class="org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer">
+		<property name="queueNames" value="${guild.task.openrace.queue.name}" />
+		<property name="connectionFactory" ref="guildConnectionFactory" />
+		<property name="messageListener" ref="openRaceTaskListenerAdapter" />
+		<property name="concurrentConsumers" value="3" />
+	</bean>
+	<!-- 开启公会赛模块-监听生产者发送的消息结束 -->
+	
+
+	<!-- 禁用参赛者模块-监听生产者发送的消息开始 -->
+	<!-- 用于接收消息的处理类 -->
+	<bean id="forbitJoinerTaskHandler"
+		class="com.iwgame.xengine.xtask.guild.worker.context.ForbitJoinerTask">
+		<property name="contextService" ref="guildContextService"/>
+	</bean>
+
+	<!-- 用于消息的监听的代理类MessageListenerAdapter -->
+	<bean id="forbitJoinerTaskListenerAdapter"
+		class="org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter">
+		<constructor-arg ref="forbitJoinerTaskHandler" />
+		<property name="defaultListenerMethod" value="handleMessage" />
+		<property name="messageConverter" ref="messageConverter" />
+	</bean>
+
+	<!-- 用于消息的监听的容器类SimpleMessageListenerContainer，对于queueName的值一定要与定义的Queue的值相同 -->
+	<bean
+		class="org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer">
+		<property name="queueNames" value="${guild.task.forbitjoiner.queue.name}" />
+		<property name="connectionFactory" ref="guildConnectionFactory" />
+		<property name="messageListener" ref="forbitJoinerTaskListenerAdapter" />
+		<property name="concurrentConsumers" value="3" />
+	</bean>
+	<!-- 禁用参赛者模块-监听生产者发送的消息结束 -->
+	
+	<!-- 关闭公会赛模块-监听生产者发送的消息开始 -->
+	<!-- 用于接收消息的处理类 -->
+	<bean id="closeRaceTaskHandler"
+		class="com.iwgame.xengine.xtask.guild.worker.context.CloseRaceTask">
+		<property name="contextService" ref="guildContextService"/>
+	</bean>
+
+	<!-- 用于消息的监听的代理类MessageListenerAdapter -->
+	<bean id="closeRaceTaskListenerAdapter"
+		class="org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter">
+		<constructor-arg ref="closeRaceTaskHandler" />
+		<property name="defaultListenerMethod" value="handleMessage" />
+		<property name="messageConverter" ref="messageConverter" />
+	</bean>
+
+	<!-- 用于消息的监听的容器类SimpleMessageListenerContainer，对于queueName的值一定要与定义的Queue的值相同 -->
+	<bean
+		class="org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer">
+		<property name="queueNames" value="${guild.task.closerace.queue.name}" />
+		<property name="connectionFactory" ref="guildConnectionFactory" />
+		<property name="messageListener" ref="closeRaceTaskListenerAdapter" />
+		<property name="concurrentConsumers" value="3" />
+	</bean>
+	<!-- 关闭公会赛模块-监听生产者发送的消息结束 -->
+	
+	<!-- 添加参赛公会模块-监听生产者发送的消息开始 -->
+	<!-- 用于接收消息的处理类 -->
+	<bean id="addGuildTaskHandler"
+		class="com.iwgame.xengine.xtask.guild.worker.context.AddGuildTask">
+		<property name="contextService" ref="guildContextService"/>
+	</bean>
+
+	<!-- 用于消息的监听的代理类MessageListenerAdapter -->
+	<bean id="addGuildTaskListenerAdapter"
+		class="org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter">
+		<constructor-arg ref="addGuildTaskHandler" />
+		<property name="defaultListenerMethod" value="handleMessage" />
+		<property name="messageConverter" ref="messageConverter" />
+	</bean>
+
+	<!-- 用于消息的监听的容器类SimpleMessageListenerContainer，对于queueName的值一定要与定义的Queue的值相同 -->
+	<bean
+		class="org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer">
+		<property name="queueNames" value="${guild.task.addguild.queue.name}" />
+		<property name="connectionFactory" ref="guildConnectionFactory" />
+		<property name="messageListener" ref="addGuildTaskListenerAdapter" />
+		<property name="concurrentConsumers" value="3" />
+	</bean>
+	<!-- 添加参赛公会模块-监听生产者发送的消息结束 -->
+
+</beans>

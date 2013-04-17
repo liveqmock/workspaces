@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<assembly>
+	<id>full</id>
+	<formats>
+		<format>dir</format>
+	</formats>
+	<includeBaseDirectory>false</includeBaseDirectory>
+	<moduleSets>
+		<!-- data-handler -->
+		<moduleSet>
+			<includes>
+				<include>com.iwgame.channel:data-handler</include>
+			</includes>
+			<binaries>
+				<outputDirectory>data-handler/lib</outputDirectory>
+				<includeDependencies>true</includeDependencies>
+				<unpack>false</unpack>
+			</binaries>
+		</moduleSet>
+		
+		<!-- channel-email -->
+		<moduleSet>
+			<includes>
+				<include>com.iwgame.channel:channel-email</include>
+			</includes>
+			<binaries>
+				<outputDirectory>channel-email/lib</outputDirectory>
+				<includeDependencies>true</includeDependencies>
+				<unpack>false</unpack>
+			</binaries>
+		</moduleSet>
+		<!-- channel-sms -->
+		<moduleSet>
+			<includes>
+				<include>com.iwgame.channel:channel-sms</include>
+			</includes>
+			<binaries>
+				<outputDirectory>channel-sms/lib</outputDirectory>
+				<includeDependencies>true</includeDependencies>
+				<unpack>false</unpack>
+			</binaries>
+		</moduleSet>
+		<!-- channel-p1game -->
+		<moduleSet>
+			<includes>
+				<include>com.iwgame.channel:channel-p1game</include>
+			</includes>
+			<binaries>
+				<outputDirectory>channel-p1game/lib</outputDirectory>
+				<includeDependencies>true</includeDependencies>
+				<unpack>false</unpack>
+			</binaries>
+		</moduleSet>
+		<!-- channel-p1ucenter -->
+		<moduleSet>
+			<includes>
+				<include>com.iwgame.channel:channel-p1ucenter</include>
+			</includes>
+			<binaries>
+				<outputDirectory>channel-p1ucenter/lib</outputDirectory>
+				<includeDependencies>true</includeDependencies>
+				<unpack>false</unpack>
+			</binaries>
+		</moduleSet>
+		<!-- tools -->
+		<!-- <moduleSet>
+			<includes>
+				<include>com.iwgame.channel:xtask-monitor</include>
+			</includes>
+			<binaries>
+				<outputDirectory>tools/xtask-monitor/lib</outputDirectory>
+				<includeDependencies>true</includeDependencies>
+				<unpack>false</unpack>
+			</binaries>
+		</moduleSet> -->
+	</moduleSets>
+	
+	
+	
+	
+	
+	<fileSets>
+		<fileSet>
+			<outputDirectory>/</outputDirectory>
+			<directory>readme/</directory>
+		</fileSet>
+		<!-- channel-email -->
+		<fileSet>
+			<outputDirectory>channel-email/readme</outputDirectory>
+			<directory>channel-email/readme</directory>
+		</fileSet>
+		<fileSet>
+			<outputDirectory>channel-email/conf</outputDirectory>
+			<directory>channel-email/log4j</directory>
+		</fileSet>
+		<!-- Wrapper config -->
+		<fileSet>
+			<outputDirectory>channel-email/bin</outputDirectory>
+			<directory>channel-email/wrapper/wrapper-mac-x86-64-3.5.11/bin
+			</directory>
+			<fileMode>0755</fileMode>
+		</fileSet>
+		<fileSet>
+			<outputDirectory>channel-email/conf</outputDirectory>
+			<directory>channel-email/wrapper/wrapper-mac-x86-64-3.5.11/conf
+			</directory>
+		</fileSet>
+		<fileSet>
+			<outputDirectory>channel-email/lib</outputDirectory>
+			<directory>channel-email/wrapper/wrapper-mac-x86-64-3.5.11/lib
+			</directory>
+		</fileSet>
+		<fileSet>
+			<outputDirectory>channel-email/logs</outputDirectory>
+			<directory>channel-email/wrapper/wrapper-mac-x86-64-3.5.11/logs
+			</directory>
+		</fileSet>
+		
+		
+<!-- 		<fileSet>
+			<outputDirectory>data-handler/readme</outputDirectory>
+			<directory>data-handler/readme</directory>
+		</fileSet>
+		<fileSet>
+			<outputDirectory>data-handler/conf</outputDirectory>
+			<directory>data-handler/log4j</directory>
+		</fileSet>
+		<fileSet>
+			<outputDirectory>data-handler/bin</outputDirectory>
+			<directory>data-handler/wrapper/wrapper-mac-x86-64-3.5.11/bin
+			</directory>
+			<fileMode>0755</fileMode>
+		</fileSet>
+		<fileSet>
+			<outputDirectory>data-handler/conf</outputDirectory>
+			<directory>data-handler/wrapper/wrapper-mac-x86-64-3.5.11/conf
+			</directory>
+		</fileSet>
+		<fileSet>
+			<outputDirectory>data-handler/lib</outputDirectory>
+			<directory>data-handler/wrapper/wrapper-mac-x86-64-3.5.11/lib
+			</directory>
+		</fileSet>
+		<fileSet>
+			<outputDirectory>data-handler/logs</outputDirectory>
+			<directory>data-handler/wrapper/wrapper-mac-x86-64-3.5.11/logs
+			</directory>
+		</fileSet> -->
+		
+		
+		<fileSet>
+			<outputDirectory>data-handler/readme</outputDirectory>
+			<directory>data-handler/readme</directory>
+		</fileSet>
+		<fileSet>
+			<outputDirectory>data-handler/conf</outputDirectory>
+			<directory>data-handler/log4j</directory>
+		</fileSet>
+		<fileSet>
+			<outputDirectory>data-handler/bin</outputDirectory>
+			<directory>data-handler/wrapper/wrapper-linux-x86-64-3.5.11/bin
+			</directory>
+			<fileMode>0755</fileMode>
+		</fileSet>
+		<fileSet>
+			<outputDirectory>data-handler/conf</outputDirectory>
+			<directory>data-handler/wrapper/wrapper-linux-x86-64-3.5.11/conf
+			</directory>
+		</fileSet>
+		<fileSet>
+			<outputDirectory>data-handler/lib</outputDirectory>
+			<directory>data-handler/wrapper/wrapper-linux-x86-64-3.5.11/lib
+			</directory>
+		</fileSet>
+		<fileSet>
+			<outputDirectory>data-handler/logs</outputDirectory>
+			<directory>data-handler/wrapper/wrapper-linux-x86-64-3.5.11/logs
+			</directory>
+		</fileSet>
+		
+		<!-- channel-sms -->
+		<fileSet>
+			<outputDirectory>channel-sms/readme</outputDirectory>
+			<directory>channel-sms/readme</directory>
+		</fileSet>
+		<fileSet>
+			<outputDirectory>channel-sms/conf</outputDirectory>
+			<directory>channel-sms/log4j</directory>
+		</fileSet>
+		<!-- Wrapper config -->
+		<fileSet>
+			<outputDirectory>channel-sms/bin</outputDirectory>
+			<directory>channel-sms/wrapper/wrapper-linux-x86-64-3.5.11/bin
+			</directory>
+			<fileMode>0755</fileMode>
+		</fileSet>
+		<fileSet>
+			<outputDirectory>channel-sms/conf</outputDirectory>
+			<directory>channel-sms/wrapper/wrapper-linux-x86-64-3.5.11/conf
+			</directory>
+		</fileSet>
+		<fileSet>
+			<outputDirectory>channel-sms/lib</outputDirectory>
+			<directory>channel-sms/wrapper/wrapper-linux-x86-64-3.5.11/lib
+			</directory>
+		</fileSet>
+		<fileSet>
+			<outputDirectory>channel-sms/logs</outputDirectory>
+			<directory>channel-sms/wrapper/wrapper-linux-x86-64-3.5.11/logs
+			</directory>
+		</fileSet>
+		
+		<!-- channel-http -->
+		<fileSet>
+			<outputDirectory>channel-http/webapps/xhttpservice</outputDirectory>
+			<directory>channel-http/target/channel-http-1.0.0-SNAPSHOT/</directory>
+		</fileSet>
+		<!-- channel-webservice -->
+		<fileSet>
+			<outputDirectory>channel-webservice/webapps/xservice</outputDirectory>
+			<directory>channel-webservice/target/channel-webservice-1.0.0-SNAPSHOT/</directory>
+		</fileSet>
+		
+		<!-- channel-p1game -->
+		<fileSet>
+			<outputDirectory>channel-p1game/readme</outputDirectory>
+			<directory>channel-p1game/readme</directory>
+		</fileSet>
+		<fileSet>
+			<outputDirectory>channel-p1game/conf</outputDirectory>
+			<directory>channel-p1game/log4j</directory>
+		</fileSet>
+		<!-- Wrapper config -->
+		<fileSet>
+			<outputDirectory>channel-p1game/bin</outputDirectory>
+			<directory>channel-p1game/wrapper/wrapper-linux-x86-64-3.5.11/bin
+			</directory>
+			<fileMode>0755</fileMode>
+		</fileSet>
+		<fileSet>
+			<outputDirectory>channel-p1game/conf</outputDirectory>
+			<directory>channel-p1game/wrapper/wrapper-linux-x86-64-3.5.11/conf
+			</directory>
+		</fileSet>
+		<fileSet>
+			<outputDirectory>channel-p1game/lib</outputDirectory>
+			<directory>channel-p1game/wrapper/wrapper-linux-x86-64-3.5.11/lib
+			</directory>
+		</fileSet>
+		<fileSet>
+			<outputDirectory>channel-p1game/logs</outputDirectory>
+			<directory>channel-p1game/wrapper/wrapper-linux-x86-64-3.5.11/logs
+			</directory>
+		</fileSet>
+		<!-- channel-p1ucenter -->
+		<fileSet>
+			<outputDirectory>channel-p1ucenter/readme</outputDirectory>
+			<directory>channel-p1ucenter/readme</directory>
+		</fileSet>
+		<fileSet>
+			<outputDirectory>channel-p1ucenter/conf</outputDirectory>
+			<directory>channel-p1ucenter/log4j</directory>
+		</fileSet>
+		<!-- Wrapper config -->
+		<fileSet>
+			<outputDirectory>channel-p1ucenter/bin</outputDirectory>
+			<directory>channel-p1ucenter/wrapper/wrapper-linux-x86-64-3.5.11/bin
+			</directory>
+			<fileMode>0755</fileMode>
+		</fileSet>
+		<fileSet>
+			<outputDirectory>channel-p1ucenter/conf</outputDirectory>
+			<directory>channel-p1ucenter/wrapper/wrapper-linux-x86-64-3.5.11/conf
+			</directory>
+		</fileSet>
+		<fileSet>
+			<outputDirectory>channel-p1ucenter/lib</outputDirectory>
+			<directory>channel-p1ucenter/wrapper/wrapper-linux-x86-64-3.5.11/lib
+			</directory>
+		</fileSet>
+		<fileSet>
+			<outputDirectory>channel-p1ucenter/logs</outputDirectory>
+			<directory>channel-p1ucenter/wrapper/wrapper-linux-x86-64-3.5.11/logs
+			</directory>
+		</fileSet>
+		
+		<!-- tools -->
+		<!-- <fileSet>
+			<outputDirectory>tools/xtask-monitor/readme</outputDirectory>
+			<directory>xtask-monitor/readme</directory>
+		</fileSet>
+		<fileSet>
+			<outputDirectory>tools/xtask-monitor/conf</outputDirectory>
+			<directory>xtask-monitor/log4j</directory>
+		</fileSet>
+		Wrapper config
+		<fileSet>
+			<outputDirectory>tools/xtask-monitor/bin</outputDirectory>
+			<directory>xtask-monitor/wrapper/wrapper-linux-x86-64-3.5.11/bin
+			</directory>
+			<fileMode>0755</fileMode>
+		</fileSet>
+		<fileSet>
+			<outputDirectory>tools/xtask-monitor/conf</outputDirectory>
+			<directory>xtask-monitor/wrapper/wrapper-linux-x86-64-3.5.11/conf
+			</directory>
+		</fileSet>
+		<fileSet>
+			<outputDirectory>tools/xtask-monitor/lib</outputDirectory>
+			<directory>xtask-monitor/wrapper/wrapper-linux-x86-64-3.5.11/lib
+			</directory>
+		</fileSet>
+		<fileSet>
+			<outputDirectory>tools/xtask-monitor/logs</outputDirectory>
+			<directory>xtask-monitor/wrapper/wrapper-linux-x86-64-3.5.11/logs
+			</directory>
+		</fileSet> -->
+	</fileSets>
+</assembly>

@@ -1,0 +1,10 @@
+.cw-FlexTable td {
+  border: 0px solid #BBBBBB;
+  padding: 1px;
+}
+
+.cw_Label {
+	color:blue;
+	cursor:pointer;
+	text-decoration: underline;
+}

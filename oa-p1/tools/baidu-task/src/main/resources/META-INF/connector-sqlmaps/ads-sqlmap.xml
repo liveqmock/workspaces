@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ads-sqlmap">
+	<resultMap type="com.iwgame.iwcloud.baidu.task.model.AdsConfigBean"
+		id="adsConfig">
+		<result property="productid" column="productid" />
+		<result property="username" column="username" />
+		<result property="password" column="password" />
+		<result property="token" column="token" />
+		<result property="vingve" column="vingve" />
+	</resultMap>
+	
+	<!-- ads配置列表 -->
+	<select id="getAdsConfigs" resultMap="adsConfig">
+		select * from adsconfig
+		where vingve = 0
+	</select>
+
+	<insert id="insertAdsLogProc" statementType="CALLABLE">
+		{call sp_store_baidu_ads (
+			#{datetime},
+			#{accountid},
+			#{account},
+			#{projectid},
+			#{project},
+			#{unitid},
+			#{unit},
+			#{keywordid},
+			#{keyword},
+			#{method},
+			#{consume},
+			#{avgclickprice},
+			#{clicknum},
+			#{shownum},
+			#{clickrate},
+			#{qczxconsume},
+			#{avgrank},#{result,mode=OUT,jdbcType=INTEGER})
+		}
+     </insert>
+     
+     <insert id="sp_store_baidu_keyid_ads" statementType="CALLABLE">
+		{call sp_store_baidu_keyid_ads (
+			#{datetime},
+			#{accountid},
+			#{account},
+			#{projectid},
+			#{project},
+			#{unitid},
+			#{unit},
+			#{keywordid},
+			#{keyword},
+			#{method},
+			#{consume},
+			#{avgclickprice},
+			#{clicknum},
+			#{shownum},
+			#{clickrate},
+			#{qczxconsume},
+			#{avgrank},#{result,mode=OUT,jdbcType=INTEGER})
+		}
+     </insert>
+     
+     
+     <insert id="insertAdshistory" parameterType="com.iwgame.iwcloud.baidu.task.model.AdsHistoryBean">
+     		INSERT INTO adshistory (productid,username,begintime,endtime,fetchecount,savecount,status,info)
+			VALUES (#{productid},#{username},#{begintime},#{endtime},#{fetchecount},#{savecount},#{status},#{info})
+     </insert>
+     
+     
+
+
+</mapper>
