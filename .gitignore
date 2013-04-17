@@ -1,0 +1,14 @@
+/.project
+/.settings
+/target
+/.classpath
+.DS_Store
+.svn
+.metadata
+*.class
+*.svn
+*.DS_Store
+*.classpath
+*.project
+
+.DS_Store
