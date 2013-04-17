@@ -8,8 +8,8 @@
 	<name>Iwgame Platform</name>
 	<description />
 	<parent>
-		<groupId>com.developer</groupId>
-		<artifactId>developer</artifactId>
+		<groupId>jjwu.xdeveloper</groupId>
+		<artifactId>xdeveloper</artifactId>
 		<version>1.0.0</version>
 	</parent>
 	<modules>
