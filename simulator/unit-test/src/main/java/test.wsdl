@@ -1,0 +1,2369 @@
+<wsdl:definitions xmlns:s="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/"
+	xmlns:tns="http://tempuri.org/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+	xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	targetNamespace="http://tempuri.org/">
+	<wsdl:types>
+		<s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+			<s:element name="QueryUserInfo">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="0" maxOccurs="1" name="fQueryKey"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fQueryParam"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fQueryParam2"
+							type="s:string" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="QueryUserInfoResponse">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="0" maxOccurs="1" name="QueryUserInfoResult">
+							<s:complexType>
+								<s:sequence>
+									<s:any />
+								</s:sequence>
+							</s:complexType>
+						</s:element>
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="CheckUserInfo">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="0" maxOccurs="1" name="fUserName"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fUserEmail"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fRealName"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fIDCard"
+							type="s:string" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="CheckUserInfoResponse">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="0" maxOccurs="1" name="CheckUserInfoResult"
+							type="s:string" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="ActiveArea">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="0" maxOccurs="1" name="fUserName"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fGameId"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fAreaId"
+							type="s:string" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="ActiveAreaResponse">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="0" maxOccurs="1" name="ActiveAreaResult"
+							type="s:string" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="CheckUserSuperPassword">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="0" maxOccurs="1" name="fUserName"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fSuperPassword"
+							type="s:string" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="CheckUserSuperPasswordResponse">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="0" maxOccurs="1"
+							name="CheckUserSuperPasswordResult" type="s:string" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="Login_sm">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="0" maxOccurs="1" name="fUserName"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fPassword"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fSign"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fLoginIP"
+							type="s:string" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="Login_smResponse">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="0" maxOccurs="1" name="Login_smResult"
+							type="s:string" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="Login_zxy">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="0" maxOccurs="1" name="fUserName"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fPassword"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fSign"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fLoginIP"
+							type="s:string" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="Login_zxyResponse">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="0" maxOccurs="1" name="Login_zxyResult"
+							type="s:string" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="LoginALL">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="0" maxOccurs="1" name="fUserName"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fPassword"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fSign"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fLoginIP"
+							type="s:string" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="LoginALLResponse">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="0" maxOccurs="1" name="LoginALLResult"
+							type="s:string" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="CheckUserInput_sm">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="0" maxOccurs="1" name="fUserName"
+							type="s:string" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="CheckUserInput_smResponse">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="1" maxOccurs="1"
+							name="CheckUserInput_smResult" type="s:boolean" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="CheckUserInput_zxy">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="0" maxOccurs="1" name="fUserName"
+							type="s:string" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="CheckUserInput_zxyResponse">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="1" maxOccurs="1"
+							name="CheckUserInput_zxyResult" type="s:boolean" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="Register_sm">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="0" maxOccurs="1" name="fUserName"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fPassword"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fRealName"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fEmail"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fRegIP"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fIDCard"
+							type="s:string" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="Register_smResponse">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="0" maxOccurs="1" name="Register_smResult"
+							type="s:string" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="Register_zxy">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="0" maxOccurs="1" name="fUserName"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fPassword"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fRealName"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fEmail"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fRegIP"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fIDCard"
+							type="s:string" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="Register_zxyResponse">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="0" maxOccurs="1" name="Register_zxyResult"
+							type="s:string" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="Registerfrom_sm">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="0" maxOccurs="1" name="fUserName"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fPassword"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fRealName"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fEmail"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fRegIP"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fIDCard"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fSourceType"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fSourceID"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fLocation"
+							type="s:string" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="Registerfrom_smResponse">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="0" maxOccurs="1"
+							name="Registerfrom_smResult" type="s:string" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="Registerfrom_zxy">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="0" maxOccurs="1" name="fUserName"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fPassword"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fRealName"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fEmail"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fRegIP"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fIDCard"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fSourceType"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fSourceID"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fLocation"
+							type="s:string" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="Registerfrom_zxyResponse">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="0" maxOccurs="1"
+							name="Registerfrom_zxyResult" type="s:string" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="RegisterAndGetAdsFrom_sm">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="0" maxOccurs="1" name="fUserName"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fPassword"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fRealName"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fEmail"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fRegIP"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fIDCard"
+							type="s:string" />
+						<s:element minOccurs="1" maxOccurs="1" name="fAdsId"
+							type="s:int" />
+						<s:element minOccurs="0" maxOccurs="1" name="fAdsVerify"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fAdsFrom"
+							type="s:string" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="RegisterAndGetAdsFrom_smResponse">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="0" maxOccurs="1"
+							name="RegisterAndGetAdsFrom_smResult" type="s:string" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="RegisterAndGetAdsFrom_zxy">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="0" maxOccurs="1" name="fUserName"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fPassword"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fRealName"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fEmail"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fRegIP"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fIDCard"
+							type="s:string" />
+						<s:element minOccurs="1" maxOccurs="1" name="fAdsId"
+							type="s:int" />
+						<s:element minOccurs="0" maxOccurs="1" name="fAdsVerify"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fAdsFrom"
+							type="s:string" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="RegisterAndGetAdsFrom_zxyResponse">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="0" maxOccurs="1"
+							name="RegisterAndGetAdsFrom_zxyResult" type="s:string" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="ChangePassword_sm">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="0" maxOccurs="1" name="fUserName"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fNewPassword"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fSuperPassword"
+							type="s:string" />
+						<s:element minOccurs="1" maxOccurs="1" name="fChangeMode"
+							type="s:int" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="ChangePassword_smResponse">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="0" maxOccurs="1"
+							name="ChangePassword_smResult" type="s:string" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="ChangePassword_zxy">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="0" maxOccurs="1" name="fUserName"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fNewPassword"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fSuperPassword"
+							type="s:string" />
+						<s:element minOccurs="1" maxOccurs="1" name="fChangeMode"
+							type="s:int" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="ChangePassword_zxyResponse">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="0" maxOccurs="1"
+							name="ChangePassword_zxyResult" type="s:string" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="ChangePasswordNew_sm">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="0" maxOccurs="1" name="fUserName"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fNewPassword"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fSuperPassword"
+							type="s:string" />
+						<s:element minOccurs="1" maxOccurs="1" name="fChangeMode"
+							type="s:int" />
+						<s:element minOccurs="0" maxOccurs="1" name="fIpaddress"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fChannel"
+							type="s:string" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="ChangePasswordNew_smResponse">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="0" maxOccurs="1"
+							name="ChangePasswordNew_smResult" type="s:string" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="ChangePasswordNew_zxy">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="0" maxOccurs="1" name="fUserName"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fNewPassword"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fSuperPassword"
+							type="s:string" />
+						<s:element minOccurs="1" maxOccurs="1" name="fChangeMode"
+							type="s:int" />
+						<s:element minOccurs="0" maxOccurs="1" name="fIpaddress"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fChannel"
+							type="s:string" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="ChangePasswordNew_zxyResponse">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="0" maxOccurs="1"
+							name="ChangePasswordNew_zxyResult" type="s:string" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="EditUserInfo">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="1" maxOccurs="1" name="fUserID"
+							type="s:int" />
+						<s:element minOccurs="0" maxOccurs="1" name="fRealName"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fIDCard"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fEmail"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fSign"
+							type="s:string" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="EditUserInfoResponse">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="0" maxOccurs="1" name="EditUserInfoResult"
+							type="s:string" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="EditUserInfoNew">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="1" maxOccurs="1" name="fUserID"
+							type="s:int" />
+						<s:element minOccurs="0" maxOccurs="1" name="fRealName"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fIDCard"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fEmail"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fSign"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fIpaddress"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="fChannel"
+							type="s:string" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="EditUserInfoNewResponse">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="0" maxOccurs="1"
+							name="EditUserInfoNewResult" type="s:string" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="CreateUserPayPermit">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="0" maxOccurs="1" name="fUserName"
+							type="s:string" />
+						<s:element minOccurs="1" maxOccurs="1" name="fGameID"
+							type="s:int" />
+						<s:element minOccurs="1" maxOccurs="1" name="fAreaID"
+							type="s:int" />
+						<s:element minOccurs="0" maxOccurs="1" name="fSign"
+							type="s:string" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="CreateUserPayPermitResponse">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="0" maxOccurs="1"
+							name="CreateUserPayPermitResult" type="s:string" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="CreateUserPayPermit2">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="0" maxOccurs="1" name="fUserName"
+							type="s:string" />
+						<s:element minOccurs="1" maxOccurs="1" name="fGameID"
+							type="s:int" />
+						<s:element minOccurs="1" maxOccurs="1" name="fAreaID"
+							type="s:int" />
+						<s:element minOccurs="1" maxOccurs="1" name="fSourceID"
+							type="s:int" />
+						<s:element minOccurs="0" maxOccurs="1" name="fSourceName"
+							type="s:string" />
+						<s:element minOccurs="1" maxOccurs="1" name="fBeginTime"
+							type="s:dateTime" />
+						<s:element minOccurs="1" maxOccurs="1" name="fEndTime"
+							type="s:dateTime" />
+						<s:element minOccurs="0" maxOccurs="1" name="fSign"
+							type="s:string" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="CreateUserPayPermit2Response">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="0" maxOccurs="1"
+							name="CreateUserPayPermit2Result" type="s:string" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="DataSet" nillable="true">
+				<s:complexType>
+					<s:sequence>
+						<s:any />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="string" nillable="true" type="s:string" />
+			<s:element name="boolean" type="s:boolean" />
+		</s:schema>
+	</wsdl:types>
+	<wsdl:message name="QueryUserInfoSoapIn">
+		<wsdl:part name="parameters" element="tns:QueryUserInfo" />
+	</wsdl:message>
+	<wsdl:message name="QueryUserInfoSoapOut">
+		<wsdl:part name="parameters" element="tns:QueryUserInfoResponse" />
+	</wsdl:message>
+	<wsdl:message name="CheckUserInfoSoapIn">
+		<wsdl:part name="parameters" element="tns:CheckUserInfo" />
+	</wsdl:message>
+	<wsdl:message name="CheckUserInfoSoapOut">
+		<wsdl:part name="parameters" element="tns:CheckUserInfoResponse" />
+	</wsdl:message>
+	<wsdl:message name="ActiveAreaSoapIn">
+		<wsdl:part name="parameters" element="tns:ActiveArea" />
+	</wsdl:message>
+	<wsdl:message name="ActiveAreaSoapOut">
+		<wsdl:part name="parameters" element="tns:ActiveAreaResponse" />
+	</wsdl:message>
+	<wsdl:message name="CheckUserSuperPasswordSoapIn">
+		<wsdl:part name="parameters" element="tns:CheckUserSuperPassword" />
+	</wsdl:message>
+	<wsdl:message name="CheckUserSuperPasswordSoapOut">
+		<wsdl:part name="parameters" element="tns:CheckUserSuperPasswordResponse" />
+	</wsdl:message>
+	<wsdl:message name="Login_smSoapIn">
+		<wsdl:part name="parameters" element="tns:Login_sm" />
+	</wsdl:message>
+	<wsdl:message name="Login_smSoapOut">
+		<wsdl:part name="parameters" element="tns:Login_smResponse" />
+	</wsdl:message>
+	<wsdl:message name="Login_zxySoapIn">
+		<wsdl:part name="parameters" element="tns:Login_zxy" />
+	</wsdl:message>
+	<wsdl:message name="Login_zxySoapOut">
+		<wsdl:part name="parameters" element="tns:Login_zxyResponse" />
+	</wsdl:message>
+	<wsdl:message name="LoginALLSoapIn">
+		<wsdl:part name="parameters" element="tns:LoginALL" />
+	</wsdl:message>
+	<wsdl:message name="LoginALLSoapOut">
+		<wsdl:part name="parameters" element="tns:LoginALLResponse" />
+	</wsdl:message>
+	<wsdl:message name="CheckUserInput_smSoapIn">
+		<wsdl:part name="parameters" element="tns:CheckUserInput_sm" />
+	</wsdl:message>
+	<wsdl:message name="CheckUserInput_smSoapOut">
+		<wsdl:part name="parameters" element="tns:CheckUserInput_smResponse" />
+	</wsdl:message>
+	<wsdl:message name="CheckUserInput_zxySoapIn">
+		<wsdl:part name="parameters" element="tns:CheckUserInput_zxy" />
+	</wsdl:message>
+	<wsdl:message name="CheckUserInput_zxySoapOut">
+		<wsdl:part name="parameters" element="tns:CheckUserInput_zxyResponse" />
+	</wsdl:message>
+	<wsdl:message name="Register_smSoapIn">
+		<wsdl:part name="parameters" element="tns:Register_sm" />
+	</wsdl:message>
+	<wsdl:message name="Register_smSoapOut">
+		<wsdl:part name="parameters" element="tns:Register_smResponse" />
+	</wsdl:message>
+	<wsdl:message name="Register_zxySoapIn">
+		<wsdl:part name="parameters" element="tns:Register_zxy" />
+	</wsdl:message>
+	<wsdl:message name="Register_zxySoapOut">
+		<wsdl:part name="parameters" element="tns:Register_zxyResponse" />
+	</wsdl:message>
+	<wsdl:message name="Registerfrom_smSoapIn">
+		<wsdl:part name="parameters" element="tns:Registerfrom_sm" />
+	</wsdl:message>
+	<wsdl:message name="Registerfrom_smSoapOut">
+		<wsdl:part name="parameters" element="tns:Registerfrom_smResponse" />
+	</wsdl:message>
+	<wsdl:message name="Registerfrom_zxySoapIn">
+		<wsdl:part name="parameters" element="tns:Registerfrom_zxy" />
+	</wsdl:message>
+	<wsdl:message name="Registerfrom_zxySoapOut">
+		<wsdl:part name="parameters" element="tns:Registerfrom_zxyResponse" />
+	</wsdl:message>
+	<wsdl:message name="RegisterAndGetAdsFrom_smSoapIn">
+		<wsdl:part name="parameters" element="tns:RegisterAndGetAdsFrom_sm" />
+	</wsdl:message>
+	<wsdl:message name="RegisterAndGetAdsFrom_smSoapOut">
+		<wsdl:part name="parameters" element="tns:RegisterAndGetAdsFrom_smResponse" />
+	</wsdl:message>
+	<wsdl:message name="RegisterAndGetAdsFrom_zxySoapIn">
+		<wsdl:part name="parameters" element="tns:RegisterAndGetAdsFrom_zxy" />
+	</wsdl:message>
+	<wsdl:message name="RegisterAndGetAdsFrom_zxySoapOut">
+		<wsdl:part name="parameters" element="tns:RegisterAndGetAdsFrom_zxyResponse" />
+	</wsdl:message>
+	<wsdl:message name="ChangePassword_smSoapIn">
+		<wsdl:part name="parameters" element="tns:ChangePassword_sm" />
+	</wsdl:message>
+	<wsdl:message name="ChangePassword_smSoapOut">
+		<wsdl:part name="parameters" element="tns:ChangePassword_smResponse" />
+	</wsdl:message>
+	<wsdl:message name="ChangePassword_zxySoapIn">
+		<wsdl:part name="parameters" element="tns:ChangePassword_zxy" />
+	</wsdl:message>
+	<wsdl:message name="ChangePassword_zxySoapOut">
+		<wsdl:part name="parameters" element="tns:ChangePassword_zxyResponse" />
+	</wsdl:message>
+	<wsdl:message name="ChangePasswordNew_smSoapIn">
+		<wsdl:part name="parameters" element="tns:ChangePasswordNew_sm" />
+	</wsdl:message>
+	<wsdl:message name="ChangePasswordNew_smSoapOut">
+		<wsdl:part name="parameters" element="tns:ChangePasswordNew_smResponse" />
+	</wsdl:message>
+	<wsdl:message name="ChangePasswordNew_zxySoapIn">
+		<wsdl:part name="parameters" element="tns:ChangePasswordNew_zxy" />
+	</wsdl:message>
+	<wsdl:message name="ChangePasswordNew_zxySoapOut">
+		<wsdl:part name="parameters" element="tns:ChangePasswordNew_zxyResponse" />
+	</wsdl:message>
+	<wsdl:message name="EditUserInfoSoapIn">
+		<wsdl:part name="parameters" element="tns:EditUserInfo" />
+	</wsdl:message>
+	<wsdl:message name="EditUserInfoSoapOut">
+		<wsdl:part name="parameters" element="tns:EditUserInfoResponse" />
+	</wsdl:message>
+	<wsdl:message name="EditUserInfoNewSoapIn">
+		<wsdl:part name="parameters" element="tns:EditUserInfoNew" />
+	</wsdl:message>
+	<wsdl:message name="EditUserInfoNewSoapOut">
+		<wsdl:part name="parameters" element="tns:EditUserInfoNewResponse" />
+	</wsdl:message>
+	<wsdl:message name="CreateUserPayPermitSoapIn">
+		<wsdl:part name="parameters" element="tns:CreateUserPayPermit" />
+	</wsdl:message>
+	<wsdl:message name="CreateUserPayPermitSoapOut">
+		<wsdl:part name="parameters" element="tns:CreateUserPayPermitResponse" />
+	</wsdl:message>
+	<wsdl:message name="CreateUserPayPermit2SoapIn">
+		<wsdl:part name="parameters" element="tns:CreateUserPayPermit2" />
+	</wsdl:message>
+	<wsdl:message name="CreateUserPayPermit2SoapOut">
+		<wsdl:part name="parameters" element="tns:CreateUserPayPermit2Response" />
+	</wsdl:message>
+	<wsdl:message name="QueryUserInfoHttpGetIn">
+		<wsdl:part name="fQueryKey" type="s:string" />
+		<wsdl:part name="fQueryParam" type="s:string" />
+		<wsdl:part name="fQueryParam2" type="s:string" />
+	</wsdl:message>
+	<wsdl:message name="QueryUserInfoHttpGetOut">
+		<wsdl:part name="Body" element="tns:DataSet" />
+	</wsdl:message>
+	<wsdl:message name="CheckUserInfoHttpGetIn">
+		<wsdl:part name="fUserName" type="s:string" />
+		<wsdl:part name="fUserEmail" type="s:string" />
+		<wsdl:part name="fRealName" type="s:string" />
+		<wsdl:part name="fIDCard" type="s:string" />
+	</wsdl:message>
+	<wsdl:message name="CheckUserInfoHttpGetOut">
+		<wsdl:part name="Body" element="tns:string" />
+	</wsdl:message>
+	<wsdl:message name="ActiveAreaHttpGetIn">
+		<wsdl:part name="fUserName" type="s:string" />
+		<wsdl:part name="fGameId" type="s:string" />
+		<wsdl:part name="fAreaId" type="s:string" />
+	</wsdl:message>
+	<wsdl:message name="ActiveAreaHttpGetOut">
+		<wsdl:part name="Body" element="tns:string" />
+	</wsdl:message>
+	<wsdl:message name="CheckUserSuperPasswordHttpGetIn">
+		<wsdl:part name="fUserName" type="s:string" />
+		<wsdl:part name="fSuperPassword" type="s:string" />
+	</wsdl:message>
+	<wsdl:message name="CheckUserSuperPasswordHttpGetOut">
+		<wsdl:part name="Body" element="tns:string" />
+	</wsdl:message>
+	<wsdl:message name="Login_smHttpGetIn">
+		<wsdl:part name="fUserName" type="s:string" />
+		<wsdl:part name="fPassword" type="s:string" />
+		<wsdl:part name="fSign" type="s:string" />
+		<wsdl:part name="fLoginIP" type="s:string" />
+	</wsdl:message>
+	<wsdl:message name="Login_smHttpGetOut">
+		<wsdl:part name="Body" element="tns:string" />
+	</wsdl:message>
+	<wsdl:message name="Login_zxyHttpGetIn">
+		<wsdl:part name="fUserName" type="s:string" />
+		<wsdl:part name="fPassword" type="s:string" />
+		<wsdl:part name="fSign" type="s:string" />
+		<wsdl:part name="fLoginIP" type="s:string" />
+	</wsdl:message>
+	<wsdl:message name="Login_zxyHttpGetOut">
+		<wsdl:part name="Body" element="tns:string" />
+	</wsdl:message>
+	<wsdl:message name="LoginALLHttpGetIn">
+		<wsdl:part name="fUserName" type="s:string" />
+		<wsdl:part name="fPassword" type="s:string" />
+		<wsdl:part name="fSign" type="s:string" />
+		<wsdl:part name="fLoginIP" type="s:string" />
+	</wsdl:message>
+	<wsdl:message name="LoginALLHttpGetOut">
+		<wsdl:part name="Body" element="tns:string" />
+	</wsdl:message>
+	<wsdl:message name="CheckUserInput_smHttpGetIn">
+		<wsdl:part name="fUserName" type="s:string" />
+	</wsdl:message>
+	<wsdl:message name="CheckUserInput_smHttpGetOut">
+		<wsdl:part name="Body" element="tns:boolean" />
+	</wsdl:message>
+	<wsdl:message name="CheckUserInput_zxyHttpGetIn">
+		<wsdl:part name="fUserName" type="s:string" />
+	</wsdl:message>
+	<wsdl:message name="CheckUserInput_zxyHttpGetOut">
+		<wsdl:part name="Body" element="tns:boolean" />
+	</wsdl:message>
+	<wsdl:message name="Register_smHttpGetIn">
+		<wsdl:part name="fUserName" type="s:string" />
+		<wsdl:part name="fPassword" type="s:string" />
+		<wsdl:part name="fRealName" type="s:string" />
+		<wsdl:part name="fEmail" type="s:string" />
+		<wsdl:part name="fRegIP" type="s:string" />
+		<wsdl:part name="fIDCard" type="s:string" />
+	</wsdl:message>
+	<wsdl:message name="Register_smHttpGetOut">
+		<wsdl:part name="Body" element="tns:string" />
+	</wsdl:message>
+	<wsdl:message name="Register_zxyHttpGetIn">
+		<wsdl:part name="fUserName" type="s:string" />
+		<wsdl:part name="fPassword" type="s:string" />
+		<wsdl:part name="fRealName" type="s:string" />
+		<wsdl:part name="fEmail" type="s:string" />
+		<wsdl:part name="fRegIP" type="s:string" />
+		<wsdl:part name="fIDCard" type="s:string" />
+	</wsdl:message>
+	<wsdl:message name="Register_zxyHttpGetOut">
+		<wsdl:part name="Body" element="tns:string" />
+	</wsdl:message>
+	<wsdl:message name="Registerfrom_smHttpGetIn">
+		<wsdl:part name="fUserName" type="s:string" />
+		<wsdl:part name="fPassword" type="s:string" />
+		<wsdl:part name="fRealName" type="s:string" />
+		<wsdl:part name="fEmail" type="s:string" />
+		<wsdl:part name="fRegIP" type="s:string" />
+		<wsdl:part name="fIDCard" type="s:string" />
+		<wsdl:part name="fSourceType" type="s:string" />
+		<wsdl:part name="fSourceID" type="s:string" />
+		<wsdl:part name="fLocation" type="s:string" />
+	</wsdl:message>
+	<wsdl:message name="Registerfrom_smHttpGetOut">
+		<wsdl:part name="Body" element="tns:string" />
+	</wsdl:message>
+	<wsdl:message name="Registerfrom_zxyHttpGetIn">
+		<wsdl:part name="fUserName" type="s:string" />
+		<wsdl:part name="fPassword" type="s:string" />
+		<wsdl:part name="fRealName" type="s:string" />
+		<wsdl:part name="fEmail" type="s:string" />
+		<wsdl:part name="fRegIP" type="s:string" />
+		<wsdl:part name="fIDCard" type="s:string" />
+		<wsdl:part name="fSourceType" type="s:string" />
+		<wsdl:part name="fSourceID" type="s:string" />
+		<wsdl:part name="fLocation" type="s:string" />
+	</wsdl:message>
+	<wsdl:message name="Registerfrom_zxyHttpGetOut">
+		<wsdl:part name="Body" element="tns:string" />
+	</wsdl:message>
+	<wsdl:message name="RegisterAndGetAdsFrom_smHttpGetIn">
+		<wsdl:part name="fUserName" type="s:string" />
+		<wsdl:part name="fPassword" type="s:string" />
+		<wsdl:part name="fRealName" type="s:string" />
+		<wsdl:part name="fEmail" type="s:string" />
+		<wsdl:part name="fRegIP" type="s:string" />
+		<wsdl:part name="fIDCard" type="s:string" />
+		<wsdl:part name="fAdsId" type="s:string" />
+		<wsdl:part name="fAdsVerify" type="s:string" />
+		<wsdl:part name="fAdsFrom" type="s:string" />
+	</wsdl:message>
+	<wsdl:message name="RegisterAndGetAdsFrom_smHttpGetOut">
+		<wsdl:part name="Body" element="tns:string" />
+	</wsdl:message>
+	<wsdl:message name="RegisterAndGetAdsFrom_zxyHttpGetIn">
+		<wsdl:part name="fUserName" type="s:string" />
+		<wsdl:part name="fPassword" type="s:string" />
+		<wsdl:part name="fRealName" type="s:string" />
+		<wsdl:part name="fEmail" type="s:string" />
+		<wsdl:part name="fRegIP" type="s:string" />
+		<wsdl:part name="fIDCard" type="s:string" />
+		<wsdl:part name="fAdsId" type="s:string" />
+		<wsdl:part name="fAdsVerify" type="s:string" />
+		<wsdl:part name="fAdsFrom" type="s:string" />
+	</wsdl:message>
+	<wsdl:message name="RegisterAndGetAdsFrom_zxyHttpGetOut">
+		<wsdl:part name="Body" element="tns:string" />
+	</wsdl:message>
+	<wsdl:message name="ChangePassword_smHttpGetIn">
+		<wsdl:part name="fUserName" type="s:string" />
+		<wsdl:part name="fNewPassword" type="s:string" />
+		<wsdl:part name="fSuperPassword" type="s:string" />
+		<wsdl:part name="fChangeMode" type="s:string" />
+	</wsdl:message>
+	<wsdl:message name="ChangePassword_smHttpGetOut">
+		<wsdl:part name="Body" element="tns:string" />
+	</wsdl:message>
+	<wsdl:message name="ChangePassword_zxyHttpGetIn">
+		<wsdl:part name="fUserName" type="s:string" />
+		<wsdl:part name="fNewPassword" type="s:string" />
+		<wsdl:part name="fSuperPassword" type="s:string" />
+		<wsdl:part name="fChangeMode" type="s:string" />
+	</wsdl:message>
+	<wsdl:message name="ChangePassword_zxyHttpGetOut">
+		<wsdl:part name="Body" element="tns:string" />
+	</wsdl:message>
+	<wsdl:message name="ChangePasswordNew_smHttpGetIn">
+		<wsdl:part name="fUserName" type="s:string" />
+		<wsdl:part name="fNewPassword" type="s:string" />
+		<wsdl:part name="fSuperPassword" type="s:string" />
+		<wsdl:part name="fChangeMode" type="s:string" />
+		<wsdl:part name="fIpaddress" type="s:string" />
+		<wsdl:part name="fChannel" type="s:string" />
+	</wsdl:message>
+	<wsdl:message name="ChangePasswordNew_smHttpGetOut">
+		<wsdl:part name="Body" element="tns:string" />
+	</wsdl:message>
+	<wsdl:message name="ChangePasswordNew_zxyHttpGetIn">
+		<wsdl:part name="fUserName" type="s:string" />
+		<wsdl:part name="fNewPassword" type="s:string" />
+		<wsdl:part name="fSuperPassword" type="s:string" />
+		<wsdl:part name="fChangeMode" type="s:string" />
+		<wsdl:part name="fIpaddress" type="s:string" />
+		<wsdl:part name="fChannel" type="s:string" />
+	</wsdl:message>
+	<wsdl:message name="ChangePasswordNew_zxyHttpGetOut">
+		<wsdl:part name="Body" element="tns:string" />
+	</wsdl:message>
+	<wsdl:message name="EditUserInfoHttpGetIn">
+		<wsdl:part name="fUserID" type="s:string" />
+		<wsdl:part name="fRealName" type="s:string" />
+		<wsdl:part name="fIDCard" type="s:string" />
+		<wsdl:part name="fEmail" type="s:string" />
+		<wsdl:part name="fSign" type="s:string" />
+	</wsdl:message>
+	<wsdl:message name="EditUserInfoHttpGetOut">
+		<wsdl:part name="Body" element="tns:string" />
+	</wsdl:message>
+	<wsdl:message name="EditUserInfoNewHttpGetIn">
+		<wsdl:part name="fUserID" type="s:string" />
+		<wsdl:part name="fRealName" type="s:string" />
+		<wsdl:part name="fIDCard" type="s:string" />
+		<wsdl:part name="fEmail" type="s:string" />
+		<wsdl:part name="fSign" type="s:string" />
+		<wsdl:part name="fIpaddress" type="s:string" />
+		<wsdl:part name="fChannel" type="s:string" />
+	</wsdl:message>
+	<wsdl:message name="EditUserInfoNewHttpGetOut">
+		<wsdl:part name="Body" element="tns:string" />
+	</wsdl:message>
+	<wsdl:message name="CreateUserPayPermitHttpGetIn">
+		<wsdl:part name="fUserName" type="s:string" />
+		<wsdl:part name="fGameID" type="s:string" />
+		<wsdl:part name="fAreaID" type="s:string" />
+		<wsdl:part name="fSign" type="s:string" />
+	</wsdl:message>
+	<wsdl:message name="CreateUserPayPermitHttpGetOut">
+		<wsdl:part name="Body" element="tns:string" />
+	</wsdl:message>
+	<wsdl:message name="CreateUserPayPermit2HttpGetIn">
+		<wsdl:part name="fUserName" type="s:string" />
+		<wsdl:part name="fGameID" type="s:string" />
+		<wsdl:part name="fAreaID" type="s:string" />
+		<wsdl:part name="fSourceID" type="s:string" />
+		<wsdl:part name="fSourceName" type="s:string" />
+		<wsdl:part name="fBeginTime" type="s:string" />
+		<wsdl:part name="fEndTime" type="s:string" />
+		<wsdl:part name="fSign" type="s:string" />
+	</wsdl:message>
+	<wsdl:message name="CreateUserPayPermit2HttpGetOut">
+		<wsdl:part name="Body" element="tns:string" />
+	</wsdl:message>
+	<wsdl:message name="QueryUserInfoHttpPostIn">
+		<wsdl:part name="fQueryKey" type="s:string" />
+		<wsdl:part name="fQueryParam" type="s:string" />
+		<wsdl:part name="fQueryParam2" type="s:string" />
+	</wsdl:message>
+	<wsdl:message name="QueryUserInfoHttpPostOut">
+		<wsdl:part name="Body" element="tns:DataSet" />
+	</wsdl:message>
+	<wsdl:message name="CheckUserInfoHttpPostIn">
+		<wsdl:part name="fUserName" type="s:string" />
+		<wsdl:part name="fUserEmail" type="s:string" />
+		<wsdl:part name="fRealName" type="s:string" />
+		<wsdl:part name="fIDCard" type="s:string" />
+	</wsdl:message>
+	<wsdl:message name="CheckUserInfoHttpPostOut">
+		<wsdl:part name="Body" element="tns:string" />
+	</wsdl:message>
+	<wsdl:message name="ActiveAreaHttpPostIn">
+		<wsdl:part name="fUserName" type="s:string" />
+		<wsdl:part name="fGameId" type="s:string" />
+		<wsdl:part name="fAreaId" type="s:string" />
+	</wsdl:message>
+	<wsdl:message name="ActiveAreaHttpPostOut">
+		<wsdl:part name="Body" element="tns:string" />
+	</wsdl:message>
+	<wsdl:message name="CheckUserSuperPasswordHttpPostIn">
+		<wsdl:part name="fUserName" type="s:string" />
+		<wsdl:part name="fSuperPassword" type="s:string" />
+	</wsdl:message>
+	<wsdl:message name="CheckUserSuperPasswordHttpPostOut">
+		<wsdl:part name="Body" element="tns:string" />
+	</wsdl:message>
+	<wsdl:message name="Login_smHttpPostIn">
+		<wsdl:part name="fUserName" type="s:string" />
+		<wsdl:part name="fPassword" type="s:string" />
+		<wsdl:part name="fSign" type="s:string" />
+		<wsdl:part name="fLoginIP" type="s:string" />
+	</wsdl:message>
+	<wsdl:message name="Login_smHttpPostOut">
+		<wsdl:part name="Body" element="tns:string" />
+	</wsdl:message>
+	<wsdl:message name="Login_zxyHttpPostIn">
+		<wsdl:part name="fUserName" type="s:string" />
+		<wsdl:part name="fPassword" type="s:string" />
+		<wsdl:part name="fSign" type="s:string" />
+		<wsdl:part name="fLoginIP" type="s:string" />
+	</wsdl:message>
+	<wsdl:message name="Login_zxyHttpPostOut">
+		<wsdl:part name="Body" element="tns:string" />
+	</wsdl:message>
+	<wsdl:message name="LoginALLHttpPostIn">
+		<wsdl:part name="fUserName" type="s:string" />
+		<wsdl:part name="fPassword" type="s:string" />
+		<wsdl:part name="fSign" type="s:string" />
+		<wsdl:part name="fLoginIP" type="s:string" />
+	</wsdl:message>
+	<wsdl:message name="LoginALLHttpPostOut">
+		<wsdl:part name="Body" element="tns:string" />
+	</wsdl:message>
+	<wsdl:message name="CheckUserInput_smHttpPostIn">
+		<wsdl:part name="fUserName" type="s:string" />
+	</wsdl:message>
+	<wsdl:message name="CheckUserInput_smHttpPostOut">
+		<wsdl:part name="Body" element="tns:boolean" />
+	</wsdl:message>
+	<wsdl:message name="CheckUserInput_zxyHttpPostIn">
+		<wsdl:part name="fUserName" type="s:string" />
+	</wsdl:message>
+	<wsdl:message name="CheckUserInput_zxyHttpPostOut">
+		<wsdl:part name="Body" element="tns:boolean" />
+	</wsdl:message>
+	<wsdl:message name="Register_smHttpPostIn">
+		<wsdl:part name="fUserName" type="s:string" />
+		<wsdl:part name="fPassword" type="s:string" />
+		<wsdl:part name="fRealName" type="s:string" />
+		<wsdl:part name="fEmail" type="s:string" />
+		<wsdl:part name="fRegIP" type="s:string" />
+		<wsdl:part name="fIDCard" type="s:string" />
+	</wsdl:message>
+	<wsdl:message name="Register_smHttpPostOut">
+		<wsdl:part name="Body" element="tns:string" />
+	</wsdl:message>
+	<wsdl:message name="Register_zxyHttpPostIn">
+		<wsdl:part name="fUserName" type="s:string" />
+		<wsdl:part name="fPassword" type="s:string" />
+		<wsdl:part name="fRealName" type="s:string" />
+		<wsdl:part name="fEmail" type="s:string" />
+		<wsdl:part name="fRegIP" type="s:string" />
+		<wsdl:part name="fIDCard" type="s:string" />
+	</wsdl:message>
+	<wsdl:message name="Register_zxyHttpPostOut">
+		<wsdl:part name="Body" element="tns:string" />
+	</wsdl:message>
+	<wsdl:message name="Registerfrom_smHttpPostIn">
+		<wsdl:part name="fUserName" type="s:string" />
+		<wsdl:part name="fPassword" type="s:string" />
+		<wsdl:part name="fRealName" type="s:string" />
+		<wsdl:part name="fEmail" type="s:string" />
+		<wsdl:part name="fRegIP" type="s:string" />
+		<wsdl:part name="fIDCard" type="s:string" />
+		<wsdl:part name="fSourceType" type="s:string" />
+		<wsdl:part name="fSourceID" type="s:string" />
+		<wsdl:part name="fLocation" type="s:string" />
+	</wsdl:message>
+	<wsdl:message name="Registerfrom_smHttpPostOut">
+		<wsdl:part name="Body" element="tns:string" />
+	</wsdl:message>
+	<wsdl:message name="Registerfrom_zxyHttpPostIn">
+		<wsdl:part name="fUserName" type="s:string" />
+		<wsdl:part name="fPassword" type="s:string" />
+		<wsdl:part name="fRealName" type="s:string" />
+		<wsdl:part name="fEmail" type="s:string" />
+		<wsdl:part name="fRegIP" type="s:string" />
+		<wsdl:part name="fIDCard" type="s:string" />
+		<wsdl:part name="fSourceType" type="s:string" />
+		<wsdl:part name="fSourceID" type="s:string" />
+		<wsdl:part name="fLocation" type="s:string" />
+	</wsdl:message>
+	<wsdl:message name="Registerfrom_zxyHttpPostOut">
+		<wsdl:part name="Body" element="tns:string" />
+	</wsdl:message>
+	<wsdl:message name="RegisterAndGetAdsFrom_smHttpPostIn">
+		<wsdl:part name="fUserName" type="s:string" />
+		<wsdl:part name="fPassword" type="s:string" />
+		<wsdl:part name="fRealName" type="s:string" />
+		<wsdl:part name="fEmail" type="s:string" />
+		<wsdl:part name="fRegIP" type="s:string" />
+		<wsdl:part name="fIDCard" type="s:string" />
+		<wsdl:part name="fAdsId" type="s:string" />
+		<wsdl:part name="fAdsVerify" type="s:string" />
+		<wsdl:part name="fAdsFrom" type="s:string" />
+	</wsdl:message>
+	<wsdl:message name="RegisterAndGetAdsFrom_smHttpPostOut">
+		<wsdl:part name="Body" element="tns:string" />
+	</wsdl:message>
+	<wsdl:message name="RegisterAndGetAdsFrom_zxyHttpPostIn">
+		<wsdl:part name="fUserName" type="s:string" />
+		<wsdl:part name="fPassword" type="s:string" />
+		<wsdl:part name="fRealName" type="s:string" />
+		<wsdl:part name="fEmail" type="s:string" />
+		<wsdl:part name="fRegIP" type="s:string" />
+		<wsdl:part name="fIDCard" type="s:string" />
+		<wsdl:part name="fAdsId" type="s:string" />
+		<wsdl:part name="fAdsVerify" type="s:string" />
+		<wsdl:part name="fAdsFrom" type="s:string" />
+	</wsdl:message>
+	<wsdl:message name="RegisterAndGetAdsFrom_zxyHttpPostOut">
+		<wsdl:part name="Body" element="tns:string" />
+	</wsdl:message>
+	<wsdl:message name="ChangePassword_smHttpPostIn">
+		<wsdl:part name="fUserName" type="s:string" />
+		<wsdl:part name="fNewPassword" type="s:string" />
+		<wsdl:part name="fSuperPassword" type="s:string" />
+		<wsdl:part name="fChangeMode" type="s:string" />
+	</wsdl:message>
+	<wsdl:message name="ChangePassword_smHttpPostOut">
+		<wsdl:part name="Body" element="tns:string" />
+	</wsdl:message>
+	<wsdl:message name="ChangePassword_zxyHttpPostIn">
+		<wsdl:part name="fUserName" type="s:string" />
+		<wsdl:part name="fNewPassword" type="s:string" />
+		<wsdl:part name="fSuperPassword" type="s:string" />
+		<wsdl:part name="fChangeMode" type="s:string" />
+	</wsdl:message>
+	<wsdl:message name="ChangePassword_zxyHttpPostOut">
+		<wsdl:part name="Body" element="tns:string" />
+	</wsdl:message>
+	<wsdl:message name="ChangePasswordNew_smHttpPostIn">
+		<wsdl:part name="fUserName" type="s:string" />
+		<wsdl:part name="fNewPassword" type="s:string" />
+		<wsdl:part name="fSuperPassword" type="s:string" />
+		<wsdl:part name="fChangeMode" type="s:string" />
+		<wsdl:part name="fIpaddress" type="s:string" />
+		<wsdl:part name="fChannel" type="s:string" />
+	</wsdl:message>
+	<wsdl:message name="ChangePasswordNew_smHttpPostOut">
+		<wsdl:part name="Body" element="tns:string" />
+	</wsdl:message>
+	<wsdl:message name="ChangePasswordNew_zxyHttpPostIn">
+		<wsdl:part name="fUserName" type="s:string" />
+		<wsdl:part name="fNewPassword" type="s:string" />
+		<wsdl:part name="fSuperPassword" type="s:string" />
+		<wsdl:part name="fChangeMode" type="s:string" />
+		<wsdl:part name="fIpaddress" type="s:string" />
+		<wsdl:part name="fChannel" type="s:string" />
+	</wsdl:message>
+	<wsdl:message name="ChangePasswordNew_zxyHttpPostOut">
+		<wsdl:part name="Body" element="tns:string" />
+	</wsdl:message>
+	<wsdl:message name="EditUserInfoHttpPostIn">
+		<wsdl:part name="fUserID" type="s:string" />
+		<wsdl:part name="fRealName" type="s:string" />
+		<wsdl:part name="fIDCard" type="s:string" />
+		<wsdl:part name="fEmail" type="s:string" />
+		<wsdl:part name="fSign" type="s:string" />
+	</wsdl:message>
+	<wsdl:message name="EditUserInfoHttpPostOut">
+		<wsdl:part name="Body" element="tns:string" />
+	</wsdl:message>
+	<wsdl:message name="EditUserInfoNewHttpPostIn">
+		<wsdl:part name="fUserID" type="s:string" />
+		<wsdl:part name="fRealName" type="s:string" />
+		<wsdl:part name="fIDCard" type="s:string" />
+		<wsdl:part name="fEmail" type="s:string" />
+		<wsdl:part name="fSign" type="s:string" />
+		<wsdl:part name="fIpaddress" type="s:string" />
+		<wsdl:part name="fChannel" type="s:string" />
+	</wsdl:message>
+	<wsdl:message name="EditUserInfoNewHttpPostOut">
+		<wsdl:part name="Body" element="tns:string" />
+	</wsdl:message>
+	<wsdl:message name="CreateUserPayPermitHttpPostIn">
+		<wsdl:part name="fUserName" type="s:string" />
+		<wsdl:part name="fGameID" type="s:string" />
+		<wsdl:part name="fAreaID" type="s:string" />
+		<wsdl:part name="fSign" type="s:string" />
+	</wsdl:message>
+	<wsdl:message name="CreateUserPayPermitHttpPostOut">
+		<wsdl:part name="Body" element="tns:string" />
+	</wsdl:message>
+	<wsdl:message name="CreateUserPayPermit2HttpPostIn">
+		<wsdl:part name="fUserName" type="s:string" />
+		<wsdl:part name="fGameID" type="s:string" />
+		<wsdl:part name="fAreaID" type="s:string" />
+		<wsdl:part name="fSourceID" type="s:string" />
+		<wsdl:part name="fSourceName" type="s:string" />
+		<wsdl:part name="fBeginTime" type="s:string" />
+		<wsdl:part name="fEndTime" type="s:string" />
+		<wsdl:part name="fSign" type="s:string" />
+	</wsdl:message>
+	<wsdl:message name="CreateUserPayPermit2HttpPostOut">
+		<wsdl:part name="Body" element="tns:string" />
+	</wsdl:message>
+	<wsdl:portType name="MainSoap">
+		<wsdl:operation name="QueryUserInfo">
+			<wsdl:input message="tns:QueryUserInfoSoapIn" />
+			<wsdl:output message="tns:QueryUserInfoSoapOut" />
+		</wsdl:operation>
+		<wsdl:operation name="CheckUserInfo">
+			<wsdl:input message="tns:CheckUserInfoSoapIn" />
+			<wsdl:output message="tns:CheckUserInfoSoapOut" />
+		</wsdl:operation>
+		<wsdl:operation name="ActiveArea">
+			<wsdl:input message="tns:ActiveAreaSoapIn" />
+			<wsdl:output message="tns:ActiveAreaSoapOut" />
+		</wsdl:operation>
+		<wsdl:operation name="CheckUserSuperPassword">
+			<wsdl:input message="tns:CheckUserSuperPasswordSoapIn" />
+			<wsdl:output message="tns:CheckUserSuperPasswordSoapOut" />
+		</wsdl:operation>
+		<wsdl:operation name="Login_sm">
+			<wsdl:input message="tns:Login_smSoapIn" />
+			<wsdl:output message="tns:Login_smSoapOut" />
+		</wsdl:operation>
+		<wsdl:operation name="Login_zxy">
+			<wsdl:input message="tns:Login_zxySoapIn" />
+			<wsdl:output message="tns:Login_zxySoapOut" />
+		</wsdl:operation>
+		<wsdl:operation name="LoginALL">
+			<wsdl:input message="tns:LoginALLSoapIn" />
+			<wsdl:output message="tns:LoginALLSoapOut" />
+		</wsdl:operation>
+		<wsdl:operation name="CheckUserInput_sm">
+			<wsdl:input message="tns:CheckUserInput_smSoapIn" />
+			<wsdl:output message="tns:CheckUserInput_smSoapOut" />
+		</wsdl:operation>
+		<wsdl:operation name="CheckUserInput_zxy">
+			<wsdl:input message="tns:CheckUserInput_zxySoapIn" />
+			<wsdl:output message="tns:CheckUserInput_zxySoapOut" />
+		</wsdl:operation>
+		<wsdl:operation name="Register_sm">
+			<wsdl:input message="tns:Register_smSoapIn" />
+			<wsdl:output message="tns:Register_smSoapOut" />
+		</wsdl:operation>
+		<wsdl:operation name="Register_zxy">
+			<wsdl:input message="tns:Register_zxySoapIn" />
+			<wsdl:output message="tns:Register_zxySoapOut" />
+		</wsdl:operation>
+		<wsdl:operation name="Registerfrom_sm">
+			<wsdl:input message="tns:Registerfrom_smSoapIn" />
+			<wsdl:output message="tns:Registerfrom_smSoapOut" />
+		</wsdl:operation>
+		<wsdl:operation name="Registerfrom_zxy">
+			<wsdl:input message="tns:Registerfrom_zxySoapIn" />
+			<wsdl:output message="tns:Registerfrom_zxySoapOut" />
+		</wsdl:operation>
+		<wsdl:operation name="RegisterAndGetAdsFrom_sm">
+			<wsdl:input message="tns:RegisterAndGetAdsFrom_smSoapIn" />
+			<wsdl:output message="tns:RegisterAndGetAdsFrom_smSoapOut" />
+		</wsdl:operation>
+		<wsdl:operation name="RegisterAndGetAdsFrom_zxy">
+			<wsdl:input message="tns:RegisterAndGetAdsFrom_zxySoapIn" />
+			<wsdl:output message="tns:RegisterAndGetAdsFrom_zxySoapOut" />
+		</wsdl:operation>
+		<wsdl:operation name="ChangePassword_sm">
+			<wsdl:input message="tns:ChangePassword_smSoapIn" />
+			<wsdl:output message="tns:ChangePassword_smSoapOut" />
+		</wsdl:operation>
+		<wsdl:operation name="ChangePassword_zxy">
+			<wsdl:input message="tns:ChangePassword_zxySoapIn" />
+			<wsdl:output message="tns:ChangePassword_zxySoapOut" />
+		</wsdl:operation>
+		<wsdl:operation name="ChangePasswordNew_sm">
+			<wsdl:input message="tns:ChangePasswordNew_smSoapIn" />
+			<wsdl:output message="tns:ChangePasswordNew_smSoapOut" />
+		</wsdl:operation>
+		<wsdl:operation name="ChangePasswordNew_zxy">
+			<wsdl:input message="tns:ChangePasswordNew_zxySoapIn" />
+			<wsdl:output message="tns:ChangePasswordNew_zxySoapOut" />
+		</wsdl:operation>
+		<wsdl:operation name="EditUserInfo">
+			<wsdl:input message="tns:EditUserInfoSoapIn" />
+			<wsdl:output message="tns:EditUserInfoSoapOut" />
+		</wsdl:operation>
+		<wsdl:operation name="EditUserInfoNew">
+			<wsdl:input message="tns:EditUserInfoNewSoapIn" />
+			<wsdl:output message="tns:EditUserInfoNewSoapOut" />
+		</wsdl:operation>
+		<wsdl:operation name="CreateUserPayPermit">
+			<wsdl:input message="tns:CreateUserPayPermitSoapIn" />
+			<wsdl:output message="tns:CreateUserPayPermitSoapOut" />
+		</wsdl:operation>
+		<wsdl:operation name="CreateUserPayPermit2">
+			<wsdl:input message="tns:CreateUserPayPermit2SoapIn" />
+			<wsdl:output message="tns:CreateUserPayPermit2SoapOut" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:portType name="MainHttpGet">
+		<wsdl:operation name="QueryUserInfo">
+			<wsdl:input message="tns:QueryUserInfoHttpGetIn" />
+			<wsdl:output message="tns:QueryUserInfoHttpGetOut" />
+		</wsdl:operation>
+		<wsdl:operation name="CheckUserInfo">
+			<wsdl:input message="tns:CheckUserInfoHttpGetIn" />
+			<wsdl:output message="tns:CheckUserInfoHttpGetOut" />
+		</wsdl:operation>
+		<wsdl:operation name="ActiveArea">
+			<wsdl:input message="tns:ActiveAreaHttpGetIn" />
+			<wsdl:output message="tns:ActiveAreaHttpGetOut" />
+		</wsdl:operation>
+		<wsdl:operation name="CheckUserSuperPassword">
+			<wsdl:input message="tns:CheckUserSuperPasswordHttpGetIn" />
+			<wsdl:output message="tns:CheckUserSuperPasswordHttpGetOut" />
+		</wsdl:operation>
+		<wsdl:operation name="Login_sm">
+			<wsdl:input message="tns:Login_smHttpGetIn" />
+			<wsdl:output message="tns:Login_smHttpGetOut" />
+		</wsdl:operation>
+		<wsdl:operation name="Login_zxy">
+			<wsdl:input message="tns:Login_zxyHttpGetIn" />
+			<wsdl:output message="tns:Login_zxyHttpGetOut" />
+		</wsdl:operation>
+		<wsdl:operation name="LoginALL">
+			<wsdl:input message="tns:LoginALLHttpGetIn" />
+			<wsdl:output message="tns:LoginALLHttpGetOut" />
+		</wsdl:operation>
+		<wsdl:operation name="CheckUserInput_sm">
+			<wsdl:input message="tns:CheckUserInput_smHttpGetIn" />
+			<wsdl:output message="tns:CheckUserInput_smHttpGetOut" />
+		</wsdl:operation>
+		<wsdl:operation name="CheckUserInput_zxy">
+			<wsdl:input message="tns:CheckUserInput_zxyHttpGetIn" />
+			<wsdl:output message="tns:CheckUserInput_zxyHttpGetOut" />
+		</wsdl:operation>
+		<wsdl:operation name="Register_sm">
+			<wsdl:input message="tns:Register_smHttpGetIn" />
+			<wsdl:output message="tns:Register_smHttpGetOut" />
+		</wsdl:operation>
+		<wsdl:operation name="Register_zxy">
+			<wsdl:input message="tns:Register_zxyHttpGetIn" />
+			<wsdl:output message="tns:Register_zxyHttpGetOut" />
+		</wsdl:operation>
+		<wsdl:operation name="Registerfrom_sm">
+			<wsdl:input message="tns:Registerfrom_smHttpGetIn" />
+			<wsdl:output message="tns:Registerfrom_smHttpGetOut" />
+		</wsdl:operation>
+		<wsdl:operation name="Registerfrom_zxy">
+			<wsdl:input message="tns:Registerfrom_zxyHttpGetIn" />
+			<wsdl:output message="tns:Registerfrom_zxyHttpGetOut" />
+		</wsdl:operation>
+		<wsdl:operation name="RegisterAndGetAdsFrom_sm">
+			<wsdl:input message="tns:RegisterAndGetAdsFrom_smHttpGetIn" />
+			<wsdl:output message="tns:RegisterAndGetAdsFrom_smHttpGetOut" />
+		</wsdl:operation>
+		<wsdl:operation name="RegisterAndGetAdsFrom_zxy">
+			<wsdl:input message="tns:RegisterAndGetAdsFrom_zxyHttpGetIn" />
+			<wsdl:output message="tns:RegisterAndGetAdsFrom_zxyHttpGetOut" />
+		</wsdl:operation>
+		<wsdl:operation name="ChangePassword_sm">
+			<wsdl:input message="tns:ChangePassword_smHttpGetIn" />
+			<wsdl:output message="tns:ChangePassword_smHttpGetOut" />
+		</wsdl:operation>
+		<wsdl:operation name="ChangePassword_zxy">
+			<wsdl:input message="tns:ChangePassword_zxyHttpGetIn" />
+			<wsdl:output message="tns:ChangePassword_zxyHttpGetOut" />
+		</wsdl:operation>
+		<wsdl:operation name="ChangePasswordNew_sm">
+			<wsdl:input message="tns:ChangePasswordNew_smHttpGetIn" />
+			<wsdl:output message="tns:ChangePasswordNew_smHttpGetOut" />
+		</wsdl:operation>
+		<wsdl:operation name="ChangePasswordNew_zxy">
+			<wsdl:input message="tns:ChangePasswordNew_zxyHttpGetIn" />
+			<wsdl:output message="tns:ChangePasswordNew_zxyHttpGetOut" />
+		</wsdl:operation>
+		<wsdl:operation name="EditUserInfo">
+			<wsdl:input message="tns:EditUserInfoHttpGetIn" />
+			<wsdl:output message="tns:EditUserInfoHttpGetOut" />
+		</wsdl:operation>
+		<wsdl:operation name="EditUserInfoNew">
+			<wsdl:input message="tns:EditUserInfoNewHttpGetIn" />
+			<wsdl:output message="tns:EditUserInfoNewHttpGetOut" />
+		</wsdl:operation>
+		<wsdl:operation name="CreateUserPayPermit">
+			<wsdl:input message="tns:CreateUserPayPermitHttpGetIn" />
+			<wsdl:output message="tns:CreateUserPayPermitHttpGetOut" />
+		</wsdl:operation>
+		<wsdl:operation name="CreateUserPayPermit2">
+			<wsdl:input message="tns:CreateUserPayPermit2HttpGetIn" />
+			<wsdl:output message="tns:CreateUserPayPermit2HttpGetOut" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:portType name="MainHttpPost">
+		<wsdl:operation name="QueryUserInfo">
+			<wsdl:input message="tns:QueryUserInfoHttpPostIn" />
+			<wsdl:output message="tns:QueryUserInfoHttpPostOut" />
+		</wsdl:operation>
+		<wsdl:operation name="CheckUserInfo">
+			<wsdl:input message="tns:CheckUserInfoHttpPostIn" />
+			<wsdl:output message="tns:CheckUserInfoHttpPostOut" />
+		</wsdl:operation>
+		<wsdl:operation name="ActiveArea">
+			<wsdl:input message="tns:ActiveAreaHttpPostIn" />
+			<wsdl:output message="tns:ActiveAreaHttpPostOut" />
+		</wsdl:operation>
+		<wsdl:operation name="CheckUserSuperPassword">
+			<wsdl:input message="tns:CheckUserSuperPasswordHttpPostIn" />
+			<wsdl:output message="tns:CheckUserSuperPasswordHttpPostOut" />
+		</wsdl:operation>
+		<wsdl:operation name="Login_sm">
+			<wsdl:input message="tns:Login_smHttpPostIn" />
+			<wsdl:output message="tns:Login_smHttpPostOut" />
+		</wsdl:operation>
+		<wsdl:operation name="Login_zxy">
+			<wsdl:input message="tns:Login_zxyHttpPostIn" />
+			<wsdl:output message="tns:Login_zxyHttpPostOut" />
+		</wsdl:operation>
+		<wsdl:operation name="LoginALL">
+			<wsdl:input message="tns:LoginALLHttpPostIn" />
+			<wsdl:output message="tns:LoginALLHttpPostOut" />
+		</wsdl:operation>
+		<wsdl:operation name="CheckUserInput_sm">
+			<wsdl:input message="tns:CheckUserInput_smHttpPostIn" />
+			<wsdl:output message="tns:CheckUserInput_smHttpPostOut" />
+		</wsdl:operation>
+		<wsdl:operation name="CheckUserInput_zxy">
+			<wsdl:input message="tns:CheckUserInput_zxyHttpPostIn" />
+			<wsdl:output message="tns:CheckUserInput_zxyHttpPostOut" />
+		</wsdl:operation>
+		<wsdl:operation name="Register_sm">
+			<wsdl:input message="tns:Register_smHttpPostIn" />
+			<wsdl:output message="tns:Register_smHttpPostOut" />
+		</wsdl:operation>
+		<wsdl:operation name="Register_zxy">
+			<wsdl:input message="tns:Register_zxyHttpPostIn" />
+			<wsdl:output message="tns:Register_zxyHttpPostOut" />
+		</wsdl:operation>
+		<wsdl:operation name="Registerfrom_sm">
+			<wsdl:input message="tns:Registerfrom_smHttpPostIn" />
+			<wsdl:output message="tns:Registerfrom_smHttpPostOut" />
+		</wsdl:operation>
+		<wsdl:operation name="Registerfrom_zxy">
+			<wsdl:input message="tns:Registerfrom_zxyHttpPostIn" />
+			<wsdl:output message="tns:Registerfrom_zxyHttpPostOut" />
+		</wsdl:operation>
+		<wsdl:operation name="RegisterAndGetAdsFrom_sm">
+			<wsdl:input message="tns:RegisterAndGetAdsFrom_smHttpPostIn" />
+			<wsdl:output message="tns:RegisterAndGetAdsFrom_smHttpPostOut" />
+		</wsdl:operation>
+		<wsdl:operation name="RegisterAndGetAdsFrom_zxy">
+			<wsdl:input message="tns:RegisterAndGetAdsFrom_zxyHttpPostIn" />
+			<wsdl:output message="tns:RegisterAndGetAdsFrom_zxyHttpPostOut" />
+		</wsdl:operation>
+		<wsdl:operation name="ChangePassword_sm">
+			<wsdl:input message="tns:ChangePassword_smHttpPostIn" />
+			<wsdl:output message="tns:ChangePassword_smHttpPostOut" />
+		</wsdl:operation>
+		<wsdl:operation name="ChangePassword_zxy">
+			<wsdl:input message="tns:ChangePassword_zxyHttpPostIn" />
+			<wsdl:output message="tns:ChangePassword_zxyHttpPostOut" />
+		</wsdl:operation>
+		<wsdl:operation name="ChangePasswordNew_sm">
+			<wsdl:input message="tns:ChangePasswordNew_smHttpPostIn" />
+			<wsdl:output message="tns:ChangePasswordNew_smHttpPostOut" />
+		</wsdl:operation>
+		<wsdl:operation name="ChangePasswordNew_zxy">
+			<wsdl:input message="tns:ChangePasswordNew_zxyHttpPostIn" />
+			<wsdl:output message="tns:ChangePasswordNew_zxyHttpPostOut" />
+		</wsdl:operation>
+		<wsdl:operation name="EditUserInfo">
+			<wsdl:input message="tns:EditUserInfoHttpPostIn" />
+			<wsdl:output message="tns:EditUserInfoHttpPostOut" />
+		</wsdl:operation>
+		<wsdl:operation name="EditUserInfoNew">
+			<wsdl:input message="tns:EditUserInfoNewHttpPostIn" />
+			<wsdl:output message="tns:EditUserInfoNewHttpPostOut" />
+		</wsdl:operation>
+		<wsdl:operation name="CreateUserPayPermit">
+			<wsdl:input message="tns:CreateUserPayPermitHttpPostIn" />
+			<wsdl:output message="tns:CreateUserPayPermitHttpPostOut" />
+		</wsdl:operation>
+		<wsdl:operation name="CreateUserPayPermit2">
+			<wsdl:input message="tns:CreateUserPayPermit2HttpPostIn" />
+			<wsdl:output message="tns:CreateUserPayPermit2HttpPostOut" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="MainSoap" type="tns:MainSoap">
+		<soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="QueryUserInfo">
+			<soap:operation soapAction="http://tempuri.org/QueryUserInfo"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="CheckUserInfo">
+			<soap:operation soapAction="http://tempuri.org/CheckUserInfo"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ActiveArea">
+			<soap:operation soapAction="http://tempuri.org/ActiveArea"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="CheckUserSuperPassword">
+			<soap:operation soapAction="http://tempuri.org/CheckUserSuperPassword"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="Login_sm">
+			<soap:operation soapAction="http://tempuri.org/Login_sm"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="Login_zxy">
+			<soap:operation soapAction="http://tempuri.org/Login_zxy"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="LoginALL">
+			<soap:operation soapAction="http://tempuri.org/LoginALL"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="CheckUserInput_sm">
+			<soap:operation soapAction="http://tempuri.org/CheckUserInput_sm"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="CheckUserInput_zxy">
+			<soap:operation soapAction="http://tempuri.org/CheckUserInput_zxy"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="Register_sm">
+			<soap:operation soapAction="http://tempuri.org/Register_sm"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="Register_zxy">
+			<soap:operation soapAction="http://tempuri.org/Register_zxy"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="Registerfrom_sm">
+			<soap:operation soapAction="http://tempuri.org/Registerfrom_sm"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="Registerfrom_zxy">
+			<soap:operation soapAction="http://tempuri.org/Registerfrom_zxy"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="RegisterAndGetAdsFrom_sm">
+			<soap:operation soapAction="http://tempuri.org/RegisterAndGetAdsFrom_sm"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="RegisterAndGetAdsFrom_zxy">
+			<soap:operation soapAction="http://tempuri.org/RegisterAndGetAdsFrom_zxy"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ChangePassword_sm">
+			<soap:operation soapAction="http://tempuri.org/ChangePassword_sm"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ChangePassword_zxy">
+			<soap:operation soapAction="http://tempuri.org/ChangePassword_zxy"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ChangePasswordNew_sm">
+			<soap:operation soapAction="http://tempuri.org/ChangePasswordNew_sm"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ChangePasswordNew_zxy">
+			<soap:operation soapAction="http://tempuri.org/ChangePasswordNew_zxy"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="EditUserInfo">
+			<soap:operation soapAction="http://tempuri.org/EditUserInfo"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="EditUserInfoNew">
+			<soap:operation soapAction="http://tempuri.org/EditUserInfoNew"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="CreateUserPayPermit">
+			<soap:operation soapAction="http://tempuri.org/CreateUserPayPermit"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="CreateUserPayPermit2">
+			<soap:operation soapAction="http://tempuri.org/CreateUserPayPermit2"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:binding name="MainSoap12" type="tns:MainSoap">
+		<soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="QueryUserInfo">
+			<soap12:operation soapAction="http://tempuri.org/QueryUserInfo"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="CheckUserInfo">
+			<soap12:operation soapAction="http://tempuri.org/CheckUserInfo"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ActiveArea">
+			<soap12:operation soapAction="http://tempuri.org/ActiveArea"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="CheckUserSuperPassword">
+			<soap12:operation soapAction="http://tempuri.org/CheckUserSuperPassword"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="Login_sm">
+			<soap12:operation soapAction="http://tempuri.org/Login_sm"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="Login_zxy">
+			<soap12:operation soapAction="http://tempuri.org/Login_zxy"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="LoginALL">
+			<soap12:operation soapAction="http://tempuri.org/LoginALL"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="CheckUserInput_sm">
+			<soap12:operation soapAction="http://tempuri.org/CheckUserInput_sm"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="CheckUserInput_zxy">
+			<soap12:operation soapAction="http://tempuri.org/CheckUserInput_zxy"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="Register_sm">
+			<soap12:operation soapAction="http://tempuri.org/Register_sm"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="Register_zxy">
+			<soap12:operation soapAction="http://tempuri.org/Register_zxy"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="Registerfrom_sm">
+			<soap12:operation soapAction="http://tempuri.org/Registerfrom_sm"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="Registerfrom_zxy">
+			<soap12:operation soapAction="http://tempuri.org/Registerfrom_zxy"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="RegisterAndGetAdsFrom_sm">
+			<soap12:operation soapAction="http://tempuri.org/RegisterAndGetAdsFrom_sm"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="RegisterAndGetAdsFrom_zxy">
+			<soap12:operation soapAction="http://tempuri.org/RegisterAndGetAdsFrom_zxy"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ChangePassword_sm">
+			<soap12:operation soapAction="http://tempuri.org/ChangePassword_sm"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ChangePassword_zxy">
+			<soap12:operation soapAction="http://tempuri.org/ChangePassword_zxy"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ChangePasswordNew_sm">
+			<soap12:operation soapAction="http://tempuri.org/ChangePasswordNew_sm"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ChangePasswordNew_zxy">
+			<soap12:operation soapAction="http://tempuri.org/ChangePasswordNew_zxy"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="EditUserInfo">
+			<soap12:operation soapAction="http://tempuri.org/EditUserInfo"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="EditUserInfoNew">
+			<soap12:operation soapAction="http://tempuri.org/EditUserInfoNew"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="CreateUserPayPermit">
+			<soap12:operation soapAction="http://tempuri.org/CreateUserPayPermit"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="CreateUserPayPermit2">
+			<soap12:operation soapAction="http://tempuri.org/CreateUserPayPermit2"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:binding name="MainHttpGet" type="tns:MainHttpGet">
+		<http:binding verb="GET" />
+		<wsdl:operation name="QueryUserInfo">
+			<http:operation location="/QueryUserInfo" />
+			<wsdl:input>
+				<http:urlEncoded />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:mimeXml part="Body" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="CheckUserInfo">
+			<http:operation location="/CheckUserInfo" />
+			<wsdl:input>
+				<http:urlEncoded />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:mimeXml part="Body" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ActiveArea">
+			<http:operation location="/ActiveArea" />
+			<wsdl:input>
+				<http:urlEncoded />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:mimeXml part="Body" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="CheckUserSuperPassword">
+			<http:operation location="/CheckUserSuperPassword" />
+			<wsdl:input>
+				<http:urlEncoded />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:mimeXml part="Body" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="Login_sm">
+			<http:operation location="/Login_sm" />
+			<wsdl:input>
+				<http:urlEncoded />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:mimeXml part="Body" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="Login_zxy">
+			<http:operation location="/Login_zxy" />
+			<wsdl:input>
+				<http:urlEncoded />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:mimeXml part="Body" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="LoginALL">
+			<http:operation location="/LoginALL" />
+			<wsdl:input>
+				<http:urlEncoded />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:mimeXml part="Body" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="CheckUserInput_sm">
+			<http:operation location="/CheckUserInput_sm" />
+			<wsdl:input>
+				<http:urlEncoded />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:mimeXml part="Body" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="CheckUserInput_zxy">
+			<http:operation location="/CheckUserInput_zxy" />
+			<wsdl:input>
+				<http:urlEncoded />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:mimeXml part="Body" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="Register_sm">
+			<http:operation location="/Register_sm" />
+			<wsdl:input>
+				<http:urlEncoded />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:mimeXml part="Body" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="Register_zxy">
+			<http:operation location="/Register_zxy" />
+			<wsdl:input>
+				<http:urlEncoded />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:mimeXml part="Body" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="Registerfrom_sm">
+			<http:operation location="/Registerfrom_sm" />
+			<wsdl:input>
+				<http:urlEncoded />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:mimeXml part="Body" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="Registerfrom_zxy">
+			<http:operation location="/Registerfrom_zxy" />
+			<wsdl:input>
+				<http:urlEncoded />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:mimeXml part="Body" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="RegisterAndGetAdsFrom_sm">
+			<http:operation location="/RegisterAndGetAdsFrom_sm" />
+			<wsdl:input>
+				<http:urlEncoded />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:mimeXml part="Body" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="RegisterAndGetAdsFrom_zxy">
+			<http:operation location="/RegisterAndGetAdsFrom_zxy" />
+			<wsdl:input>
+				<http:urlEncoded />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:mimeXml part="Body" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ChangePassword_sm">
+			<http:operation location="/ChangePassword_sm" />
+			<wsdl:input>
+				<http:urlEncoded />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:mimeXml part="Body" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ChangePassword_zxy">
+			<http:operation location="/ChangePassword_zxy" />
+			<wsdl:input>
+				<http:urlEncoded />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:mimeXml part="Body" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ChangePasswordNew_sm">
+			<http:operation location="/ChangePasswordNew_sm" />
+			<wsdl:input>
+				<http:urlEncoded />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:mimeXml part="Body" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ChangePasswordNew_zxy">
+			<http:operation location="/ChangePasswordNew_zxy" />
+			<wsdl:input>
+				<http:urlEncoded />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:mimeXml part="Body" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="EditUserInfo">
+			<http:operation location="/EditUserInfo" />
+			<wsdl:input>
+				<http:urlEncoded />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:mimeXml part="Body" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="EditUserInfoNew">
+			<http:operation location="/EditUserInfoNew" />
+			<wsdl:input>
+				<http:urlEncoded />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:mimeXml part="Body" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="CreateUserPayPermit">
+			<http:operation location="/CreateUserPayPermit" />
+			<wsdl:input>
+				<http:urlEncoded />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:mimeXml part="Body" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="CreateUserPayPermit2">
+			<http:operation location="/CreateUserPayPermit2" />
+			<wsdl:input>
+				<http:urlEncoded />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:mimeXml part="Body" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:binding name="MainHttpPost" type="tns:MainHttpPost">
+		<http:binding verb="POST" />
+		<wsdl:operation name="QueryUserInfo">
+			<http:operation location="/QueryUserInfo" />
+			<wsdl:input>
+				<mime:content type="application/x-www-form-urlencoded" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:mimeXml part="Body" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="CheckUserInfo">
+			<http:operation location="/CheckUserInfo" />
+			<wsdl:input>
+				<mime:content type="application/x-www-form-urlencoded" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:mimeXml part="Body" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ActiveArea">
+			<http:operation location="/ActiveArea" />
+			<wsdl:input>
+				<mime:content type="application/x-www-form-urlencoded" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:mimeXml part="Body" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="CheckUserSuperPassword">
+			<http:operation location="/CheckUserSuperPassword" />
+			<wsdl:input>
+				<mime:content type="application/x-www-form-urlencoded" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:mimeXml part="Body" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="Login_sm">
+			<http:operation location="/Login_sm" />
+			<wsdl:input>
+				<mime:content type="application/x-www-form-urlencoded" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:mimeXml part="Body" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="Login_zxy">
+			<http:operation location="/Login_zxy" />
+			<wsdl:input>
+				<mime:content type="application/x-www-form-urlencoded" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:mimeXml part="Body" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="LoginALL">
+			<http:operation location="/LoginALL" />
+			<wsdl:input>
+				<mime:content type="application/x-www-form-urlencoded" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:mimeXml part="Body" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="CheckUserInput_sm">
+			<http:operation location="/CheckUserInput_sm" />
+			<wsdl:input>
+				<mime:content type="application/x-www-form-urlencoded" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:mimeXml part="Body" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="CheckUserInput_zxy">
+			<http:operation location="/CheckUserInput_zxy" />
+			<wsdl:input>
+				<mime:content type="application/x-www-form-urlencoded" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:mimeXml part="Body" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="Register_sm">
+			<http:operation location="/Register_sm" />
+			<wsdl:input>
+				<mime:content type="application/x-www-form-urlencoded" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:mimeXml part="Body" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="Register_zxy">
+			<http:operation location="/Register_zxy" />
+			<wsdl:input>
+				<mime:content type="application/x-www-form-urlencoded" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:mimeXml part="Body" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="Registerfrom_sm">
+			<http:operation location="/Registerfrom_sm" />
+			<wsdl:input>
+				<mime:content type="application/x-www-form-urlencoded" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:mimeXml part="Body" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="Registerfrom_zxy">
+			<http:operation location="/Registerfrom_zxy" />
+			<wsdl:input>
+				<mime:content type="application/x-www-form-urlencoded" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:mimeXml part="Body" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="RegisterAndGetAdsFrom_sm">
+			<http:operation location="/RegisterAndGetAdsFrom_sm" />
+			<wsdl:input>
+				<mime:content type="application/x-www-form-urlencoded" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:mimeXml part="Body" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="RegisterAndGetAdsFrom_zxy">
+			<http:operation location="/RegisterAndGetAdsFrom_zxy" />
+			<wsdl:input>
+				<mime:content type="application/x-www-form-urlencoded" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:mimeXml part="Body" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ChangePassword_sm">
+			<http:operation location="/ChangePassword_sm" />
+			<wsdl:input>
+				<mime:content type="application/x-www-form-urlencoded" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:mimeXml part="Body" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ChangePassword_zxy">
+			<http:operation location="/ChangePassword_zxy" />
+			<wsdl:input>
+				<mime:content type="application/x-www-form-urlencoded" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:mimeXml part="Body" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ChangePasswordNew_sm">
+			<http:operation location="/ChangePasswordNew_sm" />
+			<wsdl:input>
+				<mime:content type="application/x-www-form-urlencoded" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:mimeXml part="Body" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ChangePasswordNew_zxy">
+			<http:operation location="/ChangePasswordNew_zxy" />
+			<wsdl:input>
+				<mime:content type="application/x-www-form-urlencoded" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:mimeXml part="Body" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="EditUserInfo">
+			<http:operation location="/EditUserInfo" />
+			<wsdl:input>
+				<mime:content type="application/x-www-form-urlencoded" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:mimeXml part="Body" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="EditUserInfoNew">
+			<http:operation location="/EditUserInfoNew" />
+			<wsdl:input>
+				<mime:content type="application/x-www-form-urlencoded" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:mimeXml part="Body" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="CreateUserPayPermit">
+			<http:operation location="/CreateUserPayPermit" />
+			<wsdl:input>
+				<mime:content type="application/x-www-form-urlencoded" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:mimeXml part="Body" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="CreateUserPayPermit2">
+			<http:operation location="/CreateUserPayPermit2" />
+			<wsdl:input>
+				<mime:content type="application/x-www-form-urlencoded" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:mimeXml part="Body" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="Main">
+		<wsdl:port name="MainSoap" binding="tns:MainSoap">
+			<soap:address location="http://lashv10ws.shumenol.dev/main.asmx" />
+		</wsdl:port>
+		<wsdl:port name="MainSoap12" binding="tns:MainSoap12">
+			<soap12:address location="http://lashv10ws.shumenol.dev/main.asmx" />
+		</wsdl:port>
+		<wsdl:port name="MainHttpGet" binding="tns:MainHttpGet">
+			<http:address location="http://lashv10ws.shumenol.dev/main.asmx" />
+		</wsdl:port>
+		<wsdl:port name="MainHttpPost" binding="tns:MainHttpPost">
+			<http:address location="http://lashv10ws.shumenol.dev/main.asmx" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

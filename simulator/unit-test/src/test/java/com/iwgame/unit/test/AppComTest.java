@@ -18,7 +18,9 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 /**
- * Unit test for simple App.
+ * 
+ * @author jjwu
+ *
  */
 public class AppComTest {
 	@Test
@@ -498,5 +500,8 @@ public class AppComTest {
         String rs = wr.queryParams(param).accept(MediaType.APPLICATION_JSON).get(String.class);
         System.out.println(rs);
     }
+	
+	
+	
 
 }
