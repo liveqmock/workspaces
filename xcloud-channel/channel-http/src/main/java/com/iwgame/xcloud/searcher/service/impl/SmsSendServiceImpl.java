@@ -1,10 +1,10 @@
 /****************************************************************
- *  文件名     ： SmsSendService.java
- *  日期         :  2012-9-7
- *  Company: 上海绿岸网络科技有限公司
- *  (C) Copyright Green Shore Network Technology Co.,Ltd.2012
- *           		All Rights Reserved.
- *  注意： 本内容仅限于上海绿岸网络科技有限公司内部使用，禁止转发
+ * 文件名 ： SmsSendService.java
+ * 日期 : 2012-9-7
+ * Company: 上海绿岸网络科技有限公司
+ * (C) Copyright Green Shore Network Technology Co.,Ltd.2012
+ * All Rights Reserved.
+ * 注意： 本内容仅限于上海绿岸网络科技有限公司内部使用，禁止转发
  ****************************************************************/
 package com.iwgame.xcloud.searcher.service.impl;
 
@@ -24,6 +24,7 @@ import com.iwgame.xvalidators.Xvalidator;
 
 /**
  * 
+<<<<<<< HEAD
  * @类名:   SmsSendServiceImpl
  * @描述:  	短信请求,发送到MQ队列相关实现类
  *
@@ -31,6 +32,15 @@ import com.iwgame.xvalidators.Xvalidator;
  * @邮箱:	wujunjie@iwgame.com
  * @日期:	2012-10-24下午02:04:02
  * @版本:   1.0
+=======
+ * @类名: SmsSendServiceImpl
+ * @描述: 短信请求,发送到MQ队列相关实现类
+ * 
+ * @作者: 吴君杰
+ * @邮箱: wujunjie@iwgame.com
+ * @日期: 2012-10-24下午02:04:02
+ * @版本: 1.0
+>>>>>>> httprequest
  */
 @Service
 public class SmsSendServiceImpl implements SmsSendService {
@@ -53,28 +63,43 @@ public class SmsSendServiceImpl implements SmsSendService {
 
 		final MQSendResult result = new MQSendResult();
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> httprequest
 		try {
 			// 验证必填参数
 			if (Xvalidator.getInstance().validate(smsParamBean)) {
 
 				// 验证签名
+<<<<<<< HEAD
 				final int rc = SecurityUtil.securityAuthority(pid, smsParamBean.getPhone(), smsParamBean.getSign(), smsParamBean.getTs());
+=======
+				final int rc = SecurityUtil.securityAuthority(pid, smsParamBean.getPhone(), smsParamBean.getSign(),
+						smsParamBean.getTs());
+>>>>>>> httprequest
 				if (rc == 0) {
 					final String routeKey = "sms" + smsParamBean.getQueueNo();
 					rabbitTemplateCommon.convertAndSend("common.sms.exchange", routeKey, smsParamBean.toString());
-					logger.info("AppName:[" + smsParamBean.getAppname() + "]发送短信通道(task-common):(" + routeKey + ")成功!请求:" + smsParamBean.toString());
+					logger.info("AppName:[" + smsParamBean.getAppname() + "]发送短信通道(task-common):(" + routeKey
+							+ ")成功!请求:" + smsParamBean.toString());
 					result.setResult(rc);
 
 				} else {
-					logger.error("AppName:[" + smsParamBean.getAppname() + "]签名验证失败!返回值[" + rc + "] 参数:[pid:" + pid + "] [Phone:" + smsParamBean.getPhone() + "] ");
+					logger.error("AppName:[" + smsParamBean.getAppname() + "]签名验证失败!返回值[" + rc + "] 参数:[pid:" + pid
+							+ "] [Phone:" + smsParamBean.getPhone() + "] ");
 					result.setResult(rc);
 
 				}
 			} else {
 				result.setResult(-4);
+<<<<<<< HEAD
 				logger.error("AppName:[" + smsParamBean.getAppname() + "]请求参数错误,必要参数为空或NULL!请求:" + smsParamBean.toString());
+=======
+				logger.error("AppName:[" + smsParamBean.getAppname() + "]请求参数错误,必要参数为空或NULL!请求:"
+						+ smsParamBean.toString());
+>>>>>>> httprequest
 
 			}
 		} catch (final Exception ex) {
@@ -85,11 +110,23 @@ public class SmsSendServiceImpl implements SmsSendService {
 		return result.toString();
 	}
 
+<<<<<<< HEAD
 	/* (non-Javadoc)
 	 * @see com.iwgame.xcloud.searcher.service.SmsSendService#test(javax.servlet.http.HttpServletRequest)
 	 */
 	@Override
 	public String test(final HttpServletRequest request, final HttpServletResponse response) {
+=======
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.iwgame.xcloud.searcher.service.SmsSendService#test(javax.servlet.
+	 * http.HttpServletRequest)
+	 */
+	@Override
+	public String getHttpRequest(final HttpServletRequest request, final HttpServletResponse response) {
+>>>>>>> httprequest
 		return request.getParameterMap().toString();
 	}
 }

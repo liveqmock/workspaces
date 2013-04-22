@@ -43,6 +43,10 @@ public interface SmsSendService {
 	@GET
 	@Path("/{pid}/test")
 	@Produces("application/json")
+<<<<<<< HEAD
 	public String test(@Context HttpServletRequest request , @Context HttpServletResponse httpServletResponse);
+=======
+	public String getHttpRequest(@Context HttpServletRequest request , @Context HttpServletResponse httpServletResponse);
+>>>>>>> httprequest
 
 }
