@@ -9,6 +9,8 @@
 package com.iwgame.xcloud.searcher.service.impl;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -22,7 +24,7 @@ import com.iwgame.xvalidators.Xvalidator;
 
 /**
  * 
- * @类名:   SmsSendServiceImpl 
+ * @类名:   SmsSendServiceImpl
  * @描述:  	短信请求,发送到MQ队列相关实现类
  *
  * @作者:   吴君杰
@@ -37,7 +39,7 @@ public class SmsSendServiceImpl implements SmsSendService {
 
 	@Resource
 	private RabbitTemplate rabbitTemplateCommon;
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -46,40 +48,48 @@ public class SmsSendServiceImpl implements SmsSendService {
 	 * .String, java.lang.String, com.iwgame.xcloud.searcher.model.SmsParamBean)
 	 */
 	@Override
-	public String sendSmsByMQ(String pid, SmsParamBean smsParamBean) {
+	public String sendSmsByMQ(final String pid, final SmsParamBean smsParamBean) {
 		logger.info("AppName:[" + smsParamBean.getAppname() + "]收到短信请求:" + smsParamBean.toString());
-		
-		MQSendResult result = new MQSendResult();	
-		
-		
-		
+
+		final MQSendResult result = new MQSendResult();
+
+
+
 		try {
 			// 验证必填参数
 			if (Xvalidator.getInstance().validate(smsParamBean)) {
-				
+
 				// 验证签名
-				int rc = SecurityUtil.securityAuthority(pid, smsParamBean.getPhone(), smsParamBean.getSign(), smsParamBean.getTs());
+				final int rc = SecurityUtil.securityAuthority(pid, smsParamBean.getPhone(), smsParamBean.getSign(), smsParamBean.getTs());
 				if (rc == 0) {
-					String routeKey = "sms" + smsParamBean.getQueueNo();
+					final String routeKey = "sms" + smsParamBean.getQueueNo();
 					rabbitTemplateCommon.convertAndSend("common.sms.exchange", routeKey, smsParamBean.toString());
 					logger.info("AppName:[" + smsParamBean.getAppname() + "]发送短信通道(task-common):(" + routeKey + ")成功!请求:" + smsParamBean.toString());
 					result.setResult(rc);
-					
+
 				} else {
 					logger.error("AppName:[" + smsParamBean.getAppname() + "]签名验证失败!返回值[" + rc + "] 参数:[pid:" + pid + "] [Phone:" + smsParamBean.getPhone() + "] ");
 					result.setResult(rc);
-					
+
 				}
 			} else {
 				result.setResult(-4);
 				logger.error("AppName:[" + smsParamBean.getAppname() + "]请求参数错误,必要参数为空或NULL!请求:" + smsParamBean.toString());
-			
+
 			}
-		} catch (Exception ex) {
+		} catch (final Exception ex) {
 			result.setResult(-4);
 			logger.error("AppName:[" + smsParamBean.getAppname() + "]其他异常!请求:" + smsParamBean.toString(), ex);
-			
+
 		}
 		return result.toString();
+	}
+
+	/* (non-Javadoc)
+	 * @see com.iwgame.xcloud.searcher.service.SmsSendService#test(javax.servlet.http.HttpServletRequest)
+	 */
+	@Override
+	public String test(final HttpServletRequest request, final HttpServletResponse response) {
+		return request.getParameterMap().toString();
 	}
 }
