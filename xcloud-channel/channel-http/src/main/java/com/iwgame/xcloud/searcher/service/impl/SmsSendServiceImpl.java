@@ -25,6 +25,7 @@ import com.iwgame.xvalidators.Xvalidator;
 /**
  * 
 <<<<<<< HEAD
+<<<<<<< HEAD
  * @类名:   SmsSendServiceImpl
  * @描述:  	短信请求,发送到MQ队列相关实现类
  *
@@ -33,6 +34,8 @@ import com.iwgame.xvalidators.Xvalidator;
  * @日期:	2012-10-24下午02:04:02
  * @版本:   1.0
 =======
+=======
+>>>>>>> httprequest
  * @类名: SmsSendServiceImpl
  * @描述: 短信请求,发送到MQ队列相关实现类
  * 
@@ -40,6 +43,9 @@ import com.iwgame.xvalidators.Xvalidator;
  * @邮箱: wujunjie@iwgame.com
  * @日期: 2012-10-24下午02:04:02
  * @版本: 1.0
+<<<<<<< HEAD
+>>>>>>> httprequest
+=======
 >>>>>>> httprequest
  */
 @Service
@@ -64,8 +70,11 @@ public class SmsSendServiceImpl implements SmsSendService {
 		final MQSendResult result = new MQSendResult();
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> httprequest
 =======
 >>>>>>> httprequest
 		try {
@@ -74,7 +83,12 @@ public class SmsSendServiceImpl implements SmsSendService {
 
 				// 验证签名
 <<<<<<< HEAD
+<<<<<<< HEAD
 				final int rc = SecurityUtil.securityAuthority(pid, smsParamBean.getPhone(), smsParamBean.getSign(), smsParamBean.getTs());
+=======
+				final int rc = SecurityUtil.securityAuthority(pid, smsParamBean.getPhone(), smsParamBean.getSign(),
+						smsParamBean.getTs());
+>>>>>>> httprequest
 =======
 				final int rc = SecurityUtil.securityAuthority(pid, smsParamBean.getPhone(), smsParamBean.getSign(),
 						smsParamBean.getTs());
@@ -95,7 +109,12 @@ public class SmsSendServiceImpl implements SmsSendService {
 			} else {
 				result.setResult(-4);
 <<<<<<< HEAD
+<<<<<<< HEAD
 				logger.error("AppName:[" + smsParamBean.getAppname() + "]请求参数错误,必要参数为空或NULL!请求:" + smsParamBean.toString());
+=======
+				logger.error("AppName:[" + smsParamBean.getAppname() + "]请求参数错误,必要参数为空或NULL!请求:"
+						+ smsParamBean.toString());
+>>>>>>> httprequest
 =======
 				logger.error("AppName:[" + smsParamBean.getAppname() + "]请求参数错误,必要参数为空或NULL!请求:"
 						+ smsParamBean.toString());
@@ -111,12 +130,15 @@ public class SmsSendServiceImpl implements SmsSendService {
 	}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	/* (non-Javadoc)
 	 * @see com.iwgame.xcloud.searcher.service.SmsSendService#test(javax.servlet.http.HttpServletRequest)
 	 */
 	@Override
 	public String test(final HttpServletRequest request, final HttpServletResponse response) {
 =======
+=======
+>>>>>>> httprequest
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -126,6 +148,9 @@ public class SmsSendServiceImpl implements SmsSendService {
 	 */
 	@Override
 	public String getHttpRequest(final HttpServletRequest request, final HttpServletResponse response) {
+<<<<<<< HEAD
+>>>>>>> httprequest
+=======
 >>>>>>> httprequest
 		return request.getParameterMap().toString();
 	}
