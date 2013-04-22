@@ -10,7 +10,13 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 /**
- * Unit test for simple App.
+ *
+ * @描述:	TODO(...) 
+ *
+ * @作者:	吴君杰
+ * @邮箱:	wujunjie@iwgame.com
+ * @日期:	2013-4-18 上午10:08:34
+ * @版本:   	v1.0.0
  */
 public class AppTestTest {
     
