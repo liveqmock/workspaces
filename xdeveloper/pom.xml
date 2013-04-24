@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
@@ -8,8 +9,6 @@
 
 	<name>xdeveloper</name>
 	<url>http://maven.apache.org</url>
-
-
 
 	<build>
 		<plugins>
@@ -37,20 +36,20 @@
 
 	<distributionManagement>
 		<repository>
-			<id>internal</id>
-			<url>http://m2.iwgame.tec/archiva/repository/internal/</url>
+			<id>releases</id>
+			<url>http://m2.nexus.tec/nexus/content/repositories/releases</url>
 		</repository>
 		<snapshotRepository>
 			<id>snapshots</id>
-			<url>http://m2.iwgame.tec/archiva/repository/snapshots/</url>
+			<url>http://m2.nexus.tec/nexus/content/repositories/snapshots</url>
 		</snapshotRepository>
 	</distributionManagement>
 
 	<repositories>
 		<repository>
-			<id>internal</id>
-			<name>Archiva Managed Internal Repository</name>
-			<url>http://m2.iwgame.tec/archiva/repository/internal/</url>
+			<id>releases</id>
+			<name>Archiva Managed Releases Repository</name>
+			<url>http://m2.nexus.tec/nexus/content/repositories/releases</url>
 			<releases>
 				<enabled>true</enabled>
 			</releases>
@@ -61,14 +60,14 @@
 		<repository>
 			<id>snapshots</id>
 			<name>Archiva Managed Snapshot Repository</name>
-			<url>http://m2.iwgame.tec/archiva/repository/snapshots/</url>
+			<url>http://m2.nexus.tec/nexus/content/repositories/snapshots</url>
 			<releases>
 				<enabled>false</enabled>
 			</releases>
 			<snapshots>
 				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
 			</snapshots>
 		</repository>
 	</repositories>
 </project>
-

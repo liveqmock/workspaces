@@ -35,7 +35,6 @@
 				<!--开发环境下的配置文件 -->
 				<value>classpath:databases.properties</value>
 				<!-- 生产环境下的配置文件 -->
-				<value>file:/var/config/xdeveloper-java-mybatise/databases.properties</value>
 			</list>
 		</property>
 		<property name="fileEncoding" value="utf-8" />
@@ -47,7 +46,7 @@
 		<property name="targetDataSources">
 			<map>
 				<!-- 社区帐号查询服务数据库连接池 -->
-				<entry key="datasource" value-ref="dataSource" />
+				<entry key="test" value-ref="test-dataSource" />
 			</map>
 		</property>
 	</bean>
@@ -58,13 +57,13 @@
 		<property name="dataSource" ref="dynamicDataSource" />
 		<property name="mapperLocations">
 			<list>
-				<value>classpath*:/com/iwgame/sqlmap/*.xml</value>
+				<value>classpath*:/mybaties/sqlmap/*.xml</value>
 			</list>
 		</property>
 	</bean>
 	
 	<!-- 蜀门 actor连接池 -->
-	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+	<bean id="test-dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
 		destroy-method="close">
 		<!-- 数据库连接基本信息 -->
 		<property name="jdbcUrl" value="${db.driver-url}" />
