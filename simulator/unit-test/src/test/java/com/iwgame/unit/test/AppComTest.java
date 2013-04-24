@@ -20,24 +20,24 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
 /**
  * 
  * @author jjwu
- *
+ * 
  */
 public class AppComTest {
 	@Test
 	public void testTel() {
-		WebResource client = Client.create().resource("");
-		String pid = "common";
+		final WebResource client = Client.create().resource("");
+		final String pid = "common";
 
-		WebResource wr = client.path("http://data.iwgame.com/service/sms/" + pid + "/sendsms");
+		final WebResource wr = client.path("http://data.iwgame.com/service/sms/" + pid + "/sendsms");
 
-		MultivaluedMap<String, String> param = new MultivaluedMapImpl();
+		final MultivaluedMap<String, String> param = new MultivaluedMapImpl();
 
-		String ts = String.valueOf(System.currentTimeMillis());
+		final String ts = String.valueOf(System.currentTimeMillis());
 
-		String phone = "13776801367";
+		final String phone = "13776801367";
 
-		String str = pid + "&" + phone + "&" + "glWN8S1Al1JznVqjf1jV1CMOifQyp8Ve" + "&" + ts;
-		String sign = MD5Util.md5sum(str);
+		final String str = pid + "&" + phone + "&" + "glWN8S1Al1JznVqjf1jV1CMOifQyp8Ve" + "&" + ts;
+		final String sign = MD5Util.md5sum(str);
 
 		param.add("appname", "sq");
 		param.add("ts", ts);
@@ -46,7 +46,7 @@ public class AppComTest {
 		param.add("message", "这是测试短信");
 		param.add("queueNo", "3722");
 
-		String rs = wr.queryParams(param).accept(MediaType.APPLICATION_JSON).post(String.class);
+		final String rs = wr.queryParams(param).accept(MediaType.APPLICATION_JSON).post(String.class);
 
 		System.out.println(rs);
 	}
@@ -92,9 +92,9 @@ public class AppComTest {
 	// }
 	//
 	@Test
-	public void testItemCard() {
+	public void testItemCardList() {
 
-		File file = new File("/Users/jjwu/Desktop/card.txt");
+		final File file = new File("/Users/jjwu/Desktop/card.txt");
 		FileReader reader = null;
 		BufferedReader buffer = null;
 		try {
@@ -103,23 +103,23 @@ public class AppComTest {
 			String json = null;
 
 			while ((json = buffer.readLine()) != null) {
-				JSONObject jsonObject = JSONObject.fromObject(json);
-				WebResource client = Client.create().resource("");
+				final JSONObject jsonObject = JSONObject.fromObject(json);
+				final WebResource client = Client.create().resource("");
 
-				String pid = "P-P1";
+				final String pid = "P-P1";
 
-				WebResource wr = client.path("http://data.iwgame.com/service/itemcard/" + pid + "/senditemcard");
+				final WebResource wr = client.path("http://data.iwgame.com/service/itemcard/" + pid + "/senditemcard");
 
-				MultivaluedMap<String, String> param = new MultivaluedMapImpl();
+				final MultivaluedMap<String, String> param = new MultivaluedMapImpl();
 
-				String ts = String.valueOf(System.currentTimeMillis());
+				final String ts = String.valueOf(System.currentTimeMillis());
 
-				String username = jsonObject.getString("username");
-				String guid = jsonObject.getString("guid");
-				String appname = jsonObject.getString("appname");
+				final String username = jsonObject.getString("username");
+				final String guid = jsonObject.getString("guid");
+				final String appname = jsonObject.getString("appname");
 
-				String str = pid + "&" + username + "&" + "glWN8S1Al1JznVqjf1jV1CMOifQyp8Ve" + "&" + ts;
-				String sign = MD5Util.md5sum(str);
+				final String str = pid + "&" + username + "&" + "glWN8S1Al1JznVqjf1jV1CMOifQyp8Ve" + "&" + ts;
+				final String sign = MD5Util.md5sum(str);
 
 				param.add("appname", appname);
 				param.add("ts", ts);
@@ -131,59 +131,57 @@ public class AppComTest {
 				param.add("validtime", "");
 				param.add("itype", "0");
 
-				String rs = wr.queryParams(param).accept(MediaType.APPLICATION_JSON).post(String.class);
+				final String rs = wr.queryParams(param).accept(MediaType.APPLICATION_JSON).post(String.class);
 
 				System.out.println(rs);
 			}
-		} catch (FileNotFoundException e) {
+		} catch (final FileNotFoundException e) {
 			System.err.println("文件没有找到!");
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			System.err.println("IO异常");
 		} finally {
 			try {
 				reader.close();
 				buffer.close();
-			} catch (IOException e) {
+			} catch (final IOException e) {
 				System.err.println("IO异常");
 			}
 
 		}
 	}
 
-	// WebResource client = Client.create().resource("");
-	//
-	// String pid = "P-P1.5";
-	//
-	// WebResource wr =
-	// client.path("http://data.iwgame.com/service/itemcard/" + pid +
-	// "/senditemcard");
-	//
-	// MultivaluedMap<String, String> param = new MultivaluedMapImpl();
-	//
-	// String ts = String.valueOf(System.currentTimeMillis());
-	//
-	// String username = "wujunjie";
-	// String guid = "all";
-	//
-	// String str = pid + "&" + username + "&" +
-	// "glWN8S1Al1JznVqjf1jV1CMOifQyp8Ve" + "&" + ts;
-	// String sign = MD5Util.md5sum(str);
-	//
-	// param.add("appname", "sq");
-	// param.add("ts", ts);
-	// param.add("sign", sign);
-	// param.add("guid", guid);
-	// param.add("username", username);
-	// param.add("cardnum", "WUJUNJIE_1");
-	// param.add("cardpwd", "123456789012");
-	// param.add("validtime", "");
-	// param.add("itype", "0");
-	//
-	// String rs =
-	// wr.queryParams(param).accept(MediaType.APPLICATION_JSON).post(String.class);
-	//
-	// System.out.println(rs);
-	// }
+	@Test
+	public void testItemCardOne() {
+		final WebResource client = Client.create().resource("");
+
+		final String pid = "P-P1";
+
+		final WebResource wr = client.path("http://data.iwgame.com/service/itemcard/" + pid + "/senditemcard");
+
+		final MultivaluedMap<String, String> param = new MultivaluedMapImpl();
+
+		final String ts = String.valueOf(System.currentTimeMillis());
+
+		final String username = "zhs666888";
+		final String guid = "wt9";
+
+		final String str = pid + "&" + username + "&" + "glWN8S1Al1JznVqjf1jV1CMOifQyp8Ve" + "&" + ts;
+		final String sign = MD5Util.md5sum(str);
+
+		param.add("appname", "sq");
+		param.add("ts", ts);
+		param.add("sign", sign);
+		param.add("guid", guid);
+		param.add("username", username);
+		param.add("cardnum", "STWESA37HH16CEF");
+		param.add("cardpwd", "52953084766159");
+		param.add("validtime", "");
+		param.add("itype", "0");
+
+		final String rs = wr.queryParams(param).accept(MediaType.APPLICATION_JSON).post(String.class);
+
+		System.out.println(rs);
+	}
 
 	//
 	// /**
@@ -415,20 +413,23 @@ public class AppComTest {
 	//
 	// String accountid = "24667552";
 	//
-	// WebResource wr = client.path("http://data.iwgame.test/service/account/" + pid + "/" + accountid + "/getAccount");
+	// WebResource wr = client.path("http://data.iwgame.test/service/account/" +
+	// pid + "/" + accountid + "/getAccount");
 	//
 	// MultivaluedMap<String, String> param = new MultivaluedMapImpl();
 	//
 	// String ts = String.valueOf(System.currentTimeMillis());
 	//
-	// String str = pid + "&" + accountid + "&" + "glWN8S1Al1JznVqjf1jV1CMOifQyp8Ve" + "&" + ts;
+	// String str = pid + "&" + accountid + "&" +
+	// "glWN8S1Al1JznVqjf1jV1CMOifQyp8Ve" + "&" + ts;
 	// String sign = MD5Util.md5sum(str);
 	//
 	// param.add("appname", "获取角色信息测试");
 	// param.add("ts", ts);
 	// param.add("sign", sign);
 	//
-	// String rs = wr.queryParams(param).accept(MediaType.APPLICATION_JSON).get(String.class);
+	// String rs =
+	// wr.queryParams(param).accept(MediaType.APPLICATION_JSON).get(String.class);
 	//
 	// System.out.println(rs);
 	// }
@@ -470,38 +471,35 @@ public class AppComTest {
 	//
 	// System.out.println(rs);
 	// }
-	
+
 	@Test
-    public void testCustomerService() {
-        WebResource client = Client.create().resource("");
+	public void testCustomerService() {
+		final WebResource client = Client.create().resource("");
 
-        String pid = "P-P1";
+		final String pid = "P-P1";
 
-        String username = "kakapo";
+		final String username = "kakapo";
 
-        WebResource wr = client.path("http://data.iwgame.com/service/customerService/" + pid + "/getUserInfo");
+		final WebResource wr = client.path("http://data.iwgame.com/service/customerService/" + pid + "/getUserInfo");
 
-        MultivaluedMap<String, String> param = new MultivaluedMapImpl();
+		final MultivaluedMap<String, String> param = new MultivaluedMapImpl();
 
-        String ts = String.valueOf(System.currentTimeMillis());
+		final String ts = String.valueOf(System.currentTimeMillis());
 
-        String str = pid + "&" + username + "&" + "glWN8S1Al1JznVqjf1jV1CMOifQyp8Ve" + "&" + ts;
-        String sign = MD5Util.md5sum(str);
+		final String str = pid + "&" + username + "&" + "glWN8S1Al1JznVqjf1jV1CMOifQyp8Ve" + "&" + ts;
+		final String sign = MD5Util.md5sum(str);
 
-        param.add("appname", "wwwhd");
-        param.add("ts", ts);
-        param.add("sign", sign);
-        
-        param.add("username", username);
-        param.add("svr", "all");
-        param.add("matchtype", "1");
-        param.add("begintime", "2013-01-20");
-        param.add("endtime", "2013-03-20");
-        String rs = wr.queryParams(param).accept(MediaType.APPLICATION_JSON).get(String.class);
-        System.out.println(rs);
-    }
-	
-	
-	
+		param.add("appname", "wwwhd");
+		param.add("ts", ts);
+		param.add("sign", sign);
+
+		param.add("username", username);
+		param.add("svr", "all");
+		param.add("matchtype", "1");
+		param.add("begintime", "2013-01-20");
+		param.add("endtime", "2013-03-20");
+		final String rs = wr.queryParams(param).accept(MediaType.APPLICATION_JSON).get(String.class);
+		System.out.println(rs);
+	}
 
 }
