@@ -18,7 +18,7 @@
 		<junit.version>4.8.1</junit.version>
 		<spring.version>3.1.1.RELEASE</spring.version>
 	</properties>
-	
+
 	<name>xdeveloper-web Maven Webapp</name>
 	<url>http://maven.apache.org</url>
 
@@ -78,67 +78,11 @@
 	<dependencies>
 		<!-- test -->
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>${junit.version}</version>
-			<scope>test</scope>
+			<groupId>jjwu.xdeveloper.core</groupId>
+			<artifactId>xdeveloper-core</artifactId>
+			<version>1.0.0</version>
 		</dependency>
 
-		<!-- spring -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-tx</artifactId>
-			<version>${spring.version}</version>
-			<type>jar</type>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-core</artifactId>
-			<version>${spring.version}</version>
-			<type>jar</type>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-aop</artifactId>
-			<version>${spring.version}</version>
-			<type>jar</type>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-test</artifactId>
-			<version>${spring.version}</version>
-			<type>jar</type>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-web</artifactId>
-			<version>${spring.version}</version>
-			<type>jar</type>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
-			<version>${spring.version}</version>
-			<type>jar</type>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-beans</artifactId>
-			<version>${spring.version}</version>
-			<type>jar</type>
-		</dependency>
-
-		<!-- mybatis -->
-		<dependency>
-			<groupId>org.mybatis</groupId>
-			<artifactId>mybatis</artifactId>
-			<version>3.2.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.mybatis</groupId>
-			<artifactId>mybatis-spring</artifactId>
-			<version>1.1.1</version>
-		</dependency>
 
 		<!-- mysql db -->
 		<dependency>
@@ -175,7 +119,7 @@
 			<version>2.3</version>
 			<classifier>jdk15</classifier>
 		</dependency>
-		
+
 		<!-- CXF -->
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
