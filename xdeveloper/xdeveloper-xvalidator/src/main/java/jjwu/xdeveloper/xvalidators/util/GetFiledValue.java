@@ -13,12 +13,10 @@ import java.lang.reflect.Method;
 
 import jjwu.xdeveloper.xvalidators.annotation.IwAnnotation;
 
-import org.apache.log4j.Logger;
-
 
 /**
  * 
- * @类名:   GetFiledValue 
+ * @类名:   GetFiledValue
  * @描述:  	通过反射得到某个字段的值处理类
  *
  * @作者:   吴君杰
@@ -27,9 +25,7 @@ import org.apache.log4j.Logger;
  * @版本:   1.0
  */
 public final class GetFiledValue {
-	
-	private final static Logger LOGGER = Logger.getLogger(GetFiledValue.class);
-	
+
 	/**
 	 * <p>
 	 * 	通过反射得到某个字段的值
@@ -38,26 +34,20 @@ public final class GetFiledValue {
 	 * @param fieldName
 	 * @return
 	 */
-	public static Object getFieldValue(IwAnnotation targetObj,String fieldName){
+	public static Object getFieldValue(final IwAnnotation targetObj,final String fieldName){
 		Object value = null;
 		try {
-			String firstLetter = fieldName.substring(0, 1).toUpperCase();
-			String getMethodName = "get" + firstLetter + fieldName.substring(1);
-			Method getMethod = targetObj.getClass().getMethod(getMethodName);
+			final String firstLetter = fieldName.substring(0, 1).toUpperCase();
+			final String getMethodName = "get" + firstLetter + fieldName.substring(1);
+			final Method getMethod = targetObj.getClass().getMethod(getMethodName);
 			getMethod.setAccessible(true);
 			value = getMethod.invoke(targetObj);
-		} catch (SecurityException ex) {
-			LOGGER.error("Get Field Value Fail! ex msg:",ex);
-		} catch (NoSuchMethodException ex) {
-			LOGGER.error("Get Field Value Fail! ex msg:",ex);
-		} catch (IllegalArgumentException ex) {
-			LOGGER.error("Get Field Value Fail! ex msg:",ex);
-		} catch (IllegalAccessException ex) {
-			LOGGER.error("Get Field Value Fail! ex msg:",ex);
-		} catch (InvocationTargetException ex) {
-			LOGGER.error("Get Field Value Fail! ex msg:",ex);
-		} catch (Exception ex){
-			LOGGER.error("Get Field Value Fail! oex msg:",ex);
+		} catch (final SecurityException ex) {
+		} catch (final NoSuchMethodException ex) {
+		} catch (final IllegalArgumentException ex) {
+		} catch (final IllegalAccessException ex) {
+		} catch (final InvocationTargetException ex) {
+		} catch (final Exception ex){
 		}
 		return value;
 	}

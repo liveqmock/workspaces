@@ -18,12 +18,10 @@ import jjwu.xdeveloper.xvalidators.exeception.ValidatorException;
 import jjwu.xdeveloper.xvalidators.handlers.Handler;
 import jjwu.xdeveloper.xvalidators.util.GetFiledValue;
 
-import org.apache.log4j.Logger;
-
 
 /**
  * 
- * @类名:   Xvalidator 
+ * @类名:   Xvalidator
  * @描述:  	javaBean字段验证器,用于后台数据交验
  *
  * @作者:   吴君杰
@@ -33,12 +31,10 @@ import org.apache.log4j.Logger;
  */
 public final class Xvalidator {
 
-	private final static Logger LOGGER = Logger.getLogger(Xvalidator.class);
-
 	private final static String SUFFIX = "Handler";
 
 	private final static String PACKAGE = "jjwu.xdeveloper.xvalidators.annotation";
-	
+
 	private final static String HANDLERPACKAGE = "jjwu.xdeveloper.xvalidators.handlers";
 
 	private static Xvalidator validator = new Xvalidator();
@@ -50,27 +46,24 @@ public final class Xvalidator {
 	public static Xvalidator getInstance() {
 		return validator;
 	}
-	
-	public boolean validate(IwAnnotation targetObj) {
+
+	public boolean validate(final IwAnnotation targetObj) {
 		try {
 			if (null == targetObj) {
-				LOGGER.error("Validate Object is NULL.");
 				return false;
 			}
 			Class<?> currentClass = targetObj.getClass();
 			while (currentClass != null) {
-				Field[] fields = currentClass.getDeclaredFields();
-				for (Field elem : fields) {
+				final Field[] fields = currentClass.getDeclaredFields();
+				for (final Field elem : fields) {
 					validateField(targetObj, elem);
 				}
-				Class<?> superClass = currentClass.getSuperclass();
+				final Class<?> superClass = currentClass.getSuperclass();
 				currentClass = IwAnnotation.class.isAssignableFrom(superClass) ? superClass : null;
 			}
-		} catch (ValidatorException e) {
-			LOGGER.error(e.getMessage());
+		} catch (final ValidatorException e) {
 			return false;
-		} catch (Exception e) {
-			LOGGER.error("其他异常", e);
+		} catch (final Exception e) {
 			return false;
 		}
 		return true;
@@ -80,36 +73,33 @@ public final class Xvalidator {
 	 * @param targetObj
 	 * @throws ValidatorException
 	 */
-	public void validateEx(IwAnnotation targetObj) throws ValidatorException {
+	public void validateEx(final IwAnnotation targetObj) throws ValidatorException {
 		try {
 			if (null == targetObj) {
-				LOGGER.error("Validate Object is NULL.");
 				throw new ValidatorException("Validate Object is NULL.");
 			}
 			Class<?> currentClass = targetObj.getClass();
 			while (currentClass != null) {
-				Field[] fields = currentClass.getDeclaredFields();
-				for (Field elem : fields) {
+				final Field[] fields = currentClass.getDeclaredFields();
+				for (final Field elem : fields) {
 					validateField(targetObj, elem);
 				}
-				Class<?> superClass = currentClass.getSuperclass();
+				final Class<?> superClass = currentClass.getSuperclass();
 				currentClass = IwAnnotation.class.isAssignableFrom(superClass) ? superClass : null;
 			}
-		} catch (ValidatorException ex) {
-			LOGGER.error(ex.getMessage(), ex);
+		} catch (final ValidatorException ex) {
 			throw ex;
-		} catch (Exception oe) {
-			LOGGER.error("其他异常", oe);
+		} catch (final Exception oe) {
 		}
 	}
 
-	private void validateField(IwAnnotation targetObj, Field field) throws ValidatorException {
+	private void validateField(final IwAnnotation targetObj, final Field field) throws ValidatorException {
 		// check whether the field is also IwAnnotation
 		if (IwAnnotation.class.isAssignableFrom(field.getType())) {
 			Object destValue = null;
 			try {
 				destValue = GetFiledValue.getFieldValue(targetObj, field.getName());
-			} catch (Exception ex) {
+			} catch (final Exception ex) {
 				throw new ValidatorException("Get field value or cast value error for field " + field.getName() + " in Class " + targetObj.getClass() + ". Error message: "
 						+ ex.getMessage(), ex);
 			}
@@ -120,18 +110,17 @@ public final class Xvalidator {
 			}
 		}
 
-		List<Annotation> annotations = getValidateAnnotations(field);
+		final List<Annotation> annotations = getValidateAnnotations(field);
 		if (annotations != null && annotations.size() > 0) {
 			// loop each field annotations
-			for (Annotation annotation : annotations) {
-				String annotationName = annotation.annotationType().getName();
+			for (final Annotation annotation : annotations) {
+				final String annotationName = annotation.annotationType().getName();
 				String className = annotationName + SUFFIX;
 				className = className.replace(PACKAGE, HANDLERPACKAGE);
 				Handler handler = null;
 				try {
 					handler = (Handler) Class.forName(className).newInstance();
-				} catch (Exception ex) {
-					LOGGER.error("Can not get the handler for " + ex.getMessage(), ex);
+				} catch (final Exception ex) {
 					throw new ValidatorException();
 				}
 				handler.validate(targetObj, field);
@@ -145,11 +134,11 @@ public final class Xvalidator {
 	 * @param field
 	 * @return
 	 */
-	private List<Annotation> getValidateAnnotations(Field field) {
-		List<Annotation> annotations = new ArrayList<Annotation>();
-		Annotation[] annos = field.getAnnotations();
-		for (Annotation elem : annos) {
-			String classToString = elem.annotationType().toString();
+	private List<Annotation> getValidateAnnotations(final Field field) {
+		final List<Annotation> annotations = new ArrayList<Annotation>();
+		final Annotation[] annos = field.getAnnotations();
+		for (final Annotation elem : annos) {
+			final String classToString = elem.annotationType().toString();
 			if (classToString.indexOf(PACKAGE) > 0) {
 				annotations.add(elem);
 			}
