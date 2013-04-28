@@ -94,7 +94,7 @@ public class AppComTest {
 	@Test
 	public void testItemCardList() {
 
-		final File file = new File("/Users/jjwu/Desktop/card.txt");
+		final File file = new File("/Users/jjwu/Desktop/t2.txt");
 		FileReader reader = null;
 		BufferedReader buffer = null;
 		try {
@@ -106,7 +106,7 @@ public class AppComTest {
 				final JSONObject jsonObject = JSONObject.fromObject(json);
 				final WebResource client = Client.create().resource("");
 
-				final String pid = "P-P1";
+				final String pid = "P-P1.5";
 
 				final WebResource wr = client.path("http://data.iwgame.com/service/itemcard/" + pid + "/senditemcard");
 
@@ -501,5 +501,35 @@ public class AppComTest {
 		final String rs = wr.queryParams(param).accept(MediaType.APPLICATION_JSON).get(String.class);
 		System.out.println(rs);
 	}
+
+
+	@Test
+	public void testItemCardActivity() {
+		final WebResource client = Client.create().resource("");
+		final String pid = "common";
+
+		final WebResource wr = client.path("http://hdapi.iwgame.com/service/sms/" + pid + "/sendsms");
+
+		final MultivaluedMap<String, String> param = new MultivaluedMapImpl();
+
+		final String ts = String.valueOf(System.currentTimeMillis());
+
+		final String phone = "13776801367";
+
+		final String str = pid + "&" + phone + "&" + "glWN8S1Al1JznVqjf1jV1CMOifQyp8Ve" + "&" + ts;
+		final String sign = MD5Util.md5sum(str);
+
+		param.add("appname", "sq");
+		param.add("ts", ts);
+		param.add("sign", sign);
+		param.add("phone", phone);
+		param.add("message", "这是测试短信");
+		param.add("queueNo", "3722");
+
+		final String rs = wr.queryParams(param).accept(MediaType.APPLICATION_JSON).post(String.class);
+
+		System.out.println(rs);
+	}
+
 
 }

@@ -8,6 +8,7 @@
  ****************************************************************/
 package com.test;
 
+<<<<<<< HEAD
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,6 +16,16 @@ import com.iwgame.xvalidators.Xvalidator;
 import com.iwgame.xvalidators.annotation.IntType;
 import com.iwgame.xvalidators.annotation.IwAnnotation;
 import com.iwgame.xvalidators.annotation.NotEmpty;
+=======
+import jjwu.xdeveloper.xvalidators.Xvalidator;
+import jjwu.xdeveloper.xvalidators.annotation.IntType;
+import jjwu.xdeveloper.xvalidators.annotation.IwAnnotation;
+import jjwu.xdeveloper.xvalidators.annotation.NotEmpty;
+
+import org.junit.Before;
+import org.junit.Test;
+
+>>>>>>> xdeveloper-xvalidator
 
 /**
  * @ClassName: TestCommon
