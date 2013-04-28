@@ -155,6 +155,11 @@
 			<artifactId>xdeveloper-security</artifactId>
 			<version>1.0.0</version>
 		</dependency>
+		<dependency>
+			<groupId>jjwu.xdeveloper.xvalidators</groupId>
+			<artifactId>xdeveloper-xvalidator</artifactId>
+			<version>1.0.0</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.freemarker</groupId>
