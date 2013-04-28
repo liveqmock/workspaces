@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class MainController {
 
-
 	@RequestMapping("/main.do")
 	public String main(final ModelMap modelMap){
 		final Map<String,Object> data = new HashMap<String, Object>();
@@ -37,5 +36,4 @@ public class MainController {
 		modelMap.put("data", data);
 		return "main";
 	}
-
 }
