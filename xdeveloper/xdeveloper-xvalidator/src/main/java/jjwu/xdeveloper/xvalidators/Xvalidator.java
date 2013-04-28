@@ -13,7 +13,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-import jjwu.xdeveloper.xvalidators.annotation.IwAnnotation;
+import jjwu.xdeveloper.xvalidators.annotation.Xvalidate;
 import jjwu.xdeveloper.xvalidators.exeception.ValidatorException;
 import jjwu.xdeveloper.xvalidators.handlers.Handler;
 import jjwu.xdeveloper.xvalidators.util.GetFiledValue;
@@ -47,7 +47,7 @@ public final class Xvalidator {
 		return validator;
 	}
 
-	public boolean validate(final IwAnnotation targetObj) {
+	public boolean validate(final Xvalidate targetObj) {
 		try {
 			if (null == targetObj) {
 				return false;
@@ -59,7 +59,7 @@ public final class Xvalidator {
 					validateField(targetObj, elem);
 				}
 				final Class<?> superClass = currentClass.getSuperclass();
-				currentClass = IwAnnotation.class.isAssignableFrom(superClass) ? superClass : null;
+				currentClass = Xvalidate.class.isAssignableFrom(superClass) ? superClass : null;
 			}
 		} catch (final ValidatorException e) {
 			return false;
@@ -73,7 +73,7 @@ public final class Xvalidator {
 	 * @param targetObj
 	 * @throws ValidatorException
 	 */
-	public void validateEx(final IwAnnotation targetObj) throws ValidatorException {
+	public void validateEx(final Xvalidate targetObj) throws ValidatorException {
 		try {
 			if (null == targetObj) {
 				throw new ValidatorException("Validate Object is NULL.");
@@ -85,7 +85,7 @@ public final class Xvalidator {
 					validateField(targetObj, elem);
 				}
 				final Class<?> superClass = currentClass.getSuperclass();
-				currentClass = IwAnnotation.class.isAssignableFrom(superClass) ? superClass : null;
+				currentClass = Xvalidate.class.isAssignableFrom(superClass) ? superClass : null;
 			}
 		} catch (final ValidatorException ex) {
 			throw ex;
@@ -93,9 +93,9 @@ public final class Xvalidator {
 		}
 	}
 
-	private void validateField(final IwAnnotation targetObj, final Field field) throws ValidatorException {
-		// check whether the field is also IwAnnotation
-		if (IwAnnotation.class.isAssignableFrom(field.getType())) {
+	private void validateField(final Xvalidate targetObj, final Field field) throws ValidatorException {
+		// check whether the field is also Xvalidate
+		if (Xvalidate.class.isAssignableFrom(field.getType())) {
 			Object destValue = null;
 			try {
 				destValue = GetFiledValue.getFieldValue(targetObj, field.getName());
@@ -106,7 +106,7 @@ public final class Xvalidator {
 			if (destValue == null) {
 				return; // NULL value is allowed.
 			} else {
-				validate((IwAnnotation) destValue);
+				validate((Xvalidate) destValue);
 			}
 		}
 

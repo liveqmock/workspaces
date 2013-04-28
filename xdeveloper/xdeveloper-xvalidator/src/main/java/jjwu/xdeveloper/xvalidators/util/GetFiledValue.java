@@ -1,40 +1,39 @@
 /****************************************************************
- *  文件名     ： GetFiledValue.java
- *  日期         :  2012-8-14
- *  Company: 上海绿岸网络科技有限公司
- *  (C) Copyright Green Shore Network Technology Co.,Ltd.2012
- *           		All Rights Reserved.
- *  注意： 本内容仅限于上海绿岸网络科技有限公司内部使用，禁止转发
+ * 文件名 ： GetFiledValue.java
+ * 日期 : 2012-8-14
+ * Company: 上海绿岸网络科技有限公司
+ * (C) Copyright Green Shore Network Technology Co.,Ltd.2012
+ * All Rights Reserved.
+ * 注意： 本内容仅限于上海绿岸网络科技有限公司内部使用，禁止转发
  ****************************************************************/
 package jjwu.xdeveloper.xvalidators.util;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import jjwu.xdeveloper.xvalidators.annotation.IwAnnotation;
-
+import jjwu.xdeveloper.xvalidators.annotation.Xvalidate;
 
 /**
  * 
- * @类名:   GetFiledValue
- * @描述:  	通过反射得到某个字段的值处理类
- *
- * @作者:   吴君杰
- * @邮箱:	wujunjie@iwgame.com
- * @日期:	2012-8-14下午06:08:16
- * @版本:   1.0
+ * @类名: GetFiledValue
+ * @描述: 通过反射得到某个字段的值处理类
+ * 
+ * @作者: 吴君杰
+ * @邮箱: wujunjie@iwgame.com
+ * @日期: 2012-8-14下午06:08:16
+ * @版本: 1.0
  */
 public final class GetFiledValue {
 
 	/**
 	 * <p>
-	 * 	通过反射得到某个字段的值
+	 * 通过反射得到某个字段的值
 	 * </p>
+	 * 
 	 * @param targetObj
 	 * @param fieldName
 	 * @return
 	 */
-	public static Object getFieldValue(final IwAnnotation targetObj,final String fieldName){
+	public static Object getFieldValue(final Xvalidate targetObj, final String fieldName) {
 		Object value = null;
 		try {
 			final String firstLetter = fieldName.substring(0, 1).toUpperCase();
@@ -42,12 +41,8 @@ public final class GetFiledValue {
 			final Method getMethod = targetObj.getClass().getMethod(getMethodName);
 			getMethod.setAccessible(true);
 			value = getMethod.invoke(targetObj);
-		} catch (final SecurityException ex) {
-		} catch (final NoSuchMethodException ex) {
-		} catch (final IllegalArgumentException ex) {
-		} catch (final IllegalAccessException ex) {
-		} catch (final InvocationTargetException ex) {
-		} catch (final Exception ex){
+		} catch (final Throwable ex) {
+			return value;
 		}
 		return value;
 	}

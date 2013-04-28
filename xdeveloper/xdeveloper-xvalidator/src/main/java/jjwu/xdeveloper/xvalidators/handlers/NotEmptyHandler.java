@@ -12,7 +12,7 @@ import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Map;
 
-import jjwu.xdeveloper.xvalidators.annotation.IwAnnotation;
+import jjwu.xdeveloper.xvalidators.annotation.Xvalidate;
 import jjwu.xdeveloper.xvalidators.annotation.NotEmpty;
 import jjwu.xdeveloper.xvalidators.exeception.ValidatorException;
 import jjwu.xdeveloper.xvalidators.util.GetFiledValue;
@@ -34,7 +34,7 @@ public class NotEmptyHandler implements Handler {
 	 * @see org.tony.annotation.validators.Handler#validate(org.tony.annotation.validators.IwAnnotation, java.lang.reflect.Field)
 	 */
 	@Override
-	public void validate(IwAnnotation targetObj, Field field) throws ValidatorException {
+	public void validate(Xvalidate targetObj, Field field) throws ValidatorException {
 		// TODO Auto-generated method stub
 		if (field.isAnnotationPresent(NotEmpty.class)) {
 			checkNotEmpty(targetObj, field);
@@ -42,7 +42,7 @@ public class NotEmptyHandler implements Handler {
 		
 	}
 	
-	public void checkNotEmpty(IwAnnotation targetObj,Field field) throws ValidatorException{
+	public void checkNotEmpty(Xvalidate targetObj,Field field) throws ValidatorException{
 		NotEmpty validateNotEmpty = field.getAnnotation(NotEmpty.class);
 		String message = validateNotEmpty.errmsg();
 
