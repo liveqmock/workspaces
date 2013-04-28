@@ -11,7 +11,7 @@ package jjwu.xdeveloper.xvalidators.handlers;
 import java.lang.reflect.Field;
 
 import jjwu.xdeveloper.xvalidators.annotation.Xvalidate;
-import jjwu.xdeveloper.xvalidators.exeception.ValidatorException;
+import jjwu.xdeveloper.xvalidators.exeception.XvalidatorException;
 
 
 /**
@@ -26,6 +26,6 @@ import jjwu.xdeveloper.xvalidators.exeception.ValidatorException;
  */
 public interface Handler {
 	
-	 public void validate(Xvalidate targetObj, Field field) throws ValidatorException;
+	 public void validate(Xvalidate targetObj, Field field) throws XvalidatorException;
 
 }

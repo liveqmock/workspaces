@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 
 import jjwu.xdeveloper.xvalidators.annotation.Xvalidate;
 import jjwu.xdeveloper.xvalidators.annotation.RegEx;
-import jjwu.xdeveloper.xvalidators.exeception.ValidatorException;
+import jjwu.xdeveloper.xvalidators.exeception.XvalidatorException;
 import jjwu.xdeveloper.xvalidators.util.GetFiledValue;
 
 
@@ -38,7 +38,7 @@ public class RegExHandler implements Handler {
 	 * validators.IwAnnotation, java.lang.reflect.Field)
 	 */
 	@Override
-	public void validate(Xvalidate filter, Field field) throws ValidatorException {
+	public void validate(Xvalidate filter, Field field) throws XvalidatorException {
 		// TODO Auto-generated method stub
 		if (field.isAnnotationPresent(RegEx.class)) {
 			checkRegx(filter, field);
@@ -46,7 +46,7 @@ public class RegExHandler implements Handler {
 
 	}
 
-	private void checkRegx(Xvalidate filter, Field field) throws ValidatorException {
+	private void checkRegx(Xvalidate filter, Field field) throws XvalidatorException {
 		RegEx validateRegx = field.getAnnotation(RegEx.class);
 		String regex = validateRegx.regex();
 		String message = validateRegx.errmsg();
@@ -56,7 +56,7 @@ public class RegExHandler implements Handler {
 			Pattern pattern = Pattern.compile(regex);
 			Matcher matcher = pattern.matcher(fieldValue);
 			if (!matcher.matches()) {
-				throw new ValidatorException("Validate Field:[" + field.getName() +"] fail, value=" + fieldValue + " But " + message);
+				throw new XvalidatorException("Validate Field:[" + field.getName() +"] fail, value=" + fieldValue + " But " + message);
 			}
 		}
 	}

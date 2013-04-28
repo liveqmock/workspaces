@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jjwu.xdeveloper.xvalidators.annotation.Xvalidate;
-import jjwu.xdeveloper.xvalidators.exeception.ValidatorException;
+import jjwu.xdeveloper.xvalidators.exeception.XvalidatorException;
 import jjwu.xdeveloper.xvalidators.handlers.Handler;
 import jjwu.xdeveloper.xvalidators.util.GetFiledValue;
 
@@ -61,9 +61,9 @@ public final class Xvalidator {
 				final Class<?> superClass = currentClass.getSuperclass();
 				currentClass = Xvalidate.class.isAssignableFrom(superClass) ? superClass : null;
 			}
-		} catch (final ValidatorException e) {
+		} catch (final XvalidatorException e) {
 			return false;
-		} catch (final Exception e) {
+		} catch (final Throwable e) {
 			return false;
 		}
 		return true;
@@ -71,12 +71,12 @@ public final class Xvalidator {
 
 	/**
 	 * @param targetObj
-	 * @throws ValidatorException
+	 * @throws XvalidatorException
 	 */
-	public void validateEx(final Xvalidate targetObj) throws ValidatorException {
+	public void validateEx(final Xvalidate targetObj) throws XvalidatorException {
 		try {
 			if (null == targetObj) {
-				throw new ValidatorException("Validate Object is NULL.");
+				throw new XvalidatorException("Validate Object is NULL.");
 			}
 			Class<?> currentClass = targetObj.getClass();
 			while (currentClass != null) {
@@ -87,20 +87,21 @@ public final class Xvalidator {
 				final Class<?> superClass = currentClass.getSuperclass();
 				currentClass = Xvalidate.class.isAssignableFrom(superClass) ? superClass : null;
 			}
-		} catch (final ValidatorException ex) {
+		} catch (final XvalidatorException ex) {
 			throw ex;
-		} catch (final Exception oe) {
+		} catch (final Throwable oe) {
+			throw new XvalidatorException(oe.getMessage());
 		}
 	}
 
-	private void validateField(final Xvalidate targetObj, final Field field) throws ValidatorException {
+	private void validateField(final Xvalidate targetObj, final Field field) throws XvalidatorException {
 		// check whether the field is also Xvalidate
 		if (Xvalidate.class.isAssignableFrom(field.getType())) {
 			Object destValue = null;
 			try {
 				destValue = GetFiledValue.getFieldValue(targetObj, field.getName());
 			} catch (final Exception ex) {
-				throw new ValidatorException("Get field value or cast value error for field " + field.getName() + " in Class " + targetObj.getClass() + ". Error message: "
+				throw new XvalidatorException("Get field value or cast value error for field " + field.getName() + " in Class " + targetObj.getClass() + ". Error message: "
 						+ ex.getMessage(), ex);
 			}
 			if (destValue == null) {
@@ -121,7 +122,7 @@ public final class Xvalidator {
 				try {
 					handler = (Handler) Class.forName(className).newInstance();
 				} catch (final Exception ex) {
-					throw new ValidatorException();
+					throw new XvalidatorException();
 				}
 				handler.validate(targetObj, field);
 			}

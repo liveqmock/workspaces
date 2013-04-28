@@ -12,7 +12,7 @@ import java.lang.reflect.Field;
 
 import jjwu.xdeveloper.xvalidators.annotation.IntType;
 import jjwu.xdeveloper.xvalidators.annotation.Xvalidate;
-import jjwu.xdeveloper.xvalidators.exeception.ValidatorException;
+import jjwu.xdeveloper.xvalidators.exeception.XvalidatorException;
 import jjwu.xdeveloper.xvalidators.util.GetFiledValue;
 
 
@@ -29,7 +29,7 @@ import jjwu.xdeveloper.xvalidators.util.GetFiledValue;
 public class IntTypeHandler implements Handler {
 
 	@Override
-	public void validate(Xvalidate validatedObj, Field field) throws ValidatorException {
+	public void validate(Xvalidate validatedObj, Field field) throws XvalidatorException {
 		if (field.isAnnotationPresent(IntType.class)) {
 			checkInt(validatedObj, field);
 		}
@@ -42,9 +42,9 @@ public class IntTypeHandler implements Handler {
 	 *            validated object
 	 * @param field
 	 *            validated field or property
-	 * @throws ValidatorException
+	 * @throws XvalidatorException
 	 */
-	private void checkInt(Xvalidate filter, Field field) throws ValidatorException {
+	private void checkInt(Xvalidate filter, Field field) throws XvalidatorException {
 		IntType annotation = field.getAnnotation(IntType.class);
 		int min = annotation.min();
 		int max = annotation.max();
@@ -53,7 +53,7 @@ public class IntTypeHandler implements Handler {
 		Object sourValue = GetFiledValue.getFieldValue(filter, field.getName());
 		
 		if (sourValue == null) {
-			throw new ValidatorException(message + "The value is:" + sourValue);
+			throw new XvalidatorException(message + "The value is:" + sourValue);
 		}
 
 		Integer destValue = null;
@@ -61,21 +61,21 @@ public class IntTypeHandler implements Handler {
 		try {
 			destValue = Integer.valueOf(sourValue.toString());
 		} catch (Exception ex) {
-			throw new ValidatorException(ex.getMessage(), ex);
+			throw new XvalidatorException(ex.getMessage(), ex);
 		}
 
 		if (destValue == null) {
-			throw new ValidatorException(message + "The value is:" + destValue);
+			throw new XvalidatorException(message + "The value is:" + destValue);
 		}
 		
 		int value = destValue.intValue();
 
 		if (value < min) {
-			throw new ValidatorException(message + "The value is:" + value + ",The min value should is:" + min);
+			throw new XvalidatorException(message + "The value is:" + value + ",The min value should is:" + min);
 		}
 
 		if (value > max) {
-			throw new ValidatorException(message + "The value is:" + value + ",The max value should is:" + max);
+			throw new XvalidatorException(message + "The value is:" + value + ",The max value should is:" + max);
 		}
 	}
 }

@@ -14,7 +14,7 @@ import java.util.Map;
 
 import jjwu.xdeveloper.xvalidators.annotation.Xvalidate;
 import jjwu.xdeveloper.xvalidators.annotation.NotEmpty;
-import jjwu.xdeveloper.xvalidators.exeception.ValidatorException;
+import jjwu.xdeveloper.xvalidators.exeception.XvalidatorException;
 import jjwu.xdeveloper.xvalidators.util.GetFiledValue;
 
 
@@ -34,7 +34,7 @@ public class NotEmptyHandler implements Handler {
 	 * @see org.tony.annotation.validators.Handler#validate(org.tony.annotation.validators.IwAnnotation, java.lang.reflect.Field)
 	 */
 	@Override
-	public void validate(Xvalidate targetObj, Field field) throws ValidatorException {
+	public void validate(Xvalidate targetObj, Field field) throws XvalidatorException {
 		// TODO Auto-generated method stub
 		if (field.isAnnotationPresent(NotEmpty.class)) {
 			checkNotEmpty(targetObj, field);
@@ -42,7 +42,7 @@ public class NotEmptyHandler implements Handler {
 		
 	}
 	
-	public void checkNotEmpty(Xvalidate targetObj,Field field) throws ValidatorException{
+	public void checkNotEmpty(Xvalidate targetObj,Field field) throws XvalidatorException{
 		NotEmpty validateNotEmpty = field.getAnnotation(NotEmpty.class);
 		String message = validateNotEmpty.errmsg();
 
@@ -50,23 +50,23 @@ public class NotEmptyHandler implements Handler {
 		
 		//POJO
 		if(value == null){
-			throw new ValidatorException(message + " But the value of Field[" + field.getName() + "] is Null.");
+			throw new XvalidatorException(message + " But the value of Field[" + field.getName() + "] is Null.");
 		}
 		//Map
 		if(value instanceof Map<?,?>){
 			if(((Map<?,?>)value).isEmpty()){
-				throw new ValidatorException(message + " But the value of Field[" + field.getName() + "] is Empty.");
+				throw new XvalidatorException(message + " But the value of Field[" + field.getName() + "] is Empty.");
 			}
 		//List & Set	
 		}else if(value instanceof Collection<?>){
 			if(((Collection<?>)value).isEmpty() || ((Collection<?>)value).size() ==0){
-				throw new ValidatorException(message + " But the value of Field[" + field.getName() + "] is Empty.");
+				throw new XvalidatorException(message + " But the value of Field[" + field.getName() + "] is Empty.");
 			}
 		//Other
 		}else{
 			String temp = value.toString().trim();
 			if(temp.isEmpty()||"null".equals(temp)){
-				throw new ValidatorException(message + " But the value of Field[" + field.getName() + "] length is Zero or Empty.");
+				throw new XvalidatorException(message + " But the value of Field[" + field.getName() + "] length is Zero or Empty.");
 			}
 		}
 	}
