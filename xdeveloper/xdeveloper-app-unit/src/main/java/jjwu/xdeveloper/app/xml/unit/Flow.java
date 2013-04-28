@@ -1,4 +1,4 @@
-package jjwu.xdeveloper.app.xml;
+package jjwu.xdeveloper.app.xml.unit;
 
 public class Flow {
 	private Long id;

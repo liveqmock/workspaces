@@ -1,4 +1,4 @@
-package jjwu.xdeveloper.app.unit;
+package jjwu.xdeveloper.app.xml.unit;
 
 public class Account {
 	private String holder;

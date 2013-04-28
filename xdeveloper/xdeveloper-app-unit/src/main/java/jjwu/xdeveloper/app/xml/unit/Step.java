@@ -1,9 +1,9 @@
-package jjwu.xdeveloper.app.xml;
+package jjwu.xdeveloper.app.xml.unit;
 
-public class Action {
+public class Step {
 	private Long id;
 	private String name;
-	private int isSub;
+	private Long seq;
 	private String remarks;
 
 	public Long getId() {
@@ -22,12 +22,12 @@ public class Action {
 		this.name = name;
 	}
 
-	public int getIsSub() {
-		return isSub;
+	public Long getSeq() {
+		return seq;
 	}
 
-	public void setIsSub(int isSub) {
-		this.isSub = isSub;
+	public void setSeq(Long seq) {
+		this.seq = seq;
 	}
 
 	public String getRemarks() {

@@ -1,20 +1,18 @@
-package jjwu.xdeveloper.app.xml;
+package jjwu.xdeveloper.app.xml.unit;
 
-import java.io.FileOutputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.thoughtworks.xstream.XStream;
 
-public class Test2 {
+public class Test {
 	/*
 	 * java object to xml
 	 */
 
 	private static XmlBean xmlBean;
 
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) {
 		// instantiate the XStream class
 		XStream xstream = new XStream();
 		xstream.alias("step", Step.class);
@@ -25,9 +23,8 @@ public class Test2 {
 
 		setData();
 
-		OutputStream out = new FileOutputStream("c:/test.xml");
-		xstream.toXML(xmlBean, out);
-		out.close();
+		String xml = xstream.toXML(xmlBean);
+		System.out.println(xml);
 	}
 
 	public static void setData() {
@@ -37,7 +34,7 @@ public class Test2 {
 			s = new Step();
 			s.setId(new Long(i));
 			s.setSeq(new Long(i + i));
-			s.setName("����" + i);
+			s.setName("step" + i);
 			stepList.add(s);
 
 		}

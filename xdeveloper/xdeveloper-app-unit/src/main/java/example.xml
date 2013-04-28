@@ -1,4 +1,4 @@
-<jjwu.xdeveloper.app.xml.Monitor>
+<jjwu.xdeveloper.app.xml.unit.Monitor>
 	<mqqueues>
 		<mqqueue>
 			<host>127.0.0.1</host>
@@ -15,5 +15,5 @@
 	</mqtotals>
 	<password>guest</password>
 	<username>guest</username>
-</jjwu.xdeveloper.app.xml.Monitor>
+</jjwu.xdeveloper.app.xml.unit.Monitor>
 

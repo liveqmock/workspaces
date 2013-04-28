@@ -1,4 +1,4 @@
-package jjwu.xdeveloper.app.xml;
+package jjwu.xdeveloper.app.xml.unit;
 
 import java.io.Serializable;
 import java.util.List;

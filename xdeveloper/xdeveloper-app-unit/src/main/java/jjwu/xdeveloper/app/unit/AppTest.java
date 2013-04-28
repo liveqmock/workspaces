@@ -1,9 +1,16 @@
-package jjwu.xdeveloper.app.model;
+package jjwu.xdeveloper.app.unit;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import jjwu.xdeveloper.app.unit.BeanXMLMapping;
+import jjwu.xdeveloper.app.model.Monitor;
+import jjwu.xdeveloper.app.model.Mqqueue;
+import jjwu.xdeveloper.app.model.Mqqueues;
+import jjwu.xdeveloper.app.model.Mqtotal;
+import jjwu.xdeveloper.app.model.Mqtotals;
+import jjwu.xdeveloper.app.model.Queue;
+import jjwu.xdeveloper.app.model.Queues;
+import jjwu.xdeveloper.app.xml.unit.BeanXMLMapping;
 
 public class AppTest {
 	
