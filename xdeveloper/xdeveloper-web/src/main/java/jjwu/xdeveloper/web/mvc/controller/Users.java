@@ -1,5 +1,5 @@
 /****************************************************************
- *  文件名   	:	Users.java
+ *  文件名   	:	UsersBean.java
  *  日期		:  	2013-4-28
  *  Company: 上海绿岸网络科技有限公司
  *  (C) Copyright Green Shore Network Technology Co.,Ltd.2012
