@@ -8,12 +8,8 @@
  ****************************************************************/
 package com.test;
 
-import jjwu.xdeveloper.xvalidators.bean.UsersBean;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * @描述: TODO(...)
@@ -23,8 +19,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @日期: 2013-4-29 上午9:04:59
  * @版本: v1.0.0
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(value = { "classpath*:/conf/app-Xvalidator.xml" })
 public class AppTest {
 
 	//	@Resource
@@ -32,8 +26,5 @@ public class AppTest {
 
 	@Test
 	public void test() {
-		final UsersBean usersBean = new UsersBean();
-		usersBean.getUsername();
-		usersBean.getPassword();
 	}
 }
