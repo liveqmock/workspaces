@@ -11,7 +11,7 @@ package jjwu.xdeveloper.xvalidators.handlers;
 import java.lang.reflect.Field;
 
 import jjwu.xdeveloper.xvalidators.annotation.IntType;
-import jjwu.xdeveloper.xvalidators.annotation.Xvalidate;
+import jjwu.xdeveloper.xvalidators.annotation.Ivalidator;
 import jjwu.xdeveloper.xvalidators.exeception.XvalidatorException;
 import jjwu.xdeveloper.xvalidators.util.GetFiledValue;
 
@@ -29,7 +29,7 @@ import jjwu.xdeveloper.xvalidators.util.GetFiledValue;
 public class IntTypeHandler implements Handler {
 
 	@Override
-	public void validate(Xvalidate validatedObj, Field field) throws XvalidatorException {
+	public void validate(Ivalidator validatedObj, Field field) throws XvalidatorException {
 		if (field.isAnnotationPresent(IntType.class)) {
 			checkInt(validatedObj, field);
 		}
@@ -44,7 +44,7 @@ public class IntTypeHandler implements Handler {
 	 *            validated field or property
 	 * @throws XvalidatorException
 	 */
-	private void checkInt(Xvalidate filter, Field field) throws XvalidatorException {
+	private void checkInt(Ivalidator filter, Field field) throws XvalidatorException {
 		IntType annotation = field.getAnnotation(IntType.class);
 		int min = annotation.min();
 		int max = annotation.max();

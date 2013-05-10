@@ -12,7 +12,7 @@ import java.lang.reflect.Field;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import jjwu.xdeveloper.xvalidators.annotation.Xvalidate;
+import jjwu.xdeveloper.xvalidators.annotation.Ivalidator;
 import jjwu.xdeveloper.xvalidators.annotation.RegEx;
 import jjwu.xdeveloper.xvalidators.exeception.XvalidatorException;
 import jjwu.xdeveloper.xvalidators.util.GetFiledValue;
@@ -38,7 +38,7 @@ public class RegExHandler implements Handler {
 	 * validators.IwAnnotation, java.lang.reflect.Field)
 	 */
 	@Override
-	public void validate(Xvalidate filter, Field field) throws XvalidatorException {
+	public void validate(Ivalidator filter, Field field) throws XvalidatorException {
 		// TODO Auto-generated method stub
 		if (field.isAnnotationPresent(RegEx.class)) {
 			checkRegx(filter, field);
@@ -46,7 +46,7 @@ public class RegExHandler implements Handler {
 
 	}
 
-	private void checkRegx(Xvalidate filter, Field field) throws XvalidatorException {
+	private void checkRegx(Ivalidator filter, Field field) throws XvalidatorException {
 		RegEx validateRegx = field.getAnnotation(RegEx.class);
 		String regex = validateRegx.regex();
 		String message = validateRegx.errmsg();

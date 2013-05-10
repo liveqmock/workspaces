@@ -10,7 +10,7 @@ package jjwu.xdeveloper.xvalidators.util;
 
 import java.lang.reflect.Method;
 
-import jjwu.xdeveloper.xvalidators.annotation.Xvalidate;
+import jjwu.xdeveloper.xvalidators.annotation.Ivalidator;
 
 /**
  * 
@@ -33,7 +33,7 @@ public final class GetFiledValue {
 	 * @param fieldName
 	 * @return
 	 */
-	public static Object getFieldValue(final Xvalidate targetObj, final String fieldName) {
+	public static Object getFieldValue(final Ivalidator targetObj, final String fieldName) {
 		Object value = null;
 		try {
 			final String firstLetter = fieldName.substring(0, 1).toUpperCase();
