@@ -5,9 +5,9 @@
 	<cache />
 
 	<select id="select" parameterType="hashmap" resultType="map"
-		useCache="true">
+		useCache="false">
 		SELECT *
-		FROM test
+		FROM test where id = #{id}
 	</select>
 
 	<update id="update" flushCache="true" parameterType="hashmap">

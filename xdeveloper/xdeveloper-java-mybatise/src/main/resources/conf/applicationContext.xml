@@ -61,7 +61,7 @@
 		</property>
 	</bean>
 	
-	<bean id="test-dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+	<bean id="test-dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" >
 		<!-- 数据库连接基本信息 -->
 		<property name="jdbcUrl" value="${db.driver-url}" />
 		<property name="driverClass" value="${db.driver-class}" />
