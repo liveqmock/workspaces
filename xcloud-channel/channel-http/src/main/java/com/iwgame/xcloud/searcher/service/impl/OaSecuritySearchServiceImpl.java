@@ -27,23 +27,23 @@ import com.iwgame.xcloud.searcher.service.OASecuritySearchService;
 import com.iwgame.xcloud.searcher.util.SecurityUtil;
 import com.iwgame.xvalidators.Xvalidator;
 
-/** 
- * @描述:  	TODO(...) 
+/**
+ * @描述:  	TODO(...)
  *
  * @作者:   吴君杰
  * @邮箱:	wujunjie@iwgame.com
  * @日期:	2012-12-10下午04:06:18
- * @版本:   v1.0 
+ * @版本:   v1.0
  */
 @Service
 public class OaSecuritySearchServiceImpl implements OASecuritySearchService {
 
-	
+
 	@Resource
 	private DBConnection dbConnection;
-	
+
 	private final Logger logger = Logger.getLogger("game");
-	
+
 	/*
 	 * @param pid
 	 * @param username
@@ -51,15 +51,14 @@ public class OaSecuritySearchServiceImpl implements OASecuritySearchService {
 	 * @return
 	 * @see com.iwgame.xcloud.searcher.service.OASecuritySearchService#getListAccounts(java.lang.String, java.lang.String, com.iwgame.xcloud.searcher.model.ParamBean)
 	 */
-	
+
 	@Override
-	@SuppressWarnings("unchecked")
 	public String getOAsecurityAccount(String pid, String username, ParamBean queryParam) {
-		
+
 		SearchResult result = new SearchResult();
-		
+
 		List<Map<String, Object>> accounts = new ArrayList<Map<String,Object>>();
-		
+
 		if (Xvalidator.getInstance().validate(queryParam) && !"".equals(username)) {
 			try {
 				// 签名验证
@@ -71,12 +70,12 @@ public class OaSecuritySearchServiceImpl implements OASecuritySearchService {
 
 					// 蜀门
 					if ("P-P1".equalsIgnoreCase(pid)) {
-						accounts = (List<Map<String, Object>>) dbConnection.getCilent("oasecurity-sm").selectList("oasecurity-search.getSafeModeRecord",paramMap);
+						accounts = dbConnection.selectList("oasecurity-sm","oasecurity-search.getSafeModeRecord",paramMap);
 						result.setRc(0);
 						result.setResult(accounts);
 						logger.info("AppName:[" + queryParam.getAppname() + "]OASecurity蜀门帐号查询成功!");
 					} else if ("P-P1.5".equalsIgnoreCase(pid)) { // 醉逍遥
-						accounts = (List<Map<String, Object>>)dbConnection.getCilent("oasecurity-zxy").selectList("oasecurity-search.getSafeModeRecord",paramMap);
+						accounts = dbConnection.selectList("oasecurity-zxy","oasecurity-search.getSafeModeRecord",paramMap);
 						result.setRc(0);
 						result.setResult(accounts);
 						logger.info("AppName:[" + queryParam.getAppname() + "]OASecurity醉逍遥帐号查询成功!");

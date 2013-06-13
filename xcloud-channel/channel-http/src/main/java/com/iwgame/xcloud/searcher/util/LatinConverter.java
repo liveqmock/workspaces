@@ -48,7 +48,7 @@ public class LatinConverter implements JsonValueProcessor {
 				b = result.getBytes("GBK");
 				result = new String(b, "iso-8859-1");
 			} catch (UnsupportedEncodingException e) {
-				logger.error("字符 [ " + params + " ] 转码 \"iso-8859-1\" 错误!异常信息:", e);
+				LatinConverter.logger.error("字符 [ " + params + " ] 转码 \"iso-8859-1\" 错误!异常信息:", e);
 			}
 		}
 		return result;
@@ -71,7 +71,7 @@ public class LatinConverter implements JsonValueProcessor {
 				b = result.getBytes("iso-8859-1");
 				result = new String(b, "GBK");
 			} catch (UnsupportedEncodingException e) {
-				logger.error("字符 [ " + params + " ] 转码 \"iso-8859-1\" 错误!异常信息:", e);
+				LatinConverter.logger.error("字符 [ " + params + " ] 转码 \"iso-8859-1\" 错误!异常信息:", e);
 			}
 		}
 		return result;
@@ -110,13 +110,14 @@ public class LatinConverter implements JsonValueProcessor {
 	 */
 	private Object process(String key, Object value) {
 		if ("name".equals(key)) {
-			return tranferEncode_zh(value.toString());
+			return LatinConverter.tranferEncode_zh(value.toString());
 		}
 		return value;
 	}
 
 	public static void main(String[] args) {
-		System.out.println(tranferEncode_latin1("╈嗳嘚☆伤"));
-		System.out.println(tranferEncode_zh(tranferEncode_latin1("╈嗳嘚☆伤")));
+		//		System.out.println(tranferEncode_latin1("╈嗳嘚☆伤"));
+		System.out.println(LatinConverter.tranferEncode_zh("¡«Ìì¡«µØ¡«»á¡«"));
+		System.out.println(LatinConverter.tranferEncode_zh("OoÌúÑªvÆ®Ñ©oO"));
 	}
 }

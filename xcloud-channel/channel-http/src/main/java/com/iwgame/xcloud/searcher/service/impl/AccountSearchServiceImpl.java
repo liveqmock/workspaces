@@ -1,6 +1,6 @@
-/**      
- * PlayerSearchServiceImpl.java Create on 2012-3-21     
- *      
+/**
+ * PlayerSearchServiceImpl.java Create on 2012-3-21
+ * 
  * Copyright (c) 2012 by GreenShore Network
  * Company: 上海绿岸网络科技有限公司(Shanghai GreenShore Network Technology Co.,Ltd.)
 
@@ -77,12 +77,12 @@ public class AccountSearchServiceImpl implements AccountSearchService {
 
 					// 蜀门
 					if ("P-P1".equalsIgnoreCase(pid)) {
-						accounts = (List<Map<String, Object>>) dbConnection.getCilent("account-sm").selectList("account-search.getAccounts", paramMap);
+						accounts = dbConnection.selectList("account-sm","account-search.getAccounts", paramMap);
 						result.setRc(0);
 						result.setResult(accounts);
 						logger.info("AppName:[" + queryParam.getAppname() + "]蜀门帐号查询成功!");
 					} else if ("P-P1.5".equalsIgnoreCase(pid)) { // 醉逍遥
-						accounts = (List<Map<String, Object>>) dbConnection.getCilent("account-zxy").selectList("account-search.getAccounts", paramMap);
+						accounts = dbConnection.selectList("account-zxy","account-search.getAccounts", paramMap);
 						result.setRc(0);
 						result.setResult(accounts);
 						logger.info("AppName:[" + queryParam.getAppname() + "]醉逍遥帐号查询成功!");
@@ -148,12 +148,12 @@ public class AccountSearchServiceImpl implements AccountSearchService {
 
 					// 蜀门
 					if ("P-P1".equalsIgnoreCase(pid)) {
-						accounts = (Map<String, Object>) dbConnection.getCilent("account-sm").selectOne("account-search.getAccountBydbid", paramMap);
+						accounts = (Map<String, Object>) dbConnection.selectOne("account-sm","account-search.getAccountBydbid", paramMap);
 						result.setRc(0);
 						result.setResult(accounts);
 						logger.info("AppName:[" + queryParam.getAppname() + "]蜀门帐号查询成功!");
 					} else if ("P-P1.5".equalsIgnoreCase(pid)) { // 醉逍遥
-						accounts = (Map<String, Object>) dbConnection.getCilent("account-zxy").selectOne("account-search.getAccountBydbid", paramMap);
+						accounts = (Map<String, Object>) dbConnection.selectOne("account-zxy","account-search.getAccountBydbid", paramMap);
 						result.setRc(0);
 						result.setResult(accounts);
 						logger.info("AppName:[" + queryParam.getAppname() + "]醉逍遥帐号查询成功!");
