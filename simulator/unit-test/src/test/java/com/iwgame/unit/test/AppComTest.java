@@ -94,19 +94,19 @@ public class AppComTest {
 	@Test
 	public void testItemCardList() {
 
-		final File file = new File("/Users/jjwu/Desktop/t2.txt");
+		final File file = new File("/Users/jjwu/Desktop/tmp.txt");
 		FileReader reader = null;
 		BufferedReader buffer = null;
 		try {
 			reader = new FileReader(file);
 			buffer = new BufferedReader(reader);
 			String json = null;
-
+			int count = 0;
 			while ((json = buffer.readLine()) != null) {
 				final JSONObject jsonObject = JSONObject.fromObject(json);
 				final WebResource client = Client.create().resource("");
 
-				final String pid = "P-P1.5";
+				final String pid = "P-P1";
 
 				final WebResource wr = client.path("http://data.iwgame.com/service/itemcard/" + pid + "/senditemcard");
 
@@ -132,8 +132,8 @@ public class AppComTest {
 				param.add("itype", "0");
 
 				final String rs = wr.queryParams(param).accept(MediaType.APPLICATION_JSON).post(String.class);
-
-				System.out.println(rs);
+				count++;
+				System.out.println("row:"+count+"  "+rs);
 			}
 		} catch (final FileNotFoundException e) {
 			System.err.println("文件没有找到!");
@@ -162,19 +162,19 @@ public class AppComTest {
 
 		final String ts = String.valueOf(System.currentTimeMillis());
 
-		final String username = "zhs666888";
-		final String guid = "wt9";
+		final String username = "duanzhijian12211";
+		final String guid = "dx17";
 
 		final String str = pid + "&" + username + "&" + "glWN8S1Al1JznVqjf1jV1CMOifQyp8Ve" + "&" + ts;
 		final String sign = MD5Util.md5sum(str);
 
-		param.add("appname", "sq");
+		param.add("appname", "snsgame2");
 		param.add("ts", ts);
 		param.add("sign", sign);
 		param.add("guid", guid);
 		param.add("username", username);
-		param.add("cardnum", "STWESA37HH16CEF");
-		param.add("cardpwd", "52953084766159");
+		param.add("cardnum", "STRBSA40HH79F8B");
+		param.add("cardpwd", "27139472061952");
 		param.add("validtime", "");
 		param.add("itype", "0");
 
@@ -475,7 +475,7 @@ public class AppComTest {
 	public void testItemCardActivity() {
 		final WebResource client = Client.create().resource("");
 		final String pid = "common";
-		final WebResource wr = client.path("http://hdapi.iwgame.com/service/sms/" + pid + "/sendsms");
+		final WebResource wr = client.path("http://.iwgame.com/service/sms/" + pid + "/sendsms");
 		final MultivaluedMap<String, String> param = new MultivaluedMapImpl();
 		final String ts = String.valueOf(System.currentTimeMillis());
 

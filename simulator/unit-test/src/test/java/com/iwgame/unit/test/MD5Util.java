@@ -32,36 +32,41 @@ import org.apache.log4j.Logger;
  * @修改时间：2012-6-29 上午09:25:59
  */
 public abstract class MD5Util {
-	
-	private static final Logger logger = Logger.getLogger(MD5Util.class);
-    
-    public static final boolean md5check(String data, String md5) {
-        String sum = md5sum(data);
-        return sum.equalsIgnoreCase(md5);
-    }
 
-    public static final String md5sum(String data) {
-        MessageDigest md;
-        try {
-            md = MessageDigest.getInstance("MD5");
-            md.update(data.getBytes());
-            return byteToBase16(md.digest()).toUpperCase();
-        } catch (Exception e) {
-        	logger.error("MD5 not supported.", e);
-        }
-        return "";
-    }
-    
-    public static final String byteToBase16(byte[] bytes) {
-        if (bytes == null){
-        	logger.error("The parameter should not be null!");
-        	return "";
-        }
-        StringBuilder sb = new StringBuilder(bytes.length * 2);
-        for (byte b : bytes) {
-            sb.append(Integer.toHexString((b & 0xF0) >> 4));
-            sb.append(Integer.toHexString(b & 0x0F));
-        }
-        return sb.toString();
-    }
+	private static final Logger logger = Logger.getLogger(MD5Util.class);
+
+	public static final boolean md5check(String data, String md5) {
+		String sum = MD5Util.md5sum(data);
+		return sum.equalsIgnoreCase(md5);
+	}
+
+	public static final String md5sum(String data) {
+		MessageDigest md;
+		try {
+			md = MessageDigest.getInstance("MD5");
+			md.update(data.getBytes());
+			return MD5Util.byteToBase16(md.digest()).toLowerCase();
+		} catch (Exception e) {
+			MD5Util.logger.error("MD5 not supported.", e);
+		}
+		return "";
+	}
+
+	public static final String byteToBase16(byte[] bytes) {
+		if (bytes == null){
+			MD5Util.logger.error("The parameter should not be null!");
+			return "";
+		}
+		StringBuilder sb = new StringBuilder(bytes.length * 2);
+		for (byte b : bytes) {
+			sb.append(Integer.toHexString((b & 0xF0) >> 4));
+			sb.append(Integer.toHexString(b & 0x0F));
+		}
+		return sb.toString();
+	}
+
+	public static void main(String[] args) {
+		System.out.println(MD5Util.md5sum("123456"));
+	}
+
 }
