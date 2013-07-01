@@ -27,15 +27,15 @@
 				<prop key="template_update_delay">3600</prop>
 				<prop key="default_encoding">UTF-8</prop>
 				<prop key="locale">zh_CN</prop>
-				<prop key="tag_syntax">auto_detect</prop>
+				<prop key="tag_syntax">auto_detect</prop><!-- 设置标签类型 两种：[] 和 <> 。[] 这种标记解析要快些 -->
 				<prop key="template_update_delay">2</prop>
 				<prop key="output_encoding">UTF-8</prop>
 				<prop key="date_format">yyyy-MM-dd</prop>
 				<prop key="time_format">HH:mm:ss</prop>
 				<prop key="datetime_format">yyyy-MM-dd HH:mm:ss</prop>
-				<prop key="template_exception_handler">html_debug</prop>
-				<prop key="number_format">#</prop>
-				<prop key="classic_compatible">true</prop>
+				<prop key="template_exception_handler">html_debug</prop><!--忽略页面的变量异常 ignore,debug,html_debug,rethrow -->  
+				<prop key="number_format">#</prop><!-- 设置数字格式 以免出现 000.00 -->
+				<prop key="classic_compatible">false</prop>
 			</props>
 		</property>
 	</bean>
@@ -49,7 +49,10 @@
 		<property name="cache" value="true" />
 		<property name="order" value="1" />
 		<property name="exposeRequestAttributes" value="true" />
+		<!-- 将请求和会话属性作为变量暴露给FreeMarker模板使用。要做到这一点，可以设置exposeRequestAttributes或者exposeSessionAttributes为true --> 
+		<property name="requestContextAttribute" value="request"/>
 		<property name="exposeSessionAttributes" value="true" />
+		<!-- 使用这些宏，必须设置FreeMarkerViewResolver的exposeMacroHelpers属性为true -->  
 		<property name="exposeSpringMacroHelpers" value="true" />
 	</bean>
 

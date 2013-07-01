@@ -33,33 +33,26 @@
 				<artifactId>maven-jetty-plugin</artifactId>
 				<version>6.1.21</version>
 				<configuration>
-					<contextPath>/</contextPath>
+					<reload>manual</reload>
+					<contextPath>/web</contextPath>
 					<scanIntervalSeconds>3</scanIntervalSeconds>
 					<scanTargetPatterns>
 						<scanTargetPattern>
 							<directory>src/main/webapp/WEB-INF</directory>
-							<excludes>
-								<exclude>**/*.jsp</exclude>
-								<exclude>**/*.js</exclude>
-								<exclude>**/*.css</exclude>
-							</excludes>
 							<includes>
-								<include>**/*.properties</include>
-								<include>**/*.xml</include>
+								<include>**/*.*</include>
 							</includes>
 						</scanTargetPattern>
 						<scanTargetPattern>
 							<directory>src/main/resources</directory>
 							<includes>
-								<include>**/*.properties</include>
-								<include>**/*.xml</include>
+								<include>**/*.*</include>
 							</includes>
 						</scanTargetPattern>
 						<scanTargetPattern>
 							<directory>src/main/java</directory>
 							<includes>
-								<include>**/*.java</include>
-								<include>**/*.xml</include>
+								<include>**/*.*</include>
 							</includes>
 						</scanTargetPattern>
 					</scanTargetPatterns>
@@ -69,6 +62,14 @@
 							<maxIdleTime>60000</maxIdleTime>
 						</connector>
 					</connectors>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.4.2</version>
+				<configuration>
+					<skipTests>true</skipTests>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -166,7 +167,7 @@
 			<artifactId>freemarker</artifactId>
 			<version>2.3.19</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjrt</artifactId>

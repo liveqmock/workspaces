@@ -8,8 +8,8 @@
  ****************************************************************/
 package jjwu.xdeveloper.web.mvc.model;
 
+import jjwu.xdeveloper.xvalidators.annotation.Ivalidator;
 import jjwu.xdeveloper.xvalidators.annotation.NotEmpty;
-import jjwu.xdeveloper.xvalidators.annotation.Xvalidate;
 
 /**
  * @描述:	TODO(...)
@@ -19,7 +19,7 @@ import jjwu.xdeveloper.xvalidators.annotation.Xvalidate;
  * @日期:	2013-4-28 下午5:06:37
  * @版本:   	v1.0.0
  */
-public class Users implements Xvalidate{
+public class Users implements Ivalidator{
 
 	/**
 	 * 
