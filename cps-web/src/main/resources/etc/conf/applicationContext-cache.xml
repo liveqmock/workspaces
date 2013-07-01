@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"
+	default-autowire="byName" default-lazy-init="false">
+
+	<bean id="cacheManager"	class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+		<property name="configLocation" value="classpath:/etc/cache/ehcache.xml" />
+	</bean>
+
+	<bean id="dictCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+		<property name="cacheManager" ref="cacheManager" />
+		<property name="cacheName" value="dictCache" />
+	</bean>
+
+	<bean id="sessionCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+		<property name="cacheManager" ref="cacheManager" />
+		<property name="cacheName" value="sessionCache" />
+	</bean>
+
+	<bean id="removedSessionCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+		<property name="cacheManager" ref="cacheManager" />
+		<property name="cacheName" value="removedSessionCache" />
+	</bean>
+
+	<bean id="userCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+		<property name="cacheManager" ref="cacheManager" />
+		<property name="cacheName" value="userCache" />
+	</bean>
+
+	<bean id="methodCacheInterceptor" class="com.iwgame.cps.cache.MethodCacheInterceptor">
+		<property name="cache" ref="dictCache" />
+	</bean>
+
+</beans>
