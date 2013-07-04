@@ -19,17 +19,9 @@ public class Utils implements InitializingBean{
 
 	private Resource[] locations;
 
-	private final String fileEncoding = "UTF-8";
+	private String fileEncoding = "UTF-8";
 
 	private boolean ignoreResourceNotFound;
-
-
-	/**
-	 * @return the locations
-	 */
-	public Resource[] getLocations() {
-		return locations;
-	}
 
 
 	/**
@@ -41,10 +33,10 @@ public class Utils implements InitializingBean{
 
 
 	/**
-	 * @return the ignoreResourceNotFound
+	 * @param fileEncoding the fileEncoding to set
 	 */
-	public boolean isIgnoreResourceNotFound() {
-		return ignoreResourceNotFound;
+	public void setFileEncoding(String fileEncoding) {
+		this.fileEncoding = fileEncoding;
 	}
 
 
@@ -54,15 +46,6 @@ public class Utils implements InitializingBean{
 	public void setIgnoreResourceNotFound(boolean ignoreResourceNotFound) {
 		this.ignoreResourceNotFound = ignoreResourceNotFound;
 	}
-
-
-	/**
-	 * @return the fileEncoding
-	 */
-	public String getFileEncoding() {
-		return fileEncoding;
-	}
-
 
 
 	/* (non-Javadoc)

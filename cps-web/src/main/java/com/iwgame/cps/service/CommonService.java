@@ -34,7 +34,7 @@ public class CommonService {
 	 * @return
 	 */
 	public User checkUser(String username, String passwd, String captcha, Date endDate) {
-		return null;
+		return new User();
 	}
 
 }

@@ -8,9 +8,13 @@
  ****************************************************************/
 package com.iwgame.cps.web.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.iwgame.cps.security.SecurityManager;
 
 /**
  * @描述:	TODO(...)
@@ -38,6 +42,8 @@ public class LoginController {
 	public String login(ModelMap modelMap){
 		System.out.println("收到登录请求");
 		modelMap.put("title", "欢迎登录");
+		HttpSession session = SecurityManager.SecurityContext.getSessionFromCache("1");
+		System.out.println(session.getAttribute("name"));
 		return "login";
 	}
 

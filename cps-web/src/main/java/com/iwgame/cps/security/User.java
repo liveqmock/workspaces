@@ -83,6 +83,7 @@ public class User implements Serializable {
 
 	private String cacheKey;
 
+
 	public String getId() {
 		return id;
 	}
@@ -205,5 +206,4 @@ public class User implements Serializable {
 		}
 		return cacheKey;
 	}
-
 }

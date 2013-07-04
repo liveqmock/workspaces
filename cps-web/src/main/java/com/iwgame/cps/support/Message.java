@@ -36,6 +36,11 @@ public class Message implements java.io.Serializable {
 		this.text = text;
 	}
 
+	public Message(String code, Throwable e) {
+		this.code = code;
+		this.text = e.getMessage();
+	}
+
 	public String getCode() {
 		return code;
 	}

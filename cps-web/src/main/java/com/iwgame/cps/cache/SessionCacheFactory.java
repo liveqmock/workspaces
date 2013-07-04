@@ -26,21 +26,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class SessionCacheFactory implements InitializingBean {
 
-
-	@Resource
-	private Cache sessionCache;
-
 	@Resource
 	private Cache userCache;
 
 	@Resource
-	private Cache removedSessionCache;
-
+	private Cache sessionCache;
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		com.iwgame.cps.security.SecurityManager.SecurityContext.setSessionCache(this.sessionCache);
 		com.iwgame.cps.security.SecurityManager.SecurityContext.setUserCache(this.userCache);
-		com.iwgame.cps.security.SecurityManager.SecurityContext.setRemovedSessionCache(this.removedSessionCache);
 	}
 }

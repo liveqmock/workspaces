@@ -17,7 +17,6 @@ import com.iwgame.cps.security.SecurityManager.SecurityContext;
 import com.iwgame.cps.security.User;
 import com.iwgame.cps.service.CommonService;
 import com.iwgame.cps.support.Message;
-import com.iwgame.cps.support.exception.ServiceException;
 import com.iwgame.cps.util.CryptUtils;
 import com.iwgame.cps.util.Utils;
 
@@ -53,7 +52,7 @@ public class DwrService {
 	 **/
 	@RemoteMethod
 	public Message forCheckUser(String username, String passwd, String captcha,Date endDate, HttpServletRequest request) {
-		HttpSession session = WebContextFactory.get().getSession(false);
+		HttpSession session = WebContextFactory.get().getSession();
 		if (Utils.Constant.jcaptcha.toLowerCase().equals("true")) {
 			String valiCode = (String) session.getAttribute("valiCode");
 			if (!captcha.equalsIgnoreCase(valiCode)) {
@@ -68,8 +67,8 @@ public class DwrService {
 			user.setSessionId(CryptUtils.makMd5Digest(session.getId()));
 			sc.setUser(user);
 			sc.bindSession(session);
-		} catch (ServiceException e) {
-			return new Message("-1", e.getMessage());
+		} catch (Exception e) {
+			return new Message("-1", "登录异常:" + e.getMessage());
 		}
 		return new Message("1", "success");
 	}

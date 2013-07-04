@@ -9,11 +9,9 @@
 package com.iwgame.cps;
 
 
-import org.json.JSONObject;
-import org.json.XML;
-import org.junit.Test;
+import java.util.Calendar;
 
-import com.iwgame.cps.security.User;
+import org.junit.Test;
 
 /**
  * @描述:	TODO(...)
@@ -23,14 +21,19 @@ import com.iwgame.cps.security.User;
  * @日期:	2013-7-1 上午10:23:04
  * @版本:   	v1.0.0
  */
+//@RunWith(SpringJUnit4ClassRunner.class)
+//@ContextConfiguration(value={"classpath:/etc/conf/*.xml"})
 public class Apptest {
 
 	@Test
 	public void test1() throws Exception{
-		User user = new User();
-		user.setName("wjj");
-		JSONObject jsonObj = new JSONObject(user);
-		System.out.println(XML.toString(jsonObj));
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.YEAR, 2013);
+		calendar.set(Calendar.MONTH, 0);
+		calendar.set(Calendar.DAY_OF_WEEK_IN_MONTH, 1);
+		System.out.println(calendar.getFirstDayOfWeek());
+
 	}
 
 }
