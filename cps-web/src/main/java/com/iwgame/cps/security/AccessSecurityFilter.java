@@ -19,6 +19,9 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.iwgame.cps.security.SecurityManager.SecurityContext;
+import com.iwgame.cps.util.CryptUtils;
+
 /**
  * @描述: TODO(...)
  * 
@@ -59,7 +62,15 @@ public class AccessSecurityFilter implements Filter {
 			if (path.endsWith(suffix)) {
 				HttpSession session = req.getSession();
 				if (session != null) {
-					session.invalidate();
+					Boolean isRemoved = Boolean.valueOf(SecurityManager.SecurityContext.getRemovedSessionFromCache(CryptUtils.makMd5Digest(session.getId())));
+					if (!isRemoved.booleanValue()) {
+						SecurityManager.SecurityContext o = (SecurityContext) session.getAttribute(SecurityContext.SECURITY_CONTEXT_KEY);
+						if (o != null) {
+							SecurityManager.SecurityContext.setContext(o);
+						}
+					} else {
+						session.invalidate();
+					}
 				}
 				try {
 					chain.doFilter(request, response);

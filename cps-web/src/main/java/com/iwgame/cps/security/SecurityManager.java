@@ -31,13 +31,19 @@ public abstract interface SecurityManager {
 
 		private static Cache sessionCache = null;
 
+		private static Cache removedSessionCache = null;
+
 		private static Cache userCache = null;
+
 		private User user;
 
 		public static void setSessionCache(Cache sessionCache) {
 			SecurityContext.sessionCache = sessionCache;
 		}
 
+		public static void setRemovedSessionCache(Cache removedSessionCache) {
+			SecurityContext.removedSessionCache = removedSessionCache;
+		}
 
 		public static void setUserCache(Cache userCache) {
 			SecurityContext.userCache = userCache;
@@ -48,6 +54,7 @@ public abstract interface SecurityManager {
 		}
 
 		public static void removeSessionFromCache(String sessionId) {
+			SecurityContext.removedSessionCache.put(new Element(sessionId, sessionId));
 			SecurityContext.sessionCache.remove(sessionId);
 		}
 
@@ -57,6 +64,14 @@ public abstract interface SecurityManager {
 				return (HttpSession) emt.getObjectValue();
 			}
 			return null;
+		}
+
+		public static boolean getRemovedSessionFromCache(String sessionId) {
+			Element emt = SecurityContext.removedSessionCache.get(sessionId);
+			if (emt != null) {
+				return true;
+			}
+			return false;
 		}
 
 		public static void putUserToCache(User user) {
