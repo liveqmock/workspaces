@@ -67,6 +67,7 @@ public class DwrService {
 			user.setSessionId(CryptUtils.makMd5Digest(session.getId()));
 			sc.setUser(user);
 			sc.bindSession(session);
+			SecurityContext.setContext(sc);
 		} catch (Exception e) {
 			return new Message("-1", "登录异常:" + e.getMessage());
 		}
