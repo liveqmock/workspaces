@@ -40,7 +40,7 @@
 		<property name="fileEncoding" value="utf-8" />
 	</bean>
 
-	<!-- 动态数据源配置,根据key进行切换 -->
+	<!-- 动态数据源配置,根据key进行切换 
 	<bean id="dynamicDataSource"
 		class="jjwu.xdeveloper.java.mybatise.core.dynamic.datasource.DynamicDataSource">
 		<property name="targetDataSources">
@@ -59,6 +59,17 @@
 				<value>classpath*:/mybaties/sqlmap/*.xml</value>
 			</list>
 		</property>
+	</bean>
+	-->
+	
+	
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="test-dataSource" />
+		<property name="mapperLocations" value="classpath*:/mybaties/sqlmap/*.xml"/>
+	</bean>
+	
+	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="sqlSessionFactory" />
 	</bean>
 	
 	<bean id="test-dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" >

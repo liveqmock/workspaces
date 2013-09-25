@@ -34,7 +34,7 @@ public class AppComTest {
 
 		final String ts = String.valueOf(System.currentTimeMillis());
 
-		final String phone = "13776801367";
+		final String phone = "13776801367,18217698637";
 
 		final String str = pid + "&" + phone + "&" + "glWN8S1Al1JznVqjf1jV1CMOifQyp8Ve" + "&" + ts;
 		final String sign = MD5Util.md5sum(str);
@@ -364,7 +364,7 @@ public class AppComTest {
 		final String ts = String.valueOf(System.currentTimeMillis());
 
 		final String username = "shumenceshi005";
-		final String guid = "dxfc";
+		final String guid = "all";
 
 		final String str = pid + "&" + username + "&" + "glWN8S1Al1JznVqjf1jV1CMOifQyp8Ve" + "&" + ts;
 		final String sign = MD5Util.md5sum(str);

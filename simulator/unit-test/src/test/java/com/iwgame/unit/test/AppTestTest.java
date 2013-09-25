@@ -166,7 +166,7 @@ public class AppTestTest {
         
         String ts = String.valueOf(System.currentTimeMillis());
         
-        String username = "shumenceshi005";
+        String username = "jjwu123456";
         String guid = "dx1";
         
         String str = pid + "&" + username + "&" + "glWN8S1Al1JznVqjf1jV1CMOifQyp8Ve" + "&" + ts;
@@ -195,7 +195,7 @@ public class AppTestTest {
         
         String ts = String.valueOf(System.currentTimeMillis());
         
-        String username = "yunwei";
+        String username = "sssssss";
         String guid = "dx1";
         
         String str = pid + "&" + username + "&" + "glWN8S1Al1JznVqjf1jV1CMOifQyp8Ve" + "&" + ts;
@@ -207,7 +207,7 @@ public class AppTestTest {
         param.add("guid", guid);
         param.add("username", username);
         param.add("groupname", "电信二三区【新月风云】");
-        param.add("validtime", "10");
+        param.add("validtime", "10000");
         
         String rs = wr.queryParams(param).accept(MediaType.APPLICATION_JSON).post(String.class);
         
@@ -226,7 +226,7 @@ public class AppTestTest {
         
         String ts = String.valueOf(System.currentTimeMillis());
         
-        String username = "yunwei";
+        String username = "xxx";
         String guid = "dx1";
         
         String str = pid + "&" + username + "&" + "glWN8S1Al1JznVqjf1jV1CMOifQyp8Ve" + "&" + ts;
@@ -238,7 +238,7 @@ public class AppTestTest {
         param.add("guid", guid);
         param.add("username", username);
         param.add("groupname", "电信二三区【新月风云】");
-        param.add("validtime", "10");
+        param.add("validtime", "0");
         
         String rs = wr.queryParams(param).accept(MediaType.APPLICATION_JSON).post(String.class);
         
@@ -260,8 +260,8 @@ public class AppTestTest {
         
         String ts = String.valueOf(System.currentTimeMillis());
         
-        String username = "shumenceshi005";
-        String guid = "dxfc";
+        String username = "jjwu123456";
+        String guid = "dx1";
         
         String str = pid + "&" + username + "&" + "glWN8S1Al1JznVqjf1jV1CMOifQyp8Ve" + "&" + ts;
         String sign = MD5Util.md5sum(str);
@@ -271,7 +271,7 @@ public class AppTestTest {
         param.add("sign", sign);
         param.add("guid", guid);
         param.add("username", username);
-        param.add("sealtime", "10");
+        param.add("sealtime", "0");
         param.add("rolename", "");
         param.add("note", "");
         
@@ -293,7 +293,7 @@ public class AppTestTest {
         
         String ts = String.valueOf(System.currentTimeMillis());
         
-        String username = "shumenceshi088";
+        String username = "jjwu123456";
         String guid = "all";
         
         String str = pid + "&" + username + "&" + "glWN8S1Al1JznVqjf1jV1CMOifQyp8Ve" + "&" + ts;
@@ -304,7 +304,7 @@ public class AppTestTest {
         param.add("sign", sign);
         param.add("guid", guid);
         param.add("username", username);
-        param.add("sealtime", "10");
+        param.add("sealtime", "0");
         param.add("rolename", "");
         param.add("showtime", "0");
         param.add("online", "0");

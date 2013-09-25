@@ -25,7 +25,11 @@ public class AppTest {
 		//		obj = call.invoke(new Object[] {"aaabbb"});
 		//		System.out.println(obj);
 
-		System.out.println(MasterKeyUtil.decKey("KrvTp6mQ088Ilosd8wvco+AoBZA="));
+//		System.out.println(MasterKeyUtil.decKey("vNZ/dhrqIaMNK/HA9PAtUB77Bb+61ZTt"));
+		System.out.println(MasterKeyUtil.encKey("Mk9iUc5Fd"));
+		//ltzUGOO931Qu7mb7OlSJp52if6tieFIH
+		//e31097edb7768b3f2c8f9a5c63b4c04b
+
 	}
 
 }

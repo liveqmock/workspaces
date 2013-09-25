@@ -45,7 +45,7 @@ public abstract class MD5Util {
 		try {
 			md = MessageDigest.getInstance("MD5");
 			md.update(data.getBytes());
-			return MD5Util.byteToBase16(md.digest()).toLowerCase();
+			return MD5Util.byteToBase16(md.digest()).toUpperCase();
 		} catch (Exception e) {
 			MD5Util.logger.error("MD5 not supported.", e);
 		}

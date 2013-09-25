@@ -9,7 +9,7 @@
 		FROM test where id = #{id}
 	</select>
 
-	<update id="update" flushCache="true" parameterType="hashmap" >
+	<update id="update" flushCache="true" parameterType="hashmap"  >
 		update test set name = #{name} where id = #{id}
 	</update>
 
