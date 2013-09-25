@@ -1,8 +1,6 @@
 package com.iwgame.jython;
 
 
-import org.python.core.PyObject;
-import org.python.core.PyString;
 import org.python.util.PythonInterpreter;
 
 /**
