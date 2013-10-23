@@ -21,6 +21,10 @@ import java.security.MessageDigest;
 
 import org.apache.log4j.Logger;
 
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
+
 /**
  * 
  * 类说明
@@ -66,7 +70,17 @@ public abstract class MD5Util {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(MD5Util.md5sum("123456"));
+		try {
+			WebResource client = Client.create().resource("");
+			WebResource wr = client.path("http://127.0.0.1:15672/api/connections");
+			ClientResponse reponse = wr.header("Content-Type", "application/json;UTF-8").entity("").post(ClientResponse.class);
+			
+			String rs = reponse.getEntity(String.class);
+
+			System.out.println(rs);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }
