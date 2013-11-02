@@ -40,7 +40,7 @@
 		<property name="fileEncoding" value="utf-8" />
 	</bean>
 
-	<!-- 动态数据源配置,根据key进行切换 
+	<!-- 动态数据源配置,根据key进行切换 -->
 	<bean id="dynamicDataSource"
 		class="jjwu.xdeveloper.java.mybatise.core.dynamic.datasource.DynamicDataSource">
 		<property name="targetDataSources">
@@ -60,7 +60,7 @@
 			</list>
 		</property>
 	</bean>
-	-->
+	
 	
 	
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
