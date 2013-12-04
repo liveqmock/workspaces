@@ -19,16 +19,14 @@ package com.iwgame.unit.test;
 
 import java.security.MessageDigest;
 
-import org.apache.log4j.Logger;
-
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
 /**
- * 
+ *
  * 类说明
- * 
+ *
  * @简述： 加密修改
  * @作者： 吴君杰
  * @版本： 1.0
@@ -36,8 +34,6 @@ import com.sun.jersey.api.client.WebResource;
  * @修改时间：2012-6-29 上午09:25:59
  */
 public abstract class MD5Util {
-
-	private static final Logger logger = Logger.getLogger(MD5Util.class);
 
 	public static final boolean md5check(String data, String md5) {
 		String sum = MD5Util.md5sum(data);
@@ -51,14 +47,12 @@ public abstract class MD5Util {
 			md.update(data.getBytes());
 			return MD5Util.byteToBase16(md.digest()).toUpperCase();
 		} catch (Exception e) {
-			MD5Util.logger.error("MD5 not supported.", e);
 		}
 		return "";
 	}
 
 	public static final String byteToBase16(byte[] bytes) {
 		if (bytes == null){
-			MD5Util.logger.error("The parameter should not be null!");
 			return "";
 		}
 		StringBuilder sb = new StringBuilder(bytes.length * 2);
@@ -74,7 +68,7 @@ public abstract class MD5Util {
 			WebResource client = Client.create().resource("");
 			WebResource wr = client.path("http://127.0.0.1:15672/api/connections");
 			ClientResponse reponse = wr.header("Content-Type", "application/json;UTF-8").entity("").post(ClientResponse.class);
-			
+
 			String rs = reponse.getEntity(String.class);
 
 			System.out.println(rs);

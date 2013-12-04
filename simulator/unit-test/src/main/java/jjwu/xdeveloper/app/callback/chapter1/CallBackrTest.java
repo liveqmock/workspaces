@@ -8,13 +8,13 @@
  ****************************************************************/
 package jjwu.xdeveloper.app.callback.chapter1;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+import com.iwgame.unit.test.MD5Util;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 
 /**
@@ -26,61 +26,79 @@ import net.sf.json.JSONObject;
  * @版本:   	v1.0.0
  */
 public class CallBackrTest {
-	
+
 	public static void main(String[] args) throws Throwable {
-		
-		List<Object> list = new ArrayList<Object>();
-		Map<String, String> map1 = new HashMap<String, String>();
-		map1.put("u", "u");
-		Map<String, String> map2 = new HashMap<String, String>();
-		map2.put("u", "u");
-		Map<String, String> map3 = new HashMap<String, String>();
-		map3.put("u", "u");
-		list.add(map1);
-		list.add(map2);
-		list.add(map3);
-		
-		JSONArray object = JSONArray.fromObject(list);
-//		System.out.println(object.toString());
-		
-//		JSONObject json = JSONObject.fromObject("[{\"u\":\"u\"},{\"u\":\"u\"},{\"u\":\"u\"}]");
-		JSONObject json = JSONObject.fromObject(object);
-		if(json.isArray()){
-			System.out.println("true");
-		}else{
-			System.out.println("false");
-		}
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+
+//		List<Object> list = new ArrayList<Object>();
+//		Map<String, String> map1 = new HashMap<String, String>();
+//		map1.put("u", "u");
+//		Map<String, String> map2 = new HashMap<String, String>();
+//		map2.put("u", "u");
+//		Map<String, String> map3 = new HashMap<String, String>();
+//		map3.put("u", "u");
+//		list.add(map1);
+//		list.add(map2);
+//		list.add(map3);
+//
+//		JSONArray object = JSONArray.fromObject(list);
+////		System.out.println(object.toString());
+//
+////		JSONObject json = JSONObject.fromObject("[{\"u\":\"u\"},{\"u\":\"u\"},{\"u\":\"u\"}]");
+//		JSONObject json = JSONObject.fromObject(object);
+//		if(json.isArray()){
+//			System.out.println("true");
+//		}else{
+//			System.out.println("false");
+//		}
+
+
+
+		final WebResource client = Client.create().resource("");
+		final String pid = "common";
+		final WebResource wr = client.path("http://data.iwgame.com/service/sms/" + pid + "/sendsms");
+		final MultivaluedMap<String, String> param = new MultivaluedMapImpl();
+		final String ts = String.valueOf(System.currentTimeMillis());
+
+		final String phone = "13776801367";
+		final String str = pid + "&" + phone + "&" + "glWN8S1Al1JznVqjf1jV1CMOifQyp8Ve" + "&" + ts;
+		final String sign = MD5Util.md5sum(str);
+
+		param.add("appname", "sq");
+		param.add("ts", ts);
+		param.add("sign", sign);
+		param.add("phone", phone);
+		param.add("message", "这是测试短信");
+		param.add("queueNo", "3108");
+
+		final String rs = wr.queryParams(param).accept(MediaType.APPLICATION_JSON).post(String.class);
+		System.out.println(rs);
+
+
+
+
+
+
+
+
+
+
 //		EventButton eventButton = new EventButton() {
-//			
+//
 //			@Override
 //			public void zoomlEvent() {
-//				
+//
 //			}
-//			
+//
 //			@Override
 //			public void minimizeEvent() {
-//				
+//
 //			}
-//			
+//
 //			@Override
 //			public void confrimEvent() {
-//				
+//
 //			}
-//			
+//
 //			@Override
 //			public void cancelEvent() {
 //				System.out.println("窗口取消事件触发!");
@@ -93,8 +111,8 @@ public class CallBackrTest {
 //				System.out.println("更新数据库成功!");
 //			}
 //		};
-//		
-//		
+//
+//
 //		ViewImpl view = new ViewImpl();
 //		view.registerEvent(eventButton);
 //		view.cancel();

@@ -36,54 +36,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ResHeader }
-     * 
-     */
-    public ResHeader createResHeader() {
-        return new ResHeader();
-    }
-
-    /**
-     * Create an instance of {@link LongMapItemType }
-     * 
-     */
-    public LongMapItemType createLongMapItemType() {
-        return new LongMapItemType();
-    }
-
-    /**
-     * Create an instance of {@link StringMapItemType }
-     * 
-     */
-    public StringMapItemType createStringMapItemType() {
-        return new StringMapItemType();
-    }
-
-    /**
-     * Create an instance of {@link Failure }
-     * 
-     */
-    public Failure createFailure() {
-        return new Failure();
-    }
-
-    /**
-     * Create an instance of {@link AuthHeader }
-     * 
-     */
-    public AuthHeader createAuthHeader() {
-        return new AuthHeader();
-    }
-
-    /**
-     * Create an instance of {@link DoubleMapItemType }
-     * 
-     */
-    public DoubleMapItemType createDoubleMapItemType() {
-        return new DoubleMapItemType();
-    }
-
-    /**
      * Create an instance of {@link FloatMapItemType }
      * 
      */
@@ -100,11 +52,59 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link StringMapItemType }
+     * 
+     */
+    public StringMapItemType createStringMapItemType() {
+        return new StringMapItemType();
+    }
+
+    /**
+     * Create an instance of {@link ResHeader }
+     * 
+     */
+    public ResHeader createResHeader() {
+        return new ResHeader();
+    }
+
+    /**
+     * Create an instance of {@link AuthHeader }
+     * 
+     */
+    public AuthHeader createAuthHeader() {
+        return new AuthHeader();
+    }
+
+    /**
+     * Create an instance of {@link Failure }
+     * 
+     */
+    public Failure createFailure() {
+        return new Failure();
+    }
+
+    /**
      * Create an instance of {@link IntMapItemType }
      * 
      */
     public IntMapItemType createIntMapItemType() {
         return new IntMapItemType();
+    }
+
+    /**
+     * Create an instance of {@link LongMapItemType }
+     * 
+     */
+    public LongMapItemType createLongMapItemType() {
+        return new LongMapItemType();
+    }
+
+    /**
+     * Create an instance of {@link DoubleMapItemType }
+     * 
+     */
+    public DoubleMapItemType createDoubleMapItemType() {
+        return new DoubleMapItemType();
     }
 
     /**

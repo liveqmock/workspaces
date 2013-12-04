@@ -16,10 +16,10 @@ import net.sf.json.processors.JsonValueProcessor;
 import org.apache.log4j.Logger;
 
 /**
- * 
+ *
  * @类名: LatinConverter
  * @描述: 拉丁转换处理
- * 
+ *
  * @作者: 吴君杰
  * @邮箱: wujunjie@iwgame.com
  * @日期: 2012-10-24下午03:11:33
@@ -29,9 +29,14 @@ public class LatinConverter implements JsonValueProcessor {
 
 	private final static Logger logger = Logger.getLogger(LatinConverter.class);
 
+
+	public void sayHello(){
+		System.out.println("latin");
+	}
+
 	/**
 	 * 中文转换拉丁
-	 * 
+	 *
 	 * @param params
 	 * @return
 	 */
@@ -56,7 +61,7 @@ public class LatinConverter implements JsonValueProcessor {
 
 	/**
 	 * 拉丁转换中文
-	 * 
+	 *
 	 * @param params
 	 * @return
 	 */
@@ -79,7 +84,7 @@ public class LatinConverter implements JsonValueProcessor {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * net.sf.json.processors.JsonValueProcessor#processArrayValue(java.lang
 	 * .Object, net.sf.json.JsonConfig)
@@ -91,7 +96,7 @@ public class LatinConverter implements JsonValueProcessor {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * net.sf.json.processors.JsonValueProcessor#processObjectValue(java.lang
 	 * .String, java.lang.Object, net.sf.json.JsonConfig)
@@ -103,7 +108,7 @@ public class LatinConverter implements JsonValueProcessor {
 
 	/**
 	 * 处理latin
-	 * 
+	 *
 	 * @param key
 	 * @param value
 	 * @return

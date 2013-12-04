@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>xdeveloper</artifactId>
 	<groupId>jjwu.xdeveloper</groupId>
-	<version>1.0.0</version>
+	<version>1.0.1</version>
 	<packaging>pom</packaging>
 
 	<name>xdeveloper</name>
@@ -22,9 +22,6 @@
 			</plugin>
 		</plugins>
 	</build>
-
-
-	
 
 	<distributionManagement>
 		<repository>
@@ -63,6 +60,6 @@
 		</repository>
 	</repositories>
   <modules>
-    <module>xdeveloper-rabbitmq</module>
+    <module>xdeveloper-zookeeper</module>
   </modules>
 </project>

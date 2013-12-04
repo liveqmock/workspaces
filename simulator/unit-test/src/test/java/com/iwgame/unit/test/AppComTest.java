@@ -18,9 +18,9 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 /**
- * 
+ *
  * @author jjwu
- * 
+ *
  */
 public class AppComTest {
 	@Test
@@ -133,7 +133,7 @@ public class AppComTest {
 
 				final String rs = wr.queryParams(param).accept(MediaType.APPLICATION_JSON).post(String.class);
 				count++;
-				System.out.println("row:"+count+"  "+rs);
+				System.out.println("row:" + count + "  " + rs);
 			}
 		} catch (final FileNotFoundException e) {
 			System.err.println("文件没有找到!");
@@ -162,19 +162,19 @@ public class AppComTest {
 
 		final String ts = String.valueOf(System.currentTimeMillis());
 
-		final String username = "duanzhijian12211";
-		final String guid = "dx17";
+		final String username = "xxhr947";
+		final String guid = "dx19";
 
 		final String str = pid + "&" + username + "&" + "glWN8S1Al1JznVqjf1jV1CMOifQyp8Ve" + "&" + ts;
 		final String sign = MD5Util.md5sum(str);
 
-		param.add("appname", "snsgame2");
+		param.add("appname", "sq");
 		param.add("ts", ts);
 		param.add("sign", sign);
 		param.add("guid", guid);
 		param.add("username", username);
-		param.add("cardnum", "STRBSA40HH79F8B");
-		param.add("cardpwd", "27139472061952");
+		param.add("cardnum", "KABYSA82WSRSIJA");
+		param.add("cardpwd", "66286715665249");
 		param.add("validtime", "");
 		param.add("itype", "0");
 
@@ -210,8 +210,7 @@ public class AppComTest {
 		param.add("guid", guid);
 		param.add("name", username);
 		param.add("type", "6");
-		param.add("str3",
-				"722337968335246445981686533794724395603395427965655695720745496692027295209220923293681771746988115637");
+		param.add("str3", "722337968335246445981686533794724395603395427965655695720745496692027295209220923293681771746988115637");
 		param.add("operate", "2");
 
 		final String rs = wr.queryParams(param).accept(MediaType.APPLICATION_JSON).post(String.class);
@@ -391,8 +390,7 @@ public class AppComTest {
 
 		final String accountid = "24667552";
 
-		final WebResource wr = client.path("http://data.iwgame.test/service/account/" + pid + "/" + accountid
-				+ "/getAccount");
+		final WebResource wr = client.path("http://data.iwgame.test/service/account/" + pid + "/" + accountid + "/getAccount");
 
 		final MultivaluedMap<String, String> param = new MultivaluedMapImpl();
 
@@ -453,7 +451,7 @@ public class AppComTest {
 
 		final String ip = "";
 
-		final WebResource wr = client.path("http://data.iwgame.com/service/iptranslate/"+pid+"/getTranslate");
+		final WebResource wr = client.path("http://data.iwgame.com/service/iptranslate/" + pid + "/getTranslate");
 
 		final MultivaluedMap<String, String> param = new MultivaluedMapImpl();
 
@@ -472,10 +470,10 @@ public class AppComTest {
 	}
 
 	@Test
-	public void testItemCardActivity() {
+	public void testSMS() {
 		final WebResource client = Client.create().resource("");
 		final String pid = "common";
-		final WebResource wr = client.path("http://.iwgame.com/service/sms/" + pid + "/sendsms");
+		final WebResource wr = client.path("http://data.iwgame.com/service/sms/" + pid + "/sendsms");
 		final MultivaluedMap<String, String> param = new MultivaluedMapImpl();
 		final String ts = String.valueOf(System.currentTimeMillis());
 
@@ -488,12 +486,11 @@ public class AppComTest {
 		param.add("sign", sign);
 		param.add("phone", phone);
 		param.add("message", "这是测试短信");
-		param.add("queueNo", "3722");
+		param.add("queueNo", "3664");
 
 		final String rs = wr.queryParams(param).accept(MediaType.APPLICATION_JSON).post(String.class);
 		System.out.println(rs);
 	}
-
 
 	@Test
 	public void testCustomerService() {
@@ -523,6 +520,17 @@ public class AppComTest {
 		param.add("endtime", "2013-03-20");
 		final String rs = wr.queryParams(param).accept(MediaType.APPLICATION_JSON).get(String.class);
 		System.out.println(rs);
+	}
+
+
+
+	@Test
+	public void test111() {
+
+		String str1 = "'orderid=2013112144976&busno=999999999999330&busnoname=神州运通&amount=988.00&hfherf=http://127.0.0.1&notifyurl=http://127.0.0.1/rpage'";
+		String sign = MD5Util.md5sum(str1);
+		sign = sign + "#'77bff4145efc4136cfc3ea7cba26d257'";
+		System.out.println(MD5Util.md5sum(sign));
 	}
 
 }

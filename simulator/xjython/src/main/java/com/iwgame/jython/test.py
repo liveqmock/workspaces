@@ -3,6 +3,6 @@ def helloworld():
 	return "hello world !"
 if __name__ == '__main__':
 	a = helloworld()
-	print a
+	print "[reustl]:"+"liouaufoaf"
 
 	
