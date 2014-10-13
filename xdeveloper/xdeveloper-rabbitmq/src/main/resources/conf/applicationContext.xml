@@ -11,45 +11,51 @@
 
 	<!-- 配置MQ连接源 -->
 	<bean id="rabbitMQSource" class="com.rabbitmq.client.ConnectionFactory">
-		<property name="username" value="guest" />
-		<property name="password" value="guest" />
-		<property name="virtualHost" value="xcloud-ioms" />
-		<property name="host" value="127.0.0.1" />
+		<property name="username" value="dev" />
+		<property name="password" value="dev2012" />
+		<property name="virtualHost" value="sm-activity" />
+		<property name="host" value="192.168.16.156" />
 		<property name="port" value="5672" />
-		<property name="requestedHeartbeat" value="5" />
+		<property name="requestedHeartbeat" value="0" />
 	</bean>
 	<bean id="connectionFactory" class="org.springframework.amqp.rabbit.connection.CachingConnectionFactory">
 		<constructor-arg ref="rabbitMQSource" />
 		<property name="channelCacheSize" value="5" />
 	</bean>
 	<!-- 创建rabbitAdmin 代理类,初始调用initialize,它会指定执行我们定义的Exchange,Queue,Binding -->
-	<bean class="org.springframework.amqp.rabbit.core.RabbitAdmin" init-method="initialize">
+	<bean class="org.springframework.amqp.rabbit.core.RabbitAdmin"	init-method="initialize">
+		<constructor-arg ref="connectionFactory" />
+	</bean>
+	
+	<bean id="rabbitTemplate" class="org.springframework.amqp.rabbit.core.RabbitTemplate">
 		<constructor-arg ref="connectionFactory" />
 	</bean>
 
 
-	<!-- 声明消息转换器为Simple MessageConverter 
-	<bean id="messageConverter"
-		class="org.springframework.amqp.support.converter.SimpleMessageConverter " />
+	<!-- 声明消息转换器为Simple MessageConverter -->
+	<bean id="messageConverter" 	class="org.springframework.amqp.support.converter.SimpleMessageConverter " />
 
-	<bean id="iomsExchange" class="org.springframework.amqp.core.TopicExchange">
-		<constructor-arg value="iwgame.xcloud.ioms.center.exchange" />
+	<bean id="omsExchange" class="org.springframework.amqp.core.TopicExchange">
+		<constructor-arg value="iwgame.xcloud.oms.center.exchange" />
 	</bean>
-	<bean id="iomsQueue" class="org.springframework.amqp.core.Queue">
-		<constructor-arg index="0" value="iwgame.xcloud.ioms.nodeid" />
+	
+	<bean id="omsQueue" class="org.springframework.amqp.core.Queue">
+		<constructor-arg index="0" value="iwgame.xcloud.oms.nodeid" />
 		<constructor-arg index="1" value="false" />
 	</bean>
-	<bean id="iomsBinding" class="org.springframework.amqp.core.Binding">
-		<constructor-arg index="0" value="iwgame.xcloud.ioms.node." />
+	
+	<bean id="omsBinding" class="org.springframework.amqp.core.Binding">
+		<constructor-arg index="0" value="iwgame.xcloud.oms.nodeid" />
 		<constructor-arg index="1" value="QUEUE" />
-		<constructor-arg index="2"
-			value="iwgame.xcloud.ioms.centerMgr.exchange" />
+		<constructor-arg index="2" 	value="iwgame.xcloud.oms.center.exchange" />
 		<constructor-arg index="3" value="nodeid" />
 		<constructor-arg index="4">
 			<null />
 		</constructor-arg>
 	</bean>
-	-->
+	
+	
+
 
 
 	<!-- 公告发送模块-监听生产者发送的消息开始 <bean id="smsActTaskHandler" class="自己的实现类" /> -->

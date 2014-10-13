@@ -16,7 +16,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * @描述:	TODO(...)
@@ -29,12 +31,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class MainController extends BaseAction{
 
-	/**
-	 * 
-	 */
-	public MainController() {
-		System.out.println("init初始化成功!...");
-	}
 
 	@RequestMapping("/main.do")
 	public String main(ModelMap modelMap){
@@ -62,8 +58,8 @@ public class MainController extends BaseAction{
 	}
 
 
-	@RequestMapping("/login.do")
-	public String login(ModelMap modelMap,HttpServletResponse response,HttpServletRequest request){
+	@RequestMapping("/{test}/login.do")
+	public String login(ModelMap modelMap,HttpServletRequest request){
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		System.out.println(username);
@@ -71,6 +67,20 @@ public class MainController extends BaseAction{
 		modelMap.put("password", password);
 		modelMap.put("title", "登录成功!");
 		return "security";
-
 	}
+	
+	
+//	@RequestMapping("/{test}/login.do")
+//	public ModelAndView login(@PathVariable("test")String test, ModelMap modelMap,HttpServletRequest request){
+//		ModelAndView view = new ModelAndView();
+//		String username = request.getParameter("username");
+//		String password = request.getParameter("password");
+//		modelMap.put("username", username);
+//		modelMap.put("password", password);
+//		modelMap.put("test", test);
+//		modelMap.put("title", "登录成功!");
+//		view.setViewName("security");
+//		view.addAllObjects(modelMap);
+//		return view;
+//	}
 }

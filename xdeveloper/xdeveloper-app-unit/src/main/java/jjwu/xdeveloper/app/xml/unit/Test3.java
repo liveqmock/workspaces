@@ -18,15 +18,16 @@ public class Test3 {
 		xstream.alias("queue", Queue.class);
 		xstream.alias("monitor", Monitor.class);
 		xstream.alias("mqtotal", Mqtotal.class);
-		xstream.alias("Mqqueue", Mqqueue.class);
+		xstream.alias("mqqueue", Mqqueue.class);
 		
 
 		// Serializing an object to XML
 
-		String xml = readFile("/Users/jjwu/Yunio/workspace/xdeveloper/xdeveloper-app-unit/src/main/java/example.xml");
+		String xml = readFile("/Users/wujunjie/Documents/workspaces/xdeveloper/xdeveloper-app-unit/src/main/java/example.xml");
 		System.out.println(xml);
 		Monitor bean = (Monitor) xstream.fromXML(xml);
 		System.out.println(bean.getPassword());
+		System.out.println(bean.getMqtotals().get(0).getId());
 	}
 
 	public static String readFile(String fileName) throws Exception {

@@ -1,67 +1,39 @@
 package jjwu.xdeveloper.rabbitmq;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import javax.annotation.Resource;
 
-import net.sf.json.JSONObject;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 
 /**
  * Hello world!
  *
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration( value ={"classpath*:/conf/applicationContext.xml"})
 public class App 
 {
-    public static void main( String[] args ) throws Throwable, IOException
-    {
-    	
-    	DefaultHttpClient httpClient = new DefaultHttpClient();
-    	httpClient.getCredentialsProvider().setCredentials(new AuthScope("127.0.0.1",15672), 
-    			new UsernamePasswordCredentials("guest","guest"));
-    	HttpGet httpGet = new HttpGet("http://127.0.0.1:15672/api/connections");
-    	HttpResponse response = httpClient.execute(httpGet);
-    	HttpEntity entity = response.getEntity();
-    	if(entity != null){
-    		InputStreamReader reader = new InputStreamReader(entity.getContent());
-    		BufferedReader bufferedReader = new BufferedReader(reader);
-    		String str = "";
-    		while (null !=(str = bufferedReader.readLine())) {
-    			System.out.println(str);
-    		}
-//    		JSONObject result = JSONObject.fromObject(str);
-//    		System.out.println(result);
-    	}
-    }
-    
+	
+	@Resource
+	private RabbitTemplate rabbitTemplate;
     
     @Test
     public void test() throws Throwable{
-    	
-    	File file = new File("/Users/jjwu/Desktop/fibo.py");
-    	FileReader reader = new FileReader(file);
-    	BufferedReader bufferedReader = new BufferedReader(reader);
-    	
-    	
-    	StringBuilder builder = new StringBuilder();
-    	
-    	String str = "";
-    	while ((str = bufferedReader.readLine()) != null) {
-    		builder.append(str).append("\n");
+
+    	System.out.println("发送消息");
+    	rabbitTemplate.convertSendAndReceive("iwgame.xcloud.oms.center.exchange", "nodeid", "test");
+    	int i = 0;
+    	while (true) {
+    		i +=1;
+    		Thread.sleep(1000);
+    		System.out.println(i);
+    		if(i == 40){
+    			break;
+    		}
 		}
-    	
-    	System.out.println(builder.toString());
     }
 }

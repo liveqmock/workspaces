@@ -33,17 +33,15 @@
 				<prop key="date_format">yyyy-MM-dd</prop>
 				<prop key="time_format">HH:mm:ss</prop>
 				<prop key="datetime_format">yyyy-MM-dd HH:mm:ss</prop>
-				<prop key="template_exception_handler">html_debug</prop><!--忽略页面的变量异常 ignore,debug,html_debug,rethrow -->  
+				<prop key="template_exception_handler">ignore</prop><!--忽略页面的变量异常 ignore,debug,html_debug,rethrow -->  
 				<prop key="number_format">#</prop><!-- 设置数字格式 以免出现 000.00 -->
 				<prop key="classic_compatible">false</prop>
 			</props>
 		</property>
 	</bean>
 
-	<bean id="viewResolver"
-		class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
-		<property name="viewClass"
-			value="org.springframework.web.servlet.view.freemarker.FreeMarkerView" />
+	<bean id="viewResolver"	class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+		<property name="viewClass"	value="org.springframework.web.servlet.view.freemarker.FreeMarkerView" />
 		<property name="suffix" value=".htm" />
 		<property name="contentType" value="text/html; charset=utf-8" />
 		<property name="cache" value="true" />

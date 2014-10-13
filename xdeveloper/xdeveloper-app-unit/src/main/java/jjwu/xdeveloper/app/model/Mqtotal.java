@@ -8,6 +8,8 @@ public class Mqtotal implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 7778851996133736257L;
+	
+	private String id;
 
 	private String host;
 	
@@ -15,6 +17,15 @@ public class Mqtotal implements Serializable {
 
 	private String phones;
 	
+	
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
 	public String getHost() {
 		return host;
 	}
